@@ -1,9 +1,11 @@
+
 cdef extern from "BasePair.h" namespace "PTools":
     cdef cppclass CppBasePair "PTools::BasePair":
         CppBasePair(string)
         CppBasePair(CppRigidbody&)
         CppBasePair(CppBasePair&)
         CppRigidbody GetRigidBody()
+        unsigned int Size()
 
 
 cdef class BasePair:
@@ -27,10 +29,18 @@ cdef class BasePair:
             del self.thisptr
             self.thisptr = <CppBasePair*> 0
 
+    def __len__(self):
+        return self.Size()
+
+    def Size(self):
+        return self.thisptr.Size()
+
     def GetRigidBody(self):
-        ret = Rigidbody()
-        if ret.thisptr:
-            del ret.thisptr
-        cdef CppRigidbody rig
-        ret.thisptr = new CppRigidbody(rig)
-        return ret
+        # Get a pointer to the RigidBody.
+        cdef CppRigidbody * new_rb = new CppRigidbody(self.thisptr.GetRigidBody())
+
+        # Create a new Python Rigidbody and makes it point to the cpp copy.
+        cdef Rigidbody rb = Rigidbody()
+        del rb.thisptr
+        rb.thisptr = new_rb
+        return rb

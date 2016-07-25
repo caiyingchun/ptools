@@ -20,7 +20,7 @@ namespace PTools
     BasePair(std::string filename);
     ///initialize a new object from a regular Rigidbody
     BasePair(const Rigidbody& rigbody);
-    ~BasePair();
+    virtual ~BasePair() {}
     
     ///return a string containing the atoms data following the PDB format 
     std::string PrintPDB() const;
@@ -63,7 +63,7 @@ namespace PTools
     
     
     ///return the number of Atom
-    unsigned int Size() const;
+    unsigned int Size() const { return rigbody.Size(); }
 
     /// return the i-th Atom of the basePair
     Atom operator[] (uint i) const {

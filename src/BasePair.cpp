@@ -31,13 +31,6 @@ BasePair::BasePair(const Rigidbody& rigbody)
   this->type = rigbody.GetAtomProperty(0).residType;
 }
 
-
-BasePair::~BasePair()
-{
-  
-}
-
-
 string BasePair::PrintPDB()const
 {
   return rigbody.PrintPDB ();
@@ -74,10 +67,6 @@ void BasePair::Apply( const Movement& m)
 void BasePair::Apply(const Matrix& m)
 {
   Apply(Movement (m));
-}
-
-unsigned int BasePair::Size() const{
-    return rigbody.Size();
 }
 
 Matrix BasePair::GetMatrix() const
