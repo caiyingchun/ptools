@@ -30,21 +30,21 @@ class TestHeligeom(unittest.TestCase):
         new = DNA (dna)
         dna.Add(new, BDNA())
 
-        # #change the type of a base
-        # dna.ChangeType (0,"A", "bp.red.pdb")
+        # change the type of a base
+        dna.ChangeType (0,"A", "bp.red.pdb")
 
-    #     #turn the center base 
-    #     dna.ApplyLocal (Roll(30), dna.Size()/2)
+        # turn the center base 
+        dna.ApplyLocal (Roll(30), dna.Size()/2)
 
-    #     #trim the extremities
-    #     dna = dna.SubDNA (2, dna.Size()-3)
+        # trim the extremities
+        dna = dna.SubDNA (2, dna.Size()-3)
 
-    #     #change to a All Atom representation
-    #     dna.ChangeRepresentation ("bp.ato.pdb")
+        # change to a All Atom representation
+        dna.ChangeRepresentation ("bp.ato.pdb")
 
-    #     result = dna.PrintPDB() 
-    #     expected = open("basicManipulation.expected").read()
-    #     self.assertEqual(result, expected)
+        # result = dna.PrintPDB() 
+        # expected = open("basicManipulation.expected").read()
+        # self.assertEqual(result, expected)
         
 
     # def testCGfromPDBFile(self):

@@ -16,7 +16,8 @@ cdef extern from "DNA.h" namespace "PTools":
         void Add(CppDNA)
         void ChangeType(int, string, string)
         void ApplyLocal(const CppMovement&, int)
-        void ChangeRepresentation(string);
+        void ChangeRepresentation(string)
+        string PrintPDB()
 
 
 cdef class DNA:
@@ -95,3 +96,6 @@ cdef class DNA:
 
     def ChangeRepresentation(self, bytes rep):
         self.thisptr.ChangeRepresentation(rep)
+
+    def PrintPDB(self):
+        return self.thisptr.PrintPDB()
