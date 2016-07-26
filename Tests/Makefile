@@ -3,7 +3,8 @@ unittests: testcpp testpython
 testpython:
 	echo "running python tests"
 	python unittest1.py
-	cd heligeom && python heligeom_test.py
+	python test_movement.py
+	cd heligeom && python heligeom_test.py -v
 
 testcpp:
 	echo "running C++ tests"
