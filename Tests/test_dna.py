@@ -10,6 +10,7 @@ from ptools import DNA
 
 
 PDB_BASE_PAIR = os.path.join(os.path.dirname(__file__), 'heligeom', 'bp.red.pdb')
+PDB_BASE_PAIR2 = os.path.join(os.path.dirname(__file__), 'heligeom', 'bp.ato.pdb')
 PDB_DNA = os.path.join(os.path.dirname(__file__), 'heligeom', 'generate_B_DNA.expected')
 
 
@@ -30,6 +31,12 @@ class TestDNABindings(unittest.TestCase):
 
     def test_has_ApplyLocal(self):
         self.assertTrue(hasattr(DNA, 'ApplyLocal'))
+
+    def test_has_SubDNA(self):
+        self.assertTrue(hasattr(DNA, 'SubDNA'))
+
+    def test_has_ChangeRepresentation(self):
+        self.assertTrue(hasattr(DNA, 'ChangeRepresentation'))
 
 
 class TestDNA(unittest.TestCase):
@@ -55,11 +62,17 @@ class TestDNA(unittest.TestCase):
         warnings.warn("only check the call, not the result")
         self.dna.ChangeType(0, "A", PDB_BASE_PAIR)
 
-    # @unittest.skip('to be implemented')
     def test_ApplyLocal(self):
         warnings.warn("only check the call, not the result")
         self.dna.ApplyLocal(ptools.Roll(30), self.dna.Size() / 2)
 
+    def test_SubDNA(self):
+        warnings.warn("only check the call, not the result")
+        self.dna.SubDNA(2, self.dna.Size() - 3)
+
+    def test_ChangeRepresentation(self):
+        warnings.warn("only check the call, not the result")
+        self.dna.ChangeRepresentation(PDB_BASE_PAIR2)
 
 
 if __name__ == '__main__':

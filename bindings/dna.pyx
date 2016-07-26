@@ -13,6 +13,7 @@ cdef extern from "DNA.h" namespace "PTools":
         void Add(CppBasePair)
         void ChangeType(int, string, string)
         void ApplyLocal(const CppMovement&, int)
+        void ChangeRepresentation(string);
 
 
 cdef class DNA:
@@ -69,3 +70,6 @@ cdef class DNA:
 
     def ApplyLocal(self, Movement mov, int posMov):
         self.thisptr.ApplyLocal(deref(mov.thisptr), posMov)
+
+    def ChangeRepresentation(self, bytes rep):
+        self.thisptr.ChangeRepresentation(rep)
