@@ -21,16 +21,17 @@ using namespace PTools;
 //constructor/destructor
 DNA::DNA(const string& dataBaseFile, const string& seq, const Movement& mov)
 {
-  //if we want to build the dna from a model
-  if(IsPdbFile (seq))
-  {
-      BuildDNAfromPDB ( dataBaseFile, seq );
-  }
-  else
-  {
-      AssembleSeq (dataBaseFile,seq);
-      ApplyInitialMov(mov);
-  }
+    //if we want to build the dna from a model
+    // if(IsPdbFile (seq))
+    if(true)
+    {
+        BuildDNAfromPDB ( dataBaseFile, seq );
+    }
+    else
+    {
+        AssembleSeq (dataBaseFile,seq);
+        ApplyInitialMov(mov);
+    }
 }
 
 DNA::DNA( const DNA& model )
@@ -40,7 +41,6 @@ DNA::DNA( const DNA& model )
     {
         strand.push_back(model[i]);
     }
-
 }
 
 DNA::DNA( string dataBaseFile, Rigidbody model)
@@ -54,7 +54,6 @@ DNA::DNA()
 }
 void DNA::BuildDNAfromPDB (string dataBaseFile, string pdbFile )
 {
-
     Rigidbody model = Rigidbody(pdbFile);
     BuildDNAfromModel(dataBaseFile,model);
 }
@@ -471,19 +470,19 @@ bool DNA::IsPdbFile (std::string seq) const
 
 void DNA::BuildStrand(std::string seq, std::string chainIDs, const std::vector<Rigidbody>& vbase)
 {
-  unsigned int seqSize = seq.size();
-  unsigned int chainIDsSize = chainIDs.size();
+    unsigned int seqSize = seq.size();
+    unsigned int chainIDsSize = chainIDs.size();
 
-  for (unsigned int i =0; i < seqSize; i++ )
-  {
-    for (unsigned int j =0; j < chainIDsSize; j++ )
+    for (unsigned int i =0; i < seqSize; i++ )
     {
-      if (seq[i] == chainIDs[j])
-      {
-	strand.push_back(BasePair(vbase[j]));
-      }
+        for (unsigned int j =0; j < chainIDsSize; j++ )
+        {
+            if (seq[i] == chainIDs[j])
+            {
+                strand.push_back(BasePair(vbase[j]));
+            }
+        }
     }
-  }
 }
 
 
@@ -768,10 +767,10 @@ double DNA::Rmsd(const DNA& model)const
         uint pbSize= strand[i].Size();
         for (uint j =0; j<pbSize;j++)
         {
-                Atom atom1=model[i][j];
-		Atom atom2=strand[i][j];
+            Atom atom1=model[i][j];
+            Atom atom2=strand[i][j];
 
-		total+=Dist2(atom1,atom2);
+            total+=Dist2(atom1,atom2);
         }
     }
     return sqrt(total/(dbl) aSize) ;

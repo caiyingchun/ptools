@@ -1,4 +1,5 @@
 from cython.operator cimport dereference as deref
+from libcpp.string cimport string
 
 cdef extern from "DNA.h" namespace "PTools":
     cdef cppclass CppDNA "PTools::DNA":
@@ -9,6 +10,10 @@ cdef extern from "DNA.h" namespace "PTools":
         CppDNA SubDNA(int, int)
         CppBasePair operator[](int)
         unsigned int Size()
+        void Add(CppBasePair)
+        void ChangeType(int, string, string)
+        void ApplyLocal(const CppMovement&, int)
+
 
 cdef class DNA:
     cdef CppDNA* thisptr
@@ -25,19 +30,13 @@ cdef class DNA:
                 self.thisptr = new CppDNA(<string> arg1, <string> arg2)
         else: raise RuntimeError("invalid parameters during DNA creation")
 
-
     def __dealloc__(self):
         if self.thisptr:
             del self.thisptr
             self.thisptr = <CppDNA*> 0
 
-    def SubDNA(self, int start, int end):
-        ret = DNA()
-        if ret.thisptr:
-            del ret.thisptr
-        cdef CppDNA cdna = self.thisptr.SubDNA(start, end)
-        ret.thisptr = new CppDNA(cdna)
-        return ret
+    def __len__(self):
+        return self.Size()
 
     def __getitem__(self, unsigned int i):
         if i>=self.thisptr.Size():
@@ -48,3 +47,25 @@ cdef class DNA:
 
         bp.thisptr = new CppBasePair(deref(self.thisptr)[i])
         return bp
+
+    def Size(self):
+        return self.thisptr.Size()
+
+    def SubDNA(self, int start, int end):
+        ret = DNA()
+        if ret.thisptr:
+            del ret.thisptr
+        cdef CppDNA cdna = self.thisptr.SubDNA(start, end)
+        ret.thisptr = new CppDNA(cdna)
+        return ret
+
+    def Add(self, BasePair bp):
+        self.thisptr.Add(deref(<CppBasePair*>bp.thisptr))
+    
+    def ChangeType(self, int pos, bytes basetype, bytes filename):
+        cdef const char * c_basetype = basetype
+        cdef const char * c_filename = filename
+        self.thisptr.ChangeType(pos, str(c_basetype), str(c_filename))
+
+    def ApplyLocal(self, Movement mov, int posMov):
+        self.thisptr.ApplyLocal(deref(mov.thisptr), posMov)

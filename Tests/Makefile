@@ -4,6 +4,7 @@ testpython:
 	echo "running python tests"
 	python unittest1.py
 	python test_movement.py
+	python test_dna.py
 	cd heligeom && python heligeom_test.py -v
 
 testcpp:

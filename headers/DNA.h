@@ -46,19 +46,18 @@ namespace PTools
     ///change the database use for the BasePair. the new database must contain the same names for pdb that the old one.
     void ChangeRepresentation(std::string);
 
-    ///apply a Movement to a specified BasePair. you can specify an anchor
-    void ApplyLocal(const Movement&,int posMov, int posAnchor = 0);
-    ///apply a Movement to all the BasePairs and reposition the DNA according to the anchor
-    void ApplyGlobal(const Movement&,int posAnchor);
-    ///apply a Movement to the DNA as a rigidbody
-    void Apply(const Movement&);
-
-    ///apply a Matrix to a specified BasePair. you can specify an anchor
+    ///apply a Matrix/Movement to a specified BasePair. you can specify an anchor
     void ApplyLocal(const Matrix&,int posMov, int posAnchor = 0);
-    ///apply a Matrix to all the BasePairs and reposition the DNA according to the anchor
+    void ApplyLocal(const Movement&,int posMov, int posAnchor = 0);
+
+    ///apply a Matrix/Movement to all the BasePairs and reposition the DNA according to the anchor
     void ApplyGlobal(const Matrix&,int posAnchor);
-    ///apply a Matrix to the DNA as a rigidbody
+    void ApplyGlobal(const Movement&,int posAnchor);
+    
+    ///apply a Matrix/Movement to the DNA as a rigidbody
     void Apply(const Matrix&);
+    void Apply(const Movement&);
+    
 
     ///apply a vector to the DNA as a rigidbody
     void Translate(Coord3D coord);
