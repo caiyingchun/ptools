@@ -1,5 +1,5 @@
 
-"""test_dna - unit tests for DNA.h."""
+"""test_dna.py - unit tests for DNA.h."""
 
 import os
 import unittest

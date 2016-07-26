@@ -70,22 +70,6 @@ class TestHeligeom(unittest.TestCase):
 
 
 
-class TestBasePairBindings(unittest.TestCase):
-
-    def setUp(self):
-        dna = DNA ("bp.red.pdb","generate_B_DNA.expected")
-        self.bp = dna[0]
-        self.assertEqual(type(dna[0]), BasePair)
-
-    def test_Size(self):
-        self.assertTrue(hasattr(self.bp, 'Size'))
-
-    def test_len(self):
-        self.assertTrue(hasattr(self.bp, '__len__'))
-
-    def test_GetRigidBody(self):
-        self.assertTrue(hasattr(self.bp, 'GetRigidBody'))
-
 
 if __name__ == "__main__":
     unittest.main()
