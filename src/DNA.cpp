@@ -544,8 +544,8 @@ string DNA::PrintPDB()
   unsigned int strandSize  = strand.size();
   for ( unsigned int i =0; i < strandSize ; i++ )
   {
-    strandA += strand[i].PrintPDBofBase("A");
-    strandB += strand[strandSize-1-i].PrintPDBofBase("B");
+    strandA += strand[i].PrintPDBofBase("A") + "\n";
+    strandB += strand[strandSize-1-i].PrintPDBofBase("B") + "\n";
   }
   string out= strandA + strandB;
   return out.substr(0,out.size()-1);
