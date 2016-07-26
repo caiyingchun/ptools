@@ -10,7 +10,10 @@ cdef extern from "DNA.h" namespace "PTools":
         CppDNA SubDNA(int, int)
         CppBasePair operator[](int)
         unsigned int Size()
+        void Add(CppBasePair, const CppMovement &)
         void Add(CppBasePair)
+        void Add(CppDNA, const CppMovement &)
+        void Add(CppDNA)
         void ChangeType(int, string, string)
         void ApplyLocal(const CppMovement&, int)
         void ChangeRepresentation(string);
@@ -64,8 +67,23 @@ cdef class DNA:
         ret.thisptr = new CppDNA(cdna)
         return ret
 
-    def Add(self, BasePair bp):
-        self.thisptr.Add(deref(<CppBasePair*>bp.thisptr))
+    def Add(self, bp_or_dna, mov=None):
+        if isinstance(bp_or_dna, DNA):
+            self._add_dna(bp_or_dna, mov)
+        else:
+            self._add_bp(bp_or_dna, mov)
+
+    def _add_bp(self, BasePair bp, Movement mov=None):
+        if mov == None:
+            self.thisptr.Add(deref(bp.thisptr))
+        else:
+            self.thisptr.Add(deref(bp.thisptr), deref(mov.thisptr))
+
+    def _add_dna(self, DNA dna, Movement mov=None):
+        if mov == None:
+            self.thisptr.Add(deref(dna.thisptr))
+        else:
+            self.thisptr.Add(deref(dna.thisptr), deref(mov.thisptr))
     
     def ChangeType(self, int pos, bytes basetype, bytes filename):
         cdef const char * c_basetype = basetype

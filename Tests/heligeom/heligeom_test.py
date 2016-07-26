@@ -23,12 +23,12 @@ class TestHeligeom(unittest.TestCase):
         self.assertEqual(len(dna[0].GetRigidBody()), 11)
 
         # add a base Pair        
-        # bp = BasePair(dna[0].GetRigidBody())
-        # dna.Add(bp)
+        bp = BasePair(dna[0].GetRigidBody())
+        dna.Add(bp)
 
-        # # add itself
-        # new = DNA (dna)
-        # dna.Add(new, BDNA())
+        # add itself
+        new = DNA (dna)
+        dna.Add(new, BDNA())
 
         # #change the type of a base
         # dna.ChangeType (0,"A", "bp.red.pdb")
