@@ -18,7 +18,7 @@ class TestHeligeom(unittest.TestCase):
         
     def testBasicManipulation(self):
         # translate the DNA in coarse grain representation
-        dna = DNA("bp.red.pdb","generate_B_DNA.expected")
+        dna = DNA("bp.red.pdb","generate_B_DNA.expected.pdb")
         self.assertEqual(dna[0].Size(), 11)
         self.assertEqual(len(dna[0].GetRigidBody()), 11)
 
@@ -42,8 +42,11 @@ class TestHeligeom(unittest.TestCase):
         # change to a All Atom representation
         dna.ChangeRepresentation ("bp.ato.pdb")
 
-        # result = dna.PrintPDB() 
-        # expected = open("basicManipulation.expected").read()
+        result = dna.PrintPDB() 
+        with open('coucou', 'wt') as f:
+            f.write(result)
+        # with open('basicManipulation.expected', 'rt') as f:
+        #     expected = f.read()
         # self.assertEqual(result, expected)
         
 

@@ -22,8 +22,7 @@ using namespace PTools;
 DNA::DNA(const string& dataBaseFile, const string& seq, const Movement& mov)
 {
     //if we want to build the dna from a model
-    // if(IsPdbFile (seq))
-    if(true)
+    if(IsPdbFile (seq))
     {
         BuildDNAfromPDB ( dataBaseFile, seq );
     }
