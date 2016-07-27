@@ -3,7 +3,6 @@
 
 import os
 import unittest
-import warnings
 
 import ptools
 from ptools import BasePair
@@ -40,7 +39,6 @@ class TestBasePair(unittest.TestCase):
     def test_len(self):
         self.assertEqual(len(self.bp), 11)
         self.assertEqual(len(self.bp), self.bp.Size())
-
 
 
 if __name__ == '__main__':

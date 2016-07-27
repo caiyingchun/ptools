@@ -20,7 +20,6 @@ Check that the functions and methods work properly i.e. return the proper result
 """
 
 
-
 class TestMovementBindings(unittest.TestCase):
 
     def test_has_Movement(self):
@@ -40,13 +39,13 @@ class TestMovementBindings(unittest.TestCase):
 
     def test_has_Roll(self):
         self.assertTrue(hasattr(ptools, 'Roll'))
-    
+
     def test_has_Tilt(self):
         self.assertTrue(hasattr(ptools, 'Tilt'))
-    
+
     def test_has_ADNA(self):
         self.assertTrue(hasattr(ptools, 'ADNA'))
-    
+
     def test_has_BDNA(self):
         self.assertTrue(hasattr(ptools, 'BDNA'))
 

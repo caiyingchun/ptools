@@ -16,7 +16,7 @@ PDB_DNA = os.path.join(os.path.dirname(__file__), 'heligeom', 'generate_B_DNA.ex
 
 class TestDNABindings(unittest.TestCase):
     """Check that the DNA class provides required methods."""
-    
+
     def test_has_Size(self):
         self.assertTrue(hasattr(DNA, 'Size'))
 
@@ -84,7 +84,6 @@ class TestDNA(unittest.TestCase):
     def test_PrintPDB(self):
         s = self.dna.PrintPDB()
         self.assertNotEqual(s, '')
-
 
 
 if __name__ == '__main__':
