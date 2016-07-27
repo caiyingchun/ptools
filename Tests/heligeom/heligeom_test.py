@@ -12,16 +12,12 @@ def surreal(r):
 
 class TestHeligeom(unittest.TestCase):
 
-    @unittest.skip('fails')
     def testGenerateBDNA(self):
         dna = DNA("bp.ato.pdb", "AAAAAATCGATCTATC", ADNA())  # tout atom
-        with open('coucou', 'wt') as f:
-            result = dna.PrintPDB()
-            f.write(result)
+        result = dna.PrintPDB()
         expected = open("generate_B_DNA.expected.pdb").read()
         self.assertEqual(result, expected)
 
-    @unittest.skip('fails')
     def testBasicManipulation(self):
         # translate the DNA in coarse grain representation
         dna = DNA("bp.red.pdb", "generate_B_DNA.expected.pdb")
@@ -49,18 +45,15 @@ class TestHeligeom(unittest.TestCase):
         dna.ChangeRepresentation("bp.ato.pdb")
 
         result = dna.PrintPDB()
-        with open('coucou', 'wt') as f:
-            f.write(result)
         with open('basicManipulation.expected.pdb', 'rt') as f:
             expected = f.read()
         self.assertEqual(result, expected)
 
-    # def testCGfromPDBFile(self):
-    #     dna = DNA ("bp.ato.pdb","generate_B_DNA.expected") #gros grain
-
-    #     result = dna.PrintPDB()
-    #     expected = open("CGfromPDBFile.expected").read()
-    #     self.assertEqual(result, expected)
+    def testCGfromPDBFile(self):
+        dna = DNA ("bp.ato.pdb","generate_B_DNA.expected.pdb") #gros grain
+        result = dna.PrintPDB()
+        expected = open("CGfromPDBFile.expected.pdb").read()
+        self.assertEqual(result, expected)
 
     def testEnergy(self):
         prot = AttractRigidbody("1A74_prot.red")
