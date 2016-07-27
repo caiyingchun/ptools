@@ -1,6 +1,7 @@
 #ifndef MOUVEMENT_H
 #define MOUVEMENT_H
-  
+
+#include <string>  
 #include "basetypes.h"
 #include "geometry.h"
 #include "rigidbody.h"  
@@ -33,8 +34,9 @@ namespace PTools
     
     ///print the Matrix
     void Print() const;
-    
-    
+
+    /// Return a string representing the Movement' matrix.
+    std::string toString() const;
   };
   
   //fonction pour les matrices, a relocaliser dans la partie ptools adapter

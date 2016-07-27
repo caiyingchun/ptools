@@ -1,5 +1,4 @@
 
-
 #include <iostream>
 #include <Movement.h>
 
@@ -56,6 +55,10 @@ void Movement::Print() const
   m.Print();
 }
 
+std::string Movement::toString() const
+{
+    return m.str();
+}
 
 //functions for matrix (to displace to ptools)--------------------------------------------------------
 Matrix matrixMultiply(const Matrix& m1, const Matrix& m2)
