@@ -1,5 +1,19 @@
 # distutils: language = c++
 
+# Notes for the developers.
+# =========================
+# 
+# __init__() function
+# --------------------
+#
+# In the Python Movement classe and children, the __init__ function is
+# declared and does nothing.
+# This is to force the check of the number of arguments for the constructor,
+# as Cython' standard behavior is to ignore extra arguments (for the
+# constructor only).
+#
+
+
 from libcpp.string cimport string
 
 
@@ -43,6 +57,9 @@ cdef class Movement:
     def __cinit__(self):
         self.thisptr = new CppMovement()
 
+    def __init__(self):
+        pass
+
     def __dealloc__(self):
         if self.thisptr:
             del self.thisptr
@@ -57,42 +74,64 @@ cdef class Movement:
         return self.thisptr.toString()
 
 
-
 cdef class Shift(Movement):
-    def __cinit__(self, alpha):
+    def __cinit__(self, double alpha):
         self.thisptr = <CppMovement *>new CppShift(alpha)
+
+    def __init__(self, double alpha):
+        pass
 
 
 cdef class Slide(Movement):
-    def __cinit__(self, alpha):
+    def __cinit__(self, double alpha):
         self.thisptr = <CppMovement *>new CppSlide(alpha)
+
+    def __init__(self, double alpha):
+        pass
 
 
 cdef class Rise(Movement):
-    def __cinit__(self, alpha):
+    def __cinit__(self, double alpha):
         self.thisptr = <CppMovement *>new CppRise(alpha)
+
+    def __init__(self, double alpha):
+        pass
 
 
 cdef class Twist(Movement):
-    def __cinit__(self, alpha):
+    def __cinit__(self, double alpha):
         self.thisptr = <CppMovement *>new CppTwist(alpha)
+
+    def __init__(self, double alpha):
+        pass
 
 
 cdef class Roll(Movement):
-    def __cinit__(self, alpha):
+    def __cinit__(self, double alpha):
         self.thisptr = <CppMovement *>new CppRoll(alpha)
+
+    def __init__(self, double alpha):
+        pass
 
 
 cdef class Tilt(Movement):
-    def __cinit__(self, alpha):
+    def __cinit__(self, double alpha):
         self.thisptr = <CppMovement *>new CppTilt(alpha)
+
+    def __init__(self, double alpha):
+        pass
 
 
 cdef class ADNA(Movement):
     def __cinit__(self):
         self.thisptr = <CppMovement *>new CppADNA()
 
+    def __init__(self):
+        pass
 
 cdef class BDNA(Movement):
     def __cinit__(self):
         self.thisptr = <CppMovement *>new CppBDNA()
+
+    def __init__(self):
+        pass

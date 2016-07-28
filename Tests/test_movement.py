@@ -38,8 +38,8 @@ class TestMovementBindings(unittest.TestCase):
 
 
 class MatrixAssertions:
-    # Floatting points numbers are tested to be equal at a precision of 1E-6.
-    ALMOST_EQUAL_DECIMAL = 6
+    # Floatting points numbers are tested to be equal at a precision of 1E-5.
+    ALMOST_EQUAL_DECIMAL = 5
 
     def assertIsSquare(self, source, n=0):
         """Assert that a matrix is square.
@@ -127,19 +127,25 @@ class TestMovement(unittest.TestCase, MatrixAssertions):
         self.assertMatrixAlmostEqual(get_movement_matrix(mov), self.target)
 
     def test_ADNA(self):
-        mov = ptools.ADNA(self.alpha)
-        self.target = [[ 0.8555460,    -0.515319,    0.0498794,    0.940426],
-                       [ 0.5164770,     0.856201,   -0.0131009,   -2.391840],
-                       [-0.0359557,     0.036970,    0.9986690,    3.305990],
-                       [ 0.0000000,     0.0000000,   0.0000000,    1.000000]]
+        mov = ptools.ADNA()
+        # Target matrix calculated with R.
+        self.target = [
+            [ 0.85554587, -0.51531864,  0.04987943,  0.9404263],
+            [ 0.51647696,  0.85620086, -0.01310093, -2.3918398],
+            [-0.03595566,  0.03697002,  0.99866932,  3.3059932],
+            [ 0.00000000,  0.00000000,  0.00000000,  1.0000000],
+        ]
         self.assertMatrixAlmostEqual(get_movement_matrix(mov), self.target)
 
     def test_BDNA(self):
-        mov = ptools.ADNA(self.alpha)
-        self.target = [[ 0.8555460,    -0.515319,    0.0498794,    0.940426],
-                       [ 0.5164770,     0.856201,   -0.0131009,   -2.391840],
-                       [-0.0359557,     0.036970,    0.9986690,    3.305990],
-                       [ 0.0000000,     0.0000000,   0.0000000,    1.000000]]
+        mov = ptools.BDNA()
+        # Target matrix calculated with R.
+        self.target = [
+            [0.80910048, -0.58498644, -0.056100610,  0.2591878],
+            [0.58582677,  0.81043432, -0.001789101, -1.3448676],
+            [0.04651246, -0.03141768,  0.998423518,  3.2887760],
+            [0.00000000,  0.00000000,  0.000000000,  1.0000000],
+        ]
         self.assertMatrixAlmostEqual(get_movement_matrix(mov), self.target)
 
 
