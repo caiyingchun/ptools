@@ -55,9 +55,9 @@ class TestRigidbody(unittest.TestCase):
 
     def testFindCenter(self):
         cen = self.r.FindCenter()
-        self.assertTrue(abs(cen.x + 20.171249) < 1e-6)
-        self.assertTrue(abs(cen.y - 215.498060) < 1e-6)
-        self.assertTrue(abs(cen.z - 119.427781) < 1e-6)
+        self.assertAlmostEqual(abs(cen.x + 20.171249), 0.0, places=6)
+        self.assertAlmostEqual(abs(cen.y - 215.498060), 0.0, places=6)
+        self.assertAlmostEqual(abs(cen.z - 119.427781), 0.0, places=6)
 
     def testSetAtom(self):
         atom = self.r.CopyAtom(3)
@@ -65,7 +65,8 @@ class TestRigidbody(unittest.TestCase):
         self.r.SetAtom(3, atom)
         # test to see if the mofification worked:
         atom2 = self.r.CopyAtom(3)
-        self.assertTrue(norm2(atom2.coords - Coord3D(3, 4, 5)) < 1e6)
+        self.assertAlmostEqual(atom2.coords, Coord3D(3, 4, 5))
+
         coords2 = atom2.coords
         self.assertAlmostEqual(coords2.x, 3)
         self.assertAlmostEqual(coords2.y, 4)

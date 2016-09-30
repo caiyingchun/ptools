@@ -31,7 +31,7 @@ class TestSuperposition(unittest.TestCase):
             sup = superpose(self.prot1, prot2)  # superpose(reference, mobile)
             matrix = sup.matrix
             prot2.ApplyMatrix(matrix)
-            self.assertTrue(Rmsd(prot2, self.prot1) < 1e-6)
+            self.assertAlmostEqual(Rmsd(prot2, self.prot1), 0.0)
 
 
 if __name__ == '__main__':

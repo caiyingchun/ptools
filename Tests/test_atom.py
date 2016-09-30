@@ -19,7 +19,6 @@ class TestAtom(unittest.TestCase):
     def testProperties(self):
         atom = self.atom
         self.assertEqual(atom.atomType, 'CA')
-        # self.assertEqual(atom.atomElement, 'C')
         self.assertEqual(atom.residType, "LEU")
         self.assertEqual(atom.residId, 6)
         self.assertEqual(atom.atomId, 123)
@@ -28,7 +27,7 @@ class TestAtom(unittest.TestCase):
     def testNegativeResId(self):
         atom = self.atom
         atom.residId = -5
-        self.assertTrue(atom.residId < 0)
+        self.assertEqual(atom.residId, -5)
 
 
 if __name__ == '__main__':

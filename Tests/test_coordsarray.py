@@ -16,12 +16,12 @@ class TestCoordsArray(unittest.TestCase):
         self.tr = Coord3D(3.0, 4.5, -3.0)
 
     def testSize(self):
-        self.assertTrue(len(self.c) == 2)
+        self.assertEqual(len(self.c), 2)
 
     def testGetAtom(self):
         c1 = Coord3D()
         self.c.GetCoords(0, c1)
-        self.assertTrue(norm2(c1 - Coord3D(3.0, 4.0, 5.0)) < 1e-6)
+        self.assertAlmostEqual(c1, Coord3D(3.0, 4.0, 5.0))
 
     def testBasicTranslation(self):
         self.c.Translate(self.tr)
@@ -29,7 +29,7 @@ class TestCoordsArray(unittest.TestCase):
         c2 = Coord3D()
         self.c.GetCoords(0, c1)
         self.c.GetCoords(1, c2)
-        self.assertTrue(c1 == Coord3D(6.0, 8.5, 2.0))
+        self.assertEqual(c1, Coord3D(6.0, 8.5, 2.0))
 
     def testSetCoords(self):
         """brief explanation:
@@ -44,7 +44,7 @@ class TestCoordsArray(unittest.TestCase):
         self.c.SetCoords(0, co)
         co2 = Coord3D()
         self.c.GetCoords(0, co2)  # get the coordinates back
-        self.assertTrue(norm2(co - co2) < 1.0e-6)
+        self.assertAlmostEqual(norm2(co - co2), 0.0)
 
 
 if __name__ == '__main__':
