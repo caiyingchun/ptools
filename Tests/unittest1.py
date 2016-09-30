@@ -8,12 +8,6 @@ import os
 
 
 TEST_1FINR_PDB = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r.pdb')
-TEST_1F88_PDB = os.path.join(os.path.dirname(__file__), 'data', '1F88.pdb')
-TEST_2AAV_PDB = os.path.join(os.path.dirname(__file__), 'data', '2AAV.one.pdb')
-TEST_FF_MBEST1K = os.path.join(os.path.dirname(__file__), 'data', 'mbest1k.par')
-TEST_PK6A_RED = os.path.join(os.path.dirname(__file__), 'data', 'pk6a.red')
-TEST_PK6C_RED = os.path.join(os.path.dirname(__file__), 'data', 'pk6c.red')
-
 
 
 class TestBasicMoves(unittest.TestCase):
@@ -68,6 +62,7 @@ class TestBasicMoves(unittest.TestCase):
         self.rigid2.Translate(vec1-vec2)
         self.rigid2.Translate(Coord3D() - 2*vec1)  #should be a global null translation + round error
         self.assertTrue(Rmsd(self.rigid2, self.rigid3) < 1e-6)
+
 
 class TestRotations(unittest.TestCase):
     def setUp(self):
@@ -177,10 +172,5 @@ class TestRotations(unittest.TestCase):
         self.assertAlmostEqual(co4.y, 1)
         self.assertAlmostEqual(co4.z, 1)
         
-        
-
-
-
-
 
 unittest.main()
