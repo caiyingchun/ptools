@@ -180,25 +180,6 @@ class TestRotations(unittest.TestCase):
         
 
 
-class TestAttractForceField2(unittest.TestCase):
-    """ test if calculated energies are stable through library versions """
-    def testFF2k(self):
-        a = AttractRigidbody(TEST_PK6C_RED)
-        c = AttractRigidbody(TEST_PK6A_RED)
-
-        a.setRotation(False)
-        a.setTranslation(False)
-        FF = AttractForceField2(TEST_FF_MBEST1K, 20.0)
-        FF.AddLigand(a)
-        FF.AddLigand(c)
-        x = []
-        for i in range(6):
-            x.append(0.0)
-        self.assertAlmostEqual(FF.Function(x),-32.9487770656) #energy from ptools 0.3
-        self.assertAlmostEqual(FF.Function(x), FF.getVdw() + FF.getCoulomb())
-
-    def testNonbon8Present(self):
-        self.assertTrue(hasattr(AttractForceField2, 'nonbon8') )
 
 
 class TestPairlist(unittest.TestCase):

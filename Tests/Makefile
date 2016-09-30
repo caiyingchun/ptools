@@ -18,6 +18,7 @@ testpython:
 	python test_atom.py -v
 	python test_atomselection.py -v
 	python test_attractrigidbody.py -v
+	python test_attractforcefield.py -v
 	python test_basepair.py -v
 	python test_coord3d.py -v
 	python test_coordsarray.py -v
@@ -25,6 +26,7 @@ testpython:
 	python test_movement.py -v
 	python test_rigidbody.py -v
 	python test_superpose.py -v
+	python test_attractforcefield.py -v
 	cd heligeom && python test_heligeom.py -v
 	python unittest1.py
 
