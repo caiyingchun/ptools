@@ -15,33 +15,6 @@ TEST_PK6A_RED = os.path.join(os.path.dirname(__file__), 'data', 'pk6a.red')
 TEST_PK6C_RED = os.path.join(os.path.dirname(__file__), 'data', 'pk6c.red')
 
 
-class TestAtom(unittest.TestCase):
-    def setUp(self):
-        co = Coord3D(1,2,3)
-        atom = Atom(Atomproperty(), co)
-        atom.atomType = 'CA'
-        #atom.atomElement = 'C'
-        atom.residType = 'LEU'
-        atom.residId = 6
-        atom.atomId = 123
-        atom.atomCharge = -1.23456
-        self.atom = atom
-        
-        
-    def testProperties(self):
-        atom = self.atom
-        self.assertEqual(atom.atomType, 'CA')
-        #self.assertEqual(atom.atomElement, 'C')
-        self.assertEqual(atom.residType, "LEU")
-        self.assertEqual(atom.residId, 6)
-        self.assertEqual(atom.atomId, 123)
-        self.assertEqual(atom.atomCharge, -1.23456)
-
-    def testNegativeResId(self):
-        atom = self.atom
-        atom.residId = -5
-        self.assertTrue(atom.residId < 0)
-
 
 class TestAtomSelection(unittest.TestCase):
     def setUp(self):
