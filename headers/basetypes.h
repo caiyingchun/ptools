@@ -117,7 +117,7 @@ public:
             m_columns(columns)
     {
         m_size = row*columns;
-        msa_data  = boost::shared_array<mytype>( new mytype[m_size]);
+        msa_data  = boost::shared_array<mytype>( new mytype[m_size]());
     }
 
     /// index operator (fortran-like syntax). a(0,2) gives raw 1, column 3.

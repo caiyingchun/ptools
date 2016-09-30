@@ -89,6 +89,8 @@ cdef class AttractPairList:
             raise IndexError
         cdef CppAtomPair * catp = new CppAtomPair(deref(self.thisptr)[i])
         atp = AtomPair()
+        if atp.thisptr:
+            del atp.thisptr
         atp.thisptr = catp
         return atp
         

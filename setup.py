@@ -33,6 +33,16 @@ PTOOLS_DEP_URL = 'https://codeload.github.com/ptools/ptools_dep/legacy.tar.gz'\
                  '/master'
 
 
+
+# For compatibility with Python 2.6.
+if sys.version_info >= (2, 7):
+    check_output = subprocess.check_output
+else:
+    def _check_output(args):
+        return subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
+    check_output = _check_output
+
+
 class build_ext(_build_ext):
 
     user_options = _build_ext.user_options
@@ -118,15 +128,6 @@ class build_ext(_build_ext):
             for ext in self.extensions:
                 ext.extra_objects.append(f2c_library)
             log.info("libf2c.a found at {0}".format(f2c_library))
-
-
-# For compatibility with Python 2.6.
-if sys.version_info >= (2, 7):
-    check_output = subprocess.check_output
-else:
-    def _check_output(args):
-        return subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
-    check_output = _check_output
 
 
 def git_version():
@@ -340,7 +341,11 @@ def setup_package():
     # Update version header.
     write_version_h('headers/gitrev.h')
 
-    sources = ['src/cython_wrappers.cpp',
+    sources = ['src/BasePair.cpp',
+               'src/DNA.cpp',
+               'src/Movement.cpp',
+               'src/Parameter.cpp',
+               'src/cython_wrappers.cpp',
                'src/atom.cpp',
                'src/attractrigidbody.cpp',
                'src/coordsarray.cpp',
@@ -361,12 +366,13 @@ def setup_package():
                'src/scorpionforcefield.cpp',
                'src/minimizers/lbfgs_interface.cpp',
                'src/minimizers/routines.c',
-               'src/minimizers/lbfgs_wrapper/lbfgsb_wrapper.cpp']
+               'src/minimizers/lbfgs_wrapper/lbfgsb_wrapper.cpp',
+               ]
 
     sources.append("bindings/_ptools.pyx")
 
     ptools = Extension('_ptools',
-                       sources=sources,
+                       sources = sources,
                        language='c++',
                        include_dirs=['headers'])
 
@@ -378,7 +384,7 @@ def setup_package():
 
     setup(ext_modules=[ptools, cgopt],
           cmdclass={'build_ext': build_ext},
-          packages=['.'],
+          packages = ['.'],
           name='ptools',
           version='1.2')
 

@@ -24,5 +24,12 @@
 #include "superpose.h"
 #include "version.h"
 
+//heligeom headers
+#include "Movement.h"
+#include "Parameter.h"
+#include "BasePair.h"
+#include "DNA.h"
+#include "Stacking.h"
+
 
 #endif // PTOOLS_H

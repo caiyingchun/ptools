@@ -189,7 +189,6 @@ void ReadPDB(const std::string name,Rigidbody& protein ) {
         std::ostringstream oss;
         throw std::invalid_argument("##### ReadPDB:Could not open file \"" + nomfich + "\" #####") ;
     }
-
     ReadPDB(file, protein);
     file.close();
     return;
