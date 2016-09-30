@@ -24,6 +24,7 @@ testpython:
 	python test_coordsarray.py -v
 	python test_dna.py -v
 	python test_movement.py -v
+	python test_pairlist.py -v
 	python test_rigidbody.py -v
 	python test_superpose.py -v
 	python test_attractforcefield.py -v
