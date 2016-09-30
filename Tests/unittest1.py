@@ -15,33 +15,6 @@ TEST_PK6A_RED = os.path.join(os.path.dirname(__file__), 'data', 'pk6a.red')
 TEST_PK6C_RED = os.path.join(os.path.dirname(__file__), 'data', 'pk6c.red')
 
 
-class TestCoord3D(unittest.TestCase):
-        def setUp(self):
-                self.coo1 = Coord3D(3.0, 4.0, 5.0)
-                self.coo2 = Coord3D(1.0, 2.0, 7.5)
-
-        def testPlusOperator(self):
-                coo3 = self.coo1 + self.coo2
-                self.assertEqual(coo3.x, 4.0)
-                self.assertEqual(coo3.y, 6.0)
-                self.assertEqual(coo3.z, 12.5)
-        def testMinusOperator(self):
-                coo3 = self.coo1 - self.coo2
-                self.assertEqual(coo3.x, 2.0)
-                self.assertEqual(coo3.y, 2.0)
-                self.assertEqual(coo3.z, -2.5)
-        def testPlusEqualOperator(self):
-                coo3 = Coord3D(self.coo1)
-                coo3 += self.coo2
-                self.assertEqual(coo3.x, 4.0)
-                self.assertEqual(coo3.y, 6.0)
-                self.assertEqual(coo3.z, 12.5)
-        def testUnaryMinusOperator(self):
-            coo3 = - self.coo1
-            self.assertEqual(coo3.x, -3.0)
-            self.assertEqual(coo3.y, -4.0)
-            self.assertEqual(coo3.z, -5.0)
-
 class TestAtom(unittest.TestCase):
     def setUp(self):
         co = Coord3D(1,2,3)
