@@ -16,9 +16,10 @@ unittests: testpython
 testpython:
 	echo "running python tests"
 	python test_atom.py -v
+	python test_atomselection.py -v
+	python test_basepair.py -v
 	python test_coord3d.py -v
 	python test_dna.py -v
-	python test_basepair.py -v
 	python test_movement.py -v
 	cd heligeom && python test_heligeom.py -v
 	python unittest1.py
