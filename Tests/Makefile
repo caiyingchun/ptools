@@ -17,6 +17,7 @@ testpython:
 	echo "running python tests"
 	python test_atom.py -v
 	python test_atomselection.py -v
+	python test_attractrigidbody.py -v
 	python test_basepair.py -v
 	python test_coord3d.py -v
 	python test_dna.py -v
