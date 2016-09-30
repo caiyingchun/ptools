@@ -20,6 +20,7 @@ testpython:
 	python test_attractrigidbody.py -v
 	python test_basepair.py -v
 	python test_coord3d.py -v
+	python test_coordsarray.py -v
 	python test_dna.py -v
 	python test_movement.py -v
 	python test_rigidbody.py -v
