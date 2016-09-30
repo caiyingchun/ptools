@@ -24,6 +24,7 @@ testpython:
 	python test_dna.py -v
 	python test_movement.py -v
 	python test_rigidbody.py -v
+	python test_superpose.py -v
 	cd heligeom && python test_heligeom.py -v
 	python unittest1.py
 
