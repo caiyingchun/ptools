@@ -12,7 +12,7 @@ class TestAttractRigidbody(unittest.TestCase):
     def setUp(self):
         rigid = Rigidbody(TEST_1FINR_PDB)
         self.attrigid = AttractRigidbody(rigid)
-        
+
     def testlen(self):
         self.assertEqual(len(self.attrigid), 2365)
 

@@ -24,11 +24,11 @@ class TestAttractForceField2(unittest.TestCase):
         x = []
         for i in range(6):
             x.append(0.0)
-        self.assertAlmostEqual(FF.Function(x),-32.9487770656) #energy from ptools 0.3
+        self.assertAlmostEqual(FF.Function(x), -32.9487770656)  # energy from ptools 0.3
         self.assertAlmostEqual(FF.Function(x), FF.getVdw() + FF.getCoulomb())
 
     def testNonbon8Present(self):
-        self.assertTrue(hasattr(AttractForceField2, 'nonbon8') )
+        self.assertTrue(hasattr(AttractForceField2, 'nonbon8'))
 
 
 if __name__ == '__main__':
