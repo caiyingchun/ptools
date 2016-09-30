@@ -7,27 +7,11 @@ import math
 import os
 
 
+TEST_1F88_PDB = os.path.join(os.path.dirname(__file__), 'data', '1F88.pdb')
 TEST_2AAV_PDB = os.path.join(os.path.dirname(__file__), 'data', '2AAV.one.pdb')
 TEST_FF_MBEST1K = os.path.join(os.path.dirname(__file__), 'data', 'mbest1k.par')
 TEST_PK6A_RED = os.path.join(os.path.dirname(__file__), 'data', 'pk6a.red')
 TEST_PK6C_RED = os.path.join(os.path.dirname(__file__), 'data', 'pk6c.red')
-
-try:
-    f = open("1F88.pdb", "r")
-except:
-    print "downloading required file 1F88.pdb:"
-    import get1F88
-    
-    
-    print "done"
-
-#test that the content of 1F88.pdb is correct
-f = open("1F88.pdb")
-line1 = f.readline()
-if line1 != "ATOM      1  N   MET A   1      43.958  -5.980 -27.758  1.00 54.29           N  \n":
-        print "1F88.pdb is incorrect, please remove this file and launch tests again"
-        sys.exit(1)
-        
 
 
 class TestCoord3D(unittest.TestCase):
@@ -87,7 +71,7 @@ class TestAtom(unittest.TestCase):
 
 class TestAtomSelection(unittest.TestCase):
     def setUp(self):
-        self.rig = Rigidbody("1F88.pdb")
+        self.rig = Rigidbody(TEST_1F88_PDB)
         
     def testSelectAll(self):
         allAtoms = self.rig.SelectAllAtoms()
