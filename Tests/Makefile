@@ -19,7 +19,7 @@ testpython:
 	python test_dna.py -v
 	python test_basepair.py -v
 	python test_movement.py -v
-	cd heligeom && python heligeom_test.py -v
+	cd heligeom && python test_heligeom.py -v
 
 
 testcpp:
