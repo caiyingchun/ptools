@@ -7,6 +7,7 @@ import math
 import os
 
 
+TEST_1FINR_PDB = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r.pdb')
 TEST_1F88_PDB = os.path.join(os.path.dirname(__file__), 'data', '1F88.pdb')
 TEST_2AAV_PDB = os.path.join(os.path.dirname(__file__), 'data', '2AAV.one.pdb')
 TEST_FF_MBEST1K = os.path.join(os.path.dirname(__file__), 'data', 'mbest1k.par')
@@ -139,7 +140,7 @@ class TestAtomSelection(unittest.TestCase):
         
 class TestRigidbody(unittest.TestCase):
     def setUp(self):
-        self.r = Rigidbody("1FIN_r.pdb")
+        self.r = Rigidbody(TEST_1FINR_PDB)
         self.r2 = Rigidbody()
         at = Atom()
         at.coords = Coord3D(1,0,0)
@@ -204,7 +205,7 @@ class TestRigidbody(unittest.TestCase):
         """in principle GetCoords(i,co) and unsafeGetCoords(i,co) should
         lead to the exact same coordinates if a sync has been done before
         calling the 'unsafe' version"""
-        r2 = Rigidbody("1FIN_r.pdb")
+        r2 = Rigidbody(TEST_1FINR_PDB)
         A = Coord3D(4.23, 5.72, 99.02)
         B = Coord3D(1.23, 6.33, 1.234)
         self.r.ABrotate(A,B, 2.2345)
@@ -246,7 +247,7 @@ class TestRigidbody(unittest.TestCase):
 
 class TestAttractRigidbody(unittest.TestCase):
     def setUp(self):
-        rigid = Rigidbody("1FIN_r.pdb")
+        rigid = Rigidbody(TEST_1FINR_PDB)
         self.attrigid = AttractRigidbody(rigid)
         
     def testlen(self):
@@ -255,7 +256,7 @@ class TestAttractRigidbody(unittest.TestCase):
 
 class TestBasicMoves(unittest.TestCase):
     def setUp(self):
-        self.rigid1=Rigidbody("1FIN_r.pdb")
+        self.rigid1=Rigidbody(TEST_1FINR_PDB)
         self.rigid2=Rigidbody(self.rigid1)
         self.rigid3=Rigidbody(self.rigid2)
 
@@ -463,7 +464,7 @@ class TestCoordsArray(unittest.TestCase):
 
 class TestSuperposition(unittest.TestCase):
     def setUp(self):
-        self.prot1 = Rigidbody("1FIN_r.pdb")
+        self.prot1 = Rigidbody(TEST_1FINR_PDB)
         random.seed(123)
     def testTransRot(self):
         prot2 = Rigidbody(self.prot1)
