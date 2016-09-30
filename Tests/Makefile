@@ -23,13 +23,13 @@ testpython:
 	python test_coord3d.py -v
 	python test_coordsarray.py -v
 	python test_dna.py -v
+	python test_misc.py -v
 	python test_movement.py -v
 	python test_pairlist.py -v
 	python test_rigidbody.py -v
 	python test_superpose.py -v
 	python test_attractforcefield.py -v
 	cd heligeom && python test_heligeom.py -v
-	python unittest1.py
 
 
 testcpp:
