@@ -4,6 +4,13 @@ import random
 import unittest
 import sys
 import math
+import os
+
+
+TEST_2AAV_PDB = os.path.join(os.path.dirname(__file__), 'data', '2AAV.one.pdb')
+TEST_FF_MBEST1K = os.path.join(os.path.dirname(__file__), 'data', 'mbest1k.par')
+TEST_PK6A_RED = os.path.join(os.path.dirname(__file__), 'data', 'pk6a.red')
+TEST_PK6C_RED = os.path.join(os.path.dirname(__file__), 'data', 'pk6c.red')
 
 try:
     f = open("1F88.pdb", "r")
@@ -107,7 +114,7 @@ class TestAtomSelection(unittest.TestCase):
         self.assertEqual(len(res_1_35), 566)  # two chains
 
     def testSelectResRangeNegativeResId(self):
-        rigid = Rigidbody("2AAV.one.pdb")
+        rigid = Rigidbody(TEST_2AAV_PDB)
         selection = rigid.SelectResRange(-4, -1) & rigid.CA()
         self.assertEqual(len(selection), 4)
 
@@ -247,7 +254,7 @@ class TestRigidbody(unittest.TestCase):
 
 
     def testNegativeResId(self):
-        rigid = Rigidbody("2AAV.one.pdb")
+        rigid = Rigidbody(TEST_2AAV_PDB)
         at1 = rigid.CopyAtom(0)
         self.assertEqual(at1.residId, -4)
 
@@ -497,12 +504,12 @@ class TestSuperposition(unittest.TestCase):
 class TestAttractForceField2(unittest.TestCase):
     """ test if calculated energies are stable through library versions """
     def testFF2k(self):
-        a = AttractRigidbody("pk6a.red")
-        c = AttractRigidbody("pk6c.red")
+        a = AttractRigidbody(TEST_PK6C_RED)
+        c = AttractRigidbody(TEST_PK6A_RED)
 
         a.setRotation(False)
         a.setTranslation(False)
-        FF = AttractForceField2("mbest1k.par", 20.0)
+        FF = AttractForceField2(TEST_FF_MBEST1K, 20.0)
         FF.AddLigand(a)
         FF.AddLigand(c)
         x = []
