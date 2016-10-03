@@ -9,7 +9,7 @@ using namespace std;
 using namespace PTools;
 
 
-static const std::string TEST_1FIN_R_PDB = "data/1FIN_r.pdb";
+static const std::string TEST_1FIN_R_PDB = "../data/1FIN_r.pdb";
 
 
 class TestCoord3D : public CxxTest::TestSuite
