@@ -254,3 +254,7 @@ The content of the output file ``single.att`` is the following:
 - **line 49:** end date and time of the simulation.
 - **line 50:** elapsed time for the simulation
 
+Here, the final energy is -58.4 RT unit and the RMSD is 1.2 Å, which is pretty
+close from the initial position (in a *perfect* simulation, RMSD would be
+of course, 0.0 Å).
+
