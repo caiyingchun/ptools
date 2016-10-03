@@ -45,6 +45,11 @@ Or more quickly::
     WritePDB(selectI.CreateRigid(), "ligand.pdb")
 
 
+.. [#] http://www.rcsb.org/pdb/cgi/explore.cgi?pdbId=1CGI
+.. [#] http://pymol.sourceforge.net
+.. [#] http://www.ks.uiuc.edu/Research/vmd
+
+
 Coarse grain reduction
 ----------------------
 
@@ -92,6 +97,8 @@ The reduced files generated are PDB-like structure files that can be read by man
 .. \label{1CGI_at_cg}
 .. \end{figure}
 
+.. [#Basdevant2007] Basdevant, N., Borgis, D. & Ha-Duong, T. A coarse-grained protein-protein potential derived from an all-atom force field. *Journal of Physical Chemistry B* **111**, 9390-9399 (2007).
+
 
 ATTRACT parameters
 ------------------
@@ -122,14 +129,128 @@ In the present case, the simulation starts with a very large cutoff value of
 9900 Å\ :sup:`2` (≈ 99 Å), which is gradually dicreased
 to end with 500 Å\ :sup:`2` (≈ 22 Å).
 
-
 .. Note::
 
     Columns with zeros or ones should not be modified, as
     well as line 2. They are used for internal development purposes.
 
 
-.. [#] http://www.rcsb.org/pdb/cgi/explore.cgi?pdbId=1CGI
-.. [#] http://pymol.sourceforge.net
-.. [#] http://www.ks.uiuc.edu/Research/vmd
-.. [#Basdevant2007] Basdevant, N., Borgis, D. & Ha-Duong, T. A coarse-grained protein-protein potential derived from an all-atom force field. *Journal of Physical Chemistry B* **111**, 9390-9399 (2007).
+Simple optimization
+-------------------
+
+Before running a systematic docking simulation which could take several hours,
+a simple optimization can be performed to check if an experimental
+protein-protein complex is associated to an energy minimum of the
+force-field used.
+Single mode optimizations are also useful if the user want to make a movie
+of an minimization process (see section **REF::video**).
+
+A single optimization with ATTRACT requires:
+
+- the ATTRACT Python script (``attract.py``)
+- a coarse grain receptor (fixed partner) file (``receptor.red``)
+- a coarse grain (mobile partner) file (``ligand.red``)
+- docking parameters (``attract.inp``)
+
+
+ATTRACT can be used with different options.
+
+- The force\_field name has to be chosen among attract1, attract2 or scorpion.
+- ``-r`` or ``--receptor`` (mandatory): defines the receptor file.
+- ``-l`` or ``--ligand`` (mandatory): defines the ligand file.
+- ``-s`` (optional): performs one single serie of minimisations with the
+  ligand in its initial position.
+- ``--ref``, (optional) provides a ligand PDB file as a reference (reduced).
+  After the optimization, the RMSD is calculated between this reference
+  structure and the simulated ligand.
+- ``--t transnb`` (optional): loads only the translation number ``transnb``
+  (and all its associated rotations). This option is very useful for
+  dispatching a simulation over a cluster of computers.
+- ``-h`` or ``--help`` (optional): reminds possible options.
+
+
+A single ATTRACT simulation (optimization) may thus be obtained by::
+
+    attract.py -r receptor.red -l ligand.red --ref=ligand.red -s > single.att
+
+The first PDB file provided must be the receptor file (and the second the ligand).
+The content of the output file ``single.att`` is the following:
+
+.. code-block:: r
+   :linenos:
+
+
+    **********************************************************************
+    **                                                                  **
+    **                ATTRACT  (Python edition)                         **
+    **                based on the PTools library                       **
+    **                                                                  **
+    **********************************************************************
+
+    PTools revision 437
+    from branch bug539468
+    unique id pierre_poulain-20100603130128-awuyfelj7avtls54
+    
+    Start time: 2010-06-03 18:50:57.506277
+    Reading parameters file: attract.inp
+    6 series of minimizations
+    rstk =  0.0005
+    Reading receptor (fixed): receptor.red with 246 particules
+    Reading  ligand (mobile): ligand.red with 162 particules
+    Reading reference file: ligand.red with 162 particules
+    Single mode simulation
+    @@@@@@@ Translation nb 1 @@@@@@@
+    ----- Rotation nb 1 -----
+    {{ minimization nb 1 of 6 ; cutoff= 99.50 (A) ; maxiter= 100
+    number of free variables for the minimizer: 6
+    CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH             |  69 iterations
+    {{ minimization nb 2 of 6 ; cutoff= 38.73 (A) ; maxiter= 100
+    number of free variables for the minimizer: 6
+    CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH             |  9 iterations
+    {{ minimization nb 3 of 6 ; cutoff= 31.62 (A) ; maxiter= 100
+    number of free variables for the minimizer: 6
+    CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH             |  13 iterations
+    {{ minimization nb 4 of 6 ; cutoff= 22.36 (A) ; maxiter= 50
+    number of free variables for the minimizer: 6
+    CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH             |  11 iterations
+    {{ minimization nb 5 of 6 ; cutoff= 22.36 (A) ; maxiter= 50
+    number of free variables for the minimizer: 6
+    CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH             |  3 iterations
+    {{ minimization nb 6 of 6 ; cutoff= 22.36 (A) ; maxiter= 50
+    number of free variables for the minimizer: 6
+    CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH             |  1 iterations
+          Trans    Rot          Ener    RmsdCA_ref
+    ==        1      1   -58.4463779 1.23525236672
+    ### MAT BEGIN
+    MAT        0.9941915     -0.0969983      0.0466331      0.4410928 
+    MAT        0.0984211      0.9947151     -0.0292441     -1.1030090 
+    MAT       -0.0435501      0.0336639      0.9984839      0.5793707 
+    MAT        0.0000000      0.0000000      0.0000000      1.0000000 
+    ### MAT END
+
+    Saved all minimization variables (translations/rotations) in minimization.trj
+    End time: 2010-06-03 18:50:58.031199
+    Elapsed time: 0:00:00.524922
+
+- **lines 1--6:** header
+- **lines 7--9:** PTools library revision, branch and unique id
+- **line 11:** starting date and time of the simulation
+- **lines 21--23:** minimization 1. Minimization index, cutoff 
+  in Å and maximum number of iterations (line 21). 
+  Number of variables (line 22). End of minimization (line~23), either 
+  convergence is achieved (the number of performed iterations is specified), 
+  either maximum number of steps is reached.
+- **lines 24--26:** minimization 2.
+- **lines 27--29:** minimization 3.
+- **lines 30--32:** minimization 4.
+- **lines 33--35:** minimization 5.
+- **lines 36--38:** minimization 6.
+- **lines 39--40:** final result after the 6 minimizations.
+  With a single series of minimization, the default translation (``Trans``)
+  is 1 and the default rotation (``Rot``) is 1. 
+  Energy (``Ener``) is given in RT unit and the C\ :sub:`α`-RMSD 
+  (``RmsdCA_ref``) in Å if the ``--ref`` option is specified.
+- **lines 41--46:** rotation/translation matrix of the ligand compared to its initial position.
+- **line 49:** end date and time of the simulation.
+- **line 50:** elapsed time for the simulation
+
