@@ -17,6 +17,7 @@ Tests/1F88.pdb
 .Python
 env/
 build/
+_build/
 develop-eggs/
 dist/
 eggs/
