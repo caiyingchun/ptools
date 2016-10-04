@@ -176,7 +176,7 @@ A single ATTRACT simulation (optimization) may thus be obtained by::
 The first PDB file provided must be the receptor file (and the second the ligand).
 The content of the output file ``single.att`` is the following:
 
-.. code-block:: r
+.. code-block:: bat
    :linenos:
 
 
@@ -257,4 +257,93 @@ The content of the output file ``single.att`` is the following:
 Here, the final energy is -58.4 RT unit and the RMSD is 1.2 Å, which is pretty
 close from the initial position (in a *perfect* simulation, RMSD would be
 of course, 0.0 Å).
+
+
+Initial ligand positions for systematic docking
+-----------------------------------------------
+
+Rigid body movements in translational and rotational space can be described
+with 3 variables or degrees of freedom (`x`, `y` and `z`) in translation 
+and 3 variables (φ,  ψ and θ) in rotation. The rigid body 
+transformation is illustrated in Fig.~\ref{rigid_body}.
+
+
+.. image:: ../figures/rigid_body_freedom.png
+
+
+.. .. figure:: figures/rigid_body_freedom.png
+
+..    Rigid body transformation in translational and rotational space.
+
+
+
+.. \textbf{Translations}\\
+.. For the purpose of a systematic docking simulation, (translational) 
+.. starting points are placed  all around the receptor. The Python script {\tt translate.py} employs a slightly modified Shrake and Rupley \cite{Shrake1973} method to define starting positions from the receptor surface. The surface generation functions are implemented in the PTools library. The script first reads the coarse grain (reduced) receptor and ligand files, then generates a grid of points at a certain distance from the receptor and outputs the grid with a given density.
+
+.. Note: a density option ({\tt -d}) controls the minimum distance between starting points (in \AA). The default value is 10.0~\AA. 
+
+.. In the present case:
+.. \begin{verbatim}
+.. translate.py receptor.red ligand.red > translation.dat
+.. \end{verbatim}
+
+.. Vizualization of the starting points may be obtained with any vizualisation 
+.. software by renaming {\tt translation.dat} in {\tt translation.pdb} and then
+.. by removing the first line of {\tt translation.pdb} (that indicates the total 
+.. number of starting points). In this example, Fig.~\ref{1CGI_translation} shows the receptor surounded by the 204 starting points.
+
+.. \begin{figure}[htbp]
+.. \center
+.. \includegraphics*[width=0.4\textwidth]{img/1CGI_translation.png}
+.. \caption{Coarse grain receptor in green spheres and starting points as orange spheres.}
+.. \label{1CGI_translation}
+.. \end{figure}
+
+.. \textbf{Rotations}\\
+.. Each position in translation (\textit{i. e.} each {\tt ATOM} line of the file {\tt translation.dat})
+.. is associated with a certain number of rotations corresponding to the three ($\phi$, $\psi$ and $\theta$) 
+.. rotational degrees of freedom. The rotation distribution is detailed in the file {\tt rotation.dat},
+.. which has the following format:
+
+.. \newpage
+.. \linenumbers*
+.. \begin{verbatim}
+..       7   6
+..     0.0   1
+..    30.0   5
+..    60.0   9
+..    90.0  13
+..   120.0   9
+..   150.0   5
+..   180.0   1
+.. \end{verbatim}
+.. \nolinenumbers
+
+.. First item of line 1 indicates the number of $\phi$ angles (7) that are listed underneath 
+.. (0.0, 30.0, 60.0, 90.0, 120.0, 150.0 and 180.0 $^\circ$). In the second column, the item on line 1 is the number of $\theta$ angles (here 6). Figures underneath are the number of $\psi$ angles associated to each $\phi$ angle.
+
+.. For instance, with $\phi$ = 30 $^\circ$, there are 5 $\psi$ angles (equally distributed on a circle, \textit{i. e.} 72, 144, 216, 288 and 360 $^\circ$) and 6 $\theta$ angles.
+.. In total, there are $ (1 + 5 + 9 + 13 + 9 + 5 + 1) \times 6 = 258$ rotations per translation.
+
+.. \bigskip
+.. Ultimately, there are in this example a total of 204 starting points $\times$ 258 rotations 
+.. that gives 52,632 starting geometries for the ligand.
+
+.. \subsubsection{Systematic docking simulation}
+.. For a full systematic docking in the translational and rotational space (using both {\tt translation.dat} and {\tt rotation.dat} files), the command line is:
+.. \begin{verbatim}
+.. attract.py -r receptor.red -l ligand.red --ref=ligand.red > docking.att &
+.. \end{verbatim}
+
+.. In addition to the required files for a single optimization, a systematic docking with ATTRACT requires also:
+.. \begin{itemize}
+.. \item The translation starting points ({\tt translation.dat})
+.. \item The rotations performed for each translation starting point ({\tt rotation.dat})
+.. \end{itemize}
+
+.. The output file {\tt docking.att} contains all informations on the docking simulation. It contains the ouput of all series of minimizations (with the specification of translation and rotation number).
+
+.. For the 1CGI complex, the systematic docking took 19 hours on a single processor of a 64~bit Intel Xeon 1.86 GHz 2 Go RAM computer.
+.. The size of the output file {\tt docking.att} is roughly 77~Mo.
 
