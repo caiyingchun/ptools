@@ -267,10 +267,19 @@ with 3 variables or degrees of freedom (`x`, `y` and `z`) in translation
 and 3 variables (φ,  ψ and θ) in rotation. The rigid body 
 transformation is illustrated in  Fig. **reference**.
 
-.. .. figure:: ../_images/rigid_body_freedom.png
-..    :align: center
+.. figure:: figures/rigid_body_freedom.png
+   :align: center
 
-..    Rigid body transformation in translational and rotational space.
+   Rigid body transformation in translational and rotational space.
+
+
+.. \begin{figure}[!htbp]
+.. \center
+.. \includegraphics*[width=0.4\textwidth]{img/rigid_body_freedom.png}
+.. \caption{Rigid body transformation in translational and rotational space.}
+.. \label{rigid_body}
+.. \end{figure}
+
 
 
 Translations

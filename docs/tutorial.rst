@@ -16,3 +16,4 @@ exhaustively detailled. The second example (1K79) is much more straightforward.
 
 .. include:: tutorial/protein_protein.rst
 .. include:: tutorial/protein_dna.rst
+.. include:: tutorial/usages_and_capabilities.rst
