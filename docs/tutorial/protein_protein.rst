@@ -314,7 +314,6 @@ the 204 starting points.
 Rotations
 ^^^^^^^^^
 
-
 Each position in translation (*i.e.* each ``ATOM`` line of the file ``translation.dat``)
 is associated with a certain number of rotations corresponding to the three (φ,  ψ and θ)
 rotational degrees of freedom.
@@ -343,7 +342,150 @@ circle, *i.e.* 72, 144, 216, 288 and 360°) and 6 θ angles.
 In total, there are 1 + 5 + 9 + 13 + 9 + 5 + 1) × 6 = 258 rotations per
 translation.
 
-
 Ultimately, there are in this example a total of 204 starting points × 258 rotations 
 which gives 52,632 starting geometries for the ligand.
 
+Systematic docking simulation
+-----------------------------
+
+For a full systematic docking in the translational and rotational space
+(using both ``translation.dat`` and ``rotation.dat`` files), the command line is::
+
+    attract.py -r receptor.red -l ligand.red --ref=ligand.red > docking.att &
+
+In addition to the required files for a single optimization, a systematic docking with ATTRACT requires also:
+
+- the translation starting points (``translation.dat``),
+- the rotations performed for each translation starting point (``rotation.dat``)
+
+The output file ``docking.att`` contains all informations on the docking
+simulation.
+It contains the ouput of all series of minimizations (with the specification
+of translation and rotation number).
+
+For the 1CGI complex, the systematic docking took 19 hours on a single
+processor of a 64~bit Intel Xeon 1.86 GHz 2 Go RAM computer.
+The size of the output file ``docking.att`` is roughly 77 Mo.
+
+Systematic docking output analysis
+----------------------------------
+
+The 10 best geometries found during the docking simulation can be listed with::
+
+    cat docking.att | egrep -e "^==" | sort -n -k4 | head
+
+
+For the previsous docking simulation of 1CGI, this gives::
+
+    ==      133     92   -58.3541443 1.19429783478
+    ==       73    229   -58.3541441 1.19413397471
+    ==      133     21   -58.3541437 1.19566121232
+    ==       73    235   -58.3541436 1.19394986862
+    ==      136     21   -58.3541424 1.19584401069
+    ==      130    141   -58.3541411  1.1930478392
+    ==      194    219   -58.3541410  1.1961246513
+    ==       73      7   -58.3541406 1.19314844151
+    ==      136    155   -58.3541400 1.19273140092
+    ==      163     70   -58.3541387 1.19596166869
+
+
+With each column meaning:
+
+1. tag characters (``==``) to quickly find the result of each set of minimizations
+2. translation number (starts at 1)
+3. rotation number (starts at 1)
+4. final energy of the complex in RT unit
+5. final RMSD in Å, if the ``--ref`` option is provided.
+
+
+Any simulated ligand structure can be extracted with the script ``extract.py``::
+
+    extract.py docking.att ligand.red 133 92 > ligand_1.red
+
+with the parameters:
+
+- the ouput file of the docking simulation (``docking.att``)
+- the initial ligand file (``ligand.red``)
+- a translation number (``133``)
+- a rotation number (``92``)
+- an output ligand file (``ligand_1.red``)
+
+
+Fig.~\ref{1CGI_dock} shows the best solution of the docking simulation and the
+reference complex. With a RMSD of 1.2 Å between both structures, 
+the docking simulation found very well the initial complex structure.
+
+.. \begin{figure}[htbp]
+.. \center
+.. {\textbf A}
+.. \includegraphics*[width=0.30\textwidth]{img/1CGI_dock1_front.png}
+.. \hspace*{2cm}
+.. {\textbf B}
+.. \includegraphics*[width=0.30\textwidth]{img/1CGI_dock1_top.png}
+.. \caption{Reduced representations of receptor (green), ligand at reference 
+.. position (red) and ligand from the best solution (lowest energy) of the 
+.. docking (blue). Front (A) and top (B) views. Beads have exact van der 
+.. Waals radii.}
+.. \label{1CGI_dock}
+.. \end{figure}
+
+In case an experimental structure of the system is known (as in this example), 
+it is possible to calculate the interface RMSD (iRMSD) and the native fraction 
+(fnat) as defined by the CAPRI contest [#capri]_
+using the following scripts::
+
+    irmsd.py receptor.red ligand.red ligand_1.red
+    fnat.py receptor.red ligand.red ligand_1.red
+
+For iRMSD, output is in Å and fnat is given as a proportion (between 0.0 and 1.0).
+Parameters are defined as:
+
+- the receptor file (``receptor.red``)
+- the initial ligand file (``ligand.red``)
+- the output ligand file (``ligand_1.red``)
+
+Our clustering algorithm implemented in ``cluster.py`` can rapidly filter near identical solutions 
+without requiring a preselected number of desired clusters.
+The algorithm is based on RMSD comparison and an additional energy criterion
+can be included (see script options, by default RMSD and energy criterions are
+1 Å and 1 RT unit respectively)::
+
+    cluster.py docking.att ligand.red > docking.clust
+
+with the parameters:
+
+- an ouput of the docking simulation (``docking.att``)
+- the initial ligand file (``ligand.red``)
+- an output cluster file (``docking.clust``)
+
+The first lines of the output cluster file are:
+
+.. code-block:: bat
+   :linenos:
+
+          Trans    Rot          Ener    RmsdCA_ref   Rank   Weight
+    ==      133     92   -58.3541443     1.1942978      1       55
+    ==      196    132   -40.3704483    48.8195971      2        1
+    ==      164    212   -39.3828793     6.4968451      3        2
+    ==       71    102   -38.7843145    14.7084754      4       14
+    ==       73    126   -38.5826662    11.5175880      5        3
+    ==      129    223   -38.3872389    12.3477797      6        3
+    ==      132    245   -38.3429828    14.0028863      7       10
+    ==      133    131   -38.1570360    16.0382603      8       17
+
+Line 1 is a comment line, next lines are clusters. For each cluster (line)
+is specified:
+
+- a representative structure with the corresponding translation and rotation
+  numbers (column 2, ``Trans``, and 3, ``Rot``), interaction energy 
+  (column 4, ``Ener``) and RMSD (column 5, ``RmsdCA_ref``) 
+  from the reference ligand structure
+- the number of the cluster (column 6, ``Rank``)
+- the number of structures (docking solutions) in this cluster (column
+  7, ``Weight``)
+
+
+The large weight of the best solution shows the very good convergence of the
+docking simulation.
+
+.. [#capri] ``http://capri.ebi.ac.uk``
