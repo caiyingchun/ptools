@@ -268,7 +268,7 @@ and 3 variables (φ,  ψ and θ) in rotation. The rigid body
 transformation is illustrated in Fig.~\ref{rigid_body}.
 
 
-.. image:: ../figures/rigid_body_freedom.png
+.. image:: figures/rigid_body_freedom.png
 
 
 .. .. figure:: figures/rigid_body_freedom.png
