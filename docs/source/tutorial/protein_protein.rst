@@ -83,19 +83,26 @@ The ``reduce.py`` script requires the following parameters:
 - an output coarse grain file name, for instance ``receptor.red``.
 
 
-The reduced files generated are PDB-like structure files that can be read by many visualization programs (Rasmol, Pymol, VMD, Chimera...). Always visualize both all-atom and coarse grain structures to check the reduction worked properly (see Fig.~\ref{1CGI_at_cg} for 1CGI).
+The reduced files generated are PDB-like structure files that can be read by
+many visualization programs (Rasmol, Pymol, VMD, Chimera...). 
+Always visualize both all-atom and coarse grain structures to check the
+reduction worked properly (see :numref:`fig_1CGI_at_cg_receptor` and 
+:numref:`fig_1CGI_at_cg_ligand` for 1CGI).
 
-.. \begin{figure}[htbp]
-.. \center
-.. {\textbf A}
-.. \includegraphics*[width=0.30\textwidth]{img/1CGI_receptor.png}
-.. \hspace*{2cm}
-.. {\textbf B}
-.. \includegraphics*[width=0.25\textwidth]{img/1CGI_ligand.png}
-.. \caption{All-atom (green sticks) and reduced (red spheres) representation of 
-.. both proteins in the 1CGI complex. Receptor (A) and ligand (B).}
-.. \label{1CGI_at_cg}
-.. \end{figure}
+.. _fig_1CGI_at_cg_receptor:
+.. figure:: figures/1CGI_receptor.png
+   :align: center
+
+   All-atom (green sticks) and reduced (red spheres) representation of 
+   both proteins in the 1CGI complex. Receptor.
+
+
+.. _fig_1CGI_at_cg_ligand:
+.. figure:: figures/1CGI_ligand.png
+   :align: center
+
+   Same as above. Ligand.
+
 
 .. [#Basdevant2007] Basdevant, N., Borgis, D. & Ha-Duong, T. A coarse-grained protein-protein potential derived from an all-atom force field. *Journal of Physical Chemistry B* **111**, 9390-9399 (2007).
 
@@ -301,17 +308,17 @@ Vizualization of the starting points may be obtained with any vizualisation
 software by renaming ``translation.dat`` in ``translation.pdb`` and then
 by removing the first line of ``translation.pdb`` (that indicates the total 
 number of starting points).
-In this example, Fig.~\ref{1CGI_translation} shows the receptor surounded by
+In this example, :numref:`fig_1CGI_translation` shows the receptor surounded by
 the 204 starting points.
 
-.. [#Shrake1973] Shrake, A. & Rupley, J.A. Environment and exposure to solvent of protein atoms. Lysozyme and insulin. Journal of Molecular Biology 79, (1973).
+.. _fig_1CGI_translation:
+.. figure:: figures/1CGI_translation.png
+   :align: center
 
-.. \begin{figure}[htbp]
-.. \center
-.. \includegraphics*[width=0.4\textwidth]{img/1CGI_translation.png}
-.. \caption{Coarse grain receptor in green spheres and starting points as orange spheres.}
-.. \label{1CGI_translation}
-.. \end{figure}
+   Coarse grain receptor in green spheres and starting points as orange spheres.
+
+
+.. [#Shrake1973] Shrake, A. & Rupley, J.A. Environment and exposure to solvent of protein atoms. Lysozyme and insulin. Journal of Molecular Biology 79, (1973).
 
 
 Rotations
@@ -414,23 +421,27 @@ with the parameters:
 - an output ligand file (``ligand_1.red``)
 
 
-Fig.~\ref{1CGI_dock} shows the best solution of the docking simulation and the
-reference complex. With a RMSD of 1.2 Å between both structures, 
-the docking simulation found very well the initial complex structure.
+:numref:`fig_1CGI_dock_front` and :numref:`fig_1CGI_dock_top` show the best
+solution of the docking simulation and the reference complex.
+With a RMSD of 1.2 Å between both structures, the docking simulation found very
+well the initial complex structure.
 
-.. \begin{figure}[htbp]
-.. \center
-.. {\textbf A}
-.. \includegraphics*[width=0.30\textwidth]{img/1CGI_dock1_front.png}
-.. \hspace*{2cm}
-.. {\textbf B}
-.. \includegraphics*[width=0.30\textwidth]{img/1CGI_dock1_top.png}
-.. \caption{Reduced representations of receptor (green), ligand at reference 
-.. position (red) and ligand from the best solution (lowest energy) of the 
-.. docking (blue). Front (A) and top (B) views. Beads have exact van der 
-.. Waals radii.}
-.. \label{1CGI_dock}
-.. \end{figure}
+
+.. _fig_1CGI_dock_front:
+.. figure:: figures/1CGI_dock1_front.png
+   :align: center
+
+   Reduced representations of receptor (green), ligand at reference 
+   position (red) and ligand from the best solution (lowest energy) of the 
+   docking (blue). Beads have exact van der Waals radii.
+   Front view.
+
+.. _fig_1CGI_dock_top:
+.. figure:: figures/1CGI_dock1_top.png
+   :align: center
+
+   Same as above. Top view.
+
 
 In case an experimental structure of the system is known (as in this example), 
 it is possible to calculate the interface RMSD (iRMSD) and the native fraction 

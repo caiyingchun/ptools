@@ -89,19 +89,22 @@ The reduced DNA, ``ligand.red``, ends up with 162 beads.
 As previously said, the reduced files generated are PDB-like structure files 
 that can be read by most visualization programs (Rasmol, Pymol, VMD). 
 Always visualize both all-atom and coarse grain structures to check the 
-reduction worked properly (see Fig.~\ref{1K79_at_cg} for 1K79).
+reduction worked properly (see :numref:`fig_1K79_at_cg_receptor`
+and :numref:`fig_1K79_at_cg_ligand` for 1K79).
 
-.. \begin{figure}[htbp]
-.. \center
-.. {\textbf A}
-.. \includegraphics*[width=0.35\textwidth]{img/1K79_receptor.png}
-.. \hspace*{2cm}
-.. {\textbf B}
-.. \includegraphics*[width=0.20\textwidth]{img/1K79_ligand.png}
-.. \caption{All-atom (green sticks) and reduced (red spheres) representation 
-.. of both partners in 1K79. Receptor, protein (A) and ligand, DNA (B).}
-.. \label{1K79_at_cg}
-.. \end{figure}
+.. _fig_1K79_at_cg_receptor:
+.. figure:: figures/1K79_receptor.png
+   :align: center
+
+   All-atom (green sticks) and reduced (red spheres) representation of 
+   both proteins in the 1K79 complex. Receptor (protein).
+
+
+.. _fig_1K79_at_cg_ligand:
+.. figure:: figures/1K79_ligand.png
+   :align: center
+
+   Same as above. Ligand (DNA).
 
 
 ATTRACT parameters
@@ -174,25 +177,31 @@ This gives::
 
 
 We can then extract the best structure obtained (translation number 30 
-and rotation number 157, illustrated Fig.~\ref{1K79_dock})::
+and rotation number 157, illustrated :numref:`fig_1K79_dock_front`
+and :numref:`fig_1K79_dock_top`::
 
     extract.py docking.att ligand.red 30 157 > ligand_1.red
 
-.. \begin{figure}[htbp]
-.. \center
-.. {\textbf A}
-.. \includegraphics*[width=0.30\textwidth]{img/1K79_dock1_front.png}
-.. \hspace*{2cm}
-.. {\textbf B}
-.. \includegraphics*[width=0.30\textwidth]{img/1K79_dock1_top.png}
-.. \caption{Reduced representations of receptor (green), ligand at reference 
-.. position (red) and ligand from the best solution (lowest energy) of the 
-.. docking (blue). Front (A) and top (B) views. Beads have exact van der Waals 
-.. radii. With a RMSD of 1.6~\AA\ between the reference and the simulated ligand 
-.. structures, the docking simulation found very well the initial complex 
-.. structure.}
-.. \label{1K79_dock}
-.. \end{figure}
+
+
+.. _fig_1K79_dock_front:
+.. figure:: figures/1K79_dock1_front.png
+   :align: center
+
+   Reduced representations of receptor (green), ligand at reference 
+   position (red) and ligand from the best solution (lowest energy) of the 
+   docking (blue). Beads have exact van der Waals radii.
+   With a RMSD of 1.6 Å between the reference and the simulated ligand 
+   structures, the docking simulation found very well the initial complex 
+   structure.
+   Front view.
+
+.. _fig_1K79_dock_top:
+.. figure:: figures/1K79_dock1_top.png
+   :align: center
+
+   Same as above. Top view.
+
 
 As for protein-protein example, one can compute the native fraction (fnat)::
 

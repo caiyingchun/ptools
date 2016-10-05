@@ -30,21 +30,24 @@ or from the menu ``File -> Run -> select the file``.
 With some representations (dots, spheres, mesh and surface), you also need 
 to tell Pymol to refresh its view with the command ``rebuild``.
 Coarse grain van der Waals radii have now their real values and 
-reduced molecules their real volume, as shown in Fig.~\ref{real_vdw}.
+reduced molecules their real volume, as shown in
+:numref:`fig_real_vdw_receptor` and :numref:`fig_real_vdw_ligand`.
 
-.. \begin{figure}[Htbp]
-.. \center
-.. {\textbf A}
-.. \includegraphics*[width=0.15\textwidth]{img/1K79_dna.png}
-.. \hspace*{2cm}
-.. {\textbf B}
-.. \includegraphics*[width=0.20\textwidth]{img/1K79_prot.png}
-.. \caption{All-atom (green mesh) and reduced (red mesh) representations of both 
-.. partners in the 1K79 protein--DNA complex. With the correct values of coarse grain
-.. van der Waals radii, both representations are equivalent.
-.. DNA (A) and protein (B).}
-.. \label{real_vdw}
-.. \end{figure}
+
+.. _fig_real_vdw_receptor:
+.. figure:: figures/1K79_receptor.png
+   :align: center
+
+   All-atom (green mesh) and reduced (red mesh) representations of both 
+   partners in the 1K79 protein--DNA complex. With the correct values of coarse grain
+   van der Waals radii, both representations are equivalent. DNA.
+
+
+.. _fig_real_vdw_ligand:
+.. figure:: figures/1K79_ligand.png
+   :align: center
+
+   Same as above. Protein.
 
 
 Minimization movie
