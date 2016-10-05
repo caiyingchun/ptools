@@ -78,7 +78,7 @@ The ``reduce.py`` script requires the following parameters:
   This option only works with the force field scorpion.
 - The ``--dgrid`` option specifies the grid spacing (in Å) for the charge optimization.
   Default is 1.5 Å. 
-  Works only with the \verb@--cgopt@ option.
+  Works only with the ``--cgopt`` option.
 - an input all-atom PDB file, for instance ``receptor.pdb``
 - an output coarse grain file name, for instance ``receptor.red``.
 
@@ -257,31 +257,22 @@ close from the initial position (in a *perfect* simulation, RMSD would be
 of course, 0.0 Å).
 
 
+.. _my_dummy_label:
+
 Initial ligand positions for systematic docking
 -----------------------------------------------
 
 Rigid body movements in translational and rotational space can be described
 with 3 variables or degrees of freedom (`x`, `y` and `z`) in translation 
 and 3 variables (φ,  ψ and θ) in rotation. The rigid body 
-transformation is illustrated in  Fig.
-
+transformation is illustrated in :numref:`fig_rigidbody`.
 
 .. _fig_rigidbody:
 
-.. figure:: tutorial/figures/rigid_body_freedom.png
+.. figure:: figures/rigid_body_freedom.png
    :align: center
 
    Rigid body transformation in translational and rotational space.
-
-
-.. \begin{figure}[!htbp]
-.. \center
-.. \includegraphics*[width=0.4\textwidth]{img/rigid_body_freedom.png}
-.. \caption{Rigid body transformation in translational and rotational space.}
-.. \label{rigid_body}
-.. \end{figure}
-
-
 
 
 
