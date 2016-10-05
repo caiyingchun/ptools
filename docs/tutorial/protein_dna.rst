@@ -129,7 +129,8 @@ The RMSD is calculated with all DNA beads.
 Initial ligand positions for systematic docking
 -----------------------------------------------
 
-::
+.. code-block:: bash
+
     translate.py receptor.red ligand.red > translation.dat
 
 In the present case, the ``translation.dat`` file contains 179 starting points.

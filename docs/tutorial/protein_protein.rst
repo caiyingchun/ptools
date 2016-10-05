@@ -129,10 +129,8 @@ In the present case, the simulation starts with a very large cutoff value of
 9900 Å\ :sup:`2` (≈ 99 Å), which is gradually dicreased
 to end with 500 Å\ :sup:`2` (≈ 22 Å).
 
-.. Note::
-
-    Columns with zeros or ones should not be modified, as
-    well as line 2. They are used for internal development purposes.
+.. note:: Columns with zeros or ones should not be modified, as
+          well as line 2. They are used for internal development purposes.
 
 
 Simple optimization
@@ -294,9 +292,9 @@ The script first reads the coarse grain (reduced) receptor and ligand files,
 then generates a grid of points at a certain distance from the receptor and outputs
 the grid with a given density.
 
-Note: a density option (``-d``) controls the minimum distance between starting 
-points (in Å).
-The default value is 10.0 Å. 
+.. note:: a density option (``-d``) controls the minimum distance between starting 
+          points (in Å).
+          The default value is 10.0 Å. 
 
 In the present case::
 
