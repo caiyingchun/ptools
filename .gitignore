@@ -33,13 +33,3 @@ sdist/
 
 # Build generated version files
 headers/gitrev.h
-
-# LaTeX temporary files
-Tutorial/doc/tutorial.aux
-Tutorial/doc/tutorial.bbl
-Tutorial/doc/tutorial.blg
-Tutorial/doc/tutorial.log
-Tutorial/doc/tutorial.out
-Tutorial/doc/tutorial.pdf
-Tutorial/doc/tutorial.toc
-

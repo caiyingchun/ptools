@@ -1,6 +1,0 @@
-# To compile the PTools tutorial, 
-# you need LaTeX to be installed on your computer
-# then run
-make
-# the file tutorial.pdf should be ready
-
