@@ -1,18 +1,31 @@
 
-# !!! TO-DO: add testcpp in testing process
-unittests: testpython
+
+help:
+	@echo "Usage: make <command>"
+	@echo ""
+	@echo "Available commands:"
+	@echo "    help - print this help"
+	@echo "    unittests - run Python and C++ tests"
+	@echo "    testpython - run Python tests"
+	@echo "    testcpp - run C++ tests"
+	@echo "    clean - remove temporary files"
+	@echo "    clean-python - remove python temporary files"
+	@echo "    clean-cpp - remove C++ temporary files"
+
+unittests: testcpp testpython
+
 
 testpython:
 	echo "running python tests"
-	python unittest1.py
-	python test_dna.py -v
-	python test_basepair.py -v
-	python test_movement.py -v
-	cd heligeom && python heligeom_test.py -v
+	py.test -v
 
 testcpp:
-	echo "running C++ tests"
-	python cxxtestgen.py --error-printer ptoolstest.h > runner.cpp
-	g++ -O2 runner.cpp -I../headers -I. -L.. -lptools -o ptoolstest.bin
-	./ptoolstest.bin
+	$(MAKE) -C cpp unittests
 
+clean: clean-python clean-cpp
+
+clean-python:
+	rm -rf __pycache__
+
+clean-cpp:
+	$(MAKE) -C cpp clean

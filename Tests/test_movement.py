@@ -169,7 +169,7 @@ def get_movement_matrix(mov):
 def string_to_matrix(s):
     """Convert a string to a matrix (list of list) or floats."""
     return [[float(tok) for tok in line.split()] for line in s.splitlines()]
-        
+
 
 def print_movement(mov, indent=0):
     """Print a movement on stdout."""

@@ -9,6 +9,9 @@ using namespace std;
 using namespace PTools;
 
 
+static const std::string TEST_1FIN_R_PDB = "../data/1FIN_r.pdb";
+
+
 class TestCoord3D : public CxxTest::TestSuite
 {
 Coord3D coo1, coo2, coo3;
@@ -61,7 +64,7 @@ Coord3D A, B;
 
     void setUp()
     {
-        r =  Rigidbody("1FIN_r.pdb");
+        r =  Rigidbody(TEST_1FIN_R_PDB);
     }
 
 
@@ -94,7 +97,7 @@ Coord3D A, B;
 //         """in principle GetCoords(i,co) and unsafeGetCoords(i,co) should
 //         lead to the exact same coordinates if a sync has been done before
 //         calling the 'unsafe' version"""
-        r2 = Rigidbody("1FIN_r.pdb");
+        r2 = Rigidbody(TEST_1FIN_R_PDB);
         A = Coord3D(4.23, 5.72, 99.02);
         B = Coord3D(1.23, 6.33, 1.234);
         r.ABrotate(A,B, 2.2345);
@@ -126,7 +129,7 @@ Rigidbody rigid1, rigid2, rigid3;
 
     void setUp()
     {
-        rigid1=Rigidbody("1FIN_r.pdb");
+        rigid1=Rigidbody(TEST_1FIN_R_PDB);
         rigid2=Rigidbody(rigid1);
         rigid3=Rigidbody(rigid2);
     }
@@ -256,7 +259,7 @@ Rigidbody prot1;
 
     void setUp()
     {
-        prot1 = Rigidbody("1FIN_r.pdb");
+        prot1 = Rigidbody(TEST_1FIN_R_PDB);
         random.seed(123);
     }
 
@@ -325,7 +328,7 @@ public:
         for (int nrepet = 0; nrepet<50; nrepet++)
         {
 
-            Rigidbody r1("1FIN_r.pdb");
+            Rigidbody r1(TEST_1FIN_R_PDB);
             Rigidbody r2(r1);
             double x = (randfloat()-0.5)*50.0;
             double y = (randfloat()-0.5)*50.0;
@@ -349,7 +352,7 @@ public:
 
         for(int i=0; i<1000; i++)
         {
-        Rigidbody r1("1FIN_r.pdb");
+        Rigidbody r1(TEST_1FIN_R_PDB);
         Rigidbody r2(r1);
 
         double x = (randfloat()-0.5)*50.0;
