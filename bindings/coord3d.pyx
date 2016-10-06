@@ -55,6 +55,10 @@ cdef class Coord3D:
     property z:
        def __get__(self): return self.thisptr.z
        def __set__(self,z): self.thisptr.z = z
+
+    def __abs__(Coord3D self):
+        cdef Coord3D result = Coord3D(abs(self.x), abs(self.y), abs(self.z))
+        return result
     
     def __add__(Coord3D self, Coord3D other):
         
