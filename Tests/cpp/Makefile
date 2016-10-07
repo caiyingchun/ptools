@@ -21,7 +21,7 @@ unittests: $(PTOOLS_TEST_BIN)
 	./$^
 
 $(PTOOLS_TEST_BIN): $(PTOOLS_TEST_SRC)
-	g++ -O2 -I. -I../../headers -l$(LIBPYTHON) -o $@ $< $(LIBPTOOLS)
+	g++ -O2 -I. -I../../headers -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON) 
 
 $(PTOOLS_TEST_SRC): ptoolstest.h
 	python cxxtestgen.py --error-printer $< > $@
