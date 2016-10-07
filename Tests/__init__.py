@@ -13,4 +13,4 @@ def assertCoordsAlmostEqual(testcase, source, target):
         source (ptools.Coord3D): tested coordinates
         target (ptools.Coord3D): reference coordinates
     """
-   testcase.assertAlmostEqual(norm2(source - target), 0.0)
+    testcase.assertAlmostEqual(norm2(source - target), 0.0)
