@@ -17,6 +17,6 @@ def assertCoordsAlmostEqual(testcase, source, target):
         target (ptools.Coord3D): reference coordinates
     """
     if sys.version_info < (2, 7):
-        testcase.assertAlmostEqual(source, target)
-    else:
         testcase.assertAlmostEqual(norm2(source - target), 0.0)
+    else:
+        testcase.assertAlmostEqual(source, target)
