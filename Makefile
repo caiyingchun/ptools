@@ -12,6 +12,7 @@ help:
 	@echo "    lint - check style with flake8"
 	@echo "    test - run tests with default Python"
 	@echo "    docs - generate Sphinx HTML documentation"
+	@echo "    build - build the package"
 	@echo "    install - install the package to the active Python's site-packages"
 	@echo "    docker-build - build a docker container for ptools"
 	@echo "    docker-test - use the docker container ptools:dev to run unit tests"
@@ -45,7 +46,7 @@ lint:
 	flake8 --ignore E501 ptools tests
 
 
-test:
+test: build
 	$(MAKE) -C Tests
 
 
@@ -54,7 +55,11 @@ docs:
 	$(MAKE) -C docs html
 
 
-install: clean
+build: clean
+	python setup.py build
+
+
+install: build
 	python setup.py install
 
 
@@ -64,3 +69,4 @@ docker-build:
 
 docker-test:
 	docker run --rm -v $(shell pwd):/src/ptools ptools:dev
+
