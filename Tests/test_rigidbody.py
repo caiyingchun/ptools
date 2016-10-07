@@ -33,32 +33,26 @@ class TestRigidbody(unittest.TestCase):
     def testCopyAtom(self):
         atom = self.r.CopyAtom(3)
         coords = atom.coords
-        self.assertAlmostEqual(coords.x, -16.159)
-        self.assertAlmostEqual(coords.y, 189.782)
-        self.assertAlmostEqual(coords.z, 106.402)
+        assertCoordsAlmostEqual(self, coords, Coord3D(-16.159, 189.782, 106.402))
         self.assertEqual(atom.atomId, 4)
         self.assertEqual(atom.chainId, '')
 
     def testGetCoords(self):
         coords = self.r.getCoords(3)
-        self.assertAlmostEqual(coords.x, -16.159)
-        self.assertAlmostEqual(coords.y, 189.782)
-        self.assertAlmostEqual(coords.z, 106.402)
+        assertCoordsAlmostEqual(self, coords, Coord3D(-16.159, 189.782, 106.402))
 
     def testTranslate(self):
         tr = Coord3D(3.2, 2.98, 14.22)
         s = Rigidbody(self.r)
         s.Translate(tr)
         coords = s.getCoords(3)
-        self.assertAlmostEqual(coords.x, -16.159 + 3.2)
-        self.assertAlmostEqual(coords.y, 189.782 + 2.98)
-        self.assertAlmostEqual(coords.z, 106.402 + 14.22)
+        ref = Coord3D(-16.159 + 3.2, 189.782 + 2.98, 106.402 + 14.22)
+        assertCoordsAlmostEqual(self, coords, ref)
 
     def testFindCenter(self):
         cen = self.r.FindCenter()
-        self.assertAlmostEqual(abs(cen.x + 20.171249), 0.0, places=6)
-        self.assertAlmostEqual(abs(cen.y - 215.498060), 0.0, places=6)
-        self.assertAlmostEqual(abs(cen.z - 119.427781), 0.0, places=6)
+        ref = Coord3D(-20.171249, 215.498060, 119.427781)
+        assertCoordsAlmostEqual(self, cen, ref)
 
     def testSetAtom(self):
         atom = self.r.CopyAtom(3)
@@ -66,12 +60,9 @@ class TestRigidbody(unittest.TestCase):
         self.r.SetAtom(3, atom)
         # test to see if the mofification worked:
         atom2 = self.r.CopyAtom(3)
-        assertCoordsAlmostEqual(self, atom2.coords, Coord3D(3, 4, 5))
-
         coords2 = atom2.coords
-        self.assertAlmostEqual(coords2.x, 3)
-        self.assertAlmostEqual(coords2.y, 4)
-        self.assertAlmostEqual(coords2.z, 5)
+        assertCoordsAlmostEqual(self, atom2.coords, Coord3D(3, 4, 5))
+        assertCoordsAlmostEqual(self, coords2, Coord3D(3, 4, 5))
 
     def testUnsafeGetCoords(self):
         """in principle GetCoords(i,co) and unsafeGetCoords(i,co) should
@@ -93,7 +84,7 @@ class TestRigidbody(unittest.TestCase):
             co2 = Coord3D()
             co1 = self.r.getCoords(i)
             r2.unsafeGetCoords(i, co2)
-            self.assertEqual(co1, co2)
+            assertCoordsAlmostEqual(self, co1, co2)
 
     def testAddAtoms(self):
         r = Rigidbody()
