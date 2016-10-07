@@ -24,14 +24,18 @@ except ImportError:
     exit(1)
 
 
+# Display info messages sent to logger.
+log.set_verbosity(log.INFO)
+
+
 # Directory where legacy f2c library will be downloaded and compiled if
 # required.
 LEGACY_F2C_DIR = 'f2c_legacy'
 
+
 # URL for downloading a tarball containing ptools dependencies.
 PTOOLS_DEP_URL = 'https://codeload.github.com/ptools/ptools_dep/legacy.tar.gz'\
                  '/master'
-
 
 
 # For compatibility with Python 2.6.
@@ -120,14 +124,11 @@ class build_ext(_build_ext):
 
         if boost_include_dir:
             self.include_dirs.append(boost_include_dir)
-            log.info("Boost headers found at {0}".format(boost_include_dir))
         if f2c_include_dir:
             self.include_dirs.append(f2c_include_dir)
-            log.info("f2c.h found at {0}".format(f2c_include_dir))
         if f2c_library:
             for ext in self.extensions:
                 ext.extra_objects.append(f2c_library)
-            log.info("libf2c.a found at {0}".format(f2c_library))
 
 
 def git_version():
@@ -146,10 +147,10 @@ def write_version_h(filename):
     git_revision = git_version()
     if git_revision.startswith('Unknown'):
         s = "it seems that you don't have a git directory. "\
-            "While the library will compile correcly, informations about"\
-            "the current ptools version will be missing. Please use git to"\
+            "While the library will compile correcly, informations about "\
+            "the current ptools version will be missing. Please use git to "\
             "download PTools and get reliable versioning informations."
-        log.warn(s)
+        warn(s)
 
     content = textwrap.dedent("""
         /*
@@ -299,10 +300,13 @@ def find_boost():
                                '/usr/include', '/usr/local/include',
                                '/opt/local/include'])
     if not boostdir:
-        log.warn("Boost not found. Specify headers location by using the "
-                 "BOOST_INCLUDE_DIR environment variable. If it is not "
-                 "installed, you can either install a recent version "
-                 "or use the --use-legacy-boost option.")
+        warn("Boost not found. Specify headers location by using the "
+             "BOOST_INCLUDE_DIR environment variable. If it is not "
+             "installed, you can either install a recent version "
+             "or use the --use-legacy-boost option.")
+        raise OSError('Boost headers not found')
+    else:
+        log.info("Boost headers found at {0}".format(boostdir))
     return boostdir
 
 
@@ -319,10 +323,13 @@ def find_f2c():
                              '/usr/include', '/usr/local/include',
                              '/opt/local/include'])
     if not f2cdir:
-        log.warn("f2c.h not found. Specify headers location by using the "
-                 "F2C_INCLUDE_DIR environment variable. If it is not "
-                 "installed, you can either install a recent version "
-                 "or use the --use-legacy-f2c option.")
+        warn("f2c.h not found. Specify headers location by using the "
+             "F2C_INCLUDE_DIR environment variable. If it is not "
+             "installed, you can either install a recent version "
+             "or use the --use-legacy-f2c option.")
+        raise OSError('f2c.h not found')
+    else:
+        log.info("f2c.h found at {0}".format(f2cdir))
 
     # Search libf2c.a.
     f2clib = get_environ('F2C_LIBRARY') or\
@@ -330,11 +337,19 @@ def find_f2c():
                   ['/usr/lib', '/usr/local/lib', '/opt/local/lib',
                    '/usr/lib64', '/usr/local/lib64'])
     if not f2clib:
-        log.warn("libf2c.a not found. Specify its location by using the "
-                 "F2C_LIBRARY environment variable. If it is not "
-                 "installed, you can either install a recent version "
-                 "or use the --use-legacy-f2c option.")
+        warn("libf2c.a not found. Specify its location by using the "
+             "F2C_LIBRARY environment variable. If it is not "
+             "installed, you can either install a recent version "
+             "or use the --use-legacy-f2c option.")
+        raise OSError('libf2c.a not found')
+    else:
+        log.info("libf2c.a found at {0}".format(f2clib))
     return f2cdir, f2clib
+
+
+def warn(message, prefix='WARNING: '):
+    """Print a warning message preceded by `prefix` using docutils.log.warn."""
+    log.warn(prefix + message)
 
 
 def setup_package():
