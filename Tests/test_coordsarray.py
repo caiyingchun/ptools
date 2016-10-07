@@ -3,6 +3,8 @@ import unittest
 
 from ptools import CoordsArray, Coord3D, norm2
 
+from . import assertCoordsAlmostEqual
+
 
 class TestCoordsArray(unittest.TestCase):
     def setUp(self):
@@ -21,7 +23,7 @@ class TestCoordsArray(unittest.TestCase):
     def testGetAtom(self):
         c1 = Coord3D()
         self.c.GetCoords(0, c1)
-        self.assertAlmostEqual(c1, Coord3D(3.0, 4.0, 5.0))
+        assertCoordsAlmostEqual(self, c1, Coord3D(3.0, 4.0, 5.0))
 
     def testBasicTranslation(self):
         self.c.Translate(self.tr)
@@ -29,7 +31,7 @@ class TestCoordsArray(unittest.TestCase):
         c2 = Coord3D()
         self.c.GetCoords(0, c1)
         self.c.GetCoords(1, c2)
-        self.assertEqual(c1, Coord3D(6.0, 8.5, 2.0))
+        assertCoordsAlmostEqual(self, c1, Coord3D(6.0, 8.5, 2.0))
 
     def testSetCoords(self):
         """brief explanation:
@@ -44,7 +46,8 @@ class TestCoordsArray(unittest.TestCase):
         self.c.SetCoords(0, co)
         co2 = Coord3D()
         self.c.GetCoords(0, co2)  # get the coordinates back
-        self.assertAlmostEqual(norm2(co - co2), 0.0)
+        assertCoordsAlmostEqual(self, co, co2)
+
 
 
 if __name__ == '__main__':
