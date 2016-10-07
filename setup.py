@@ -335,7 +335,8 @@ def find_f2c():
     f2clib = get_environ('F2C_LIBRARY') or\
         find_file('libf2c.a',
                   ['/usr/lib', '/usr/local/lib', '/opt/local/lib',
-                   '/usr/lib64', '/usr/local/lib64'])
+                   '/usr/lib64', '/usr/local/lib64',
+                   '/usr/lib/x86_64-linux-gnu'])
     if not f2clib:
         warn("libf2c.a not found. Specify its location by using the "
              "F2C_LIBRARY environment variable. If it is not "
