@@ -4,6 +4,7 @@ import unittest
 
 from ptools import Rigidbody, Coord3D, Atom, norm2
 
+from . import assertCoordsAlmostEqual
 
 TEST_1FINR_PDB = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r.pdb')
 TEST_2AAV_PDB = os.path.join(os.path.dirname(__file__), 'data', '2AAV.one.pdb')
