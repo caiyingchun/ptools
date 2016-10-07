@@ -12,6 +12,7 @@ PyAttract/cgopt.c
 # Unit test / coverage
 Tests/cpp/runner.cpp
 Tests/cpp/ptoolstest.bin
+.cache
 
 # Distribution / packaging
 .Python
