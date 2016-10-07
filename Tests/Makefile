@@ -1,5 +1,7 @@
 
 
+all: unittests
+
 help:
 	@echo "Usage: make <command>"
 	@echo ""
