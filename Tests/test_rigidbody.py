@@ -65,7 +65,7 @@ class TestRigidbody(unittest.TestCase):
         self.r.SetAtom(3, atom)
         # test to see if the mofification worked:
         atom2 = self.r.CopyAtom(3)
-        self.assertAlmostEqual(atom2.coords, Coord3D(3, 4, 5))
+        assertCoordsAlmostEqual(self, atom2.coords, Coord3D(3, 4, 5))
 
         coords2 = atom2.coords
         self.assertAlmostEqual(coords2.x, 3)
