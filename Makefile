@@ -59,7 +59,7 @@ install: clean
 
 
 docker-build:
-	docker build -t ptools:dev ./dev
+	docker build -t ptools:dev ./docker
 
 
 docker-test:
