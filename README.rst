@@ -39,16 +39,23 @@ Very quick setup guide
 
 This is the very minimal set of instructions required to install Ptools
 in a Python virtual environment.
-It assumes all Ptools dependencies have been duly installed::
+It assumes all Ptools dependencies have been duly installed. This requires
+administrator permissions. E.g., for a debian-like system
+
+    $ sudo apt-get update
+    $ sudo apt-get install g++ libboost-dev libf2c2-dev python-dev python-pip
+    $ sudo pip install virtualenv
+
+The rest can be performed as a normal user
 
     $ virtualenv ptools-env
     $ source ptools-env/bin/activate
-    (ptools-env) $ pip install cython
+    (ptools-env) $ pip install cython pytest
     (ptools-env) $ git clone https://github.com/ptools/ptools.git    
     (ptools-env) $ cd ptools
     (ptools-env) $ python setup.py install
 
-A more detailed version is in the official tutorial. 
+A more detailed version of the procedure is in the official tutorial. 
 
 
 About Git branches:
