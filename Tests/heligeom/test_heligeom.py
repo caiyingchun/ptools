@@ -61,7 +61,7 @@ class TestHeligeom(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def testCGfromPDBFile(self):
-        dna = DNA (TEST_BP_PDB,TEST_BDNA_EXPECTED_PDB) #gros grain
+        dna = DNA(TEST_BP_PDB, TEST_BDNA_EXPECTED_PDB)  # gros grain
         result = dna.PrintPDB()
         expected = open(TEST_CG_FROM_PDBFILE_EXPECTED_PDB).read()
         self.assertEqual(result, expected)

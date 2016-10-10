@@ -1,9 +1,4 @@
 
-import sys
-
-from ptools import norm2
-
-
 def assertCoordsAlmostEqual(testcase, source, target, places=6):
     """Assert that two `ptools.Coord3D` instances are almost equal.
 

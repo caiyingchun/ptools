@@ -2,7 +2,7 @@
 import os
 import unittest
 
-from ptools import Rigidbody, Coord3D, Atom, norm2
+from ptools import Rigidbody, Coord3D, Atom
 
 from . import assertCoordsAlmostEqual
 

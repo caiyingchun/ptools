@@ -1,7 +1,7 @@
 
 import unittest
 
-from ptools import CoordsArray, Coord3D, norm2
+from ptools import CoordsArray, Coord3D
 
 from . import assertCoordsAlmostEqual
 
@@ -47,7 +47,6 @@ class TestCoordsArray(unittest.TestCase):
         co2 = Coord3D()
         self.c.GetCoords(0, co2)  # get the coordinates back
         assertCoordsAlmostEqual(self, co, co2)
-
 
 
 if __name__ == '__main__':

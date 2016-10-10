@@ -43,7 +43,7 @@ clean-test:
 
 
 lint:
-	flake8 --ignore E501 ptools tests
+	flake8 --ignore=E501 tests
 
 
 test: build
