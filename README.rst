@@ -40,13 +40,13 @@ Very quick setup guide
 This is the very minimal set of instructions required to install Ptools
 in a Python virtual environment.
 It assumes all Ptools dependencies have been duly installed. This requires
-administrator permissions. E.g., for a debian-like system
+administrator permissions. E.g., for a debian-like system::
 
     $ sudo apt-get update
     $ sudo apt-get install g++ libboost-dev libf2c2-dev python-dev python-pip
     $ sudo pip install virtualenv
 
-The rest can be performed as a normal user
+The rest can be performed as a normal user::
 
     $ virtualenv ptools-env
     $ source ptools-env/bin/activate
