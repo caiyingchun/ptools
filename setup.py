@@ -400,7 +400,7 @@ def setup_package():
 
     setup(ext_modules=[ptools, cgopt],
           cmdclass={'build_ext': build_ext},
-          packages = ['.'],
+          packages = ['ptools'],
           name='ptools',
           version='1.2')
 
