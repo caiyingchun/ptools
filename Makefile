@@ -43,7 +43,7 @@ clean-test:
 
 
 lint:
-	flake8 --ignore=E501 tests Heligeom
+	flake8 --ignore=E501 tests Heligeom PyAttract
 
 
 test: build
