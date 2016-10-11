@@ -95,7 +95,7 @@ def parseCommandline():
 
 def setOptions(options):
     '''Set options specified on command line'''
-    global outputFileName, templateFileName, runner, gui, haveStandardLibrary, factor, longlong
+    global outputFileName, templateFileName, runner, gui, haveStandardLibrary, noStandardLibrary, factor, longlong
     global haveExceptionHandling, noExceptionHandling, abortOnFail, headers, root, part, noStaticInit
     for o, a in options:
         if o in ('-v', '--version'):
