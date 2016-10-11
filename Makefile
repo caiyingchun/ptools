@@ -25,6 +25,8 @@ clean-build:
 	rm -fr build/
 	rm -fr dist/
 	rm -fr .eggs/
+	rm -f bindings/_ptools.cpp
+	rm -f PyAttract/cgopt.c
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
 
