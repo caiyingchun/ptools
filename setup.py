@@ -388,7 +388,7 @@ def setup_package():
     sources.append("bindings/_ptools.pyx")
 
     ptools = Extension('_ptools',
-                       sources = sources,
+                       sources=sources,
                        language='c++',
                        include_dirs=['headers'])
 
@@ -400,7 +400,7 @@ def setup_package():
 
     setup(ext_modules=[ptools, cgopt],
           cmdclass={'build_ext': build_ext},
-          packages = ['ptools'],
+          packages=['ptools'],
           name='ptools',
           version='1.2')
 
