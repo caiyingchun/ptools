@@ -56,6 +56,8 @@ Ready to contribute? Here's how to set up `ptools` for local development.
 
     $ git clone git@github.com:your_github_login/ptools.git
 
+    where `your_github_login` is your github account name
+
 3. Create a branch for local development::
 
     $ git checkout -b name-of-your-bugfix-or-feature
