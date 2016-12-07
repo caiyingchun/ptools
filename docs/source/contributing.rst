@@ -54,7 +54,7 @@ Ready to contribute? Here's how to set up `ptools` for local development.
 1. Fork the `ptools` repo on GitHub.
 2. Clone your fork locally::
 
-    $ git clone git@github.com:ptools/ptools.git
+    $ git clone git@github.com:your_github_login/ptools.git
 
 3. Create a branch for local development::
 
