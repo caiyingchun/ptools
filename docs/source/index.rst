@@ -16,7 +16,7 @@ Contents:
    usage
    contributing
    tutorial
-   authors
+   credits
 
 
 Indices and tables
