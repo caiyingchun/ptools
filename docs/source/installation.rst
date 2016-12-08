@@ -5,22 +5,27 @@ Installation
 ============
 
 
-Stable release
---------------
+Latest stable release quick setup
+---------------------------------
 
-To install ptools, run this command in your terminal:
+This is the very minimal set of instructions required to install PTools
+in a Python virtual environment.
 
-.. code-block:: console
+First, install all PTools dependencies. This requires administrator permissions. 
+E.g., for a debian- or ubuntu-like system::
 
-    $ pip install ptools
+    $ sudo apt-get update
+    $ sudo apt-get install g++ libboost-dev libf2c2-dev python-dev python-pip
+    $ sudo pip install virtualenv
 
-This is the preferred method to install ptools, as it will always install the most recent stable release. 
+The rest can be installed as a normal user::
 
-If you don't have `pip`_ installed, this `Python installation guide`_ can guide
-you through the process.
-
-.. _pip: https://pip.pypa.io
-.. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
+    $ virtualenv ptools-env
+    $ source ptools-env/bin/activate
+    (ptools-env) $ pip install cython pytest
+    (ptools-env) $ git clone https://github.com/ptools/ptools.git    
+    (ptools-env) $ cd ptools
+    (ptools-env) $ python setup.py install
 
 
 From sources
@@ -46,6 +51,12 @@ Once you have a copy of the source, you can install it with:
 
     $ python setup.py install
 
+The documentation is provided in the 'docs' directory. Simply run 'make' in this directory 
+to get a pdf documentation.
 
-.. _Github repo: https://github.com/benoistlaurent/ptools
-.. _tarball: https://github.com/benoistlaurent/ptools/tarball/master
+Source code may be parsed by an automatic documentation generator called 'Doxygen'.
+This documentation may only help for the C++ part of the library. After installing Doxygen, simply type 'doxygen' in the directory which contains the 'Doxyfile'. Then look into the html/ directory and find the index.html file generated...
+
+
+.. _Github repo: https://github.com/ptools/ptools
+.. _tarball: https://github.com/ptools/ptools/tarball/master

@@ -25,13 +25,8 @@ doi: 10.1186/1472-6807-9-27
 Documentation
 -------------
 
-The documentation is provided in the 'Tutorial/doc' directory. Simply run 'make' in this directory 
-to get a pdf documentation.
+The documentation is available at `_ReadTheDocs <http://ptools.readthedocs.io/>`
 
-Source code may be parsed by an automatic documentation generator called 'Doxygen'.
-This documentation may only help for the C++ part of the library.
-after installing Doxygen, simply type 'doxygen' in the directory which contains the 'Doxyfile'.
-Then look into the html/ directory and find the index.html file generated...
 
 
 Very quick setup guide
@@ -39,8 +34,9 @@ Very quick setup guide
 
 This is the very minimal set of instructions required to install Ptools
 in a Python virtual environment.
-It assumes all Ptools dependencies have been duly installed. This requires
-administrator permissions. E.g., for a debian-like system::
+
+First, install all PTools dependencies. This requires administrator permissions. 
+E.g., for a debian- or ubuntu-like system::
 
     $ sudo apt-get update
     $ sudo apt-get install g++ libboost-dev libf2c2-dev python-dev python-pip
