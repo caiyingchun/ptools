@@ -22,7 +22,7 @@ import os
 # absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 
-AUTHORS =  [u'The PTools developpment team' ]
+AUTHORS =  u'The PTools developpment team' 
 
 # Get the project root dir, which is the parent dir of this
 cwd = os.getcwd()
