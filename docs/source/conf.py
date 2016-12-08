@@ -22,6 +22,10 @@ import os
 # absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 
+AUTHORS = [u'Benjamin Boyer', u'Benoist Laurent',
+            u'Pierre Poulain', u'Chantal Prévost', 
+            u'Charles Robert', u'Adrien Saladin' ]
+
 # Get the project root dir, which is the parent dir of this
 cwd = os.getcwd()
 project_root = os.path.dirname(cwd)
@@ -31,7 +35,8 @@ project_root = os.path.dirname(cwd)
 # version is used.
 sys.path.insert(0, project_root)
 
-import ptools
+#PP 08/12/2016
+#import ptools
 
 # -- General configuration ---------------------------------------------
 
@@ -56,7 +61,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'ptools'
-copyright = u"2016, Benoist LAURENT"
+copyright = u"2016, " + ", ".join(AUTHORS)
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -224,7 +229,7 @@ latex_elements = {
 latex_documents = [
     ('index', 'ptools.tex',
      u'ptools Documentation',
-     u'Benoist LAURENT', 'manual'),
+     ' '.join(AUTHORS), 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at
@@ -255,7 +260,7 @@ latex_documents = [
 man_pages = [
     ('index', 'ptools',
      u'ptools Documentation',
-     [u'Benoist LAURENT'], 1)
+     AUTHORS, 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -270,7 +275,7 @@ man_pages = [
 texinfo_documents = [
     ('index', 'ptools',
      u'ptools Documentation',
-     u'Benoist LAURENT',
+     ', '.join(AUTHORS),
      'ptools',
      'One line description of project.',
      'Miscellaneous'),
