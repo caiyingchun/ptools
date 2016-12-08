@@ -62,7 +62,7 @@ build: clean
 	python setup.py build
 
 
-install: build
+install:
 	python setup.py install
 
 

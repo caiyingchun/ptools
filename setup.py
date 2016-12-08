@@ -11,10 +11,12 @@ import StringIO
 import sys
 import textwrap
 
+from setuptools import setup, find_packages
 from distutils import log
-from distutils.core import setup
 from distutils.extension import Extension
 from distutils.errors import DistutilsOptionError
+
+
 
 try:
     from Cython.Distutils import build_ext as _build_ext
@@ -400,9 +402,13 @@ def setup_package():
 
     setup(ext_modules=[ptools, cgopt],
           cmdclass={'build_ext': build_ext},
-          packages=['ptools'],
           name='ptools',
-          version='1.2')
+          packages=find_packages(exclude=['Tests', 'Heligeom']),
+          version='1.2',
+          entry_points={
+              'console_scripts': ['ptools = ptools.scripts.ptools_cli:main']
+          }
+    )
 
 
 if __name__ == '__main__':

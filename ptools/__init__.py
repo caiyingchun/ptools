@@ -10,6 +10,9 @@ from _ptools import (ADNA, Atom, AtomPair, AtomSelection, Atomproperty,
                      norm, norm2, strToAtom, superpose)
 
 
+__version__ = '2.0.0'
+
+
 # Name of the force fields implemented in PTools.
 PTOOLS_FORCEFIELDS = ('scorpion', 'attract1', 'attract2')
 

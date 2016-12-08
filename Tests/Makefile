@@ -1,6 +1,6 @@
 
 
-all: unittests
+all: testpython
 
 help:
 	@echo "Usage: make <command>"
@@ -15,7 +15,6 @@ help:
 	@echo "    clean-cpp - remove C++ temporary files"
 
 unittests: testcpp testpython
-
 
 testpython:
 	echo "running python tests"
