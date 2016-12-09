@@ -1,5 +1,8 @@
 .PHONY: help clean clean-build clean-pyc clean-test lint test docs 
 
+# Name of the docker image.
+DOCKER_IMAGE = ptools:youpi
+
 help:
 	@echo "usage: make <command>"
 	@echo ""
@@ -67,9 +70,13 @@ install: build
 
 
 docker-build:
-	docker build -t ptools:dev ./docker
+	docker build -t $(DOCKER_IMAGE) ./docker
 
 
 docker-test:
-	docker run --rm -v $(shell pwd):/src/ptools ptools:dev
+	docker run --rm -v $(shell pwd):/src/ptools $(DOCKER_IMAGE) test
 
+
+docker-run:
+	docker run --name ptools_interactive -it -v $(shell pwd):/src/ptools $(DOCKER_IMAGE)
+	
