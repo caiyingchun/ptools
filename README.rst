@@ -25,7 +25,7 @@ doi: 10.1186/1472-6807-9-27
 Documentation
 -------------
 
-The documentation is available at `_ReadTheDocs <http://ptools.readthedocs.io/>`
+The documentation is available at `ReadTheDocs <http://ptools.readthedocs.io/en/develop/>_`
 
 
 
