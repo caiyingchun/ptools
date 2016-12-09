@@ -40,7 +40,7 @@ class TestAttractIO(unittest.TestCase):
         tmpfile = mk_tmp_file(content=TEST_DUM_RED_CONTENT)
         ff = io.read_forcefield_from_reduced(tmpfile.name)
         tmpfile.close()
-        self.assertEqual('attract1', ff)
+        self.assertEqual('ATTRACT1', ff)
 
     def test_read_forcefield_from_reduced_no_header(self):
         tmpfile = mk_tmp_file(content=TEST_DUM_PDB_CONTENT)
@@ -77,7 +77,7 @@ class TestAttractIO(unittest.TestCase):
         tmpfile_receptor = mk_tmp_file(TEST_DUM_RED_CONTENT)
         tmpfile_ligand = mk_tmp_file(TEST_DUM_RED_CONTENT)
         ff = io.check_ff_version_match(tmpfile_receptor.name, tmpfile_ligand.name)
-        self.assertEqual(ff, 'attract1')
+        self.assertEqual(ff, 'ATTRACT1')
         tmpfile_receptor.close()
         tmpfile_ligand.close()
 

@@ -66,7 +66,7 @@ def read_forcefield_from_reduced(path):
         IOError: if header cannot be extracted from first line.
 
     Returns:
-        str: force field name in lower case.
+        str: force field name in upper case.
     """
     def get_header_line():
         with open(path, 'rt') as f:
@@ -88,7 +88,7 @@ def read_forcefield_from_reduced(path):
         return tokens
 
     def get_ffname():
-        ff = get_header_tokens()[1].lower()
+        ff = get_header_tokens()[1].upper()
         if ff not in PTOOLS_FORCEFIELDS:
             err = "{}: invalid force field name '{}': must choose between {}"
             err = err.format(path, ff, PTOOLS_FORCEFIELDS)
