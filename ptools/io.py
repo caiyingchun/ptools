@@ -1,5 +1,27 @@
+from __future__ import print_function
+
+import os
+import sys
 
 from .forcefield import PTOOLS_FORCEFIELDS
+
+
+def check_file_exists(path, msg="%(prefix)sfile not found: '%(path)s'", exitstatus=128,
+                      prefix='ERROR: '):
+    """Check that a file exists.
+
+    Print an error message and exit if it does not.
+
+    Args:
+        path (str): path to file
+        msg (str): message to print if file does not exist
+        exitstatus (int): exit status
+        prefix (str): message prefix
+    """
+    if not os.path.exists(path):
+        msg = msg % vars()
+        print(msg)
+        sys.exit(exitstatus)
 
 
 def read_aminon(path):

@@ -81,6 +81,22 @@ def run(args):
             Rmsd_alias = rmsdca
 
 
-    print(ptools.Rmsd)
+    ptools.io.check_file_exists('foo.txt')
+
+
+    # if not options.single:
+    #     # Systematic docking with default translations and rotations.
+    #     # Check for rotation.dat and translation.dat.
+    #     checkFile("rotation.dat", "rotation file is required.")
+    #     checkFile("translation.dat", "translation file is required.\nFormer users can rename translat.dat into translation.dat.")
+    #     translations = Translation()
+    #     rotations = Rotation()
+    # else:
+    #     # creates dummy translation and rotation
+    #     print("Single mode simulation")
+    #     translations = [[1, lig.FindCenter()]]
+    #     rotations = [(0, 0, 0)]
+        
+
 
 
