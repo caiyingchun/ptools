@@ -1,5 +1,5 @@
 
-from . import PTOOLS_FORCEFIELDS
+from .forcefield import PTOOLS_FORCEFIELDS
 
 
 def read_aminon(path):
@@ -98,7 +98,7 @@ def read_forcefield_from_reduced(path):
     return get_ffname()
 
 
-def read_attract_parameter(path):
+def read_attract_parameters(path):
     """Read attract parameter file.
 
     Args:

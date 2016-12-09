@@ -10,11 +10,11 @@ from _ptools import (ADNA, Atom, AtomPair, AtomSelection, Atomproperty,
                      norm, norm2, strToAtom, superpose)
 
 
+from . import io
+from . import forcefield
+
+
 __version__ = '2.0.0'
-
-
-# Name of the force fields implemented in PTools.
-PTOOLS_FORCEFIELDS = ('scorpion', 'attract1', 'attract2')
 
 
 one_letter_residue_dict = {
@@ -44,9 +44,6 @@ one_letter_residue_dict = {
     "TYR": "Y",
     "---": "-",
 }
-
-
-
 
 
 def rigidToSeq(rigid):

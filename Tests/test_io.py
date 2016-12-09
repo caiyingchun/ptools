@@ -98,14 +98,14 @@ class TestReadAttractParameters(unittest.TestCase):
         filename = random_filename()
         err = "No such file or directory: '{}'".format(filename)
         with self.assertRaisesRegexp(IOError, err):
-            io.read_attract_parameter(filename)
+            io.read_attract_parameters(filename)
 
     def test_cannot_read_number_of_minimizations(self):
         tmpfile = mk_empty_file()
         filename = tmpfile.name
         err = 'Cannot read number of minimizations from attract parameter file'
         with self.assertRaisesRegexp(ValueError, err):
-            io.read_attract_parameter(filename)
+            io.read_attract_parameters(filename)
         tmpfile.close()
 
     def test_file_contains_only_one_line(self):
@@ -114,7 +114,7 @@ class TestReadAttractParameters(unittest.TestCase):
         filename = tmpfile.name
         err = 'Unexpectedly reached end of attract parameter file'
         with self.assertRaisesRegexp(ValueError, err):
-            io.read_attract_parameter(filename)
+            io.read_attract_parameters(filename)
         tmpfile.close()
 
     def test_cannot_read_rstk(self):
@@ -125,7 +125,7 @@ class TestReadAttractParameters(unittest.TestCase):
         filename = tmpfile.name
         err = 'Cannot read rstk from attract parameter file'
         with self.assertRaisesRegexp(ValueError, err):
-            io.read_attract_parameter(filename)
+            io.read_attract_parameters(filename)
         tmpfile.close()
 
     def test_cannot_read_too_many_minimizations(self):
@@ -135,7 +135,7 @@ class TestReadAttractParameters(unittest.TestCase):
         filename = tmpfile.name
         err = 'Cannot read minimizations from attract parameter file: expected 4, found 0'
         with self.assertRaisesRegexp(ValueError, err):
-            io.read_attract_parameter(filename)
+            io.read_attract_parameters(filename)
         tmpfile.close()
 
     def test_misformatted_minimization(self):
@@ -147,18 +147,18 @@ class TestReadAttractParameters(unittest.TestCase):
         err = 'Cannot read minimization line from attract parameter file: '\
               'expected at least 3 values, found 2'
         with self.assertRaisesRegexp(ValueError, err):
-            io.read_attract_parameter(filename)
+            io.read_attract_parameters(filename)
         tmpfile.close()
 
     def test_catches_ligand_lines(self):
-        parameters = io.read_attract_parameter(TEST_ATTRACT_PARAMS_WITH_LIGAND)
+        parameters = io.read_attract_parameters(TEST_ATTRACT_PARAMS_WITH_LIGAND)
         lignames = parameters[1]
         self.assertEqual(lignames[0], 'foo')
         self.assertEqual(lignames[1], 'bar')
         self.assertEqual(lignames[2], 'baz')
 
     def test_read_parameters_ok(self):
-        nbminim, lignames, minimlist, rstk = io.read_attract_parameter(TEST_ATTRACT_PARAMS)
+        nbminim, lignames, minimlist, rstk = io.read_attract_parameters(TEST_ATTRACT_PARAMS)
         self.assertEqual(nbminim, 4)
         self.assertEqual(lignames, [])
         self.assertEqual(len(minimlist), 4)
