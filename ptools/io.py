@@ -6,7 +6,7 @@ import sys
 from .forcefield import PTOOLS_FORCEFIELDS
 
 
-def check_file_exists(path, msg="%(prefix)sfile not found: '%(path)s'", exitstatus=128,
+def check_file_exists(path, msg="file not found: '%(path)s'", exitstatus=128,
                       prefix='ERROR: '):
     """Check that a file exists.
 
@@ -19,7 +19,7 @@ def check_file_exists(path, msg="%(prefix)sfile not found: '%(path)s'", exitstat
         prefix (str): message prefix
     """
     if not os.path.exists(path):
-        msg = msg % vars()
+        msg = prefix + msg % vars()
         print(msg)
         sys.exit(exitstatus)
 
