@@ -25,8 +25,7 @@ doi: 10.1186/1472-6807-9-27
 Documentation
 -------------
 
-The documentation is available at `ReadTheDocs <http://ptools.readthedocs.io/en/develop/>_`
-
+The documentation is available at `ReadTheDocs <http://ptools.readthedocs.io/en/develop/>`_.
 
 
 Very quick setup guide
