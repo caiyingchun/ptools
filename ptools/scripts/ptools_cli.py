@@ -7,6 +7,8 @@ from __future__ import print_function
 import argparse
 
 import ptools
+
+from . import attract
 from . import hello
 
 
@@ -15,6 +17,7 @@ def parse_command_line():
                                      version=ptools.__version__)
     subparsers = parser.add_subparsers()
     hello.create_subparser(subparsers)
+    attract.create_subparser(subparsers)
     return parser.parse_args()
 
 
