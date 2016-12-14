@@ -46,6 +46,11 @@ else:
         return subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
     check_output = _check_output
 
+# For MacOS
+if sys.platform == 'darwin':
+    from distutils import sysconfig
+    vars = sysconfig.get_config_vars()
+    vars['LDSHARED'] = vars['LDSHARED'].replace('-bundle', '-dynamiclib')
 
 class build_ext(_build_ext):
 
@@ -387,10 +392,17 @@ def setup_package():
 
     sources.append("bindings/_ptools.pyx")
 
-    ptools = Extension('_ptools',
-                       sources=sources,
-                       language='c++',
-                       include_dirs=['headers'])
+    if sys.platform == 'darwin':
+        ptools = Extension('_ptools',
+                           sources=sources,
+                           language='c++',
+                           extra_compile_args=['-stdlib=libstdc++'],
+                           include_dirs=['headers'])
+    else:
+        ptools = Extension('_ptools',
+                           sources=sources,
+                           language='c++',
+                           include_dirs=['headers'])
 
     cgopt = Extension('cgopt',
                       sources=['PyAttract/cgopt.pyx',
@@ -405,5 +417,28 @@ def setup_package():
           version='1.2')
 
 
+def setup_cpp_tests():
+	# Could still be simpified no doubt
+    import platform
+    import string
+
+    boost_dir = find_boost()
+
+    if sys.platform == 'darwin':
+        if int(platform.release().split('.')[0]) == 14:
+			# Darwin 14 is MacOSX 10.10 Yosemite
+            cpp_compile_string = "export MACOSX_DEPLOYMENT_TARGET=10.10 ; \\\n\tg++ -mmacosx-version-min=10.9 -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
+        else:
+            # Other macs same as linux case
+            cpp_compile_string = "g++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
+    else:
+        cpp_compile_string = "g++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
+
+    lines = open('Tests/cpp/Makefile_MODEL','r').readlines()
+    newlines = [ string.replace(l,'CPP_COMPILE_STRING',cpp_compile_string) for l in lines ]	   
+    open("Tests/cpp/Makefile",'w').writelines(newlines)
+
+
 if __name__ == '__main__':
     setup_package()
+    setup_cpp_tests()
