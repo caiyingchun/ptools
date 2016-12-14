@@ -431,11 +431,16 @@ def setup_cpp_tests():
         else:
             # Other macs same as linux case
             cpp_compile_string = "g++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
+        # Hack to get around stripping of relative path info ../../ from dylab path in output file ptoolstest.bin
+        try:
+            p = subprocess.Popen(["ln", "-s", "../../build"]).wait()
+        except:
+            print("Warning: Unable to make symbolic link from Tests/cpp/build to build, skipping...")
     else:
         cpp_compile_string = "g++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
 
     lines = open('Tests/cpp/Makefile_MODEL','r').readlines()
-    newlines = [ string.replace(l,'CPP_COMPILE_STRING',cpp_compile_string) for l in lines ]	   
+    newlines = [ string.replace(line, 'CPP_COMPILE_STRING', cpp_compile_string) for line in lines ]	   
     open("Tests/cpp/Makefile",'w').writelines(newlines)
 
 
