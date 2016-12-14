@@ -433,7 +433,7 @@ def setup_cpp_tests():
             cpp_compile_string = "g++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
         # Hack to get around stripping of relative path info ../../ from dylab path in output file ptoolstest.bin
         try:
-            p = subprocess.Popen(["ln", "-s", "../../build"]).wait()
+            p = subprocess.Popen(["ln", "-s", "../../build"], cwd="Tests/cpp/").wait()
         except:
             print("Warning: Unable to make symbolic link from Tests/cpp/build to build, skipping...")
     else:
