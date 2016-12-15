@@ -46,6 +46,15 @@ else:
         return subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
     check_output = _check_output
 
+# For MacOS
+if sys.platform == 'darwin':
+    from distutils import sysconfig
+    vars = sysconfig.get_config_vars()
+    vars['LDSHARED'] = vars['LDSHARED'].replace('-bundle', '-dynamiclib')
+    # clang required to get c++ libraries right
+    os.environ['CXX'] = 'clang++'
+    os.environ['CC'] = 'clang'
+
 
 class build_ext(_build_ext):
 
@@ -388,9 +397,9 @@ def setup_package():
     sources.append("bindings/_ptools.pyx")
 
     ptools = Extension('_ptools',
-                       sources=sources,
-                       language='c++',
-                       include_dirs=['headers'])
+                      sources=sources,
+                      language='c++',
+                      include_dirs=['headers'])
 
     cgopt = Extension('cgopt',
                       sources=['PyAttract/cgopt.pyx',
@@ -405,5 +414,26 @@ def setup_package():
           version='1.2')
 
 
+def setup_cpp_tests():
+    import platform
+    import string
+
+    boost_dir = find_boost()
+
+    if sys.platform == 'darwin':
+        cpp_compile_string = "clang++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
+        try:
+            p = subprocess.Popen(["ln", "-s", "../../build"], cwd="Tests/cpp/").wait()
+        except:
+            print("Warning: Unable to make symbolic link from Tests/cpp/build to build, skipping...")
+    else:
+        cpp_compile_string = "g++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
+
+    lines = open('Tests/cpp/Makefile_MODEL','r').readlines()
+    newlines = [ string.replace(line, 'CPP_COMPILE_STRING', cpp_compile_string) for line in lines ]
+    open("Tests/cpp/Makefile",'w').writelines(newlines)
+
+
 if __name__ == '__main__':
     setup_package()
+    setup_cpp_tests()
