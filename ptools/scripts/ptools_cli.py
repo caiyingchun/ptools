@@ -8,16 +8,16 @@ import argparse
 
 import ptools
 
-from . import attract
-from . import hello
+from . import attract_cmd
+from . import hello_cmd
 
 
 def parse_command_line():
     parser = argparse.ArgumentParser(description=__doc__,
                                      version=ptools.__version__)
     subparsers = parser.add_subparsers()
-    hello.create_subparser(subparsers)
-    attract.create_subparser(subparsers)
+    hello_cmd.create_subparser(subparsers)
+    attract_cmd.create_subparser(subparsers)
     return parser.parse_args()
 
 
