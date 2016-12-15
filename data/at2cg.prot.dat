@@ -1,0 +1,129 @@
+# version 20080724
+# empty lines and lines starting with # are ignored
+
+# residue  atom      atom      bead	    bead  	
+# name     name      weight    id  	    name 
+
+# 5 columns, other columns are ignored
+# a residue definition must start and finish by a line starting with #===
+# add generic beads first
+
+
+#=== generic bead for all protein residues
+*         CA        1.0       1         CA        
+#=== arginine
+ARG       CG        1.0       3         CG        
+
+ARG       NE        1.0       4         NEC 
+ARG       CZ        1.0       4         NEC
+#=== glutamic acid
+GLU       CG        1.0       10        CB
+
+GLU       CD        1.0       11        CO1
+GLU       OE1       1.0       11        CO1 
+GLU       OE2       1.0       11        CO1
+#=== glutamine
+GLN       CG        1.0       8         CB        
+
+GLN       CD        1.0       9         CN1       
+GLN       OE1       1.0       9         CN1       
+GLN       NE2       1.0       9         CN1       
+#=== lysine
+LYS       CG        1.0       16        CB        
+
+LYS       CE        1.0       17        CE        
+#=== tryptophan
+TRP       CG        1.0       25        CG        
+
+TRP       CD2       1.0       26        CSE       
+TRP       CE2       1.0       26        CSE       
+TRP       CE3       1.0       26        CSE       
+TRP       CH2       1.0       26        CSE       
+TRP       CZ3       1.0       26        CSE       
+TRP       CZ2       1.0       26        CSE       
+#=== methionine
+MET       CB        1.0       18        CSE       
+MET       CG        1.0       18        CSE       
+
+MET       SD        1.0       19        CSE       
+MET       CE        1.0       19        CSE       
+#=== phenylalanine
+PHE       CB        1.0       20        CSE       
+PHE       CG        1.0       20        CSE       
+
+PHE       CD1       1.0       21        CSE
+PHE       CD2       1.0       21        CSE
+PHE       CE1       1.0       21        CSE
+PHE       CE2       1.0       21        CSE
+PHE       CZ        1.0       21        CSE
+#=== tyrosine
+TYR       CB        1.0       27        CSE       
+TYR       CG        1.0       27        CSE       
+
+TYR       CD1       1.0       28        CSE       
+TYR       CD2       1.0       28        CSE       
+TYR       CE1       1.0       28        CSE       
+TYR       CE2       1.0       28        CSE       
+TYR       CZ        1.0       28        CSE       
+TYR       OH        1.0       28        CSE       
+#=== histidine
+HIS       CB        1.0       12        CSE       
+HIS       CG        1.0       12        CSE       
+
+HIS       ND1       1.0       13        CSE       
+HIS       CD2       1.0       13        CSE       
+HIS       NE2       1.0       13        CSE       
+HIS       CE1       1.0       13        CSE       
+#=== glycine
+GLY       EMPTY     0.0       0         EMPTY     
+#=== asparagine
+ASN       CA        1.0       5         CSE       
+ASN       CB        1.0       5         CSE       
+ASN       CG        1.0       5         CSE       
+ASN       OD1       1.0       5         CSE       
+ASN       ND2       1.0       5         CSE       
+#=== alanine
+ALA       CA        1.0       2         CSE       
+ALA       CB        1.0       2         CSE       
+#=== aspartic acid
+ASP       CA        1.0       6         CSE       
+ASP       CB        1.0       6         CSE       
+ASP       CG        1.0       6         CSE       
+ASP       OD1       1.0       6         CSE       
+ASP       OD2       1.0       6         CSE       
+#=== cysteine
+CYS       CA        1.0       7         CSE       
+CYS       CB        1.0       7         CSE       
+CYS       SG        1.0       7         CSE       
+#=== isoleucine
+ILE       CA        1.0       14        CSE       
+ILE       CB        1.0       14        CSE       
+ILE       CG1       1.0       14        CSE       
+ILE       CG2       1.0       14        CSE       
+ILE       CD1       1.0       14        CSE       
+#=== leucine
+LEU       CA        1.0       15        CSE       
+LEU       CB        1.0       15        CSE       
+LEU       CG        1.0       15        CSE       
+LEU       CD1       1.0       15        CSE       
+LEU       CD2       1.0       15        CSE       
+#=== proline
+PRO       CA        1.0       22        CSE       
+PRO       CB        1.0       22        CSE       
+PRO       CG        1.0       22        CSE       
+PRO       CD        1.0       22        CSE       
+#=== serine
+SER       CA        1.0       23        CSE       
+SER       CB        1.0       23        CSE       
+SER       OG        1.0       23        CSE       
+#=== threonine
+THR       CA        1.0       24        CSE       
+THR       CB        1.0       24        CSE       
+THR       OG1       1.0       24        CSE       
+THR       CG2       1.0       24        CSE       
+#=== valine
+VAL       CA        1.0       29        CSE       
+VAL       CB        1.0       29        CSE       
+VAL       CG1       1.0       29        CSE       
+VAL       CG2       1.0       29        CSE       
+#===                   

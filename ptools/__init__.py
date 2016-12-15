@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import os
+import sys
+
 from _ptools import (ADNA, Atom, AtomPair, AtomSelection, Atomproperty,
                      AttractForceField1, AttractForceField2, AttractPairList,
                      AttractRigidbody, BDNA, BaseAttractForceField, BasePair,
@@ -15,6 +18,8 @@ from . import forcefield
 
 
 __version__ = '2.0.0'
+
+DATA_DIR = os.path.join(sys.prefix, 'share', 'ptools', 'data')
 
 
 one_letter_residue_dict = {

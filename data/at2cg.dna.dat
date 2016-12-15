@@ -1,0 +1,73 @@
+# version 20080724
+# empty lines and lines starting with # are ignored
+
+# base    atom        atom          bead       bead      bead   	
+# name    name        weight        id         name      id (DNA alone) 
+
+# 5 columns - other columns are ignored
+# a residue definition must start and finish by a line starting with #===
+# add generic beads first
+
+#=== phosphate and sugar beads common to all DNA bases
+*         O1P	    1.0	     30        GP1	 1
+*         O2P		1.0      30        GP1	 1
+*         P	        1.0      30        GP1	 1     
+
+# no O5' in sugar bead
+*         O3'   	1.0      31        GS1	 2
+*         C3'   	1.0      31        GS1	 2
+*         C4'   	1.0      31        GS1	 2
+*         C5'   	1.0	     31        GS1	 2
+
+*         C2'   	1.0	     32        GS2	 3
+*         C1'   	1.0	     32        GS2	 3
+*         O4'   	1.0	     32        GS2	 3
+#=== adenine
+A         N7    	1.0	     33        GA1	 4
+A         C8    	1.0	     33        GA1	 4
+A         N9    	1.0	     33        GA1	 4
+
+A         C5    	1.0	     34        GA2	 5
+A         C6    	1.0	     34        GA2	 5
+A         N1    	1.0	     34        GA2	 5
+A         N6    	1.0	     34        GA2	 5
+
+A         C4    	1.0	     35        GA3	 6
+A         N3    	1.0	     35        GA3	 6
+A         C2    	1.0	     35        GA3	 6
+#=== guanine
+G         N7    	1.0	     36        GG1	 7
+G         C8    	1.0	     36        GG1	 7
+G         N9    	1.0	     36        GG1	 7
+
+G         C5    	1.0	     37        GG2	 8
+G         C6    	1.0	     37        GG2	 8
+G         O6    	1.0	     37        GG2	 8
+G         N1    	1.0	     37        GG2	 8
+
+G         C4    	1.0	     38        GG3	 9
+G         N3    	1.0	     38        GG3	 9
+G         C2    	1.0	     38        GG3	 9
+G         N2    	1.0	     38        GG3	 9
+#=== cytosine
+C         C6    	1.0	     39        GC1	 10
+C         N1    	1.0	     39        GC1	 10
+C         C2    	1.0	     39        GC1	 10
+C         O2    	1.0	     39        GC1	 10
+
+C         C5    	1.0	     40        GC2	 11
+C         C4    	1.0	     40        GC2	 11
+C         N4    	1.0	     40        GC2	 11
+C         N3    	1.0	     40        GC2	 11
+#=== thymine
+T         C6    	1.0	     41        GT1	 12
+T         N1    	1.0	     41        GT1	 12
+T         C2    	1.0	     41        GT1	 12
+T         O2    	1.0	     41        GT1	 12
+
+T         C5M   	1.0	     42        GT2	 13
+T         C5    	1.0	     42        GT2	 13
+T         C4    	1.0	     42        GT2	 13
+T         O4    	1.0	     42        GT2	 13
+T         N3    	1.0	     42        GT2	 13
+#===

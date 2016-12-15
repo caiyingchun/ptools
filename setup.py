@@ -359,6 +359,12 @@ def setup_package():
     # Update version header.
     write_version_h('headers/gitrev.h')
 
+    # Install data files in <prefix>/share/ptools.
+    data_dir = os.path.join(sys.prefix, "share/ptools/data")
+
+    # Install all files in the data directory.
+    data_files = [os.path.join('data', path) for path in os.listdir('data')]
+
     sources = ['src/BasePair.cpp',
                'src/DNA.cpp',
                'src/Movement.cpp',
@@ -407,7 +413,11 @@ def setup_package():
           version='1.2',
           entry_points={
               'console_scripts': ['ptools = ptools.scripts.ptools_cli:main']
-          }
+          },
+          include_package_data=True,
+          data_files=[
+              (data_dir, data_files)
+          ]
     )
 
 

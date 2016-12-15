@@ -1,0 +1,73 @@
+# atom conversion file
+# version 2008-05-19 
+
+# 2 columns format: %-10s%-10s
+# residue_name_found  residue_name_known
+
+# histidine from Amber and Charmm output
+HIE      HIS
+HSE      HIS
+HSD      HIS
+HSP      HIS
+
+# DNA base names
+DA       A
+DT       T
+DC       C
+DG       G
+
+# 3 columns format: %-10s%-10s%-10s
+#residue_or_base  atom_name_found  atom_name_known
+
+# oxygen atoms in DNA phosphate
+A         OP1       O1P
+A         OP2       O2P
+
+C         OP1       O1P
+C         OP2       O2P
+
+G         OP1       O1P
+G         OP2       O2P
+
+T         OP1       O1P
+T         OP2       O2P
+
+
+# ' and * notations in DNA sugar
+A         O3*       O3'
+A         C3*       C3'
+A         C4*       C4'
+A         C5*       C5'
+A         C2*       C2'
+A         C1*       C1'
+A         O4*       O4'
+
+C         O3*       O3'
+C         C3*       C3'
+C         C4*       C4'
+C         C5*       C5'
+C         C2*       C2'
+C         C1*       C1'
+C         O4*       O4'
+
+G         O3*       O3'
+G         C3*       C3'
+G         C4*       C4'
+G         C5*       C5'
+G         C2*       C2'
+G         C1*       C1'
+G         O4*       O4'
+
+T         O3*       O3'
+T         C3*       C3'
+T         C4*       C4'
+T         C5*       C5'
+T         C2*       C2'
+T         C1*       C1'
+T         O4*       O4'
+
+# C5M atom in thymine 
+T         C7        C5M
+
+# CD atoms in isoleucine
+ILE       CD        CD1
