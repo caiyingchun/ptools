@@ -16,6 +16,127 @@ DEFAULT_FF_PARAM_DATA = os.path.join(ptools.DATA_DIR, 'ff_param.dat')
 DEFAULT_CONVERSION_DATA = os.path.join(ptools.DATA_DIR, 'type_conversion.dat')
 
 
+
+
+
+
+
+
+
+
+
+
+
+class AtomInBead:
+    """Class definition for an atom in a bead"""
+    def __init__(self, name, wgt):
+        self.name = name    # atom name
+        self.x = 0.0        # x coordinate
+        self.y = 0.0        # y coordiante
+        self.z = 0.0        # z coordinate
+        self.weight = wgt   # atom weight (within a bead)
+        self.found = 0      # atom found or not (not found by default)
+
+    def Show(self):
+        return "%s %8.3f %8.3f %8.3f %3.1f %d" % (self.name, self.x, self.y, self.z, self.weight, self.found)
+
+
+class Bead:
+    """Class definition for a bead"""
+    def __init__(self, name, id):
+        self.name = name        # bead name
+        self.id = id            # bead id
+        self.size = 0           # bead size (number of atoms inside)
+        self.listOfAtomNames = []  # list of all atom names
+        self.listOfAtoms = []  # list of all atoms (AtomInBead)
+
+    def Show(self):
+        return "%s %d %d" % (self.name, self.id, self.size)
+
+
+class CoarseRes:
+    """Class definition for coarse grain (reduced) protein residue (or DNA base)"""
+    def __init__(self):
+        self.listOfBeadId = []      # list of bead id in res
+        self.listOfBeads = []       # list of beads in res
+
+    def Add(self, residue):
+        """Add in a residue atoms from bead"""
+        for at in residue:
+            at_name = at[1]
+            at_wgt = float(at[2])
+            bd_id = int(at[3])
+            bd_name = at[4]
+            if at_name != 'EMPTY':  # EMPTY is a special tag to deal with glycine
+                # in bead not in residue than create it
+                if bd_id not in self.listOfBeadId:
+                    self.listOfBeadId.append(bd_id)
+                    self.listOfBeads.append(Bead(bd_name, bd_id))
+                # add atom in bead in residue
+                bead_position = self.listOfBeadId.index(bd_id)
+                bead = self.listOfBeads[bead_position]
+                bead.listOfAtomNames.append(at_name)
+                atInBd = AtomInBead(at_name, at_wgt)
+                bead.listOfAtoms.append(atInBd)
+                bead.size += 1
+                # update bead in residue
+                self.listOfBeads[bead_position] = bead
+        # return the number of bead per residue
+        return len(self.listOfBeadId)
+
+    # def FillAtom(self, at_name, x, y, z):
+    #     """Fill an atom from bead with coordinates"""
+    #     # quickly check atom in atom list
+    #     # 1: browse beads
+    #     for bead in self.listOfBeads:
+    #         # 2: browse atoms in bead
+    #         if at_name in bead.listOfAtomNames:
+    #             # then find exactly where this atom is present
+    #             for atom in bead.listOfAtoms:
+    #                 if at_name == atom.name:
+    #                     atom.x = x
+    #                     atom.y = y
+    #                     atom.z = z
+    #                     atom.found = 1
+
+    # def Reduce(self, infoResName, infoResId):
+    #     """Reduce a bead with atoms present in bead"""
+    #     output = []
+    #     # reduce all beads in a residue
+    #     # for each bead in the residue
+    #     for bead in self.listOfBeads:
+    #         reduce_size = 0
+    #         reduce_x = 0.0
+    #         reduce_y = 0.0
+    #         reduce_z = 0.0
+    #         sum_wgt = 0.0
+    #         # for each atom of a bead
+    #         for atom in bead.listOfAtoms:
+    #             if atom.found == 1:
+    #                 reduce_size += 1
+    #                 reduce_x += atom.x * atom.weight
+    #                 reduce_y += atom.y * atom.weight
+    #                 reduce_z += atom.z * atom.weight
+    #                 sum_wgt += atom.weight
+    #             else:
+    #                 message = "ERROR: missing atom %s in bead %s %2d for residue %s %d. Please fix your PDB!\n" \
+    #                           % (atom.name, bead.name, bead.id, infoResName, infoResId)
+    #                 if options.warning:
+    #                     sys.stderr.write(message)
+    #                     sys.stderr.write("Continue execution as required ...\n")
+    #                 else:
+    #                     raise Exception(message)
+    #         if reduce_size == bead.size:
+    #             coord = Coord3D(reduce_x / sum_wgt, reduce_y / sum_wgt, reduce_z / sum_wgt)
+    #             output.append([coord, bead.name, bead.id])
+    #     return output
+
+    # def Show(self):
+    #     for bead in self.listOfBeads:
+    #         print bead.name, bead.id, bead.size, bead.atomIdList
+
+
+
 def create_attract1_subparser(parent):
     parser = parent.add_parser('attract1',
                                help='reduce using the attract1 force field')
@@ -87,6 +208,41 @@ def run(args):
     ptools.io.check_file_exists(convname)
     ptools.io.check_file_exists(atomicname)
 
+    with open(redname, 'rt') as f:
+        lines = f.readlines()
 
-    
-    
+
+    resBeadAtomModel = {}
+    for i, line in enumerate(lines):
+        if not ptools.io.is_comment(line):
+            items = line.split()
+            if len(items) < 5:
+                err = 'expected at least 5 items (found {})'.format(len(items))
+                raise ptools.io.FileParsingError(redname, err, line, i + 1)
+            res = items[0]
+            if res != '*' and res not in resBeadAtomModel:
+                resBeadAtomModel[res] = CoarseRes()
+                ptools.io.info(res)
+
+
+    sys.stderr.write("%s: created the partition for residues " % (redname))
+    beadsInResidue = []
+    for line in lines:
+        if not ptools.io.is_comment(line):
+            items = line.split()
+            if len(items) >= 5:  # at least 5 fields are expected
+                beadsInResidue.append(items[0:5])
+        if (line[0:4] == '#===') and (len(beadsInResidue) != 0):
+            if beadsInResidue[0][0] == "*":
+                # "*" means a common bead for all residues or bases
+                for res in resBeadAtomModel.keys():
+                        resBeadAtomModel[res].Add(beadsInResidue)
+            else:
+                # if not a common bead, add it just to the right residue (or base)
+                res = beadsInResidue[0][0]
+                bead_nb = resBeadAtomModel[res].Add(beadsInResidue)
+                sys.stderr.write('%s(%d beads) ' % (res, bead_nb))
+            beadsInResidue = []
+    sys.stderr.write('\n')
+
+
