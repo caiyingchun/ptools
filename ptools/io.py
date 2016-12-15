@@ -6,6 +6,80 @@ import sys
 from .forcefield import PTOOLS_FORCEFIELDS
 
 
+class FileParsingError(Exception):
+    """Exception raised when the parsing of a file fails."""
+    def __init__(self, filename, message, line='', lineid=None):
+        fmt = '%(filename)s:'
+        if lineid is not None:
+            fmt += '%(lineid)d:'
+        fmt += ' error: %(message)s'
+        if line:
+            fmt += "\n%(line)r"
+        super(FileParsingError, self).__init__(fmt % vars())
+
+
+# def _log(*args, prefix='', end='\n', file=sys.stderr, flush=False, sep=' '):
+def _print(*args, **kwargs):
+    """Print a message to a file.
+
+    Args:
+        args (str): elements of a message
+        kwargs (dict[str]): keyword arguments among:
+            prefix (str): string added before the message itself
+            end (str): string to be added after the message
+            file (file): file pointer
+            flush (bool): should the file pointer be flushed
+            sep (str): separator between the elements of a message
+    """
+    valid_kwargs = ('prefix', 'end', 'file', 'flush', 'sep')
+    for kw in kwargs:
+        if kw not in valid_kwargs:
+            raise KeyError("invalid keyword argument '{}'".format(kw))
+
+    if not isinstance(args, list):
+        args = [args]
+
+    prefix = kwargs.pop('prefix', '')
+    end = kwargs.pop('end', '\n')
+    file = kwargs.pop('file', sys.stderr)
+    flush = kwargs.pop('flush', False)
+    sep = kwargs.pop('sep', ' ')
+
+    message = prefix + sep.join(*args)
+    print(message, file=file, end=end)
+
+    if flush:
+        file.flush()
+
+
+def info(*args, **kwargs):
+    """Display a log message."""
+    prefix = kwargs.get('prefix', 'INFO: ')
+    kwargs['prefix'] = prefix
+    _print(*args, **kwargs)
+
+
+def warning(*args, **kwargs):
+    """Display a warning message."""
+    prefix = kwargs.get('prefix', 'WARNING: ')
+    kwargs['prefix'] = prefix
+    _print(*args, **kwargs)
+
+
+def error(*args, **kwargs):
+    """Display a warning message."""
+    exitstatus = kwargs.pop('exitstatus', 1)
+    prefix = kwargs.get('prefix', 'ERROR: ')
+    kwargs['prefix'] = prefix
+    _print(*args, **kwargs)
+    sys.exit(exitstatus)
+
+
+def is_comment(s, commentchar='#'):
+    """Return True is `s` starts with `commentchar` or is empty."""
+    return s.startswith(commentchar) or not len(s.strip())
+
+
 def check_file_exists(path, msg="file not found: '%(path)s'", exitstatus=128,
                       prefix='ERROR: '):
     """Check that a file exists.
