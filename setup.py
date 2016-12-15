@@ -51,6 +51,10 @@ if sys.platform == 'darwin':
     from distutils import sysconfig
     vars = sysconfig.get_config_vars()
     vars['LDSHARED'] = vars['LDSHARED'].replace('-bundle', '-dynamiclib')
+    # clang required to get c++ libraries right
+    os.environ['CXX'] = 'clang++'
+    os.environ['CC'] = 'clang'
+
 
 class build_ext(_build_ext):
 
@@ -392,17 +396,10 @@ def setup_package():
 
     sources.append("bindings/_ptools.pyx")
 
-    if sys.platform == 'darwin':
-        ptools = Extension('_ptools',
-                           sources=sources,
-                           language='c++',
-                           extra_compile_args=['-stdlib=libstdc++'],
-                           include_dirs=['headers'])
-    else:
-        ptools = Extension('_ptools',
-                           sources=sources,
-                           language='c++',
-                           include_dirs=['headers'])
+    ptools = Extension('_ptools',
+                      sources=sources,
+                      language='c++',
+                      include_dirs=['headers'])
 
     cgopt = Extension('cgopt',
                       sources=['PyAttract/cgopt.pyx',
@@ -418,20 +415,13 @@ def setup_package():
 
 
 def setup_cpp_tests():
-	# Could still be simpified no doubt
     import platform
     import string
 
     boost_dir = find_boost()
 
     if sys.platform == 'darwin':
-        if int(platform.release().split('.')[0]) == 14:
-			# Darwin 14 is MacOSX 10.10 Yosemite
-            cpp_compile_string = "export MACOSX_DEPLOYMENT_TARGET=10.10 ; \\\n\tg++ -mmacosx-version-min=10.9 -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
-        else:
-            # Other macs same as linux case
-            cpp_compile_string = "g++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
-        # Hack to get around stripping of relative path info ../../ from dylab path in output file ptoolstest.bin
+        cpp_compile_string = "clang++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
         try:
             p = subprocess.Popen(["ln", "-s", "../../build"], cwd="Tests/cpp/").wait()
         except:
@@ -440,7 +430,7 @@ def setup_cpp_tests():
         cpp_compile_string = "g++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
 
     lines = open('Tests/cpp/Makefile_MODEL','r').readlines()
-    newlines = [ string.replace(line, 'CPP_COMPILE_STRING', cpp_compile_string) for line in lines ]	   
+    newlines = [ string.replace(line, 'CPP_COMPILE_STRING', cpp_compile_string) for line in lines ]
     open("Tests/cpp/Makefile",'w').writelines(newlines)
 
 
