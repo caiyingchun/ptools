@@ -4,6 +4,7 @@
 from __future__ import print_function
 
 import argparse
+import itertools
 import os
 import sys
 
@@ -14,17 +15,6 @@ DEFAULT_PROT_REDUCTION_DATA = os.path.join(ptools.DATA_DIR, 'at2cg.prot.dat')
 DEFAULT_DNA_REDUCTION_DATA = os.path.join(ptools.DATA_DIR, 'at2cg.dna.dat')
 DEFAULT_FF_PARAM_DATA = os.path.join(ptools.DATA_DIR, 'ff_param.dat')
 DEFAULT_CONVERSION_DATA = os.path.join(ptools.DATA_DIR, 'type_conversion.dat')
-
-
-
-
-
-
-
-
-
-
-
 
 
 class AtomInBead:
@@ -59,6 +49,11 @@ class CoarseRes:
     def __init__(self):
         self.listOfBeadId = []      # list of bead id in res
         self.listOfBeads = []       # list of beads in res
+
+    def __repr__(self):
+        name = self.__class__.__name__
+        nbeads = len(self.listOfBeads)
+        return '{}({} beads)'.format(name, nbeads)
 
     def Add(self, residue):
         """Add in a residue atoms from bead"""
@@ -162,7 +157,6 @@ def create_attract1_subparser(parent):
                              "only display a warning on stderr")
 
 
-
 def create_subparser(parent):
     parser = parent.add_parser('reduce', help=__doc__)
     parser.set_defaults(func=run)
@@ -195,9 +189,55 @@ def get_reduction_data_path(args):
     return args.redName
 
 
+def read_reduction_parameters(path):
+    """Read file that contains parameters for correspondance between atoms
+    and beads.
+
+    Args:
+        path (str): path to parameter file.
+
+    Return:
+        dict[str]->CoarseRes: a dictionnary mapping a residue name with a 
+            CoarseRes instance.
+    """
+
+    # Read file and store non comment lines into a list of tokens.
+    allitems = []
+    with open(path, 'rt') as f:
+        for lineid, line in enumerate(f):
+            if not ptools.io.is_comment(line):
+                items = line.split()
+                
+                # Dies if less that 5 columns on the line.
+                if len(items) < 5:
+                    msg = 'expected at least 5 items (found {})'.format(len(items))
+                    raise ptools.io.FileParsingError(path, msg, line, lineid + 1)
+                
+                allitems.append(items[:5])
+
+    # Sort items in reverse order ensure that '*' lines are at the end of
+    # the list (and also is sorting is required for itertools.groupby)
+    allitems.sort(key=lambda items: items[0], reverse=True)
+    
+    # Construct the output structure.
+    resBeadAtomModel = {}
+    for res, residue in itertools.groupby(allitems, lambda items: items[0]):
+        residue = list(residue)
+        if res != '*':
+            resBeadAtomModel[res] = CoarseRes()
+            resBeadAtomModel[res].Add(residue)
+        else:
+            # Atoms named '*' have to be added to all residues.
+            for bead in resBeadAtomModel.values():
+                bead.Add(residue)
+
+    return resBeadAtomModel
+
+
+
 def run(args):
     print("This is reduce")
-    
+
     redname = get_reduction_data_path(args)
     ffname = args.ffName
     convname = args.convName
@@ -208,41 +248,4 @@ def run(args):
     ptools.io.check_file_exists(convname)
     ptools.io.check_file_exists(atomicname)
 
-    with open(redname, 'rt') as f:
-        lines = f.readlines()
-
-
-    resBeadAtomModel = {}
-    for i, line in enumerate(lines):
-        if not ptools.io.is_comment(line):
-            items = line.split()
-            if len(items) < 5:
-                err = 'expected at least 5 items (found {})'.format(len(items))
-                raise ptools.io.FileParsingError(redname, err, line, i + 1)
-            res = items[0]
-            if res != '*' and res not in resBeadAtomModel:
-                resBeadAtomModel[res] = CoarseRes()
-                ptools.io.info(res)
-
-
-    sys.stderr.write("%s: created the partition for residues " % (redname))
-    beadsInResidue = []
-    for line in lines:
-        if not ptools.io.is_comment(line):
-            items = line.split()
-            if len(items) >= 5:  # at least 5 fields are expected
-                beadsInResidue.append(items[0:5])
-        if (line[0:4] == '#===') and (len(beadsInResidue) != 0):
-            if beadsInResidue[0][0] == "*":
-                # "*" means a common bead for all residues or bases
-                for res in resBeadAtomModel.keys():
-                        resBeadAtomModel[res].Add(beadsInResidue)
-            else:
-                # if not a common bead, add it just to the right residue (or base)
-                res = beadsInResidue[0][0]
-                bead_nb = resBeadAtomModel[res].Add(beadsInResidue)
-                sys.stderr.write('%s(%d beads) ' % (res, bead_nb))
-            beadsInResidue = []
-    sys.stderr.write('\n')
-
-
+    resBeadAtomModel = read_reduction_parameters(redname)
