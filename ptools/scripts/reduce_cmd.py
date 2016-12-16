@@ -80,20 +80,20 @@ class CoarseRes:
         # return the number of bead per residue
         return len(self.listOfBeadId)
 
-    # def FillAtom(self, at_name, x, y, z):
-    #     """Fill an atom from bead with coordinates"""
-    #     # quickly check atom in atom list
-    #     # 1: browse beads
-    #     for bead in self.listOfBeads:
-    #         # 2: browse atoms in bead
-    #         if at_name in bead.listOfAtomNames:
-    #             # then find exactly where this atom is present
-    #             for atom in bead.listOfAtoms:
-    #                 if at_name == atom.name:
-    #                     atom.x = x
-    #                     atom.y = y
-    #                     atom.z = z
-    #                     atom.found = 1
+    def FillAtom(self, at_name, x, y, z):
+        """Fill an atom from bead with coordinates"""
+        # quickly check atom in atom list
+        # 1: browse beads
+        for bead in self.listOfBeads:
+            # 2: browse atoms in bead
+            if at_name in bead.listOfAtomNames:
+                # then find exactly where this atom is present
+                for atom in bead.listOfAtoms:
+                    if at_name == atom.name:
+                        atom.x = x
+                        atom.y = y
+                        atom.z = z
+                        atom.found = 1
 
     # def Reduce(self, infoResName, infoResId):
     #     """Reduce a bead with atoms present in bead"""
@@ -366,20 +366,37 @@ def count_residues(atomlist, residue_to_cg):
         list[str]: list of residue tags (one per residue).
         list[CoarseRes]: list of beads (one per residue).
     """
-    residuetag_list = []
-    bead_list = []
+    restaglist = []
+    beadlist = []
     for atom in atomlist:
         resname = atom.residType
         restag = residuetag(resname, atom.residId, atom.chainId)
-        if restag not in residuetag_list:
+        if restag not in restaglist:
             if resname in residue_to_cg:
-                residuetag_list.append(restag)
-                bead_list.append(copy.deepcopy(residue_to_cg[resname]))
+                restaglist.append(restag)
+                beadlist.append(copy.deepcopy(residue_to_cg[resname]))
             else:
                 msg = 'residue {} is unknown the residues <-> beads <-> atoms '\
                       'list!! It will not be reduced into coarse grain'.format(resname)
                 ptools.io.warning(msg)
-    return residuetag_list, bead_list
+    return restaglist, beadlist
+
+
+def fill_beads(atomlist, restaglist, beadlist):
+    """
+    Args:
+        atomlist (list[ptools.Atom]): list of all atoms read from topology.
+        restaglist (list[str]): list of residue tags (one per residue).
+        beadlist (list[CoarseRes]): list of beads (one per residue).
+    """
+    for atom in atomlist:
+        restag = residuetag(atom.residType, atom.residId, atom.chainId)
+        if restag in restaglist:
+            index = restaglist.index(restag)
+            beadlist[index].FillAtom(atom.atomType,
+                                     atom.coords.x,
+                                     atom.coords.y,
+                                     atom.coords.z)
 
 
 def run(args):
@@ -401,4 +418,5 @@ def run(args):
 
     atomList = read_atomic(atomicname, resConv, atomConv)
     residueTagList, coarseResList = count_residues(atomList, resBeadAtomModel)
+    fill_beads(atomList, residueTagList, coarseResList)
 
