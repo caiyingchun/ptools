@@ -197,7 +197,7 @@ def read_reduction_parameters(path):
         path (str): path to parameter file.
 
     Return:
-        dict[str]->CoarseRes: a dictionnary mapping a residue name with a 
+        dict[str]->CoarseRes: a dictionary mapping a residue name with a 
             CoarseRes instance.
     """
 
@@ -212,7 +212,7 @@ def read_reduction_parameters(path):
                 if len(items) < 5:
                     msg = 'expected at least 5 items (found {})'.format(len(items))
                     raise ptools.io.FileParsingError(path, msg, line, lineid + 1)
-                
+
                 allitems.append(items[:5])
 
     # Sort items in reverse order ensure that '*' lines are at the end of
@@ -234,6 +234,81 @@ def read_reduction_parameters(path):
     return resBeadAtomModel
 
 
+def read_forcefield_parameters(path):
+    """Read force field parameter file.
+
+    Args:
+        path (str): path to parameter file.
+
+    Return:
+        dict[int]->float: dictionary mapping the bead id with its charge.
+    """
+    charge_dict = {}
+    with open(path, 'rt') as f:
+        for lineid, line in enumerate(f):
+            if not ptools.io.is_comment(line):
+                items = line.split()
+                # Dies if less that 5 columns on the line.
+                if len(items) < 5:
+                    msg = 'expected at least 5 items (found {})'.format(len(items))
+                    raise ptools.io.FileParsingError(path, msg, line, lineid + 1)
+                bead_id = int(items[0])
+                bead_charge = float(items[3])
+                charge_dict[bead_id] = bead_charge
+    return charge_dict
+
+
+def read_type_conversion_parameters(path):
+    """Read atom and residue type conversion parameter file.
+
+    Args:
+        path (str): path to parameter file.
+
+    Return:
+        dict[str]->str: dictionary mapping old residue names with new ones
+        dict[str]->str: dictionary mapping old atom names with new ones
+    """
+    def raise_invalid_number_of_tokens(path, tokens, line, lineid):
+        msg = 'expected 2 tokens for residue type conversion and '\
+              '3 tokens for atom typeconversion '\
+              '(found {})'.format(len(tokens))
+        raise ptools.io.FileParsingError(path, msg, line, lineid)
+
+    def warn_duplicate_entry(entry, lineid):
+        msg = 'duplicate entry {} at line {}'.format(entry, lineid)
+        ptools.io.warning(msg)
+
+    def parse_residue_conversion():
+        res_old, res_new = items
+        if res_old in res_conv:
+            warn_duplicate_entry(res_old, lineid + 1)
+        else:
+            res_conv[res_old] = res_new
+
+    def parse_atom_conversion():
+        res, atom_old, atom_new = items
+        entry_old = "{}-{}".format(res, atom_old)
+        entry_new = "{}-{}".format(res, atom_new)
+        if entry_old in atom_conv:
+            warn_duplicate_entry(entry_old, lineid + 1)
+        else:
+            atom_conv[entry_old] = entry_new
+
+    res_conv = {}
+    atom_conv = {}
+    with open(path, 'rt') as f:
+        for lineid, line in enumerate(f):
+            if not ptools.io.is_comment(line):
+                items = line.split()
+                if len(items) == 2:
+                    parse_residue_conversion()
+                elif len(items) == 3:
+                    parse_atom_conversion()
+                else:
+                    raise_invalid_number_of_tokens(path, tokens, line, lineid + 1)
+    
+    return res_conv, atom_conv
+
 
 def run(args):
     print("This is reduce")
@@ -249,3 +324,6 @@ def run(args):
     ptools.io.check_file_exists(atomicname)
 
     resBeadAtomModel = read_reduction_parameters(redname)
+    beadChargeDic = read_forcefield_parameters(ffname)
+    resConv, atomConv = read_type_conversion_parameters(convname)
+
