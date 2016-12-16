@@ -189,6 +189,11 @@ def get_reduction_data_path(args):
     return args.redName
 
 
+def atomtag(resname, atomname):
+    """Return an atom tag in the format <residue_name>-<atom_name>."""
+    return "{}-{}".format(resname, atomname)
+
+
 def read_reduction_parameters(path):
     """Read file that contains parameters for correspondance between atoms
     and beads.
@@ -287,8 +292,8 @@ def read_type_conversion_parameters(path):
 
     def parse_atom_conversion():
         res, atom_old, atom_new = items
-        entry_old = "{}-{}".format(res, atom_old)
-        entry_new = "{}-{}".format(res, atom_new)
+        entry_old = atomtag(res, atom_old)
+        entry_new = atomtag(res, atom_new)
         if entry_old in atom_conv:
             warn_duplicate_entry(entry_old, lineid + 1)
         else:
@@ -310,6 +315,39 @@ def read_type_conversion_parameters(path):
     return res_conv, atom_conv
 
 
+def read_atomic(path, res_conv, atom_conv):
+    """Read all atom topology file.
+
+    Convert residue and atom names on the fly.
+
+    Args:
+        path (str): path to topology file.
+        res_conv (dict[str]->str): map old residue names with new ones.
+        atom_conv (dict[str]->str): map old atom names with new ones
+
+    Return:
+        list[]: atoms read from input file.
+    """
+    rb = ptools.Rigidbody(path)
+    atomlist = []
+    for i in xrange(len(rb)):
+        atom = rb.CopyAtom(i)
+        
+        # Residue name conversion.
+        resname = atom.residType
+        if resname in res_conv:
+            atom.residType = res_conv[resname]
+
+        # Atom name conversion.
+        atomname = atomtag(atom.residType, atom.atomType)
+        if atomname in atom_conv:
+            name = atom_conv[atomname].split()[1]
+            atom.atomType = name
+
+        atomlist.append(atom)
+    return atomlist
+
+
 def run(args):
     print("This is reduce")
 
@@ -326,4 +364,6 @@ def run(args):
     resBeadAtomModel = read_reduction_parameters(redname)
     beadChargeDic = read_forcefield_parameters(ffname)
     resConv, atomConv = read_type_conversion_parameters(convname)
+
+    read_atomic(atomicname, resConv, atomConv)
 
