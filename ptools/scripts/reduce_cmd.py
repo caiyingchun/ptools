@@ -175,7 +175,7 @@ def create_subparser(parent):
     subparsers = parser.add_subparsers()
     create_attract1_subparser(subparsers)
 
-
+    
 def get_reduction_data_path(args):
     """Return path to reduction data file.
 
@@ -215,7 +215,7 @@ def read_reduction_parameters(path):
         path (str): path to parameter file.
 
     Returns:
-        dict[str]->CoarseRes: a dictionary mapping a residue name with a
+        dict[str]->CoarseRes: a dictionary mapping a residue name with a 
             CoarseRes instance.
     """
 
@@ -225,7 +225,7 @@ def read_reduction_parameters(path):
         for lineid, line in enumerate(f):
             if not ptools.io.is_comment(line):
                 items = line.split()
-
+                
                 # Dies if less that 5 columns on the line.
                 if len(items) < 5:
                     msg = 'expected at least 5 items (found {})'.format(len(items))
@@ -236,7 +236,7 @@ def read_reduction_parameters(path):
     # Sort items in reverse order ensure that '*' lines are at the end of
     # the list (and also is sorting is required for itertools.groupby)
     allitems.sort(key=lambda items: items[0], reverse=True)
-
+    
     # Construct the output structure.
     resBeadAtomModel = {}
     for res, residue in itertools.groupby(allitems, lambda items: items[0]):
@@ -324,7 +324,7 @@ def read_type_conversion_parameters(path):
                     parse_atom_conversion()
                 else:
                     raise_invalid_number_of_tokens(path, items, line, lineid + 1)
-
+    
     return res_conv, atom_conv
 
 
@@ -345,7 +345,7 @@ def read_atomic(path, res_conv, atom_conv):
     atomlist = []
     for i in xrange(len(rb)):
         atom = rb.CopyAtom(i)
-
+        
         # Residue name conversion.
         resname = atom.residType
         if resname in res_conv:
