@@ -4,6 +4,7 @@
 from __future__ import print_function
 
 import argparse
+import copy
 import itertools
 import os
 import sys
@@ -190,8 +191,13 @@ def get_reduction_data_path(args):
 
 
 def atomtag(resname, atomname):
-    """Return an atom tag in the format <residue_name>-<atom_name>."""
-    return "{}-{}".format(resname, atomname)
+    """Return a string in the format <residue_name>-<atom_name>."""
+    return '{}-{}'.format(resname, atomname)
+
+
+def residuetag(resname, resid, chain):
+    """Return a string in the format <residue_name>-<residue_id>-<chain_id>."""
+    return '{}-{}-{}'.format(resname, resid, chain)
 
 
 def read_reduction_parameters(path):
@@ -201,7 +207,7 @@ def read_reduction_parameters(path):
     Args:
         path (str): path to parameter file.
 
-    Return:
+    Returns:
         dict[str]->CoarseRes: a dictionary mapping a residue name with a 
             CoarseRes instance.
     """
@@ -245,7 +251,7 @@ def read_forcefield_parameters(path):
     Args:
         path (str): path to parameter file.
 
-    Return:
+    Returns:
         dict[int]->float: dictionary mapping the bead id with its charge.
     """
     charge_dict = {}
@@ -269,7 +275,7 @@ def read_type_conversion_parameters(path):
     Args:
         path (str): path to parameter file.
 
-    Return:
+    Returns:
         dict[str]->str: dictionary mapping old residue names with new ones
         dict[str]->str: dictionary mapping old atom names with new ones
     """
@@ -325,7 +331,7 @@ def read_atomic(path, res_conv, atom_conv):
         res_conv (dict[str]->str): map old residue names with new ones.
         atom_conv (dict[str]->str): map old atom names with new ones
 
-    Return:
+    Returns:
         list[]: atoms read from input file.
     """
     rb = ptools.Rigidbody(path)
@@ -348,6 +354,34 @@ def read_atomic(path, res_conv, atom_conv):
     return atomlist
 
 
+def count_residues(atomlist, residue_to_cg):
+    """Create the list of residue tags and residue beads.
+
+    Args:
+        atomlist (list[ptools.Atom]): list of all atoms read from topology.
+        residue_to_cg (dict[str]->CoarseRes): map the residue name with a
+            coarse grain representation.
+
+    Returns:
+        list[str]: list of residue tags (one per residue).
+        list[CoarseRes]: list of beads (one per residue).
+    """
+    residuetag_list = []
+    bead_list = []
+    for atom in atomlist:
+        resname = atom.residType
+        restag = residuetag(resname, atom.residId, atom.chainId)
+        if restag not in residuetag_list:
+            if resname in residue_to_cg:
+                residuetag_list.append(restag)
+                bead_list.append(copy.deepcopy(residue_to_cg[resname]))
+            else:
+                msg = 'residue {} is unknown the residues <-> beads <-> atoms '\
+                      'list!! It will not be reduced into coarse grain'.format(resname)
+                ptools.io.warning(msg)
+    return residuetag_list, bead_list
+
+
 def run(args):
     print("This is reduce")
 
@@ -365,5 +399,6 @@ def run(args):
     beadChargeDic = read_forcefield_parameters(ffname)
     resConv, atomConv = read_type_conversion_parameters(convname)
 
-    read_atomic(atomicname, resConv, atomConv)
+    atomList = read_atomic(atomicname, resConv, atomConv)
+    residueTagList, coarseResList = count_residues(atomList, resBeadAtomModel)
 
