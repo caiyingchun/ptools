@@ -95,41 +95,50 @@ class CoarseRes:
                         atom.z = z
                         atom.found = 1
 
-    # def Reduce(self, infoResName, infoResId):
-    #     """Reduce a bead with atoms present in bead"""
-    #     output = []
-    #     # reduce all beads in a residue
-    #     # for each bead in the residue
-    #     for bead in self.listOfBeads:
-    #         reduce_size = 0
-    #         reduce_x = 0.0
-    #         reduce_y = 0.0
-    #         reduce_z = 0.0
-    #         sum_wgt = 0.0
-    #         # for each atom of a bead
-    #         for atom in bead.listOfAtoms:
-    #             if atom.found == 1:
-    #                 reduce_size += 1
-    #                 reduce_x += atom.x * atom.weight
-    #                 reduce_y += atom.y * atom.weight
-    #                 reduce_z += atom.z * atom.weight
-    #                 sum_wgt += atom.weight
-    #             else:
-    #                 message = "ERROR: missing atom %s in bead %s %2d for residue %s %d. Please fix your PDB!\n" \
-    #                           % (atom.name, bead.name, bead.id, infoResName, infoResId)
-    #                 if options.warning:
-    #                     sys.stderr.write(message)
-    #                     sys.stderr.write("Continue execution as required ...\n")
-    #                 else:
-    #                     raise Exception(message)
-    #         if reduce_size == bead.size:
-    #             coord = Coord3D(reduce_x / sum_wgt, reduce_y / sum_wgt, reduce_z / sum_wgt)
-    #             output.append([coord, bead.name, bead.id])
-    #     return output
+    def Reduce(self, infoResName, infoResId, fail_on_error=True):
+        """Reduce a bead with atoms present in bead"""
+        output = []
+        # reduce all beads in a residue
+        # for each bead in the residue
+        for bead in self.listOfBeads:
+            reduce_size = 0
+            reduce_x = 0.0
+            reduce_y = 0.0
+            reduce_z = 0.0
+            sum_wgt = 0.0
+            # for each atom of a bead
+            for atom in bead.listOfAtoms:
+                if atom.found == 1:
+                    reduce_size += 1
+                    reduce_x += atom.x * atom.weight
+                    reduce_y += atom.y * atom.weight
+                    reduce_z += atom.z * atom.weight
+                    sum_wgt += atom.weight
+                else:
+                    message = "missing atom %(atomname)s "\
+                              "in bead %(beadname)s %(beadid)2d "\
+                              "for residue %(resname)s:%(resid)d. "\
+                              "Please fix your PDB!\n" % {'atomname': atom.name,
+                                                          'beadname': bead.name,
+                                                          'beadid': bead.id,
+                                                          'resname': infoResName,
+                                                          'resid': infoResId}
+                    if fail_on_error:
+                        raise Exception(message)
+                    else:
+                        ptools.io.warning(message)
+                        ptools.io.warning("Continue execution as required...")
+            if reduce_size == bead.size:
+                x = reduce_x / sum_wgt
+                y = reduce_y / sum_wgt
+                z = reduce_z / sum_wgt
+                coord = ptools.Coord3D(x, y, z)
+                output.append([coord, bead.name, bead.id])
+        return output
 
-    # def Show(self):
-    #     for bead in self.listOfBeads:
-    #         print bead.name, bead.id, bead.size, bead.atomIdList
+    def Show(self):
+        for bead in self.listOfBeads:
+            print(bead.name, bead.id, bead.size, bead.atomIdList)
 
 
 
@@ -347,7 +356,7 @@ def read_atomic(path, res_conv, atom_conv):
         # Atom name conversion.
         atomname = atomtag(atom.residType, atom.atomType)
         if atomname in atom_conv:
-            name = atom_conv[atomname].split()[1]
+            name = atom_conv[atomname].split('-')[1]
             atom.atomType = name
 
         atomlist.append(atom)
@@ -399,9 +408,61 @@ def fill_beads(atomlist, restaglist, beadlist):
                                      atom.coords.z)
 
 
-def run(args):
-    print("This is reduce")
+def reduce_beads(restaglist, beadlist, bead_charge_map):
+    """Reduction to coarse grain model.
 
+    Args:
+        restaglist (list[str]): list of residue tags (one per residue).
+        beadlist (list[CoarseRes]): list of beads (one per residue).
+        bead_charge_map (dict[int]->float): dictionary mapping the bead id with 
+            its charge.
+
+    Returns:
+        list[ptools.Atom]: coarse grain model as an atom list.
+    """
+    cgmodel = []
+    atom_count = 0
+    for i, restag in enumerate(restaglist):
+        tag = restag.split('-')
+        resname = tag[0]
+        resid = int(tag[1])
+        resbead = beadlist[i].Reduce(resname, resid)
+        for bead in resbead:
+            coord = bead[0]
+            atomname = bead[1]
+            atomtypeid = bead[2]
+            atomcharge = 0.0
+            if atomtypeid in bead_charge_map:
+                atomcharge = bead_charge_map[atomtypeid]
+            else:
+                msg = "cannot find charge for bead {} {:2d}... defaults to 0.0"
+                ptools.io.warning(msg.format(atomname, atomtypeid))
+            atom_count += 1
+
+            prop = ptools.Atomproperty()
+            prop.atomType = atomname
+            prop.atomId = atom_count
+            prop.residId = resid
+            prop.residType = resname
+            prop.chainId = ' '
+            prop.extra = '{:5d}{:8.3f}{:2d}{:2d}'.format(atomtypeid,
+                                                         atomcharge, 0, 0)
+            newatom = ptools.Atom(prop, coord)
+            cgmodel.append(newatom)
+    return cgmodel
+
+
+def print_red_output(cgmodel):
+    """Print coarse grain model to stdout as a reduced PDB file.
+
+    Args:
+        cgmodel (list[ptools.Atom]): coarse grain atom list.
+    """
+    print("HEADER    ATTRACT1 REDUCED PDB FILE")
+    print('\n'.join(atom.ToPdbString() for atom in cgmodel))
+
+
+def run(args):
     redname = get_reduction_data_path(args)
     ffname = args.ffName
     convname = args.convName
@@ -413,10 +474,13 @@ def run(args):
     ptools.io.check_file_exists(atomicname)
 
     resBeadAtomModel = read_reduction_parameters(redname)
-    beadChargeDic = read_forcefield_parameters(ffname)
+    beadChargeDict = read_forcefield_parameters(ffname)
     resConv, atomConv = read_type_conversion_parameters(convname)
 
     atomList = read_atomic(atomicname, resConv, atomConv)
     residueTagList, coarseResList = count_residues(atomList, resBeadAtomModel)
     fill_beads(atomList, residueTagList, coarseResList)
+    cgmodel = reduce_beads(residueTagList, coarseResList, beadChargeDict)
+    # print_red_output(cgmodel)
 
+    print(len(cgmodel))
