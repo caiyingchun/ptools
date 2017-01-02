@@ -1,7 +1,7 @@
 .PHONY: help clean clean-build clean-pyc clean-test lint test docs 
 
 # Name of the docker image.
-DOCKER_IMAGE = ptools:youpi
+DOCKER_IMAGE = ptools:dev
 
 help:
 	@echo "usage: make <command>"
