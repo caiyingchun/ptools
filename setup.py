@@ -415,23 +415,23 @@ def setup_package():
 
 
 def setup_cpp_tests():
-    import platform
-    import string
+    template_variables = {
+        'CPP_COMPILER': 'gcc',
+        'CPP_FLAGS': '',
+        'BOOST_INCLUDE_DIR': find_boost()
+    }
 
-    boost_dir = find_boost()
+    # Read Makefile template and modify it according to the template variable
+    # dictionnary.
+    with open('Tests/cpp/Makefile.in', 'rt') as f:
+        template = f.read()
+    for variable, value in template_variables.items():
+        variable = '@' + variable + '@'
+        template = template.replace(variable, value)
 
-    if sys.platform == 'darwin':
-        cpp_compile_string = "clang++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
-        try:
-            p = subprocess.Popen(["ln", "-s", "../../build"], cwd="Tests/cpp/").wait()
-        except:
-            print("Warning: Unable to make symbolic link from Tests/cpp/build to build, skipping...")
-    else:
-        cpp_compile_string = "g++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
-
-    lines = open('Tests/cpp/Makefile_MODEL','r').readlines()
-    newlines = [ string.replace(line, 'CPP_COMPILE_STRING', cpp_compile_string) for line in lines ]
-    open("Tests/cpp/Makefile",'w').writelines(newlines)
+    # Write actual Makefile used to compile and run C++ tests.
+    with open('Tests/cpp/Makefile', 'wt') as f:
+        f.write(template)
 
 
 if __name__ == '__main__':
