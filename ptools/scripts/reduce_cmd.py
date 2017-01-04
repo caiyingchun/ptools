@@ -233,21 +233,31 @@ def read_reduction_parameters(path):
 
                 allitems.append(items[:5])
 
-    # Sort items in reverse order ensure that '*' lines are at the end of
+    # Sort items in reverse order ensure that '*' lines are at the start of
     # the list (and also is sorting is required for itertools.groupby)
-    allitems.sort(key=lambda items: items[0], reverse=True)
+    allitems.sort(key=lambda items: items[0], reverse=False)
 
-    # Construct the output structure.
+    # Construct the output structure in two steps.
+    
+    # 1. Create empty coarse residues.
     resBeadAtomModel = {}
     for res, residue in itertools.groupby(allitems, lambda items: items[0]):
-        residue = list(residue)
         if res != '*':
             resBeadAtomModel[res] = CoarseRes()
-            resBeadAtomModel[res].Add(residue)
-        else:
+
+    # 2. Add beads to residues.
+    for res, residue in itertools.groupby(allitems, lambda items: items[0]):
+        residue = list(residue)
+        if res == '*':
             # Atoms named '*' have to be added to all residues.
             for bead in resBeadAtomModel.values():
                 bead.Add(residue)
+        else:
+            resBeadAtomModel[res].Add(residue)
+
+    # NOTE: the construction could be done in a single step.
+    # It is done this way because doing it in a single step would change
+    # beads order in output file (see diff with ad64a4a).
 
     return resBeadAtomModel
 
@@ -414,6 +424,7 @@ def reduce_beads(restaglist, beadlist, bead_charge_map):
         beadlist (list[CoarseRes]): list of beads (one per residue).
         bead_charge_map (dict[int]->float): dictionary mapping the bead id with
             its charge.
+        keep_original_order (bool): sort beads as in older version of PTools.
 
     Returns:
         list[ptools.Atom]: coarse grain model as an atom list.
@@ -446,6 +457,7 @@ def reduce_beads(restaglist, beadlist, bead_charge_map):
             prop.extra = '{:5d}{:8.3f}{:2d}{:2d}'.format(atomtypeid,
                                                          atomcharge, 0, 0)
             newatom = ptools.Atom(prop, coord)
+
             cgmodel.append(newatom)
     return cgmodel
 
