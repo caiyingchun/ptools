@@ -44,6 +44,7 @@ clean-pyc:
 clean-test:
 	rm -f Tests/cpp/runner.cpp
 	rm -f Tests/cpp/ptoolstest.bin
+	rm -f Tests/cpp/Makefile
 	rm -rf .cache
 
 
@@ -52,7 +53,7 @@ lint:
 	flake8 --ignore=F401 ptools  # Ignore the 'imported but unused' warnings
 
 
-test: build
+test:
 	$(MAKE) -C Tests
 
 

@@ -1,13 +1,17 @@
 
-CPP_COMPILER = @CPP_COMPILER@
-CPP_FLAGS = @CPP_FLAGS@
+UNAME := $(shell uname -s)
+CC := gcc
+
 BOOST_INCLUDE_DIR = @BOOST_INCLUDE_DIR@
+LIBPYTHON = $(shell python -c 'import sys; print "python{}.{}".format(sys.version_info.major, sys.version_info.minor)')
+LIBPTOOLS = $(shell find ../../build -name '*ptools.so')
+LIBPTOOLS_DIR = $(dir $(LIBPTOOLS))
 
 PTOOLS_TEST_BIN = ptoolstest.bin
 PTOOLS_TEST_SRC = runner.cpp
 
-LIBPTOOLS=$(shell find ../../build -name '*ptools.so')
-LIBPYTHON=$(shell python -c 'import sys; print "python{}.{}".format(sys.version_info.major, sys.version_info.minor)')
+CFLAGS = -O2 -I. -I../../headers -I$(BOOST_INCLUDE_DIR)
+LDFLAGS = -l$(LIBPYTHON) -lstdc++
 
 
 all: unittests
@@ -20,15 +24,25 @@ help:
 	@echo "    unittests - run Python and C++ tests (default)"
 	@echo "    clean - remove temporary files"
 
+
+ifeq ($(UNAME), Darwin)
+unittests: $(PTOOLS_TEST_BIN)
+	echo "running C++ tests"
+	DYLD_LIBRARY_PATH=$(LIBPTOOLS_DIR):$$DYLD_LIBRARY_PATH ./$^
+else
 unittests: $(PTOOLS_TEST_BIN)
 	echo "running C++ tests"
 	./$^
+endif
 
-$(PTOOLS_TEST_BIN): $(PTOOLS_TEST_SRC)
-	$(CPP_COMPILER) $(CPP_FLAGS) -O2 -I. -I../../headers -I$(BOOST_INCLUDE_DIR) -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON) -lstdc++
+
+$(PTOOLS_TEST_BIN): $(PTOOLS_TEST_SRC) $(LIBPTOOLS)
+	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
+
 
 $(PTOOLS_TEST_SRC): ptoolstest.h
 	python cxxtestgen.py --error-printer $< > $@
+
 
 clean:
 	rm -rf $(PTOOLS_TEST_SRC) $(PTOOLS_TEST_BIN)

@@ -3,13 +3,13 @@
 from __future__ import print_function
 
 import os
-import tarfile
-import urllib2
 import shutil
 import subprocess
-import StringIO
 import sys
+import tarfile
 import textwrap
+import urllib2
+import StringIO
 
 from distutils import log
 from distutils.core import setup
@@ -46,14 +46,12 @@ else:
         return subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
     check_output = _check_output
 
-# For MacOS
+
+# OS X specific linking options.
 if sys.platform == 'darwin':
     from distutils import sysconfig
     vars = sysconfig.get_config_vars()
     vars['LDSHARED'] = vars['LDSHARED'].replace('-bundle', '-dynamiclib')
-    # clang required to get c++ libraries right
-    os.environ['CXX'] = 'clang++'
-    os.environ['CC'] = 'clang'
 
 
 class build_ext(_build_ext):
@@ -397,9 +395,9 @@ def setup_package():
     sources.append("bindings/_ptools.pyx")
 
     ptools = Extension('_ptools',
-                      sources=sources,
-                      language='c++',
-                      include_dirs=['headers'])
+                       sources=sources,
+                       language='c++',
+                       include_dirs=['headers'])
 
     cgopt = Extension('cgopt',
                       sources=['PyAttract/cgopt.pyx',
@@ -416,8 +414,6 @@ def setup_package():
 
 def setup_cpp_tests():
     template_variables = {
-        'CPP_COMPILER': 'gcc',
-        'CPP_FLAGS': '',
         'BOOST_INCLUDE_DIR': find_boost()
     }
 
