@@ -8,6 +8,8 @@ import itertools
 import os
 import sys
 
+import yaml
+
 import ptools
 
 
@@ -15,6 +17,8 @@ DEFAULT_PROT_REDUCTION_DATA = os.path.join(ptools.DATA_DIR, 'at2cg.prot.dat')
 DEFAULT_DNA_REDUCTION_DATA = os.path.join(ptools.DATA_DIR, 'at2cg.dna.dat')
 DEFAULT_FF_PARAM_DATA = os.path.join(ptools.DATA_DIR, 'ff_param.dat')
 DEFAULT_CONVERSION_DATA = os.path.join(ptools.DATA_DIR, 'type_conversion.dat')
+
+DEFAULT_ATTRACT2_REDUCTION_DATA = os.path.join(ptools.DATA_DIR, 'at2cg_attract2.yml')
 
 
 class AtomInBead:
@@ -31,7 +35,7 @@ class AtomInBead:
         return "%s %8.3f %8.3f %8.3f %3.1f %d" % (self.name, self.x, self.y, self.z, self.weight, self.found)
 
 
-class Bead:
+class BeadAttract1:
     """Class definition for a bead"""
     def __init__(self, name, id):
         self.name = name        # bead name
@@ -66,7 +70,7 @@ class CoarseRes:
                 # in bead not in residue than create it
                 if bd_id not in self.listOfBeadId:
                     self.listOfBeadId.append(bd_id)
-                    self.listOfBeads.append(Bead(bd_name, bd_id))
+                    self.listOfBeads.append(BeadAttract1(bd_name, bd_id))
                 # add atom in bead in residue
                 bead_position = self.listOfBeadId.index(bd_id)
                 bead = self.listOfBeads[bead_position]
@@ -165,6 +169,18 @@ def create_attract1_subparser(parent):
                              "only display a warning on stderr")
 
 
+def create_attract2_subparser(parent):
+    parser = parent.add_parser('attract2',
+                               help='reduce using the attract2 force field')
+    parser.set_defaults(forcefield='attract2')
+    parser.add_argument('--red', dest='redName',
+                        help="path to correspondance file between atoms and beads file")
+    parser.add_argument('--allow_missing', action='store_true',
+                        dest='warning',
+                        help="don't stop program if atoms are missing, "
+                             "only display a warning on stderr")
+
+
 def create_subparser(parent):
     parser = parent.add_parser('reduce', help=__doc__)
     parser.set_defaults(func=run)
@@ -174,6 +190,7 @@ def create_subparser(parent):
 
     subparsers = parser.add_subparsers()
     create_attract1_subparser(subparsers)
+    create_attract2_subparser(subparsers)
 
 
 def get_reduction_data_path(args):
@@ -185,15 +202,18 @@ def get_reduction_data_path(args):
         str: path to reduction parameter file.
     """
     if not args.redName:
-        if args.molProt:
-            return DEFAULT_PROT_REDUCTION_DATA
-        elif args.molDNA:
-            return DEFAULT_DNA_REDUCTION_DATA
-        else:
-            err = "error: one of the arguments --prot --dna is required when "\
-                  "not using --red option"
-            print(err, file=sys.stderr)
-            sys.exit(2)
+        if args.forcefield == 'attract1':
+            if args.molProt:
+                return DEFAULT_PROT_REDUCTION_DATA
+            elif args.molDNA:
+                return DEFAULT_DNA_REDUCTION_DATA
+            else:
+                err = "error: one of the arguments --prot --dna is required when "\
+                      "not using --red option"
+                print(err, file=sys.stderr)
+                sys.exit(2)
+        elif args.forcefield == 'attract2':
+            return DEFAULT_ATTRACT2_REDUCTION_DATA
     return args.redName
 
 
@@ -473,6 +493,12 @@ def print_red_output(cgmodel):
 
 
 def run(args):
+    fmap = {'attract1': run_attract1,
+            'attract2': run_attract2}
+    fmap[args.forcefield](args)
+
+
+def run_attract1(args):
     redname = get_reduction_data_path(args)
     ffname = args.ffName
     convname = args.convName
@@ -492,3 +518,104 @@ def run(args):
     fill_beads(atomList, residueTagList, coarseResList)
     cgmodel = reduce_beads(residueTagList, coarseResList, beadChargeDict)
     print_red_output(cgmodel)
+
+
+
+
+
+
+from pprint import pprint
+
+
+class Bead(ptools.Atomproperty):
+    def __init__(self, atoms, parameters):
+        self.atoms = atoms
+        self.atomType = parameters.get('name', 'X')
+        self.atomCharge = parameters.get('charge', 0.0)
+        self.chainId = self.atoms[0].chainId
+
+        typeid = parameters.get('typeid', 0)
+        self.extra = '{:5d}{:8.3f} 0 0'.format(typeid, self.atomCharge)
+
+        # List of atom names that should be part of the bead.
+        self.atom_names = parameters['atoms']
+
+    @property
+    def coords(self):
+        """Bead coordinates, i.e. the center of mass of the atoms
+        that constitute the bead.
+        """ 
+        x = ptools.Coord3D()
+        for atom in self.atoms:
+            x += atom.coords
+        n = 1. / len(self.atoms)
+        return x * n
+
+    def topdb(self):
+        return ptools.Atom(self, self.coords).ToPdbString()
+
+
+
+class CoarseResidue:
+    """Create a residue coarse grain model from an atomistic model."""
+    def __init__(self, name, atoms, parameters):
+        self.name = name
+        self.parameters = parameters
+        self.atoms = atoms
+        self.beads = []
+
+        for bead_param in self.parameters:
+            atoms = [a for a in self.atoms if a.atomType in bead_param['atoms']]
+            b = Bead(atoms, bead_param)
+            b.residType = self.name
+            self.beads.append(b)
+
+    @property
+    def resid(self):
+        return self.beads[0].residId
+
+    @resid.setter
+    def resid(self, value):
+        for b in self.beads:
+            b.residId = value
+
+    def topdb(self):
+        return '\n'.join(b.topdb() for b in self.beads)
+
+
+def run_attract2(args):
+    
+    redname = get_reduction_data_path(args)
+    atomicname = args.pdb
+
+    ptools.io.check_file_exists(redname)
+    ptools.io.check_file_exists(atomicname)
+
+    # Read files that maps residue name with reduction rules.
+    with open(redname, 'rt') as f:
+        reduction_parameters = yaml.load(f)
+
+    # Read topology and create a list of atoms for each atom in the Rigidbody.
+    rb = ptools.Rigidbody(atomicname)
+    atoms = [rb.CopyAtom(i) for i in xrange(len(rb))]
+
+    # Residue list: group atoms by residue tag.
+    # A residue is two items: (<residue tag>, <atom list iterator>).
+    keyfunc = lambda atom: residuetag(atom.residType, atom.chainId, atom.residId)
+    residue_list = itertools.groupby(atoms, key=keyfunc)
+
+
+    atomid = 1
+    for restag, resatoms in residue_list:
+        resname, chain, resid = restag.split('-')
+        coarse_res = CoarseResidue(resname,
+                                   list(resatoms),
+                                   reduction_parameters[resname])
+        coarse_res.resid = resid
+        for bead in coarse_res.beads:
+            bead.atomId = atomid
+            atomid += 1
+        
+        print(coarse_res.topdb())
+
+

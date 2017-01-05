@@ -1,0 +1,136 @@
+ALA: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid:  2, atoms: [CB]}]
+
+ARG: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name:  CG, charge:  0.0, typeid:  3, atoms: [CG]},
+      {name: NEC, charge:  1.0, typeid:  4, atoms: [NE, CZ]}]
+
+ASN: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid:  5, atoms: [CB, CG, OD1, ND2]}]
+
+ASP: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge: -1.0, typeid:  6, atoms: [CB, CG, OD1, OD2]}]
+
+CYS: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid:  7, atoms: [CB, SG]}]
+
+GLN: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name:  CB, charge:  0.0, typeid:  8, atoms: [CG]},
+      {name: CN1, charge:  0.0, typeid:  9, atoms: [CD, OE1, NE2]}]
+
+GLU: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name:  CB, charge:  0.0, typeid: 10, atoms: [CG]},
+      {name: CO1, charge: -1.0, typeid: 11, atoms: [CD, OE1, OE2]}]
+
+GLY: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid:  1, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]}]
+
+HIS: &HIS 
+     [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid: 12, atoms: [CB, CG]},
+      {name: CSE, charge:  0.0, typeid: 13, atoms: [ND1, CD2, NE2, CE1]}]
+
+HSP: *HIS
+
+HSE: *HIS
+
+HSD: *HIS
+
+ILE: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid: 14, atoms: [CB, CG1, CG2, CD1]}]
+
+LEU: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid: 15, atoms: [CB, CG, CD1, CD2]}]
+
+LYS: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name:  CB, charge:  0.0, typeid: 16, atoms: [CG]},
+      {name:  CE, charge:  1.0, typeid: 17, atoms: [CE]}]
+
+MET: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid: 18, atoms: [CB, CG]},
+      {name: CSE, charge:  0.0, typeid: 19, atoms: [SD, CE]}]
+
+PHE: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid: 20, atoms: [CB, CG]},
+      {name: CSE, charge:  0.0, typeid: 21, atoms: [CD1, CD2, CE1, CE2, CZ]}]
+
+PRO: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid: 22, atoms: [CB, CG, CD]}]
+
+SER: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid: 23, atoms: [CB, OG]}]
+
+THR: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid: 24, atoms: [CB, OG1, CG2]}]
+
+TRP: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name:  CG, charge:  0.0, typeid: 25, atoms: [CG]},
+      {name: CSE, charge:  0.0, typeid: 26, atoms: [CD2, CE2, CE3, CH2, CZ3, CZ2]}]
+
+TYR: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid: 27, atoms: [CB, CG]},
+      {name: CSE, charge:  0.0, typeid: 28, atoms: [CD1, CD2, CE1, CE2, CZ, OH]}]
+
+VAL: [{name:   N, charge:  0.0, typeid: 30, atoms: [N]},
+      {name:  CA, charge:  0.0, typeid: 32, atoms: [CA]},
+      {name:   C, charge:  0.0, typeid: 32, atoms: [C]},
+      {name:   O, charge:  0.0, typeid: 31, atoms: [O]},
+      {name: CSE, charge:  0.0, typeid: 29, atoms: [CB, CG1, CG2]}]
+
+
