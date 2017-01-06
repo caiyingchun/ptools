@@ -482,13 +482,13 @@ def reduce_beads(restaglist, beadlist, bead_charge_map):
     return cgmodel
 
 
-def print_red_output(cgmodel):
+def print_red_output(cgmodel, forcefield):
     """Print coarse grain model to stdout as a reduced PDB file.
 
     Args:
         cgmodel (list[ptools.Atom]): coarse grain atom list.
     """
-    print("HEADER    ATTRACT1 REDUCED PDB FILE")
+    print("HEADER    {} REDUCED PDB FILE".format(forcefield))
     print('\n'.join(atom.ToPdbString() for atom in cgmodel))
 
 
@@ -521,11 +521,9 @@ def run_attract1(args):
 
 
 
-
-
-
-from pprint import pprint
-
+# --------------------------------------------------------------------------
+# Attract 2 material
+# --------------------------------------------------------------------------    
 
 class Bead(ptools.Atomproperty):
     def __init__(self, atoms, parameters):
@@ -551,39 +549,106 @@ class Bead(ptools.Atomproperty):
         n = 1. / len(self.atoms)
         return x * n
 
-    def topdb(self):
-        return ptools.Atom(self, self.coords).ToPdbString()
+    def toAtom(self):
+        """Return a ptools.Atom instance with current bead properties and
+        coordinates."""
+        return ptools.Atom(self, self.coords)
 
+    def topdb(self):
+        return self.toAtom().ToPdbString()
 
 
 class CoarseResidue:
     """Create a residue coarse grain model from an atomistic model."""
-    def __init__(self, name, atoms, parameters):
-        self.name = name
-        self.parameters = parameters
-        self.atoms = atoms
+    def __init__(self, resname, resid, resatoms, parameters):
+        self.resname = resname
+        self._resid = resid
         self.beads = []
 
-        for bead_param in self.parameters:
-            atoms = [a for a in self.atoms if a.atomType in bead_param['atoms']]
-            b = Bead(atoms, bead_param)
-            b.residType = self.name
-            self.beads.append(b)
+        for bead_param in parameters:
+            atoms = [a for a in resatoms if a.atomType in bead_param['atoms']]
+            rc = self._compare_expected_and_found_atoms(bead_param, atoms)
+            if rc != 2:
+                b = Bead(atoms, bead_param)
+                b.residType = self.resname
+                b.residId = self.resid
+                self.beads.append(b)
+            else:
+                msg = "skipping residue {}:{}".format(resname, resid)
+                ptools.io.warning(msg)
+
+    def _compare_expected_and_found_atoms(self, bead_param, atoms):
+        """Compare expected atoms from bead parameters to atoms actually found
+        in the residue.
+
+        Returns:
+            int: 0 if expected atoms are the same as found atoms
+                 1 if they differ
+                 2 if no expected atom has been found
+        """
+        if not atoms:
+            err = 'no atom found for bead {} (atoms={}) of residue {}:{}'
+            err = err.format(bead_param['name'], bead_param['atoms'],
+                             self.resname, self.resid)
+            ptools.io.warning(err)
+            return 2
+        elif len(atoms) != len(bead_param['atoms']):
+            msg = 'residue %(resname)s:%(resid)d, bead %(bead_name)s: '\
+                  'expected atoms %(expected_atoms)s, '\
+                  'found %(found_atoms)s' % {
+                      'resname': self.resname,
+                      'resid': self.resid,
+                      'bead_name': bead_param['name'],
+                      'expected_atoms': sorted(bead_param['atoms']),
+                      'found_atoms': sorted(a.atomType for a in atoms)
+                  }
+            ptools.io.warning(msg)
+            return 1
+        return 0
 
     @property
     def resid(self):
-        return self.beads[0].residId
+        return self._resid
 
     @resid.setter
     def resid(self, value):
         for b in self.beads:
             b.residId = value
+        self._resid = value
 
     def topdb(self):
         return '\n'.join(b.topdb() for b in self.beads)
 
 
+def rename_atoms_and_residues(atoms, residue_rename, atom_rename):
+    """Rename atom and residues according to data in rename maps.
+
+    Args:
+        atoms (list[ptools.Atom]): list of atom to be renamed.
+        residue_rename (dict[str]->str): map source residue name with target
+            residue name
+        atom_rename (dict[str]->dict[str]->str): map target residue name
+            with map mapping source atom name with target atom name.
+    """
+    for atom in atoms:
+        # Update residue names.
+        if atom.residType in residue_rename:
+            atom.residType = residue_rename[atom.residType]
+
+        # Update atom names: if '*' is in the rename map, all residue
+        # are affected.
+        if '*' in atom_rename and atom.atomType in atom_rename['*']:
+            atom.atomType = atom_rename['*'][atom.atomType]
+
+        # Update atom names: update specific residue atom names.
+        if atom.residType in atom_rename and atom.atomType in atom_rename[atom.residType]:
+            atom.atomType = atom_rename[atom.residType][atom.atomType]            
+
+
 def run_attract2(args):
+    residue_rename = {'HIE': 'HIS'}
+    atom_rename = {'*': {'OT': 'O', 'OT1': 'O', 'OT2': 'O'},
+                   'ILE': {'CD': 'CD1'}}
     
     redname = get_reduction_data_path(args)
     atomicname = args.pdb
@@ -599,23 +664,38 @@ def run_attract2(args):
     rb = ptools.Rigidbody(atomicname)
     atoms = [rb.CopyAtom(i) for i in xrange(len(rb))]
 
+    # Rename atoms to fit reduction parameters.
+    rename_atoms_and_residues(atoms, residue_rename, atom_rename)
+
     # Residue list: group atoms by residue tag.
     # A residue is two items: (<residue tag>, <atom list iterator>).
     keyfunc = lambda atom: residuetag(atom.residType, atom.chainId, atom.residId)
     residue_list = itertools.groupby(atoms, key=keyfunc)
 
-
+    cgmodel = []
     atomid = 1
     for restag, resatoms in residue_list:
         resname, chain, resid = restag.split('-')
-        coarse_res = CoarseResidue(resname,
-                                   list(resatoms),
-                                   reduction_parameters[resname])
-        coarse_res.resid = resid
-        for bead in coarse_res.beads:
-            bead.atomId = atomid
-            atomid += 1
-        
-        print(coarse_res.topdb())
+
+        if not resname in reduction_parameters:
+            msg = "don't know how to handle residue {0} "\
+                  "(no reduction rule found for this residue)..."\
+                  "skipping residue".format(resname)
+            ptools.io.warning(msg)
+
+        else:
+            coarse_res = CoarseResidue(resname, int(resid),
+                                       list(resatoms),
+                                       reduction_parameters[resname])
+            # Update bead atom id.
+            for bead in coarse_res.beads:
+                bead.atomId = atomid
+                atomid += 1
+
+            # Add beads from residue to coarse grain model.
+            for bead in coarse_res.beads:
+                cgmodel.append(bead.toAtom())
+
+    print_red_output(cgmodel, forcefield='ATTRACT2')
 
 
