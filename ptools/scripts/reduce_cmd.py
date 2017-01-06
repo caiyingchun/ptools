@@ -517,7 +517,7 @@ def run_attract1(args):
     residueTagList, coarseResList = count_residues(atomList, resBeadAtomModel)
     fill_beads(atomList, residueTagList, coarseResList)
     cgmodel = reduce_beads(residueTagList, coarseResList, beadChargeDict)
-    print_red_output(cgmodel)
+    print_red_output(cgmodel, 'ATTRACT1')
 
 
 # --------------------------------------------------------------------------
