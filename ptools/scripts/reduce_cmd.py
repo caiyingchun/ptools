@@ -620,81 +620,175 @@ class CoarseResidue:
         return '\n'.join(b.topdb() for b in self.beads)
 
 
-def rename_atoms_and_residues(atoms, residue_rename, atom_rename):
-    """Rename atom and residues according to data in rename maps.
+class Reducer:
+    """Class that handle reduction from an atomistic topology to a coarse
+    grain model.
 
-    Args:
-        atoms (list[ptools.Atom]): list of atom to be renamed.
+    The reduction consists of two steps, namely preprocessing and reduction
+    itself.
+
+    1 - Preprocessing
+    -----------------
+
+    Atom and residues from the all-atom topology are renamed if
+    necessary to make sure they match the reduction parameter file.
+
+    As an example, it is quite common that C-terminal oxygen atoms are named
+    'OT' (or any variation). Some coarse grain models such as ATTRACT1 and
+    ATTRACT2 will consider those atom in the exact same way as other oxygen
+    atoms. Hence, those models require renaming OT atoms into 'O'.
+
+    2 - Reduction
+    -------------
+
+    - top <- read all atom topology
+    - foreach residue in top
+          check residue is defined is reduction parameters
+          CREATE_RESIDUE_BEADS(residue, reduction parameters)
+
+    PROCEDURE CREATE_RESIDUE_BEADS (residue, parameters)
+        foreach bead_parameter in parameters
+            atoms <- find atoms in residu that belong to current bead
+            check number of atoms found vs number that should have been found
+            create a bead:
+                name, type, charge, etc. are determined from parameters
+                coordinates is the barycentre of atoms that belong to the bead
+
+
+    Attributes:
         residue_rename (dict[str]->str): map source residue name with target
-            residue name
+            residue name (see Preprocessing).
         atom_rename (dict[str]->dict[str]->str): map target residue name
-            with map mapping source atom name with target atom name.
+            with map mapping source atom name with target atom name
+            (see Preprocessing).
     """
-    for atom in atoms:
-        # Update residue names.
-        if atom.residType in residue_rename:
-            atom.residType = residue_rename[atom.residType]
 
-        # Update atom names: if '*' is in the rename map, all residue
-        # are affected.
-        if '*' in atom_rename and atom.atomType in atom_rename['*']:
-            atom.atomType = atom_rename['*'][atom.atomType]
+    residue_rename = {}
+    atom_rename = {}
 
-        # Update atom names: update specific residue atom names.
-        if atom.residType in atom_rename and atom.atomType in atom_rename[atom.residType]:
-            atom.atomType = atom_rename[atom.residType][atom.atomType]
+    def __init__(self, topology_file, reduction_parameters_file):
+        """Initialize Reduce from topology file and reduction parameter file.
+
+        Args:
+            topology_file (str): path to all-atom topology file (PDB format).
+            reduction_parameter_file (str): path to reduction parameter file
+                (YAML format).
+
+        Attributes:
+            allatom_file (str): path to all-atom topology file
+            reduction_file (str): path to reduction parameter file
+            atoms (list[ptools.Atom]): list of all atoms read from topology
+            reduction_parameters (dict[str]->list): map residue names with a
+                list of bead parameter for each bead in a residue.
+            beads (list[Bead]): list all coarse grain beads for this model
+        """
+        self.allatom_file = topology_file
+        self.reduction_file = reduction_parameters_file
+        self.atoms = []
+        self.reduction_parameters = {}
+        self.beads = []
+
+        ptools.io.check_file_exists(self.reduction_file)
+        ptools.io.check_file_exists(self.allatom_file)
+
+        self.read_reduction_parameters()
+        self.read_topology()
+
+    def read_reduction_parameters(self):
+        """Read YAML reduction parameter file."""
+        with open(self.reduction_file, 'rt') as f:
+            self.reduction_parameters = yaml.load(f)
+
+    def read_topology(self):
+        """Read PDB topology file."""
+        rb = ptools.Rigidbody(self.allatom_file)
+        self.atoms = [rb.CopyAtom(i) for i in xrange(len(rb))]
+
+    def rename_atoms_and_residues(self):
+        """Rename atom and residues according to data in rename maps."""
+        def should_rename_residue():
+            return atom.residType in self.residue_rename
+
+        def rename_residue():
+            atom.residType = self.residue_rename[atom.residType]
+
+        def should_rename_atom_for_every_residue():
+            """If '*' is in the atom rename map, all residues are affected."""
+            return '*' in self.atom_rename and atom.atomType in self.atom_rename['*']
+
+        def should_rename_atom():
+            return atom.residType in self.atom_rename and \
+                atom.atomType in self.atom_rename[atom.residType]
+
+        def rename_atom(name):
+            atom.atomType = name
+
+        for atom in self.atoms:
+            if should_rename_residue():
+                rename_residue()
+
+            if should_rename_atom_for_every_residue():
+                rename_atom(self.atom_rename['*'][atom.atomType])
+
+            if should_rename_atom():
+                rename_atom(self.atom_rename[atom.residType][atom.atomType])
+
+    def reduce(self):
+        """Actual reduction method.
+
+        Group atoms by residue then iterate over those residues to create
+        coarse grain residues.
+        """
+        def has_rule_for_residue_reduction():
+            if resname not in self.reduction_parameters:
+                msg = "don't know how to handle residue {0} "\
+                      "(no reduction rule found for this residue)..."\
+                      "skipping this residue".format(resname)
+                ptools.io.warning(msg)
+                return False
+            return True
+
+        # Rename atoms and residues so that they will match reduction
+        # parameters.
+        self.rename_atoms_and_residues()
+
+        # Residue list: group atoms by residue tag.
+        # A residue is two items: (<residue tag>, <atom list iterator>).
+        residue_list = itertools.groupby(self.atoms,
+                                         key=lambda atom: residuetag(atom.residType,
+                                                                     atom.chainId,
+                                                                     atom.residId))
+        atomid = 1
+        for restag, resatoms in residue_list:
+            resname, chain, resid = restag.split('-')
+
+            if has_rule_for_residue_reduction():
+                coarse_res = CoarseResidue(resname, int(resid),
+                                           list(resatoms),
+                                           self.reduction_parameters[resname])
+                # Update bead atom id.
+                for bead in coarse_res.beads:
+                    bead.atomId = atomid
+                    atomid += 1
+
+                self.beads += coarse_res.beads
+
+    def print_output_model(self):
+        # forcefield = self.reduction_parameters['forcefield'].upper()
+        forcefield = 'ATTRACT2'
+        header = 'HEADER    {} REDUCED PDB FILE'.format(forcefield)
+        content = '\n'.join(bead.toAtom().ToPdbString() for bead in self.beads)
+        print(header, content, sep='\n')
 
 
 def run_attract2(args):
-    residue_rename = {'HIE': 'HIS'}
-    atom_rename = {'*': {'OT': 'O', 'OT1': 'O', 'OT2': 'O'},
-                   'ILE': {'CD': 'CD1'}}
-
     redname = get_reduction_data_path(args)
-    atomicname = args.pdb
+    topology = args.pdb
 
-    ptools.io.check_file_exists(redname)
-    ptools.io.check_file_exists(atomicname)
+    reducer = Reducer(topology, redname)
+    reducer.residue_rename = {'HIE': 'HIS', 'LEU': 'LEU'}
+    reducer.atom_rename = {'*': {'OT': 'O', 'OT1': 'O', 'OT2': 'O'},
+                           'ILE': {'CD': 'CD1'}}
 
-    # Read files that maps residue name with reduction rules.
-    with open(redname, 'rt') as f:
-        reduction_parameters = yaml.load(f)
-
-    # Read topology and create a list of atoms for each atom in the Rigidbody.
-    rb = ptools.Rigidbody(atomicname)
-    atoms = [rb.CopyAtom(i) for i in xrange(len(rb))]
-
-    # Rename atoms to fit reduction parameters.
-    rename_atoms_and_residues(atoms, residue_rename, atom_rename)
-
-    # Residue list: group atoms by residue tag.
-    # A residue is two items: (<residue tag>, <atom list iterator>).
-    residue_list = itertools.groupby(atoms, key=lambda atom: residuetag(atom.residType,
-                                                                        atom.chainId,
-                                                                        atom.residId))
-
-    cgmodel = []
-    atomid = 1
-    for restag, resatoms in residue_list:
-        resname, chain, resid = restag.split('-')
-
-        if resname not in reduction_parameters:
-            msg = "don't know how to handle residue {0} "\
-                  "(no reduction rule found for this residue)..."\
-                  "skipping residue".format(resname)
-            ptools.io.warning(msg)
-
-        else:
-            coarse_res = CoarseResidue(resname, int(resid),
-                                       list(resatoms),
-                                       reduction_parameters[resname])
-            # Update bead atom id.
-            for bead in coarse_res.beads:
-                bead.atomId = atomid
-                atomid += 1
-
-            # Add beads from residue to coarse grain model.
-            for bead in coarse_res.beads:
-                cgmodel.append(bead.toAtom())
-
-    print_red_output(cgmodel, forcefield='ATTRACT2')
+    reducer.reduce()
+    reducer.print_output_model()
