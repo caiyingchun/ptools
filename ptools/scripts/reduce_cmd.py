@@ -678,6 +678,8 @@ class Reducer:
             allatom_file (str): path to all-atom topology file
             reduction_file (str): path to reduction parameter file
             atoms (list[ptools.Atom]): list of all atoms read from topology
+            forcefield (str): force field name read from reduction parameter
+                file
             reduction_parameters (dict[str]->list): map residue names with a
                 list of bead parameter for each bead in a residue.
             beads (list[Bead]): list all coarse grain beads for this model
@@ -685,6 +687,7 @@ class Reducer:
         self.allatom_file = topology_file
         self.reduction_file = reduction_parameters_file
         self.atoms = []
+        self.forcefield = ''
         self.reduction_parameters = {}
         self.beads = []
 
@@ -697,7 +700,9 @@ class Reducer:
     def read_reduction_parameters(self):
         """Read YAML reduction parameter file."""
         with open(self.reduction_file, 'rt') as f:
-            self.reduction_parameters = yaml.load(f)
+            data = yaml.load(f)
+        self.forcefield = data['forcefield']
+        self.reduction_parameters = data['beads']
 
     def read_topology(self):
         """Read PDB topology file."""
@@ -774,8 +779,8 @@ class Reducer:
                 self.beads += coarse_res.beads
 
     def print_output_model(self):
-        # forcefield = self.reduction_parameters['forcefield'].upper()
-        forcefield = 'ATTRACT2'
+        """Print coarse grain model in reduced PDB format."""
+        forcefield = self.forcefield
         header = 'HEADER    {} REDUCED PDB FILE'.format(forcefield)
         content = '\n'.join(bead.toAtom().ToPdbString() for bead in self.beads)
         print(header, content, sep='\n')
