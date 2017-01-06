@@ -258,7 +258,7 @@ def read_reduction_parameters(path):
     allitems.sort(key=lambda items: items[0], reverse=False)
 
     # Construct the output structure in two steps.
-    
+
     # 1. Create empty coarse residues.
     resBeadAtomModel = {}
     for res, residue in itertools.groupby(allitems, lambda items: items[0]):
@@ -520,10 +520,10 @@ def run_attract1(args):
     print_red_output(cgmodel)
 
 
-
 # --------------------------------------------------------------------------
 # Attract 2 material
-# --------------------------------------------------------------------------    
+# --------------------------------------------------------------------------
+
 
 class Bead(ptools.Atomproperty):
     def __init__(self, atoms, parameters):
@@ -541,8 +541,8 @@ class Bead(ptools.Atomproperty):
     @property
     def coords(self):
         """Bead coordinates, i.e. the center of mass of the atoms
-        that constitute the bead.
-        """ 
+        constituting the bead.
+        """
         x = ptools.Coord3D()
         for atom in self.atoms:
             x += atom.coords
@@ -642,14 +642,14 @@ def rename_atoms_and_residues(atoms, residue_rename, atom_rename):
 
         # Update atom names: update specific residue atom names.
         if atom.residType in atom_rename and atom.atomType in atom_rename[atom.residType]:
-            atom.atomType = atom_rename[atom.residType][atom.atomType]            
+            atom.atomType = atom_rename[atom.residType][atom.atomType]
 
 
 def run_attract2(args):
     residue_rename = {'HIE': 'HIS'}
     atom_rename = {'*': {'OT': 'O', 'OT1': 'O', 'OT2': 'O'},
                    'ILE': {'CD': 'CD1'}}
-    
+
     redname = get_reduction_data_path(args)
     atomicname = args.pdb
 
@@ -669,15 +669,16 @@ def run_attract2(args):
 
     # Residue list: group atoms by residue tag.
     # A residue is two items: (<residue tag>, <atom list iterator>).
-    keyfunc = lambda atom: residuetag(atom.residType, atom.chainId, atom.residId)
-    residue_list = itertools.groupby(atoms, key=keyfunc)
+    residue_list = itertools.groupby(atoms, key=lambda atom: residuetag(atom.residType,
+                                                                        atom.chainId,
+                                                                        atom.residId))
 
     cgmodel = []
     atomid = 1
     for restag, resatoms in residue_list:
         resname, chain, resid = restag.split('-')
 
-        if not resname in reduction_parameters:
+        if resname not in reduction_parameters:
             msg = "don't know how to handle residue {0} "\
                   "(no reduction rule found for this residue)..."\
                   "skipping residue".format(resname)
@@ -697,5 +698,3 @@ def run_attract2(args):
                 cgmodel.append(bead.toAtom())
 
     print_red_output(cgmodel, forcefield='ATTRACT2')
-
-
