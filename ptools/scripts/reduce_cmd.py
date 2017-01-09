@@ -3,7 +3,6 @@
 
 from __future__ import print_function
 
-import copy
 import itertools
 import os
 import sys
@@ -15,9 +14,7 @@ import ptools
 
 DEFAULT_ATTRACT1_PROT_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attract1_prot.yml')
 DEFAULT_ATTRACT1_DNA_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg.dna.dat')
-DEFAULT_FF_PARAM_DATA = os.path.join(ptools.DATA_DIR, 'ff_param.dat')
 DEFAULT_CONVERSION_YML = os.path.join(ptools.DATA_DIR, 'name_conversion.yml')
-
 DEFAULT_ATTRACT2_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attract2.yml')
 
 
@@ -83,9 +80,6 @@ class CoarseResidue:
         bead_atom_names = [atom.atomType
                            for bead in self.beads
                            for atom in bead.atoms]
-
-
-
         bead_atom_name_parameters = [name
                                      for bead_param in parameters
                                      for name in bead_param['atoms']]
@@ -190,7 +184,7 @@ class Reducer(object):
             reduction_parameters (dict[str]->list): map residue names with a
                 list of bead parameter for each bead in a residue.
             beads (list[Bead]): list all coarse grain beads for this model
-        
+
             name_conversion_file (str): path to residue and atom name
                 conversion file.
             residue_rename (dict[str]->str): map source residue name with target
@@ -239,7 +233,7 @@ class Reducer(object):
 
     def read_name_conversion_file(self):
         """Read YAML file containing residue and atom name conversion rules.
-    
+
         Update residue_rename and atom_rename internal maps.
         """
         with open(self.name_conversion_file, 'rt') as f:
@@ -318,7 +312,7 @@ class Reducer(object):
 
     def print_output_model(self, path=''):
         """Print coarse grain model in reduced PDB format.
-    
+
         Args:
             path (str): output file name.
                 If left empty, print on stdout.
@@ -352,7 +346,7 @@ def create_attract1_subparser(parent):
                         help="path type conversion file")
     parser.add_argument('-o', '--output',
                         help='path to output file (default=stdout)')
-    
+
 
 def create_attract2_subparser(parent):
     parser = parent.add_parser('attract2',
