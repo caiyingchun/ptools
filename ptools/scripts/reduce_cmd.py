@@ -340,11 +340,7 @@ def create_attract1_subparser(parent):
     parser.add_argument('--conv', dest='convName',
                         default=DEFAULT_CONVERSION_YML,
                         help="path type conversion file")
-    parser.add_argument('--allow_missing', action='store_true',
-                        dest='warning',
-                        help="don't stop program if atoms are missing, "
-                             "only display a warning on stderr")
-
+    
 
 def create_attract2_subparser(parent):
     parser = parent.add_parser('attract2',
@@ -355,10 +351,6 @@ def create_attract2_subparser(parent):
     parser.add_argument('--conv', dest='convName',
                         default=DEFAULT_CONVERSION_YML,
                         help="path type conversion file")
-    parser.add_argument('--allow_missing', action='store_true',
-                        dest='warning',
-                        help="don't stop program if atoms are missing, "
-                             "only display a warning on stderr")
 
 
 def create_subparser(parent):
