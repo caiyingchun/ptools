@@ -337,9 +337,6 @@ def create_attract1_subparser(parent):
 
     parser.add_argument('--red', dest='redName',
                         help="path to correspondance file between atoms and beads file")
-    parser.add_argument('--ff', dest='ffName',
-                        default=DEFAULT_FF_PARAM_DATA,
-                        help="path to force field parameter file")
     parser.add_argument('--conv', dest='convName',
                         default=DEFAULT_CONVERSION_YML,
                         help="path type conversion file")
