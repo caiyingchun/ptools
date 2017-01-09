@@ -13,12 +13,12 @@ import yaml
 import ptools
 
 
-DEFAULT_PROT_REDUCTION_DATA = os.path.join(ptools.DATA_DIR, 'at2cg_attract1_prot.yml')
-DEFAULT_DNA_REDUCTION_DATA = os.path.join(ptools.DATA_DIR, 'at2cg.dna.dat')
+DEFAULT_ATTRACT1_PROT_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attract1_prot.yml')
+DEFAULT_ATTRACT1_DNA_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg.dna.dat')
 DEFAULT_FF_PARAM_DATA = os.path.join(ptools.DATA_DIR, 'ff_param.dat')
-DEFAULT_CONVERSION_DATA = os.path.join(ptools.DATA_DIR, 'type_conversion.dat')
+DEFAULT_CONVERSION_YML = os.path.join(ptools.DATA_DIR, 'name_conversion.yml')
 
-DEFAULT_ATTRACT2_REDUCTION_DATA = os.path.join(ptools.DATA_DIR, 'at2cg_attract2.yml')
+DEFAULT_ATTRACT2_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attract2.yml')
 
 
 class AtomInBead:
@@ -161,7 +161,7 @@ def create_attract1_subparser(parent):
                         default=DEFAULT_FF_PARAM_DATA,
                         help="path to force field parameter file")
     parser.add_argument('--conv', dest='convName',
-                        default=DEFAULT_CONVERSION_DATA,
+                        default=DEFAULT_CONVERSION_YML,
                         help="path type conversion file")
     parser.add_argument('--allow_missing', action='store_true',
                         dest='warning',
@@ -175,6 +175,9 @@ def create_attract2_subparser(parent):
     parser.set_defaults(forcefield='attract2')
     parser.add_argument('--red', dest='redName',
                         help="path to correspondance file between atoms and beads file")
+    parser.add_argument('--conv', dest='convName',
+                        default=DEFAULT_CONVERSION_YML,
+                        help="path type conversion file")
     parser.add_argument('--allow_missing', action='store_true',
                         dest='warning',
                         help="don't stop program if atoms are missing, "
@@ -204,16 +207,16 @@ def get_reduction_data_path(args):
     if not args.redName:
         if args.forcefield == 'attract1':
             if args.molProt:
-                return DEFAULT_PROT_REDUCTION_DATA
+                return DEFAULT_ATTRACT1_PROT_REDUCTION_YML
             elif args.molDNA:
-                return DEFAULT_DNA_REDUCTION_DATA
+                return DEFAULT_ATTRACT1_DNA_REDUCTION_YML
             else:
                 err = "error: one of the arguments --prot --dna is required when "\
                       "not using --red option"
                 print(err, file=sys.stderr)
                 sys.exit(2)
         elif args.forcefield == 'attract2':
-            return DEFAULT_ATTRACT2_REDUCTION_DATA
+            return DEFAULT_ATTRACT2_REDUCTION_YML
     return args.redName
 
 
@@ -498,26 +501,26 @@ def run(args):
     fmap[args.forcefield](args)
 
 
-def run_attract1(args):
-    redname = get_reduction_data_path(args)
-    ffname = args.ffName
-    convname = args.convName
-    atomicname = args.pdb
+# def run_attract1(args):
+#     redname = get_reduction_data_path(args)
+#     ffname = args.ffName
+#     convname = args.convName
+#     atomicname = args.pdb
 
-    ptools.io.check_file_exists(redname)
-    ptools.io.check_file_exists(ffname)
-    ptools.io.check_file_exists(convname)
-    ptools.io.check_file_exists(atomicname)
+#     ptools.io.check_file_exists(redname)
+#     ptools.io.check_file_exists(ffname)
+#     ptools.io.check_file_exists(convname)
+#     ptools.io.check_file_exists(atomicname)
 
-    resBeadAtomModel = read_reduction_parameters(redname)
-    beadChargeDict = read_forcefield_parameters(ffname)
-    resConv, atomConv = read_type_conversion_parameters(convname)
+#     resBeadAtomModel = read_reduction_parameters(redname)
+#     beadChargeDict = read_forcefield_parameters(ffname)
+#     resConv, atomConv = read_type_conversion_parameters(convname)
 
-    atomList = read_atomic(atomicname, resConv, atomConv)
-    residueTagList, coarseResList = count_residues(atomList, resBeadAtomModel)
-    fill_beads(atomList, residueTagList, coarseResList)
-    cgmodel = reduce_beads(residueTagList, coarseResList, beadChargeDict)
-    print_red_output(cgmodel, 'ATTRACT1')
+#     atomList = read_atomic(atomicname, resConv, atomConv)
+#     residueTagList, coarseResList = count_residues(atomList, resBeadAtomModel)
+#     fill_beads(atomList, residueTagList, coarseResList)
+#     cgmodel = reduce_beads(residueTagList, coarseResList, beadChargeDict)
+#     print_red_output(cgmodel, 'ATTRACT1')
 
 
 def run_attract1(args):
@@ -532,17 +535,7 @@ def run_attract1(args):
     ptools.io.check_file_exists(atomicname)
 
     reducer = Reducer(atomicname, redname)
-    resConv, atomConv = read_type_conversion_parameters(convname)
-
-    # Convert residue and atom name conversion dictionnaries to Reduce-friendly
-    # maps.
-    reducer.residue_rename = resConv
-    for source, target in atomConv.items():
-        resname, atomname_source = source.split('-')
-        atomname_target = target.split('-')[1]
-        if resname not in reducer.atom_rename:
-            reducer.atom_rename[resname] = {}
-        reducer.atom_rename[resname][atomname_source] = atomname_target
+    reducer.name_conversion_file = convname
 
     reducer.reduce()
     reducer.print_output_model()
@@ -648,7 +641,7 @@ class CoarseResidue:
         return '\n'.join(b.topdb() for b in self.beads)
 
 
-class Reducer:
+class Reducer(object):
     """Class that handle reduction from an atomistic topology to a coarse
     grain model.
 
@@ -681,18 +674,7 @@ class Reducer:
             create a bead:
                 name, type, charge, etc. are determined from parameters
                 coordinates is the barycentre of atoms that belong to the bead
-
-
-    Attributes:
-        residue_rename (dict[str]->str): map source residue name with target
-            residue name (see Preprocessing).
-        atom_rename (dict[str]->dict[str]->str): map target residue name
-            with map mapping source atom name with target atom name
-            (see Preprocessing).
     """
-
-    residue_rename = {}
-    atom_rename = {}
 
     def __init__(self, topology_file, reduction_parameters_file):
         """Initialize Reduce from topology file and reduction parameter file.
@@ -711,6 +693,14 @@ class Reducer:
             reduction_parameters (dict[str]->list): map residue names with a
                 list of bead parameter for each bead in a residue.
             beads (list[Bead]): list all coarse grain beads for this model
+        
+            name_conversion_file (str): path to residue and atom name
+                conversion file.
+            residue_rename (dict[str]->str): map source residue name with target
+                residue name (see Preprocessing).
+            atom_rename (dict[str]->dict[str]->str): map target residue name
+                with map mapping source atom name with target atom name
+                (see Preprocessing).
         """
         self.allatom_file = topology_file
         self.reduction_file = reduction_parameters_file
@@ -719,11 +709,24 @@ class Reducer:
         self.reduction_parameters = {}
         self.beads = []
 
+        self._name_conversion_file = ''
+        self.residue_rename = {}
+        self.atom_rename = {}
+
         ptools.io.check_file_exists(self.reduction_file)
         ptools.io.check_file_exists(self.allatom_file)
 
         self.read_reduction_parameters()
         self.read_topology()
+
+    @property
+    def name_conversion_file(self):
+        return self._name_conversion_file
+
+    @name_conversion_file.setter
+    def name_conversion_file(self, value):
+        self._name_conversion_file = value
+        self.read_name_conversion_file()
 
     def read_reduction_parameters(self):
         """Read YAML reduction parameter file."""
@@ -736,6 +739,16 @@ class Reducer:
         """Read PDB topology file."""
         rb = ptools.Rigidbody(self.allatom_file)
         self.atoms = [rb.CopyAtom(i) for i in xrange(len(rb))]
+
+    def read_name_conversion_file(self):
+        """Read YAML file containing residue and atom name conversion rules.
+    
+        Update residue_rename and atom_rename internal maps.
+        """
+        with open(self.name_conversion_file, 'rt') as f:
+            data = yaml.load(f)
+        self.residue_rename = data['residues']
+        self.atom_rename = data['atoms']
 
     def rename_atoms_and_residues(self):
         """Rename atom and residues according to data in rename maps."""
@@ -817,11 +830,10 @@ class Reducer:
 def run_attract2(args):
     redname = get_reduction_data_path(args)
     topology = args.pdb
+    convname = args.convName
 
     reducer = Reducer(topology, redname)
-    reducer.residue_rename = {'HIE': 'HIS', 'LEU': 'LEU'}
-    reducer.atom_rename = {'*': {'OT': 'O', 'OT1': 'O', 'OT2': 'O'},
-                           'ILE': {'CD': 'CD1'}}
-
+    reducer.name_conversion_file = convname
+    
     reducer.reduce()
     reducer.print_output_model()
