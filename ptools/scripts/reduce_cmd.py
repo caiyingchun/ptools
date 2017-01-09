@@ -409,12 +409,6 @@ def residuetag(resname, resid, chain):
 
 
 def run(args):
-    fmap = {'attract1': run_attract1,
-            'attract2': run_attract2}
-    fmap[args.forcefield](args)
-
-
-def run_attract1(args):
     redname = get_reduction_data_path(args)
     convname = args.convName
     atomicname = args.pdb
@@ -426,17 +420,5 @@ def run_attract1(args):
     reducer = Reducer(atomicname, redname)
     reducer.name_conversion_file = convname
 
-    reducer.reduce()
-    reducer.print_output_model(args.output)
-
-
-def run_attract2(args):
-    redname = get_reduction_data_path(args)
-    topology = args.pdb
-    convname = args.convName
-
-    reducer = Reducer(topology, redname)
-    reducer.name_conversion_file = convname
-    
     reducer.reduce()
     reducer.print_output_model(args.output)
