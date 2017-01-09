@@ -1,62 +1,28 @@
-forcefield: ATTRACT2
+forcefield: ATTRACT1
 
 beads:
   ALA:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
       typeid:  2
       atoms:
+        CA:
+          weight: 1.0
         CB:
           weight: 1.0
 
   ARG:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CG
       charge:  0.0
@@ -74,34 +40,18 @@ beads:
           weight: 1.0
 
   ASN:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
       typeid:  5
       atoms:
+        CA:
+          weight: 1.0
         CB:
           weight: 1.0
         CG:
@@ -112,34 +62,18 @@ beads:
           weight: 1.0
 
   ASP:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge: -1.0
       typeid:  6
       atoms:
+        CA:
+          weight: 1.0
         CB:
           weight: 1.0
         CG:
@@ -150,63 +84,29 @@ beads:
           weight: 1.0
 
   CYS:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
       typeid:  7
       atoms:
+        CA:
+          weight: 1.0
         CB:
           weight: 1.0
         SG:
           weight: 1.0
 
   GLN:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CB
       charge:  0.0
@@ -226,29 +126,11 @@ beads:
           weight: 1.0
 
   GLU:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CB
       charge:  0.0
@@ -268,55 +150,19 @@ beads:
           weight: 1.0
 
   GLY:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
       typeid:  1
       atoms:
         CA:
           weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
-          weight: 1.0
 
-  HIS: &HIS
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
+  HIS:
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
@@ -339,41 +185,19 @@ beads:
         CE1:
           weight: 1.0
 
-  HSD: *HIS
-
-  HSE: *HIS
-
-  HSP: *HIS
-
   ILE:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
       typeid: 14
       atoms:
+        CA:
+          weight: 1.0
         CB:
           weight: 1.0
         CG1:
@@ -384,34 +208,18 @@ beads:
           weight: 1.0
 
   LEU:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
       typeid: 15
       atoms:
+        CA:
+          weight: 1.0
         CB:
           weight: 1.0
         CG:
@@ -422,29 +230,11 @@ beads:
           weight: 1.0
 
   LYS:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CB
       charge:  0.0
@@ -460,29 +250,11 @@ beads:
           weight: 1.0
 
   MET:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
@@ -502,29 +274,11 @@ beads:
           weight: 1.0
 
   PHE:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
@@ -550,34 +304,18 @@ beads:
           weight: 1.0
 
   PRO:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
       typeid: 22
       atoms:
+        CA:
+          weight: 1.0
         CB:
           weight: 1.0
         CG:
@@ -586,68 +324,36 @@ beads:
           weight: 1.0
 
   SER:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
       typeid: 23
       atoms:
+        CA:
+          weight: 1.0
         CB:
           weight: 1.0
         OG:
           weight: 1.0
 
   THR:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
       typeid: 24
       atoms:
+        CA:
+          weight: 1.0
         CB:
           weight: 1.0
         OG1:
@@ -656,29 +362,11 @@ beads:
           weight: 1.0
 
   TRP:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CG
       charge:  0.0
@@ -704,29 +392,11 @@ beads:
           weight: 1.0
 
   TYR:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
@@ -754,34 +424,18 @@ beads:
           weight: 1.0
 
   VAL:
-    - name: N
-      charge:  0.0
-      typeid: 30
-      atoms:
-        N:
-          weight: 1.0
     - name: CA
       charge:  0.0
-      typeid: 32
+      typeid:  1
       atoms:
         CA:
-          weight: 1.0
-    - name: C
-      charge:  0.0
-      typeid: 32
-      atoms:
-        C:
-          weight: 1.0
-    - name: O
-      charge:  0.0
-      typeid: 31
-      atoms:
-        O:
           weight: 1.0
     - name: CSE
       charge:  0.0
       typeid: 29
       atoms:
+        CA:
+          weight: 1.0
         CB:
           weight: 1.0
         CG1:

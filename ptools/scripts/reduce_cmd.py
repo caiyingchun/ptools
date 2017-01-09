@@ -13,7 +13,7 @@ import yaml
 import ptools
 
 
-DEFAULT_PROT_REDUCTION_DATA = os.path.join(ptools.DATA_DIR, 'at2cg.prot.dat')
+DEFAULT_PROT_REDUCTION_DATA = os.path.join(ptools.DATA_DIR, 'at2cg_attract1_prot.yml')
 DEFAULT_DNA_REDUCTION_DATA = os.path.join(ptools.DATA_DIR, 'at2cg.dna.dat')
 DEFAULT_FF_PARAM_DATA = os.path.join(ptools.DATA_DIR, 'ff_param.dat')
 DEFAULT_CONVERSION_DATA = os.path.join(ptools.DATA_DIR, 'type_conversion.dat')
@@ -518,6 +518,34 @@ def run_attract1(args):
     fill_beads(atomList, residueTagList, coarseResList)
     cgmodel = reduce_beads(residueTagList, coarseResList, beadChargeDict)
     print_red_output(cgmodel, 'ATTRACT1')
+
+
+def run_attract1(args):
+    redname = get_reduction_data_path(args)
+    ffname = args.ffName
+    convname = args.convName
+    atomicname = args.pdb
+
+    ptools.io.check_file_exists(redname)
+    ptools.io.check_file_exists(ffname)
+    ptools.io.check_file_exists(convname)
+    ptools.io.check_file_exists(atomicname)
+
+    reducer = Reducer(atomicname, redname)
+    resConv, atomConv = read_type_conversion_parameters(convname)
+
+    # Convert residue and atom name conversion dictionnaries to Reduce-friendly
+    # maps.
+    reducer.residue_rename = resConv
+    for source, target in atomConv.items():
+        resname, atomname_source = source.split('-')
+        atomname_target = target.split('-')[1]
+        if resname not in reducer.atom_rename:
+            reducer.atom_rename[resname] = {}
+        reducer.atom_rename[resname][atomname_source] = atomname_target
+
+    reducer.reduce()
+    reducer.print_output_model()
 
 
 # --------------------------------------------------------------------------
