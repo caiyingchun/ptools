@@ -316,12 +316,22 @@ class Reducer(object):
 
                 self.beads += coarse_res.beads
 
-    def print_output_model(self):
-        """Print coarse grain model in reduced PDB format."""
+    def print_output_model(self, path=''):
+        """Print coarse grain model in reduced PDB format.
+    
+        Args:
+            path (str): output file name.
+                If left empty, print on stdout.
+        """
         forcefield = self.forcefield
         header = 'HEADER    {} REDUCED PDB FILE'.format(forcefield)
         content = '\n'.join(bead.toAtom().ToPdbString() for bead in self.beads)
-        print(header, content, sep='\n')
+        f = sys.stdout
+        if path:
+            f = open(path, 'wt')
+        print(header, content, sep='\n', file=f)
+        if path:
+            f.close()
 
 
 def create_attract1_subparser(parent):
@@ -340,6 +350,8 @@ def create_attract1_subparser(parent):
     parser.add_argument('--conv', dest='convName',
                         default=DEFAULT_CONVERSION_YML,
                         help="path type conversion file")
+    parser.add_argument('-o', '--output',
+                        help='path to output file (default=stdout)')
     
 
 def create_attract2_subparser(parent):
@@ -351,6 +363,8 @@ def create_attract2_subparser(parent):
     parser.add_argument('--conv', dest='convName',
                         default=DEFAULT_CONVERSION_YML,
                         help="path type conversion file")
+    parser.add_argument('-o', '--output',
+                        help='path to output file (default=stdout)')
 
 
 def create_subparser(parent):
@@ -402,12 +416,10 @@ def run(args):
 
 def run_attract1(args):
     redname = get_reduction_data_path(args)
-    ffname = args.ffName
     convname = args.convName
     atomicname = args.pdb
 
     ptools.io.check_file_exists(redname)
-    ptools.io.check_file_exists(ffname)
     ptools.io.check_file_exists(convname)
     ptools.io.check_file_exists(atomicname)
 
@@ -415,7 +427,7 @@ def run_attract1(args):
     reducer.name_conversion_file = convname
 
     reducer.reduce()
-    reducer.print_output_model()
+    reducer.print_output_model(args.output)
 
 
 def run_attract2(args):
@@ -427,4 +439,4 @@ def run_attract2(args):
     reducer.name_conversion_file = convname
     
     reducer.reduce()
-    reducer.print_output_model()
+    reducer.print_output_model(args.output)
