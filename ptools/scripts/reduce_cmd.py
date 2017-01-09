@@ -597,6 +597,28 @@ class CoarseResidue:
             else:
                 msg = "skipping residue {}:{}".format(resname, resid)
                 ptools.io.warning(msg)
+        self._check_all_atoms_in_model(parameters)
+
+    def _check_all_atoms_in_model(self, parameters):
+        """Check that every atoms from atomistic model have been taken
+        into account for creating the coarse grain model.
+
+        Print a warning message if it is not the case.
+        """
+        bead_atom_names = [atom.atomType
+                           for bead in self.beads
+                           for atom in bead.atoms]
+
+
+
+        bead_atom_name_parameters = [name
+                                     for bead_param in parameters
+                                     for name in bead_param['atoms']]
+
+        diff = set(bead_atom_names) - set(bead_atom_name_parameters)
+        for atom_name in diff:
+            msg = "{}:{}: atom '{}' unused during coarse grain modelling"
+            msg = msg.format(self.resname, self.resid, atom_name)
 
     def _compare_expected_and_found_atoms(self, bead_param, atoms):
         """Compare expected atoms from bead parameters to atoms actually found
