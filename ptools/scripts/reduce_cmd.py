@@ -39,19 +39,18 @@ class Bead(ptools.Atomproperty):
         constituting the bead.
         """
         x = ptools.Coord3D()
-        w = 0.0
         for i, atom in enumerate(self.atoms):
             x += atom.coords * self.weights[i]
         n = 1. / len(self.atoms)
         return x * n
 
-    def toAtom(self):
+    def toatom(self):
         """Return a ptools.Atom instance with current bead properties and
         coordinates."""
         return ptools.Atom(self, self.coords)
 
     def topdb(self):
-        return self.toAtom().ToPdbString()
+        return self.toatom().ToPdbString()
 
 
 class CoarseResidue:
@@ -322,7 +321,7 @@ class Reducer(object):
         """
         forcefield = self.forcefield
         header = 'HEADER    {} REDUCED PDB FILE'.format(forcefield)
-        content = '\n'.join(bead.toAtom().ToPdbString() for bead in self.beads)
+        content = '\n'.join(bead.toatom().ToPdbString() for bead in self.beads)
         f = sys.stdout
         if path:
             f = open(path, 'wt')
