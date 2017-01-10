@@ -16,6 +16,7 @@ DEFAULT_ATTRACT1_PROT_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attra
 DEFAULT_ATTRACT1_DNA_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg.dna.dat')
 DEFAULT_CONVERSION_YML = os.path.join(ptools.DATA_DIR, 'name_conversion.yml')
 DEFAULT_ATTRACT2_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attract2.yml')
+DEFAULT_SCORPION_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_scorpion.yml')
 
 
 class Bead(ptools.Atomproperty):
@@ -362,6 +363,19 @@ def create_attract2_subparser(parent):
     parser.add_argument('-o', '--output',
                         help='path to output file (default=stdout)')
 
+def create_scorpion_subparser(parent):
+    parser = parent.add_parser('scorpion',
+                               help='reduce using the scorpion force field')
+    parser.set_defaults(forcefield='scorpion')
+    parser.add_argument('--red', dest='redName',
+                        help="path to correspondance file between atoms and beads file")
+    parser.add_argument('--conv', dest='convName',
+                        default=DEFAULT_CONVERSION_YML,
+                        help="path type conversion file")
+    parser.add_argument('-o', '--output',
+                        help='path to output file (default=stdout)')
+
+
 
 def create_subparser(parent):
     parser = parent.add_parser('reduce', help=__doc__)
@@ -373,6 +387,7 @@ def create_subparser(parent):
     subparsers = parser.add_subparsers()
     create_attract1_subparser(subparsers)
     create_attract2_subparser(subparsers)
+    create_scorpion_subparser(subparsers)
 
 
 def get_reduction_data_path(args):
@@ -396,6 +411,8 @@ def get_reduction_data_path(args):
                 sys.exit(2)
         elif args.forcefield == 'attract2':
             return DEFAULT_ATTRACT2_REDUCTION_YML
+        elif args.forcefield == 'scorpion':
+            return DEFAULT_SCORPION_REDUCTION_YML
     return args.redName
 
 
