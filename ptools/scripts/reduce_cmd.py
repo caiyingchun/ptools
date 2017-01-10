@@ -21,6 +21,8 @@ DEFAULT_ATTRACT2_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attract2.y
 class Bead(ptools.Atomproperty):
     def __init__(self, atoms, parameters):
         self.atoms = atoms
+        self.weights = [atom_parameters.get('weight', 1.0)
+                        for atom_parameters in parameters['atoms'].values()]
         self.atomType = parameters.get('name', 'X')
         self.atomCharge = parameters.get('charge', 0.0)
         self.chainId = self.atoms[0].chainId
@@ -37,8 +39,9 @@ class Bead(ptools.Atomproperty):
         constituting the bead.
         """
         x = ptools.Coord3D()
-        for atom in self.atoms:
-            x += atom.coords
+        w = 0.0
+        for i, atom in enumerate(self.atoms):
+            x += atom.coords * self.weights[i]
         n = 1. / len(self.atoms)
         return x * n
 
