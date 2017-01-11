@@ -303,7 +303,7 @@ class Reducer(object):
             bead_radii = [bead.get('radius', 0.0) for bead in bead_parameters]
             radii_map[resname] = dict(zip(bead_names, bead_radii))
         return radii_map
-    
+
     def get_bead_charges_map(self):
         """Return bead charge map contructed from data in reduction file.
 
@@ -460,7 +460,6 @@ class Reducer(object):
         for i, charge in enumerate(optimized):
             self.beads[i].charge = charge
 
-
     def print_output_model(self, path=''):
         """Print coarse grain model in reduced PDB format.
 
@@ -602,4 +601,3 @@ def run(args):
             reducer.optimize_charges(args.delgrid)
 
     reducer.print_output_model(args.output)
-
