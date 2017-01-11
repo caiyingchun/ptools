@@ -23,16 +23,21 @@ class Bead(ptools.Atomproperty):
     def __init__(self, atoms, parameters):
         super(Bead, self).__init__()
         self.atoms = atoms
-        self.weights = [atom_parameters.get('weight', 1.0)
-                        for atom_parameters in parameters['atoms'].values()]
         self.atomType = parameters.get('name', 'X')
         self.atomCharge = parameters.get('charge', 0.0)
         self.chainId = self.atoms[0].chainId
         self.typeid = parameters.get('typeid', 0)
         self.extra = '{:5d}{:8.3f} 0 0'.format(self.typeid, self.atomCharge)
 
+        # Update bead attributes with attributes coming from reduction
+        # parameters.
+        for attr, value in parameters.items():
+            if attr not in ('typeid', 'name', 'charge', 'atoms'):
+                setattr(self, attr, value)
+
         # List of atom names that should be part of the bead.
         self.atom_names = parameters['atoms'].keys()
+        self.atom_reduction_parameters = parameters['atoms']
 
     @property
     def charge(self):
@@ -49,9 +54,11 @@ class Bead(ptools.Atomproperty):
         """Bead coordinates, i.e. the center of mass of the atoms
         constituting the bead.
         """
+        weights = [atom_parameters.get('weight', 1.0)
+                   for atom_parameters in self.atom_reduction_parameters.values()]
         x = ptools.Coord3D()
         for i, atom in enumerate(self.atoms):
-            x += atom.coords * self.weights[i]
+            x += atom.coords * weights[i]
         n = 1. / len(self.atoms)
         return x * n
 
@@ -69,7 +76,6 @@ class Bead(ptools.Atomproperty):
         return ptools.Atom(self, self.coords)
 
     def topdb(self):
-        print("charge:", self.atomCharge)
         return self.toatom().ToPdbString()
 
 
@@ -233,6 +239,16 @@ class Reducer(object):
         self.read_topology()
 
     @property
+    def number_of_atoms(self):
+        """Return the number of atoms in the all-atom input topology."""
+        return len(self.atoms)
+
+    @property
+    def number_of_beads(self):
+        """Return the number of beads in the coarse grain model."""
+        return len(self.beads)
+
+    @property
     def name_conversion_file(self):
         return self._name_conversion_file
 
@@ -240,6 +256,66 @@ class Reducer(object):
     def name_conversion_file(self, value):
         self._name_conversion_file = value
         self.read_name_conversion_file()
+
+    def get_atom_radii_map(self):
+        """Return atom radius map contructed from data in reduction file.
+
+        Return:
+            dict[str]->dict[str]->float: each atom of each residue radius.
+        """
+        radii_map = {}
+        for resname, bead_parameters in self.reduction_parameters.items():
+            atom_names = []
+            atom_radii = []
+            for bead in bead_parameters:
+                for atom_name, atom in bead['atoms'].items():
+                    atom_names.append(atom_name)
+                    atom_radii.append(atom.get('radius', 0.0))
+            radii_map[resname] = dict(zip(atom_names, atom_radii))
+        return radii_map
+
+    def get_atom_charges_map(self):
+        """Return atom charge map contructed from data in reduction file.
+
+        Return:
+            dict[str]->dict[str]->float: each atom of each residue charge.
+        """
+        charges_map = {}
+        for resname, bead_parameters in self.reduction_parameters.items():
+            atom_names = []
+            atom_charges = []
+            for bead in bead_parameters:
+                for atom_name, atom in bead['atoms'].items():
+                    atom_names.append(atom_name)
+                    atom_charges.append(atom.get('charge', 0.0))
+            charges_map[resname] = dict(zip(atom_names, atom_charges))
+        return charges_map
+
+    def get_bead_radii_map(self):
+        """Return bead radius map contructed from data in reduction file.
+
+        Return:
+            dict[str]->dict[str]->float: each bead of each residue radius.
+        """
+        radii_map = {}
+        for resname, bead_parameters in self.reduction_parameters.items():
+            bead_names = [bead['name'] for bead in bead_parameters]
+            bead_radii = [bead.get('radius', 0.0) for bead in bead_parameters]
+            radii_map[resname] = dict(zip(bead_names, bead_radii))
+        return radii_map
+    
+    def get_bead_charges_map(self):
+        """Return bead charge map contructed from data in reduction file.
+
+        Return:
+            dict[str]->dict[str]->float: each bead of each residue charge.
+        """
+        charges_map = {}
+        for resname, bead_parameters in self.reduction_parameters.items():
+            bead_names = [bead['name'] for bead in bead_parameters]
+            bead_charges = [bead.get('charge', 0.0) for bead in bead_parameters]
+            charges_map[resname] = dict(zip(bead_names, bead_charges))
+        return charges_map
 
     def read_reduction_parameters(self):
         """Read YAML reduction parameter file."""
@@ -332,6 +408,59 @@ class Reducer(object):
 
                 self.beads += coarse_res.beads
 
+    def optimize_charges(self, delgrid):
+        """Use cgopt to optimize bead charges.
+
+        Args:
+            delgrid (float): grid spacing (A).
+        """
+        import cgopt
+
+        cg_coords_x = []
+        cg_coords_y = []
+        cg_coords_z = []
+        cg_charges = []
+        cg_radii = []
+
+        aa_coords_x = []
+        aa_coords_y = []
+        aa_coords_z = []
+        aa_charges = []
+        aa_radii = []
+
+        aa_radii_map = self.get_atom_radii_map()
+        aa_charges_map = self.get_atom_charges_map()
+
+        for atom in self.atoms:
+            aa_coords_x.append(atom.coords.x)
+            aa_coords_y.append(atom.coords.y)
+            aa_coords_z.append(atom.coords.z)
+            aa_radii.append(aa_radii_map[atom.residType][atom.atomType])
+            aa_charges.append(aa_charges_map[atom.residType][atom.atomType])
+
+        for bead in self.beads:
+            cg_coords_x.append(bead.coords.x)
+            cg_coords_y.append(bead.coords.y)
+            cg_coords_z.append(bead.coords.z)
+            cg_radii.append(bead.radius)
+            cg_charges.append(bead.charge)
+
+        cg_charges.reverse()  # why??!!
+
+        optimized = cgopt.optimize(self.number_of_atoms,
+                                   aa_charges,
+                                   aa_radii,
+                                   aa_coords_x, aa_coords_y, aa_coords_z,
+                                   self.number_of_beads,
+                                   cg_charges,
+                                   cg_radii,
+                                   cg_coords_x, cg_coords_y, cg_coords_z,
+                                   delgrid)
+
+        for i, charge in enumerate(optimized):
+            self.beads[i].charge = charge
+
+
     def print_output_model(self, path=''):
         """Print coarse grain model in reduced PDB format.
 
@@ -382,6 +511,7 @@ def create_attract2_subparser(parent):
     parser.add_argument('-o', '--output',
                         help='path to output file (default=stdout)')
 
+
 def create_scorpion_subparser(parent):
     parser = parent.add_parser('scorpion',
                                help='reduce using the scorpion force field')
@@ -393,7 +523,12 @@ def create_scorpion_subparser(parent):
                         help="path type conversion file")
     parser.add_argument('-o', '--output',
                         help='path to output file (default=stdout)')
-
+    parser.add_argument('--cgopt', dest='optimizedcharges', action='store_true',
+                        help='path to output file (default=stdout)')
+    parser.add_argument('--delgrid', type=float, default=1.5,
+                        help='grid spacing (A) for charge optimization'
+                             '(default is 1.5), works only with --cgopt '
+                             'option')
 
 
 def create_subparser(parent):
@@ -454,18 +589,17 @@ def run(args):
 
     reducer.reduce()
 
-    # If force field is scorpion, first CA bead's charge is +1 and
-    # last CA bead's charge is -1.
-    
     if args.forcefield == 'scorpion':
+        # If force field is scorpion, first CA bead's charge is +1 and
+        # last CA bead's charge is -1.
         ca_beads = [bead for bead in reducer.beads if bead.name == 'CA']
         ca_beads[0].charge = 1.0
         ca_beads[-1].charge = -1.0
 
+        # If force field is scorption, bead charges can be optimized thanks
+        # to cgopt.
+        if args.optimizedcharges:
+            reducer.optimize_charges(args.delgrid)
+
     reducer.print_output_model(args.output)
-
-
-
-
-
 
