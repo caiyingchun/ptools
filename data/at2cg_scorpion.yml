@@ -67,6 +67,7 @@ beads:
     - name: CG
       typeid: 4
       radius: 2.469
+      charge: 1.0
       atoms:
         CD:
           charge: 0.186
@@ -155,6 +156,7 @@ beads:
     - name: CB
       typeid: 6
       radius: 2.551
+      charge: -1.0
       atoms:
         CB:
           charge: -0.0547
@@ -311,6 +313,7 @@ beads:
     - name: CL
       typeid: 35
       radius: 2.566
+      charge: -1.0
       atoms:
         PA:
           charge: 1.4929
@@ -331,6 +334,7 @@ beads:
     - name: CN
       typeid: 35
       radius: 2.566
+      charge: -2.0
       atoms:
         PB:
           charge: 1.3672
@@ -435,6 +439,7 @@ beads:
     - name: CG
       typeid: 11
       radius: 2.224
+      charge: -1.0
       atoms:
         CD:
           charge: 0.8054
@@ -575,6 +580,7 @@ beads:
     - name: CL
       typeid: 35
       radius: 2.566
+      charge: -1.0
       atoms:
         PA:
           charge: 1.2532
@@ -595,6 +601,7 @@ beads:
     - name: CM
       typeid: 35
       radius: 2.566
+      charge: -1.0
       atoms:
         PB:
           charge: 1.3852
@@ -615,6 +622,7 @@ beads:
     - name: CN
       typeid: 35
       radius: 2.566
+      charge: -2.0
       atoms:
         PG:
           charge: 1.265
@@ -861,6 +869,7 @@ beads:
     - name: CG
       typeid: 17
       radius: 2.469
+      charge: 1.0
       atoms:
         CD:
           charge: 0.0763
@@ -925,6 +934,7 @@ beads:
     - name: CB
       typeid: 36
       radius: 1.16
+      charge: 2.0
       atoms:
         MG:
           charge: 2.0

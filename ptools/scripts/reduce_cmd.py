@@ -21,18 +21,28 @@ DEFAULT_SCORPION_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_scorpion.y
 
 class Bead(ptools.Atomproperty):
     def __init__(self, atoms, parameters):
+        super(Bead, self).__init__()
         self.atoms = atoms
         self.weights = [atom_parameters.get('weight', 1.0)
                         for atom_parameters in parameters['atoms'].values()]
         self.atomType = parameters.get('name', 'X')
         self.atomCharge = parameters.get('charge', 0.0)
         self.chainId = self.atoms[0].chainId
-
-        typeid = parameters.get('typeid', 0)
-        self.extra = '{:5d}{:8.3f} 0 0'.format(typeid, self.atomCharge)
+        self.typeid = parameters.get('typeid', 0)
+        self.extra = '{:5d}{:8.3f} 0 0'.format(self.typeid, self.atomCharge)
 
         # List of atom names that should be part of the bead.
-        self.atom_names = parameters['atoms']
+        self.atom_names = parameters['atoms'].keys()
+
+    @property
+    def charge(self):
+        return self.atomCharge
+
+    @charge.setter
+    def charge(self, value):
+        """Use this setter to set `atomCharge` and update `extra` on the fly."""
+        self.atomCharge = value
+        self.extra = '{:5d}{:8.3f} 0 0'.format(self.typeid, self.atomCharge)
 
     @property
     def coords(self):
@@ -45,12 +55,21 @@ class Bead(ptools.Atomproperty):
         n = 1. / len(self.atoms)
         return x * n
 
+    @property
+    def name(self):
+        return self.atomType
+
+    @name.setter
+    def name(self, value):
+        self.atomType = value
+
     def toatom(self):
         """Return a ptools.Atom instance with current bead properties and
         coordinates."""
         return ptools.Atom(self, self.coords)
 
     def topdb(self):
+        print("charge:", self.atomCharge)
         return self.toatom().ToPdbString()
 
 
@@ -434,4 +453,19 @@ def run(args):
     reducer.name_conversion_file = convname
 
     reducer.reduce()
+
+    # If force field is scorpion, first CA bead's charge is +1 and
+    # last CA bead's charge is -1.
+    
+    if args.forcefield == 'scorpion':
+        ca_beads = [bead for bead in reducer.beads if bead.name == 'CA']
+        ca_beads[0].charge = 1.0
+        ca_beads[-1].charge = -1.0
+
     reducer.print_output_model(args.output)
+
+
+
+
+
+
