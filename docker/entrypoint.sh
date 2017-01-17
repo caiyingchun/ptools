@@ -4,7 +4,10 @@ set -e
 cd /src/ptools
 python setup.py build && python setup.py install
 
-cd Tests
-make unittests
+if [[ $@ == "test" ]]
+then
+    cd Tests && make unittests
+else
+    exec "bash"
+fi
 
-exec "$@"
