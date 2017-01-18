@@ -188,7 +188,7 @@ class Reducer(object):
 
     PROCEDURE CREATE_RESIDUE_BEADS (residue, parameters)
         foreach bead_parameter in parameters
-            atoms <- find atoms in residu that belong to current bead
+            atoms <- find atoms in residue that belong to current bead
             check number of atoms found vs number that should have been found
             create a bead:
                 name, type, charge, etc. are determined from parameters
@@ -544,10 +544,9 @@ def get_reduction_data_path(args):
             elif args.molDNA:
                 return DEFAULT_ATTRACT1_DNA_REDUCTION_YML
             else:
-                err = "error: one of the arguments --prot --dna is required "\
+                err = "one of the arguments --prot --dna is required "\
                       "when not using --red option"
-                print(err, file=sys.stderr)
-                sys.exit(2)
+                ptools.io.critical(err, exitstatus=2)
         elif args.forcefield == 'attract2':
             return DEFAULT_ATTRACT2_REDUCTION_YML
         elif args.forcefield == 'scorpion':

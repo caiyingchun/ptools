@@ -68,11 +68,19 @@ def warning(*args, **kwargs):
 
 def error(*args, **kwargs):
     """Display a warning message."""
-    exitstatus = kwargs.pop('exitstatus', 1)
     prefix = kwargs.get('prefix', 'ERROR: ')
     kwargs['prefix'] = prefix
     _print(*args, **kwargs)
+
+
+def critical(*args, **kwargs):
+    """Display a warning message."""
+    exitstatus = kwargs.pop('exitstatus', 1)
+    prefix = kwargs.get('prefix', 'CRITICAL ERROR: ')
+    kwargs['prefix'] = prefix
+    _print(*args, **kwargs)
     sys.exit(exitstatus)
+
 
 
 def is_comment(s, commentchar='#'):
