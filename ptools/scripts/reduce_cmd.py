@@ -489,39 +489,17 @@ def create_attract1_subparser(parent):
     group.add_argument('--dna', action='store_true', dest='molDNA',
                        help='reduce DNA')
 
-    parser.add_argument('--red', dest='redName',
-                        help="path to correspondance file between atoms and beads file")
-    parser.add_argument('--conv', dest='convName',
-                        default=DEFAULT_CONVERSION_YML,
-                        help="path type conversion file")
-    parser.add_argument('-o', '--output',
-                        help='path to output file (default=stdout)')
-
 
 def create_attract2_subparser(parent):
     parser = parent.add_parser('attract2',
                                help='reduce using the attract2 force field')
     parser.set_defaults(forcefield='attract2')
-    parser.add_argument('--red', dest='redName',
-                        help="path to correspondance file between atoms and beads file")
-    parser.add_argument('--conv', dest='convName',
-                        default=DEFAULT_CONVERSION_YML,
-                        help="path type conversion file")
-    parser.add_argument('-o', '--output',
-                        help='path to output file (default=stdout)')
 
 
 def create_scorpion_subparser(parent):
     parser = parent.add_parser('scorpion',
                                help='reduce using the scorpion force field')
     parser.set_defaults(forcefield='scorpion')
-    parser.add_argument('--red', dest='redName',
-                        help="path to correspondance file between atoms and beads file")
-    parser.add_argument('--conv', dest='convName',
-                        default=DEFAULT_CONVERSION_YML,
-                        help="path type conversion file")
-    parser.add_argument('-o', '--output',
-                        help='path to output file (default=stdout)')
     parser.add_argument('--cgopt', dest='optimizedcharges', action='store_true',
                         help='path to output file (default=stdout)')
     parser.add_argument('--delgrid', type=float, default=1.5,
@@ -536,6 +514,14 @@ def create_subparser(parent):
 
     parser.add_argument('pdb',
                         help="path to input PDB file (atomistic resolution)")
+    parser.add_argument('--red', dest='redName',
+                        help="path to correspondance file between atoms "
+                             "and beads file")
+    parser.add_argument('--conv', dest='convName',
+                        default=DEFAULT_CONVERSION_YML,
+                        help="path type conversion file")
+    parser.add_argument('-o', '--output',
+                        help='path to output file (default=stdout)')
 
     subparsers = parser.add_subparsers()
     create_attract1_subparser(subparsers)
@@ -558,8 +544,8 @@ def get_reduction_data_path(args):
             elif args.molDNA:
                 return DEFAULT_ATTRACT1_DNA_REDUCTION_YML
             else:
-                err = "error: one of the arguments --prot --dna is required when "\
-                      "not using --red option"
+                err = "error: one of the arguments --prot --dna is required "\
+                      "when not using --red option"
                 print(err, file=sys.stderr)
                 sys.exit(2)
         elif args.forcefield == 'attract2':
