@@ -390,12 +390,10 @@ class Reducer(object):
         # Residue list: group atoms by residue tag.
         # A residue is two items: (<residue tag>, <atom list iterator>).
         residue_list = itertools.groupby(self.atoms,
-                                         key=lambda atom: residuetag(atom.residType,
-                                                                     atom.chainId,
-                                                                     atom.residId))
+                                         key=lambda atom: atom.residuetag())
         atomid = 1
         for restag, resatoms in residue_list:
-            resname, chain, resid = restag.split('-')
+            resname, resid, chain = restag.split(ptools.Atomproperty.get_tag_delimiter())
 
             if has_rule_for_residue_reduction():
                 coarse_res = CoarseResidue(resname, int(resid),
@@ -552,11 +550,6 @@ def get_reduction_data_path(args):
         elif args.forcefield == 'scorpion':
             return DEFAULT_SCORPION_REDUCTION_YML
     return args.redName
-
-
-def residuetag(resname, resid, chain):
-    """Return a string in the format <residue_name>-<residue_id>-<chain_id>."""
-    return '{}-{}-{}'.format(resname, resid, chain)
 
 
 def run(args):

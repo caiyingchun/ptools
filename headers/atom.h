@@ -3,8 +3,8 @@
 
 #include "basetypes.h"
 
+#include <stdio.h>
 #include <string>
-#include <iostream>
 #include "coord3d.h"
 
 namespace PTools{
@@ -37,6 +37,29 @@ struct Atomproperty {
         atomCharge=0.0;
     };
 
+    /// Get/Set separator string used to separate elements in tag string.
+    static std::string tagDelimiter;
+
+    static std::string getTagDelimiter()
+    {
+        return tagDelimiter;
+    }
+
+    static void setTagDelimiter(const std::string & delimiter)
+    {
+        tagDelimiter = delimiter;
+    }
+
+    /// Construct a residue tag that should be unique for a molecule.
+    /// Residue tag is made of residue name, residue sequence number and chain
+    /// identifier. Those elements are separated by AtomProperty tagDelimiter.
+    std::string residuetag() const
+    {
+        char buf[10];
+        std::sprintf(buf, "%d", residId);
+        std::string residStr(buf);
+        return residType + tagDelimiter + residStr + tagDelimiter + chainId;
+    }
 
 };
 
