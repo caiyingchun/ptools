@@ -10,6 +10,7 @@ import ptools
 
 from . import attract_cmd
 from . import reduce_cmd
+from . import translate_cmd
 
 
 def parse_command_line():
@@ -18,6 +19,7 @@ def parse_command_line():
     subparsers = parser.add_subparsers()
     attract_cmd.create_subparser(subparsers)
     reduce_cmd.create_subparser(subparsers)
+    translate_cmd.create_subparser(subparsers)
     return parser.parse_args()
 
 
