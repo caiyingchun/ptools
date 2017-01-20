@@ -13,7 +13,6 @@ PyAttract/cgopt.c
 Tests/cpp/runner.cpp
 Tests/cpp/ptoolstest.bin
 Tests/cpp/Makefile
-Tests/cpp/build
 .cache
 
 # Distribution / packaging
