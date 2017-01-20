@@ -3,13 +3,13 @@
 from __future__ import print_function
 
 import os
-import tarfile
-import urllib2
 import shutil
 import subprocess
-import StringIO
 import sys
+import tarfile
 import textwrap
+import urllib2
+import StringIO
 
 from distutils import log
 from distutils.core import setup
@@ -46,14 +46,12 @@ else:
         return subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
     check_output = _check_output
 
-# For MacOS
+
+# OS X specific linking options.
 if sys.platform == 'darwin':
     from distutils import sysconfig
     vars = sysconfig.get_config_vars()
     vars['LDSHARED'] = vars['LDSHARED'].replace('-bundle', '-dynamiclib')
-    # clang required to get c++ libraries right
-    os.environ['CXX'] = 'clang++'
-    os.environ['CC'] = 'clang'
 
 
 class build_ext(_build_ext):
@@ -397,9 +395,9 @@ def setup_package():
     sources.append("bindings/_ptools.pyx")
 
     ptools = Extension('_ptools',
-                      sources=sources,
-                      language='c++',
-                      include_dirs=['headers'])
+                       sources=sources,
+                       language='c++',
+                       include_dirs=['headers'])
 
     cgopt = Extension('cgopt',
                       sources=['PyAttract/cgopt.pyx',
@@ -415,23 +413,21 @@ def setup_package():
 
 
 def setup_cpp_tests():
-    import platform
-    import string
+    template_variables = {
+        'BOOST_INCLUDE_DIR': find_boost()
+    }
 
-    boost_dir = find_boost()
+    # Read Makefile template and modify it according to the template variable
+    # dictionnary.
+    with open('Tests/cpp/Makefile.in', 'rt') as f:
+        template = f.read()
+    for variable, value in template_variables.items():
+        variable = '@' + variable + '@'
+        template = template.replace(variable, value)
 
-    if sys.platform == 'darwin':
-        cpp_compile_string = "clang++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
-        try:
-            p = subprocess.Popen(["ln", "-s", "../../build"], cwd="Tests/cpp/").wait()
-        except:
-            print("Warning: Unable to make symbolic link from Tests/cpp/build to build, skipping...")
-    else:
-        cpp_compile_string = "g++ -O2 -I. -I../../headers -I%s -o $@ $< $(LIBPTOOLS) -l$(LIBPYTHON)" % boost_dir
-
-    lines = open('Tests/cpp/Makefile_MODEL','r').readlines()
-    newlines = [ string.replace(line, 'CPP_COMPILE_STRING', cpp_compile_string) for line in lines ]
-    open("Tests/cpp/Makefile",'w').writelines(newlines)
+    # Write actual Makefile used to compile and run C++ tests.
+    with open('Tests/cpp/Makefile', 'wt') as f:
+        f.write(template)
 
 
 if __name__ == '__main__':
