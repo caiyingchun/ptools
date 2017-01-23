@@ -4,21 +4,9 @@ import os
 import sys
 
 from .forcefield import PTOOLS_FORCEFIELDS
+from .exceptions import FileParsingError
 
 
-class FileParsingError(Exception):
-    """Exception raised when the parsing of a file fails."""
-    def __init__(self, filename, message, line='', lineid=None):
-        fmt = '%(filename)s:'
-        if lineid is not None:
-            fmt += '%(lineid)d:'
-        fmt += ' error: %(message)s'
-        if line:
-            fmt += "\n%(line)r"
-        super(FileParsingError, self).__init__(fmt % vars())
-
-
-# def _log(*args, prefix='', end='\n', file=sys.stderr, flush=False, sep=' '):
 def _print(*args, **kwargs):
     """Print a message to a file.
 
