@@ -19,3 +19,19 @@ class FileParsingError(Exception):
         if line:
             fmt += "\n%(line)r"
         super(FileParsingError, self).__init__(fmt % vars())
+
+
+class BeadCreationError(Exception):
+    """Base class raised when an error is encountered when reducing
+    an atomtic topology to a coarse grain topology."""
+    def __init__(self, bead):
+        self.bead = bead
+        self.resname = bead.atoms[0].residType
+        self.resid = bead.atoms[0].residId
+        msg = 'error creating bead for residue {}:{}'
+        msg = msg.format(self.resname, self.resid)
+        super(BeadCreationError, self).__init__(msg)
+
+
+class IncompleteBeadError(BeadCreationError):
+    pass
