@@ -90,3 +90,23 @@ class DuplicateAtomInBeadError(BeadCreationError):
         counter = collections.Counter(self.found_atoms)
         return [name for name, count in counter.items() if count > 1]
 
+
+class IgnoredAtomsInReducedResidueError(ResidueReductionError):
+    default_message_fmt = (ResidueReductionError.default_message_fmt +
+                           ' some atoms were unused during coarse grain modeling:\n' +
+                           'unused atoms: {unused_atoms}')
+
+    def __init__(self, residue, residue_atoms):
+        # Names of atoms sent to coarse grain residue constructor.
+        self.atom_names = [atom.atomType for atom in residue_atoms]
+
+        # Names of atoms actually used in the beads.
+        self.bead_atom_names = [atom.atomType for bead in residue.beads
+                                for atom in bead.atoms]
+
+        super(IgnoredAtomsInReducedResidueError, self).__init__(residue.resname, residue.resid)
+
+    @property
+    def unused_atoms(self):
+        diff = set(self.atom_names) ^ set(self.bead_atom_names)
+        return list(diff)

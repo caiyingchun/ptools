@@ -10,7 +10,9 @@ import sys
 import yaml
 
 import ptools
-from ptools.exceptions import IncompleteBeadError, DuplicateAtomInBeadError
+from ptools.exceptions import (IncompleteBeadError,
+                               DuplicateAtomInBeadError,
+                               IgnoredAtomsInReducedResidueError)
 
 
 DEFAULT_ATTRACT1_PROT_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attract1_prot.yml')
@@ -105,27 +107,17 @@ class CoarseResidue:
             b = Bead(atoms, self.resname, self.resid, bead_param)
             self.beads.append(b)
 
-        self._check_all_atoms_in_model(parameters)
+        if len(resatoms) != self.number_of_atoms:
+            raise IgnoredAtomsInReducedResidueError(self, resatoms)
 
-    def _check_all_atoms_in_model(self, parameters):
-        """Check that every atoms from atomistic model have been taken
-        into account for creating the coarse grain model.
+    @property
+    def number_of_atoms(self):
+        """Return the total number of atoms in the residue."""
+        return sum(len(bead.atoms) for bead in self.beads)
 
-        Print a warning message if it is not the case.
-        """
-        bead_atom_names = [atom.atomType
-                           for bead in self.beads
-                           for atom in bead.atoms]
-        bead_atom_name_parameters = [name
-                                     for bead_param in parameters
-                                     for name in bead_param['atoms']]
-
-        diff = set(bead_atom_names) - set(bead_atom_name_parameters)
-
-        for atom_name in diff:
-            msg = "{}:{}: atom '{}' unused during coarse grain modelling"
-            msg = msg.format(self.resname, self.resid, atom_name)
-            ptools.io.warning(msg)
+    def number_of_beads(self):
+        """Return the number of beads in the residue."""
+        return len(self.beads)
 
     @property
     def resid(self):
