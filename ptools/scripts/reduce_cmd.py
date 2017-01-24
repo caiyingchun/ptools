@@ -88,6 +88,13 @@ class Bead(ptools.Atomproperty):
         return self.toatom().ToPdbString()
 
     def _check_bead_composition(self):
+        """Check if some atoms were unused or duplicated when creating
+        the bead.
+
+        Raises:
+            IncompleteBeadError: if an atom is missing.
+            DuplicateAtomInBeadError: if the same atom has been found twice.
+        """
         if len(self.atom_reduction_parameters) > len(self.atoms):
             raise IncompleteBeadError(self)
         elif len(self.atom_reduction_parameters) < len(self.atoms):
@@ -120,15 +127,19 @@ class CoarseResidue:
 
     @property
     def resid(self):
+        """Get the residue identifier."""
         return self._resid
 
     @resid.setter
     def resid(self, value):
+        """Set the residue identifier and update residue identifier for each
+        bead in the residue."""
         for b in self.beads:
             b.residId = value
         self._resid = value
 
     def topdb(self):
+        """Return a PDB formatted string representing the residue."""
         return '\n'.join(b.topdb() for b in self.beads)
 
 
@@ -222,10 +233,12 @@ class Reducer(object):
 
     @property
     def name_conversion_file(self):
+        """Return the path to the name conversion file used."""
         return self._name_conversion_file
 
     @name_conversion_file.setter
     def name_conversion_file(self, value):
+        """Set the path to the name conversion file and read it."""
         self._name_conversion_file = value
         self.read_name_conversion_file()
 
@@ -535,6 +548,8 @@ def run(args):
 
     reducer = Reducer(atomicname, redname)
     reducer.name_conversion_file = convname
+
+    reducer.atoms = [atom for atom in reducer.atoms if atom.atomType != 'OXT']
 
     reducer.reduce()
 

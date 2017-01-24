@@ -27,37 +27,43 @@ class FileParsingError(Exception):
 
 class ResidueReductionError(Exception):
     """Base class for an exception raised when an error occured during
-    the residue reduction (transformation from all-atom to coarse grain)."""
+    the residue reduction (transformation from all-atom to coarse grain).
 
-    default_message_fmt = 'error reducing residue {resname}:{resid}'
+    Attrs:
+        default_message_fmt (str): default message format.
+    
+    Args:
+        resname (str): residue name.
+        resid (int): residue identifier.
+        kwargs dict[str]->value: any argument that will be used to format
+            message.
+    """
+    default_message_fmt = 'error reducing residue {self.resname}:{self.resid}'
 
     def __init__(self, resname, resid, message='', **kwargs):
         self.resname = resname
         self.resid = resid
-        self._message = message or self.default_message_fmt
 
         # Set attributes with attributes coming from kwargs.
         for attr, value in kwargs.items():
             if attr not in ('resname', 'resid', 'message'):
                 setattr(self, attr, value)
 
-        super(ResidueReductionError, self).__init__(self._format_message())
-
-    def _format_message(self):
-        fmt = string.Formatter()
-        attrs = [field_name
-                 for (text, field_name, format_spec, conversion)
-                 in fmt.parse(self._message)]
-        values = {attr: getattr(self, attr) for attr in attrs}
-        return self._message.format(**values)
+        message = message or self.default_message_fmt
+        super(ResidueReductionError, self).__init__(message.format(self=self))
 
 
 class BeadCreationError(ResidueReductionError):
     """Base class raised when an error is encountered when reducing
-    an atomtic topology to a coarse grain topology."""
+    an atomtic topology to a coarse grain topology.
 
+    Attrs:
+        bead (ptools.scripts.reduce_cmd.Bead): bead where error occured.
+        expected_atoms (list[str]): list of expected atom names.
+        found_atoms (list[str]): list of actually found atom names.
+    """
     default_message_fmt = (ResidueReductionError.default_message_fmt +
-                           "\n  error creating bead '{bead_name}'")
+                           "\n  error creating bead '{self.bead.name}'")
 
     def __init__(self, bead, message=''):
         self.bead = bead
@@ -68,33 +74,47 @@ class BeadCreationError(ResidueReductionError):
 
 
 class IncompleteBeadError(BeadCreationError):
+    """Exception raised when an atom has not been found when constructing
+    a bead."""
     default_message_fmt = (BeadCreationError.default_message_fmt +
-                           '\n    expected atoms: {expected_atoms}' +
-                           '\n    found atoms: {found_atoms}' +
-                           '\n    missing atoms: {missing_atoms}'
+                           '\n    expected atoms: {self.expected_atoms}' +
+                           '\n    found atoms: {self.found_atoms}' +
+                           '\n    missing atoms: {self.missing_atoms}'
                            )
 
     @property
     def missing_atoms(self):
+        """Return the list of missing atom names."""
         return list(set(self.expected_atoms) - set(self.found_atoms))
 
 
 class DuplicateAtomInBeadError(BeadCreationError):
+    """Exception raised when an atom is found several times when constructing
+    a bead."""
     default_message_fmt = (BeadCreationError.default_message_fmt +
-                           '\n    expected atoms: {expected_atoms}' +
-                           '\n    found atoms: {found_atoms}' +
-                           '\n    duplicate atoms: {duplicate_atoms}')
+                           '\n    expected atoms: {self.expected_atoms}' +
+                           '\n    found atoms: {self.found_atoms}' +
+                           '\n    duplicate atoms: {self.duplicate_atoms}')
 
     @property
     def duplicate_atoms(self):
+        """Return the list of duplicate atom names."""
         counter = collections.Counter(self.found_atoms)
         return [name for name, count in counter.items() if count > 1]
 
 
 class IgnoredAtomsInReducedResidueError(ResidueReductionError):
+    """Exception raised when an atom from all-atom model has not been used
+    in the coarse grain model.
+
+    Attrs:
+        atom_names (list[str]): names of atoms read in the topology file for
+            the current residue.
+        bead_atom_names (list[str]): names of atoms used for bead construction.
+    """
     default_message_fmt = (ResidueReductionError.default_message_fmt +
-                           ' some atoms were unused during coarse grain modeling:\n' +
-                           'unused atoms: {unused_atoms}')
+                           ' some atoms were unused during coarse grain '
+                           'modeling: {self.unused_atoms}')
 
     def __init__(self, residue, residue_atoms):
         # Names of atoms sent to coarse grain residue constructor.
@@ -108,5 +128,6 @@ class IgnoredAtomsInReducedResidueError(ResidueReductionError):
 
     @property
     def unused_atoms(self):
+        """Return the list of unused atom names."""
         diff = set(self.atom_names) ^ set(self.bead_atom_names)
         return list(diff)
