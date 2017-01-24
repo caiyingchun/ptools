@@ -70,7 +70,7 @@ class BeadCreationError(ResidueReductionError):
 class IncompleteBeadError(BeadCreationError):
     default_message_fmt = (BeadCreationError.default_message_fmt +
                            '\n    expected atoms: {expected_atoms}' +
-                           '\n    found atoms: {found_atoms}'+
+                           '\n    found atoms: {found_atoms}' +
                            '\n    missing atoms: {missing_atoms}'
                            )
 
@@ -81,9 +81,9 @@ class IncompleteBeadError(BeadCreationError):
 
 class DuplicateAtomInBeadError(BeadCreationError):
     default_message_fmt = (BeadCreationError.default_message_fmt +
-                       '\n    expected atoms: {expected_atoms}' +
-                       '\n    found atoms: {found_atoms}'+
-                       '\n    duplicate atoms: {duplicate_atoms}')
+                           '\n    expected atoms: {expected_atoms}' +
+                           '\n    found atoms: {found_atoms}' +
+                           '\n    duplicate atoms: {duplicate_atoms}')
 
     @property
     def duplicate_atoms(self):

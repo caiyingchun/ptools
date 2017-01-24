@@ -31,7 +31,7 @@ class Bead(ptools.Atomproperty):
         self.atomType = parameters.get('name', 'X')
         self.atomCharge = parameters.get('charge', 0.0)
         self.typeid = parameters.get('typeid', 0)
-        
+
         # Set bead attributes with attributes coming from reduction
         # parameters.
         for attr, value in parameters.items():
@@ -41,7 +41,7 @@ class Bead(ptools.Atomproperty):
         # List of atom names that should be part of the bead.
         self.atom_reduction_parameters = parameters['atoms']
         self.extra = '{:5d}{:8.3f} 0 0'.format(self.typeid, self.atomCharge)
-        
+
         self._check_bead_composition()
         self.chainId = self.atoms[0].chainId
 
@@ -92,7 +92,6 @@ class Bead(ptools.Atomproperty):
             raise IncompleteBeadError(self)
         elif len(self.atom_reduction_parameters) < len(self.atoms):
             raise DuplicateAtomInBeadError(self)
-
 
 
 class CoarseResidue:
