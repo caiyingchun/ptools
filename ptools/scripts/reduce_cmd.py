@@ -10,6 +10,7 @@ import sys
 import yaml
 
 import ptools
+from ptools.exceptions import IncompleteBeadError, DuplicateAtomInBeadError
 
 
 DEFAULT_ATTRACT1_PROT_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attract1_prot.yml')
@@ -20,25 +21,27 @@ DEFAULT_SCORPION_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_scorpion.y
 
 
 class Bead(ptools.Atomproperty):
-    def __init__(self, atoms, parameters):
+    def __init__(self, atoms, resname, resid, parameters):
         super(Bead, self).__init__()
         self.atoms = atoms
+        self.residType = resname
+        self.residId = resid
         self.atomType = parameters.get('name', 'X')
         self.atomCharge = parameters.get('charge', 0.0)
-        self.chainId = self.atoms[0].chainId
         self.typeid = parameters.get('typeid', 0)
-        self.extra = '{:5d}{:8.3f} 0 0'.format(self.typeid, self.atomCharge)
-
-        # Update bead attributes with attributes coming from reduction
+        
+        # Set bead attributes with attributes coming from reduction
         # parameters.
         for attr, value in parameters.items():
             if attr not in ('typeid', 'name', 'charge', 'atoms'):
                 setattr(self, attr, value)
 
         # List of atom names that should be part of the bead.
-        self.atom_names = parameters['atoms'].keys()
         self.atom_reduction_parameters = parameters['atoms']
+        self.extra = '{:5d}{:8.3f} 0 0'.format(self.typeid, self.atomCharge)
+        
         self._check_bead_composition()
+        self.chainId = self.atoms[0].chainId
 
     @property
     def charge(self):
@@ -83,9 +86,11 @@ class Bead(ptools.Atomproperty):
         return self.toatom().ToPdbString()
 
     def _check_bead_composition(self):
-        from ptools.exceptions import BeadCreationError
         if len(self.atom_reduction_parameters) > len(self.atoms):
-            raise BeadCreationError(self)
+            raise IncompleteBeadError(self)
+        elif len(self.atom_reduction_parameters) < len(self.atoms):
+            raise DuplicateAtomInBeadError(self)
+
 
 
 class CoarseResidue:
@@ -97,75 +102,30 @@ class CoarseResidue:
 
         for bead_param in parameters:
             atoms = [a for a in resatoms if a.atomType in bead_param['atoms']]
-            b = Bead(atoms, bead_param)
-            b.residType = self.resname
-            b.residId = self.resid
+            b = Bead(atoms, self.resname, self.resid, bead_param)
             self.beads.append(b)
 
-        #     rc = self._compare_expected_and_found_atoms(bead_param, atoms)
-        #     if rc < 2:
-        #         b = Bead(atoms, bead_param)
-        #         b.residType = self.resname
-        #         b.residId = self.resid
-        #         self.beads.append(b)
-        #     elif rc == 2:
-        #         msg = "duplicate atoms found in atomistic model...skipping bead"
-        #         ptools.io.warning(msg)
-        #     elif rc == 3:
-        #         msg = "skipping residue {}:{}".format(resname, resid)
-        #         ptools.io.warning(msg)
-        # self._check_all_atoms_in_model(parameters)
+        self._check_all_atoms_in_model(parameters)
 
-    # def _check_all_atoms_in_model(self, parameters):
-    #     """Check that every atoms from atomistic model have been taken
-    #     into account for creating the coarse grain model.
+    def _check_all_atoms_in_model(self, parameters):
+        """Check that every atoms from atomistic model have been taken
+        into account for creating the coarse grain model.
 
-    #     Print a warning message if it is not the case.
-    #     """
-    #     bead_atom_names = [atom.atomType
-    #                        for bead in self.beads
-    #                        for atom in bead.atoms]
-    #     bead_atom_name_parameters = [name
-    #                                  for bead_param in parameters
-    #                                  for name in bead_param['atoms']]
+        Print a warning message if it is not the case.
+        """
+        bead_atom_names = [atom.atomType
+                           for bead in self.beads
+                           for atom in bead.atoms]
+        bead_atom_name_parameters = [name
+                                     for bead_param in parameters
+                                     for name in bead_param['atoms']]
 
-    #     diff = set(bead_atom_names) - set(bead_atom_name_parameters)
-    #     for atom_name in diff:
-    #         msg = "{}:{}: atom '{}' unused during coarse grain modelling"
-    #         msg = msg.format(self.resname, self.resid, atom_name)
-    #         ptools.io.warning(msg)
+        diff = set(bead_atom_names) - set(bead_atom_name_parameters)
 
-    # def _compare_expected_and_found_atoms(self, bead_param, atoms):
-    #     """Compare expected atoms from bead parameters to atoms actually found
-    #     in the residue.
-
-    #     Returns:
-    #         int: 0 if expected atoms are the same as found atoms
-    #              1 if missing atoms
-    #              2 if duplicate atoms 
-    #              3 if no expected atom has been found
-    #     """
-    #     if not atoms:
-    #         err = 'no atom found for bead {} (atoms={}) of residue {}:{}'
-    #         err = err.format(bead_param['name'], bead_param['atoms'],
-    #                          self.resname, self.resid)
-    #         ptools.io.warning(err)
-    #         return 3
-    #     elif len(atoms) != len(bead_param['atoms']):
-    #         msg = 'residue %(resname)s:%(resid)d, bead %(bead_name)s: '\
-    #               'expected atoms %(expected_atoms)s, '\
-    #               'found %(found_atoms)s' % {
-    #                   'resname': self.resname,
-    #                   'resid': self.resid,
-    #                   'bead_name': bead_param['name'],
-    #                   'expected_atoms': sorted(bead_param['atoms']),
-    #                   'found_atoms': sorted(a.atomType for a in atoms)
-    #               }
-    #         ptools.io.warning(msg)
-    #         if len(atoms) != len(set(atom.atomType for atom in atoms)):
-    #             return 2
-    #         return 1
-    #     return 0
+        for atom_name in diff:
+            msg = "{}:{}: atom '{}' unused during coarse grain modelling"
+            msg = msg.format(self.resname, self.resid, atom_name)
+            ptools.io.warning(msg)
 
     @property
     def resid(self):
