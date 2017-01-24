@@ -10,6 +10,7 @@ import sys
 import yaml
 
 import ptools
+import ptools.exceptions
 from ptools.exceptions import (IncompleteBeadError,
                                DuplicateAtomInBeadError,
                                IgnoredAtomsInReducedResidueError)
@@ -353,8 +354,12 @@ class Reducer(object):
             if should_rename_atom():
                 rename_atom(self.atom_rename[atom.residType][atom.atomType])
 
-    def reduce(self):
+    def reduce(self, ignore_errors):
         """Actual reduction method.
+        
+        Args:
+            ignore_errors (list[str]): list of exception that should
+                be ignored when the occur during reduction.
 
         Group atoms by residue then iterate over those residues to create
         coarse grain residues.
@@ -372,6 +377,8 @@ class Reducer(object):
         # parameters.
         self.rename_atoms_and_residues()
 
+        ignore_exceptions = [eval(e) for e in ignore_errors]
+
         # Residue list: group atoms by residue tag.
         # A residue is two items: (<residue tag>, <atom list iterator>).
         residue_list = itertools.groupby(self.atoms,
@@ -381,15 +388,19 @@ class Reducer(object):
             resname, resid, chain = restag.split(ptools.Atomproperty.get_tag_delimiter())
 
             if has_rule_for_residue_reduction():
-                coarse_res = CoarseResidue(resname, int(resid),
-                                           list(resatoms),
-                                           self.reduction_parameters[resname])
-                # Update bead atom id.
-                for bead in coarse_res.beads:
-                    bead.atomId = atomid
-                    atomid += 1
-
-                self.beads += coarse_res.beads
+                try:
+                    coarse_res = CoarseResidue(resname, int(resid),
+                                               list(resatoms),
+                                               self.reduction_parameters[resname])
+                    for bead in coarse_res.beads:
+                        bead.atomId = atomid
+                        atomid += 1
+                    self.beads += coarse_res.beads
+                except Exception as e:
+                    if e in ignore_exceptions:
+                        ptools.io.warning(str(e))
+                    else:
+                        raise
 
     def optimize_charges(self, delgrid):
         """Use cgopt to optimize bead charges.
@@ -505,6 +516,12 @@ def create_subparser(parent):
                         help="path type conversion file")
     parser.add_argument('-o', '--output',
                         help='path to output file (default=stdout)')
+    parser.add_argument('--ignore-error', nargs='?', default=[],
+                        action='append',
+                        choices=ptools.exceptions.residue_reduction_errors(),
+                        help="skip residue when error occurs "
+                             "(by default the program crashes by raising the "
+                             "appropriate exception)")
 
     subparsers = parser.add_subparsers()
     create_attract1_subparser(subparsers)
@@ -549,9 +566,7 @@ def run(args):
     reducer = Reducer(atomicname, redname)
     reducer.name_conversion_file = convname
 
-    reducer.atoms = [atom for atom in reducer.atoms if atom.atomType != 'OXT']
-
-    reducer.reduce()
+    reducer.reduce(ignore_errors=args.ignore_error)
 
     if args.forcefield == 'scorpion':
         # If force field is scorpion, first CA bead's charge is +1 and

@@ -1,11 +1,14 @@
 
 """ptools.exceptions - Defines PTools specific exceptions."""
 
+from __future__ import print_function
 
 import collections
+import inspect
 import string
+import sys
 
-
+    
 class FileParsingError(Exception):
     """Exception raised when the parsing of a file fails.
 
@@ -131,3 +134,9 @@ class IgnoredAtomsInReducedResidueError(ResidueReductionError):
         """Return the list of unused atom names."""
         diff = set(self.atom_names) ^ set(self.bead_atom_names)
         return list(diff)
+
+
+def residue_reduction_errors():
+    """Return the list of ResidueReductionError subclass names."""
+    return [name for name, obj in inspect.getmembers(sys.modules[__name__])
+            if inspect.isclass(obj) and issubclass(obj, ResidueReductionError)]
