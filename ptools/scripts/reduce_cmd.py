@@ -547,7 +547,7 @@ def create_subparser(parent):
                         help='path to output file (default=stdout)')
     parser.add_argument('--ignore-error', nargs='?', default=[],
                         action='append',
-                        choices=ptools.exceptions.residue_reduction_errors(),
+                        choices=ptools.exceptions.residue_reduction_errors() + ['all'],
                         help="skip residue when error occurs "
                              "(by default the program crashes by raising the "
                              "appropriate exception)")
@@ -583,6 +583,16 @@ def get_reduction_data_path(args):
     return args.redName
 
 
+def exception_names_to_exception_list(input_list):
+    """Return a list of exception class from the list of exception names."""
+    exception_fmt = 'ptools.exceptions.{}'
+    if 'all' in input_list:
+        input_list = ptools.exceptions.residue_reduction_errors()
+    exception_names = [exception_fmt.format(name) for name in input_list]
+    exception_list = [eval(name) for name in exception_names]
+    return exception_list
+
+
 def run(args):
     redname = get_reduction_data_path(args)
     convname = args.convName
@@ -596,7 +606,7 @@ def run(args):
     reducer.name_conversion_file = convname
 
     # Convert exception list of names as list of classes.
-    ignore_exceptions = [eval(e) for e in args.ignore_error]
+    ignore_exceptions = exception_names_to_exception_list(args.ignore_error)
     reducer.reduce(ignore_exceptions=ignore_exceptions)
 
     if args.forcefield == 'scorpion':
