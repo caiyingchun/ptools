@@ -172,10 +172,9 @@ class Reducer(object):
           CREATE_RESIDUE_BEADS(residue, reduction parameters)
 
     PROCEDURE CREATE_RESIDUE_BEADS (residue, parameters)
-        foreach bead_parameter in parameters
+        foreach bead_parameter in parameters[residue]
             atoms <- find atoms in residue that belong to current bead
-            check number of atoms found vs number that should have been found
-            create a bead:
+            create a bead from atoms and parameters:
                 name, type, charge, etc. are determined from parameters
                 coordinates is the barycentre of atoms that belong to the bead
     """
@@ -356,14 +355,35 @@ class Reducer(object):
                 rename_atom(self.atom_rename[atom.residType][atom.atomType])
 
     def reduce(self, ignore_exceptions):
-        """Actual reduction method.        
+        """Actual reduction method.
 
         Group atoms by residue then iterate over those residues to create
         coarse grain residues.
 
+        Different kinds of exception can be raised but a simple warning is
+        printed if the exception is listed in `ignore_exceptions`.
+
         Args:
             ignore_exception (list[class]): list of exceptions that should
                 be ignored when it occurs during reduction.
+
+        Raises:
+            NoResidueReductionRulesFoundError: if a residue from topology is
+                not found in reduction parameters. This happens typically with
+                exotic residue names.
+
+            IncompleteBeadError: when an atom needed to create a residue
+                is not found in the input all-atom topology.
+
+            DuplicateAtomInBeadError: when an atom from input all-atom topology
+                is present several type. This is typically a bad error, has
+                it means that several atoms SER:1:N have been read from
+                topology (e.g).
+
+            IgnoredAtomsInReducedResidueError: when some atoms from all-atom
+                topology have not been used during reduction. This means
+                that the reduction parameter files does not define that those
+                atoms are to be used to create a bead.
         """
         def has_rule_for_residue_reduction():
             if resname not in self.reduction_parameters:
@@ -385,7 +405,7 @@ class Reducer(object):
         # A residue is two items: (<residue tag>, <atom list iterator>).
         residue_list = itertools.groupby(self.atoms,
                                          key=lambda atom: atom.residuetag())
-        
+
         # Reduction: iterate over residues and create beads according to
         # parameters in self.reduction_parameters.
         tag_delimiter = ptools.Atomproperty.get_tag_delimiter()
