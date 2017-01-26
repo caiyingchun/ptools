@@ -11,7 +11,8 @@ import yaml
 
 import ptools
 import ptools.exceptions
-from ptools.exceptions import (IncompleteBeadError,
+from ptools.exceptions import (NoResidueReductionRulesFoundError,
+                               IncompleteBeadError,
                                DuplicateAtomInBeadError,
                                IgnoredAtomsInReducedResidueError)
 
@@ -366,10 +367,13 @@ class Reducer(object):
         """
         def has_rule_for_residue_reduction():
             if resname not in self.reduction_parameters:
-                msg = "don't know how to handle residue {0} "\
-                      "(no reduction rule found for this residue)..."\
-                      "skipping this residue".format(resname)
-                ptools.io.warning(msg)
+                if NoResidueReductionRulesFoundError in ignore_exceptions:
+                    msg = "don't know how to handle residue {} "\
+                          "(no reduction rule found for this residue)..."\
+                          "skipping this residue".format(resname)
+                    ptools.io.warning(msg)
+                else:
+                    raise NoResidueReductionRulesFoundError(resname, resid)
                 return False
             return True
 
@@ -384,8 +388,9 @@ class Reducer(object):
         
         # Reduction: iterate over residues and create beads according to
         # parameters in self.reduction_parameters.
+        tag_delimiter = ptools.Atomproperty.get_tag_delimiter()
         for restag, resatoms in residue_list:
-            resname, resid, chain = restag.split(ptools.Atomproperty.get_tag_delimiter())
+            resname, resid, chain = restag.split(tag_delimiter)
 
             if has_rule_for_residue_reduction():
                 try:
@@ -395,7 +400,7 @@ class Reducer(object):
                 except Exception as e:
                     if type(e) in ignore_exceptions:
                         msg = "This exception was raised while reducing all-atom model:\n{}"
-                        ptools.io.warning(msg.format(e))
+                        ptools.io.warning(msg.format(e.report()))
                         ptools.io.warning("Ignoring this exception as requested.")
                     else:
                         raise

@@ -55,8 +55,13 @@ class ResidueReductionError(Exception):
         message = message or self.default_message_fmt
         super(ResidueReductionError, self).__init__(message.format(self=self))
 
-    def __str__(self):
+    def report(self):
         return "{}: {}".format(type(self).__name__, self.message)
+
+
+class NoResidueReductionRulesFoundError(ResidueReductionError):
+    default_message_fmt = (ResidueReductionError.default_message_fmt +
+                           ": no rule found for this residue reduction")
 
 
 class BeadCreationError(ResidueReductionError):
