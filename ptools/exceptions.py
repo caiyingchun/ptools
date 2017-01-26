@@ -41,7 +41,7 @@ class ResidueReductionError(Exception):
         kwargs dict[str]->value: any argument that will be used to format
             message.
     """
-    default_message_fmt = 'error reducing residue {self.resname}:{self.resid}'
+    default_message_fmt = 'in residue {self.resname}:{self.resid}'
 
     def __init__(self, resname, resid, message='', **kwargs):
         self.resname = resname
@@ -55,6 +55,9 @@ class ResidueReductionError(Exception):
         message = message or self.default_message_fmt
         super(ResidueReductionError, self).__init__(message.format(self=self))
 
+    def __str__(self):
+        return "{}: {}".format(type(self).__name__, self.message)
+
 
 class BeadCreationError(ResidueReductionError):
     """Base class raised when an error is encountered when reducing
@@ -66,7 +69,7 @@ class BeadCreationError(ResidueReductionError):
         found_atoms (list[str]): list of actually found atom names.
     """
     default_message_fmt = (ResidueReductionError.default_message_fmt +
-                           "\n  error creating bead '{self.bead.name}'")
+                           " in bead '{self.bead.name}'")
 
     def __init__(self, bead, message=''):
         self.bead = bead

@@ -354,15 +354,15 @@ class Reducer(object):
             if should_rename_atom():
                 rename_atom(self.atom_rename[atom.residType][atom.atomType])
 
-    def reduce(self, ignore_errors):
-        """Actual reduction method.
-        
-        Args:
-            ignore_errors (list[str]): list of exception that should
-                be ignored when the occur during reduction.
+    def reduce(self, ignore_exceptions):
+        """Actual reduction method.        
 
         Group atoms by residue then iterate over those residues to create
         coarse grain residues.
+
+        Args:
+            ignore_exception (list[class]): list of exceptions that should
+                be ignored when it occurs during reduction.
         """
         def has_rule_for_residue_reduction():
             if resname not in self.reduction_parameters:
@@ -377,13 +377,13 @@ class Reducer(object):
         # parameters.
         self.rename_atoms_and_residues()
 
-        ignore_exceptions = [eval(e) for e in ignore_errors]
-
         # Residue list: group atoms by residue tag.
         # A residue is two items: (<residue tag>, <atom list iterator>).
         residue_list = itertools.groupby(self.atoms,
                                          key=lambda atom: atom.residuetag())
-        atomid = 1
+        
+        # Reduction: iterate over residues and create beads according to
+        # parameters in self.reduction_parameters.
         for restag, resatoms in residue_list:
             resname, resid, chain = restag.split(ptools.Atomproperty.get_tag_delimiter())
 
@@ -392,15 +392,19 @@ class Reducer(object):
                     coarse_res = CoarseResidue(resname, int(resid),
                                                list(resatoms),
                                                self.reduction_parameters[resname])
-                    for bead in coarse_res.beads:
-                        bead.atomId = atomid
-                        atomid += 1
-                    self.beads += coarse_res.beads
                 except Exception as e:
-                    if e in ignore_exceptions:
-                        ptools.io.warning(str(e))
+                    if type(e) in ignore_exceptions:
+                        msg = "This exception was raised while reducing all-atom model:\n{}"
+                        ptools.io.warning(msg.format(e))
+                        ptools.io.warning("Ignoring this exception as requested.")
                     else:
                         raise
+                else:
+                    self.beads += coarse_res.beads
+
+            # Update the atom id for each bead.
+            for i, bead in enumerate(self.beads):
+                bead.atomId = i + 1
 
     def optimize_charges(self, delgrid):
         """Use cgopt to optimize bead charges.
@@ -566,7 +570,9 @@ def run(args):
     reducer = Reducer(atomicname, redname)
     reducer.name_conversion_file = convname
 
-    reducer.reduce(ignore_errors=args.ignore_error)
+    # Convert exception list of names as list of classes.
+    ignore_exceptions = [eval(e) for e in args.ignore_error]
+    reducer.reduce(ignore_exceptions=ignore_exceptions)
 
     if args.forcefield == 'scorpion':
         # If force field is scorpion, first CA bead's charge is +1 and
