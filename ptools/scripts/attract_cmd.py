@@ -137,6 +137,7 @@ PTools revision {}
 
     print("Reading parameters file: attract.inp")
     nbminim, lignames, minimlist, rstk = ptools.io.read_attract_parameters("attract.inp")
+    print("{} series of minimizations".format(nbminim))
     print("rstk = ", rstk)
 
     ff_name = ptools.io.check_ff_version_match(args.receptor_name, args.ligand_name)
@@ -145,8 +146,8 @@ PTools revision {}
     # Load receptor and ligand.
     rec = ptools.AttractRigidbody(args.receptor_name)
     lig = ptools.AttractRigidbody(args.ligand_name)
-    # print("Read receptor (fixed): {} with {} particules".format(args.receptor_name, len(rec)))
-    # print("Read ligand (mobile): {} with {} particules".format(args.ligand_name, len(lig)))
+    print("Read receptor (fixed): {} with {} particules".format(args.receptor_name, len(rec)))
+    print("Read ligand (mobile): {} with {} particules".format(args.ligand_name, len(lig)))
 
     # Save all minimization variables to trajectory file.
     trjname = 'minimization.trj'
@@ -215,7 +216,7 @@ PTools revision {}
                 minimcounter += 1
                 cutoff = math.sqrt(minim['squarecutoff'])
                 niter = minim['maxiter']
-                print("{{ minimization nb {} of {} ; cutoff= {:.2f} (A) ; maxiter= {}".format(minimcounter, nbminim, cutoff, niter))
+                print("{{ " + "minimization nb {} of {} ; cutoff= {:.2f} (A) ; maxiter= {}".format(minimcounter, nbminim, cutoff, niter))
 
                 # performs single minimization on receptor and ligand, given maxiter=niter and restraint constant rstk
                 forcefield = ff_specs['ff_class'](ff_specs['ff_file'], surreal(cutoff))
@@ -245,7 +246,7 @@ PTools revision {}
                     for iteration in range(ntraj):
                         traj = lbfgs_minimizer.GetMinimizedVarsAtIter(iteration)
                         for t in traj:
-                            ftraj.write("{} ".format(t))
+                            ftraj.write("{:.6f} ".format(t))
                         ftraj.write("\n")
                     ftraj.write("~~~~~~~~~~~~~~\n")
 
