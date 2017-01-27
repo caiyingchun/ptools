@@ -148,3 +148,10 @@ def residue_reduction_errors():
     """Return the list of ResidueReductionError subclass names."""
     return [name for name, obj in inspect.getmembers(sys.modules[__name__])
             if inspect.isclass(obj) and issubclass(obj, ResidueReductionError)]
+
+
+def exception_names_to_exception_list(exception_names):
+    """Return a list of exception class from the list of exception names."""
+    exception_fmt = 'ptools.exceptions.{}'
+    exception_list = [eval(name) for name in exception_names]
+    return exception_list

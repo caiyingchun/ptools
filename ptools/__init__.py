@@ -13,13 +13,18 @@ from _ptools import (ADNA, Atom, AtomPair, AtomSelection, Atomproperty,
                      norm, norm2, strToAtom, superpose)
 
 
+DATA_DIR = os.path.join(sys.prefix, 'share', 'ptools', 'data')
+
+
 from . import io
+from . import exceptions
 from . import forcefield
+from . import reduce
 
 
 __version__ = '2.0.0'
 
-DATA_DIR = os.path.join(sys.prefix, 'share', 'ptools', 'data')
+
 
 
 one_letter_residue_dict = {
