@@ -44,8 +44,9 @@ class Bead(ptools.Atomproperty):
         self.atom_reduction_parameters = parameters['atoms']
         self.extra = '{:5d}{:8.3f} 0 0'.format(self.typeid, self.atomCharge)
 
-        self._check_bead_composition()
-        self.chainId = self.atoms[0].chainId
+        self.chainId = ''
+        if len(self.atoms) > 0:
+            self.chainId = self.atoms[0].chainId
 
     @property
     def charge(self):
@@ -89,7 +90,7 @@ class Bead(ptools.Atomproperty):
         """Return the bead description as a PDB formatted string."""
         return self.toatom().ToPdbString()
 
-    def _check_bead_composition(self):
+    def check_composition(self):
         """Check if some atoms were unused or duplicated when creating
         the bead.
 
@@ -106,6 +107,7 @@ class Bead(ptools.Atomproperty):
 class CoarseResidue:
     """Create a residue coarse grain model from an atomistic model."""
     def __init__(self, resname, resid, resatoms, parameters):
+        self.all_atoms = resatoms
         self.resname = resname
         self._resid = resid
         self.beads = []
@@ -115,12 +117,16 @@ class CoarseResidue:
             b = Bead(atoms, self.resname, self.resid, bead_param)
             self.beads.append(b)
 
-        if len(resatoms) != self.number_of_atoms:
-            raise IgnoredAtomsInReducedResidueError(self, resatoms)
+    def check_composition(self):
+        """Check residue composition and each bead composition."""
+        if len(self.all_atoms) != self.number_of_atoms:
+            raise IgnoredAtomsInReducedResidueError(self)
+        for bead in self.beads:
+            bead.check_composition()
 
     @property
     def number_of_atoms(self):
-        """Return the total number of atoms in the residue."""
+        """Return the number of atoms in the residue beads."""
         return sum(len(bead.atoms) for bead in self.beads)
 
     def number_of_beads(self):
@@ -385,7 +391,7 @@ class Reducer(object):
                 that the reduction parameter files does not define that those
                 atoms are to be used to create a bead.
         """
-        def has_rule_for_residue_reduction():
+        def check_has_rule_for_residue_reduction():
             if resname not in self.reduction_parameters:
                 if NoResidueReductionRulesFoundError in ignore_exceptions:
                     msg = "don't know how to handle residue {} "\
@@ -396,6 +402,14 @@ class Reducer(object):
                     raise NoResidueReductionRulesFoundError(resname, resid)
                 return False
             return True
+
+        def check_exception_ignored(exception):
+            if type(exception) in ignore_exceptions:
+                    msg = "This exception was raised while reducing all-atom model:\n{}"
+                    ptools.io.warning(msg.format(exception.report()))
+                    ptools.io.warning("Ignoring this exception as requested.")
+            else:
+                raise exception
 
         # Rename atoms and residues so that they will match reduction
         # parameters.
@@ -412,24 +426,20 @@ class Reducer(object):
         for restag, resatoms in residue_list:
             resname, resid, chain = restag.split(tag_delimiter)
 
-            if has_rule_for_residue_reduction():
-                try:
-                    coarse_res = CoarseResidue(resname, int(resid),
-                                               list(resatoms),
-                                               self.reduction_parameters[resname])
-                except Exception as e:
-                    if type(e) in ignore_exceptions:
-                        msg = "This exception was raised while reducing all-atom model:\n{}"
-                        ptools.io.warning(msg.format(e.report()))
-                        ptools.io.warning("Ignoring this exception as requested.")
-                    else:
-                        raise
-                else:
-                    self.beads += coarse_res.beads
+            check_has_rule_for_residue_reduction()
+        
+            coarse_res = CoarseResidue(resname, int(resid),
+                                       list(resatoms),
+                                       self.reduction_parameters[resname])
+            try:
+                coarse_res.check_composition()
+            except Exception as e:
+                check_exception_ignored(e)
+            self.beads += coarse_res.beads
 
-            # Update the atom id for each bead.
-            for i, bead in enumerate(self.beads):
-                bead.atomId = i + 1
+        # Update the atom id for each bead.
+        for i, bead in enumerate(self.beads):
+            bead.atomId = i + 1
 
     def optimize_charges(self, delgrid):
         """Use cgopt to optimize bead charges.

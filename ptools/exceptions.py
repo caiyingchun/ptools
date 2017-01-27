@@ -127,9 +127,9 @@ class IgnoredAtomsInReducedResidueError(ResidueReductionError):
                            ' some atoms were unused during coarse grain '
                            'modeling: {self.unused_atoms}')
 
-    def __init__(self, residue, residue_atoms):
+    def __init__(self, residue):
         # Names of atoms sent to coarse grain residue constructor.
-        self.atom_names = [atom.atomType for atom in residue_atoms]
+        self.atom_names = [atom.atomType for atom in residue.all_atoms]
 
         # Names of atoms actually used in the beads.
         self.bead_atom_names = [atom.atomType for bead in residue.beads
