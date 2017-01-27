@@ -6,7 +6,7 @@ __pycache__/
 
 # Generated at compilation time
 bindings/_ptools.cpp
-PyAttract/cgopt.c
+ptools/cgopt/cgopt.c
 
 
 # Unit test / coverage

@@ -446,7 +446,7 @@ class Reducer(object):
         Args:
             delgrid (float): grid spacing (A).
         """
-        import cgopt
+        import ptools.cgopt as cgopt
 
         cg_coords_x = []
         cg_coords_y = []

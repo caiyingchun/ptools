@@ -407,11 +407,11 @@ def setup_package():
                        language='c++',
                        include_dirs=['headers'])
 
-    cgopt = Extension('cgopt',
-                      sources=['PyAttract/cgopt.pyx',
-                               'PyAttract/chrg_scorpion.c'],
+    cgopt = Extension('ptools.cgopt',
+                      sources=['ptools/cgopt/cgopt.pyx',
+                               'ptools/cgopt/chrg_scorpion.c'],
                       language='c',
-                      include_dirs=['PyAttract'])
+                      include_dirs=['ptools/cgopt'])
 
     setup(ext_modules=[ptools, cgopt],
           cmdclass={'build_ext': build_ext},
