@@ -414,6 +414,9 @@ class Reducer(object):
         # parameters.
         self.rename_atoms_and_residues()
 
+        # Set chain id to ' '.
+        self._reset_chain_id()
+
         # Residue list: group atoms by residue tag.
         # A residue is two items: (<residue tag>, <atom list iterator>).
         residue_list = itertools.groupby(self.atoms,
@@ -439,6 +442,11 @@ class Reducer(object):
         # Update the atom id for each bead.
         for i, bead in enumerate(self.beads):
             bead.atomId = i + 1
+
+    def _reset_chain_id(self):
+        """Set the chain identifier of all atoms from input topology to ''."""
+        for atom in self.atoms:
+            atom.chainId = ''
 
     def optimize_charges(self, delgrid):
         """Use cgopt to optimize bead charges.
