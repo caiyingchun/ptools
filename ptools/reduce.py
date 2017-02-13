@@ -12,8 +12,7 @@ import yaml
 import ptools
 from .exceptions import (NoResidueReductionRulesFoundError,
                          IncompleteBeadError,
-                         DuplicateAtomInBeadError,
-                         IgnoredAtomsInReducedResidueError)
+                         DuplicateAtomInBeadError)
 
 
 DEFAULT_ATTRACT1_PROT_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attract1_prot.yml')
@@ -118,8 +117,6 @@ class CoarseResidue:
 
     def check_composition(self):
         """Check residue composition and each bead composition."""
-        if len(self.all_atoms) != self.number_of_atoms:
-            raise IgnoredAtomsInReducedResidueError(self)
         for bead in self.beads:
             bead.check_composition()
 
@@ -384,11 +381,6 @@ class Reducer(object):
                 is present several type. This is typically a bad error, has
                 it means that several atoms SER:1:N have been read from
                 topology (e.g).
-
-            IgnoredAtomsInReducedResidueError: when some atoms from all-atom
-                topology have not been used during reduction. This means
-                that the reduction parameter files does not define that those
-                atoms are to be used to create a bead.
         """
         def check_has_rule_for_residue_reduction():
             if resname not in self.reduction_parameters:
