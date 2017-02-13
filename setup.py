@@ -407,16 +407,20 @@ def setup_package():
                        language='c++',
                        include_dirs=['headers'])
 
-    cgopt = Extension('ptools.cgopt',
-                      sources=['ptools/cgopt/cgopt.pyx',
-                               'ptools/cgopt/chrg_scorpion.c'],
+    cgopt = Extension('_cgopt',
+                      sources=['bindings/_cgopt.pyx',
+                               'src/cgopt/chrg_scorpion.c'],
                       language='c',
-                      include_dirs=['ptools/cgopt'])
+                      include_dirs=['src/cgopt'])
+
+    packages = find_packages(exclude=['Heligeom',
+                                      'Tests',
+                                      'Tests.functionnal'])
 
     setup(ext_modules=[ptools, cgopt],
           cmdclass={'build_ext': build_ext},
           name='ptools',
-          packages=find_packages(exclude=['Tests', 'Heligeom']),
+          packages=packages,
           version='1.2',
           entry_points={
               'console_scripts': ['ptools = ptools.scripts.ptools_cli:main']

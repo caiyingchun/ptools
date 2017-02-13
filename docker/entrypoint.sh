@@ -2,7 +2,7 @@
 set -e
 
 cd /src/ptools
-make install
+make clean && make install
 
 if [[ $@ == "test" ]]
 then

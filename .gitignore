@@ -6,7 +6,7 @@ __pycache__/
 
 # Generated at compilation/install time
 bindings/_ptools.cpp
-ptools/cgopt/cgopt.c
+bindings/_cgopt.c
 MANIFEST.out
 
 

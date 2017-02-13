@@ -7,11 +7,10 @@ python:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -y g++ git libboost-dev libf2c2-dev python-dev python-pip
+  - cat docker/requirements_system.txt | sudo xargs apt-get install -y
 
 install:
   - pip install -r docker/requirements_python.txt
-  - python setup.py build
-  - python setup.py install
+  - make install
 
 script: "cd Tests && make testpython"
