@@ -1,7 +1,10 @@
 .PHONY: help clean clean-build clean-pyc clean-test lint test docs 
 
-# Name of the docker image.
+# Docker image name.
 DOCKER_IMAGE = ptools:dev
+
+# File name in which installed files are recorded.
+MANIFEST_OUT = MANIFEST.out
 
 help:
 	@echo "usage: make <command>"
@@ -67,7 +70,11 @@ build: clean
 
 
 install:
-	python setup.py install
+	python setup.py install --record $(MANIFEST_OUT)
+
+
+uninstall:
+	cat $(MANIFEST_OUT) | xargs rm -f 
 
 
 docker-build:

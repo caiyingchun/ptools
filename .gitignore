@@ -4,9 +4,10 @@ __pycache__/
 *$py.class
 
 
-# Generated at compilation time
+# Generated at compilation/install time
 bindings/_ptools.cpp
 ptools/cgopt/cgopt.c
+MANIFEST.out
 
 
 # Unit test / coverage
