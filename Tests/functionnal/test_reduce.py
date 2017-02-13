@@ -1,6 +1,9 @@
 
-import unittest
 import filecmp
+import sys
+import unittest
+
+import pytest
 
 from ptools.scripts import ptools_cli
 
@@ -8,7 +11,8 @@ from ..utils import mk_tmp_file
 from .. import (TEST_LIGAND_PDB,
                 TEST_LIGAND_RED_ATTRACT1,
                 TEST_LIGAND_RED_ATTRACT2,
-                TEST_LIGAND_RED_SCORPION)
+                TEST_LIGAND_RED_SCORPION,
+                TEST_LIGAND_RED_SCORPION_CGOPT)
 
 
 class TestReduceAttract1(unittest.TestCase):
@@ -57,6 +61,14 @@ class TestReduceScorpion(unittest.TestCase):
         cmd_args = ptools_cli.parse_command_line(args)
         cmd_args.func(cmd_args)
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_SCORPION, self.output_name))
+
+    @pytest.mark.skipif(sys.platform == 'darwin',
+                        reason="currently not working on OS X")
+    def test_reduce_scorpion_cgopt(self):
+        args = ['reduce', TEST_LIGAND_PDB, '-o', self.output_name, 'scorpion', '--cgopt']
+        cmd_args = ptools_cli.parse_command_line(args)
+        cmd_args.func(cmd_args)
+        self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_SCORPION_CGOPT, self.output_name))
 
 
 if __name__ == '__main__':
