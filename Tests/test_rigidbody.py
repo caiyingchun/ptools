@@ -4,15 +4,16 @@ import unittest
 
 from ptools import Rigidbody, Coord3D, Atom
 
+from . import TEST_LIGAND_PDB
 from . import assertCoordsAlmostEqual
 
-TEST_1FINR_PDB = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r.pdb')
+
 TEST_2AAV_PDB = os.path.join(os.path.dirname(__file__), 'data', '2AAV.one.pdb')
 
 
 class TestRigidbody(unittest.TestCase):
     def setUp(self):
-        self.r = Rigidbody(TEST_1FINR_PDB)
+        self.r = Rigidbody(TEST_LIGAND_PDB)
         self.r2 = Rigidbody()
         at = Atom()
         at.coords = Coord3D(1, 0, 0)
@@ -68,7 +69,7 @@ class TestRigidbody(unittest.TestCase):
         """in principle GetCoords(i,co) and unsafeGetCoords(i,co) should
         lead to the exact same coordinates if a sync has been done before
         calling the 'unsafe' version"""
-        r2 = Rigidbody(TEST_1FINR_PDB)
+        r2 = Rigidbody(TEST_LIGAND_PDB)
         A = Coord3D(4.23, 5.72, 99.02)
         B = Coord3D(1.23, 6.33, 1.234)
         self.r.ABrotate(A, B, 2.2345)

@@ -4,13 +4,12 @@ import unittest
 
 from ptools import Rigidbody, AttractRigidbody
 
-
-TEST_1FINR_PDB = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r.pdb')
+from . import TEST_LIGAND_PDB
 
 
 class TestAttractRigidbody(unittest.TestCase):
     def setUp(self):
-        rigid = Rigidbody(TEST_1FINR_PDB)
+        rigid = Rigidbody(TEST_LIGAND_PDB)
         self.attrigid = AttractRigidbody(rigid)
 
     def testlen(self):

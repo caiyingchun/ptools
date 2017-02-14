@@ -2,18 +2,21 @@
 
 import os
 
-TEST_LIGAND_PDB = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r.pdb')
+TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
+TEST_REDUCE_DATA_DIR = os.path.join(TEST_DATA_DIR, 'reduce')
+
+TEST_LIGAND_PDB = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r.pdb')
 
 # Attract1 reduced topology.
 # Generated from f46b895 with:
 #   python reduce_attract1.py --prot 1FIN_r.pdb > 1FIN_r.attract1.red
-TEST_LIGAND_RED_ATTRACT1 = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r.attract1.red')
+TEST_LIGAND_RED_ATTRACT1 = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r.attract1.red')
 
 
 # Attract2 reduced topology.
 # Generated from f46b895 with:
 #   python reduce_attract2.py 1FIN_r.pdb > 1FIN_r.attract2.red
-TEST_LIGAND_RED_ATTRACT2 = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r.attract2.red')
+TEST_LIGAND_RED_ATTRACT2 = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r.attract2.red')
 
 
 # Scorpion reduced topology.
@@ -21,7 +24,7 @@ TEST_LIGAND_RED_ATTRACT2 = os.path.join(os.path.dirname(__file__), 'data', '1FIN
 #   python reduce_scorpion.py 1FIN_r.pdb > 1FIN_r.scorpion.red
 # Input topology has been adapted to acomodate the fact that reduce_scorpion.py
 # did not handle OT2 atoms: last atom from 1FIN_r.pdb has been renamed OT2 => OT.
-TEST_LIGAND_RED_SCORPION = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r.scorpion.red')
+TEST_LIGAND_RED_SCORPION = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r.scorpion.red')
 
 
 # Scorpion reduced topology with optimized charges.
@@ -29,17 +32,17 @@ TEST_LIGAND_RED_SCORPION = os.path.join(os.path.dirname(__file__), 'data', '1FIN
 #   python reduce_scorpion.py --cgopt 1FIN_r.pdb > 1FIN_r.scorpion.red
 # Input topology has been adapted to acomodate the fact that reduce_scorpion.py
 # did not handle OT2 atoms: last atom from 1FIN_r.pdb has been renamed OT2 => OT.
-TEST_LIGAND_RED_SCORPION_CGOPT = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r.scorpion_cgopt.red')
+TEST_LIGAND_RED_SCORPION_CGOPT = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r.scorpion_cgopt.red')
 
 # translate.py output.
 # Generated from f46b895 with:
 #   python translate.py 1FIN_r.attract1.red 1FIN_r.attract1.red > 1FIN_r_attract1_1FIN_r_attract1_translate.out
-TEST_TRANSLATE_OUTPUT = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r_attract1_1FIN_r_attract1_translate.out')
+TEST_TRANSLATE_OUTPUT = os.path.join(TEST_DATA_DIR, '1FIN_r_attract1_1FIN_r_attract1_translate.out')
 
 
-TEST_ATTRACT_PARAMS = os.path.join(os.path.dirname(__file__), 'data', 'attract.inp')
-TEST_ATTRACT_PARAMS_WITH_LIGAND = os.path.join(os.path.dirname(__file__), 'data', 'attract_ligand.inp')
-TEST_AMINON = os.path.join(os.path.dirname(__file__), 'data', 'aminon.par')
+TEST_ATTRACT_PARAMS = os.path.join(TEST_DATA_DIR, 'attract.inp')
+TEST_ATTRACT_PARAMS_WITH_LIGAND = os.path.join(TEST_DATA_DIR, 'attract_ligand.inp')
+TEST_AMINON = os.path.join(TEST_DATA_DIR, 'aminon.par')
 
 
 # Example of a reduced PDB (RED) file content.
@@ -70,6 +73,7 @@ ATOM      8  CA  GLY E   2      12.408  20.728  16.555  1.00  5.36           C
 ATOM      9  C   GLY E   2      11.698  19.535  17.075  1.00  5.75           C
 """
 
+# Example of an attract force field parameter file content.
 TEST_AMINON_CONTENT = """\
     1  2.000  1.000  0
     2  1.900  1.000  0

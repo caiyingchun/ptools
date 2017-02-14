@@ -47,8 +47,6 @@ class TestReduceAttract2(unittest.TestCase):
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_ATTRACT2, self.output_name))
 
 
-import unittest
-
 class TestReduceScorpion(unittest.TestCase):
 
     def setUp(self):
