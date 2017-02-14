@@ -64,6 +64,7 @@ class TestReduceScorpion(unittest.TestCase):
 
     @pytest.mark.skipif(sys.platform == 'darwin',
                         reason="currently not working on OS X")
+    @pytest.skip('Too slow')
     def test_reduce_scorpion_cgopt(self):
         args = ['reduce', TEST_LIGAND_PDB, '-o', self.output_name, 'scorpion', '--cgopt']
         cmd_args = ptools_cli.parse_command_line(args)
