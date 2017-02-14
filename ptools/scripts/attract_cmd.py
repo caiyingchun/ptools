@@ -107,6 +107,8 @@ def create_subparser(parent):
                         help="name of the ligand file")
     parser.add_argument('--ref', dest='reffile',
                         help="reference ligand for rmsd")
+    parser.add_argument('-c', '--conf', default='attract.inp',
+                        help="attract configuration file (default=attract.inp)")
     parser.add_argument('--start1', action='store_true',
                         help="(only useful with -t), use 1 for the first "
                              "translation point")
@@ -118,7 +120,6 @@ def create_subparser(parent):
                        default=0,
                        help="translation number (distributed mode) starting "
                             "from 0 for the first one!")
-
 
 def run(args):
     print("""
@@ -136,7 +137,7 @@ PTools revision {}
     print("Start time:", time_start)
 
     print("Reading parameters file: attract.inp")
-    nbminim, lignames, minimlist, rstk = ptools.io.read_attract_parameters("attract.inp")
+    nbminim, lignames, minimlist, rstk = ptools.io.read_attract_parameters(args.conf)
     print("{} series of minimizations".format(nbminim))
     print("rstk = ", rstk)
 
