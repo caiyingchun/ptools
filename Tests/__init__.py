@@ -3,8 +3,27 @@
 import os
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
-TEST_REDUCE_DATA_DIR = os.path.join(TEST_DATA_DIR, 'reduce')
 
+
+# ---------------------------------------------------------------------------
+#
+# Single minimization test files
+#
+# ---------------------------------------------------------------------------
+TEST_SINGLEMINIM_DATA_DIR = os.path.join(TEST_DATA_DIR, 'singleminim')
+TEST_SINGLEMINIM_FF_PARAM = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'aminon.par')
+TEST_SINGLEMINIM_ATTRACT_INP = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'attract.inp')
+TEST_SINGLEMINIM_LIGAND = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'ligand.red')
+TEST_SINGLEMINIM_RECEPTOR = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'receptor.red')
+TEST_SINGLEMINIM_MINIMIZATION_OUT = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'minimization.trj')
+
+
+# ---------------------------------------------------------------------------
+#
+# Reduce test files
+#
+# ---------------------------------------------------------------------------
+TEST_REDUCE_DATA_DIR = os.path.join(TEST_DATA_DIR, 'reduce')
 TEST_LIGAND_PDB = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r.pdb')
 
 # Attract1 reduced topology.
@@ -33,6 +52,13 @@ TEST_LIGAND_RED_SCORPION = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r.scorpion.r
 # Input topology has been adapted to acomodate the fact that reduce_scorpion.py
 # did not handle OT2 atoms: last atom from 1FIN_r.pdb has been renamed OT2 => OT.
 TEST_LIGAND_RED_SCORPION_CGOPT = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r.scorpion_cgopt.red')
+
+
+# ---------------------------------------------------------------------------
+#
+# Translate test files
+#
+# ---------------------------------------------------------------------------
 
 # translate.py output.
 # Generated from f46b895 with:
