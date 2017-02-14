@@ -20,6 +20,20 @@ TEST_SINGLEMINIM_MINIMIZATION_OUT = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'min
 
 # ---------------------------------------------------------------------------
 #
+# Docking test files
+#
+# ---------------------------------------------------------------------------
+TEST_DOCKING_DATA_DIR = os.path.join(TEST_DATA_DIR, 'docking')
+TEST_DOCKING_ATTRACT_INP = os.path.join(TEST_DOCKING_DATA_DIR, 'attract.inp')
+TEST_DOCKING_LIGAND = os.path.join(TEST_DOCKING_DATA_DIR, 'ligand.red')
+TEST_DOCKING_RECEPTOR = os.path.join(TEST_DOCKING_DATA_DIR, 'receptor.red')
+TEST_DOCKING_ROTATION = os.path.join(TEST_DOCKING_DATA_DIR, 'rotation.dat')
+TEST_DOCKING_TRANSLATION = os.path.join(TEST_DOCKING_DATA_DIR, 'translation.dat')
+TEST_DOCKING_ATTRACT_OUT= os.path.join(TEST_DOCKING_DATA_DIR, 'attract_trans3.out')
+
+
+# ---------------------------------------------------------------------------
+#
 # Reduce test files
 #
 # ---------------------------------------------------------------------------
