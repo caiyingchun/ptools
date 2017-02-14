@@ -6,7 +6,7 @@ TEST_LIGAND_PDB = os.path.join(os.path.dirname(__file__), 'data', 'ligand.pdb')
 TEST_LIGAND_RED_ATTRACT1 = os.path.join(os.path.dirname(__file__), 'data', 'ligand_attract1.red')
 TEST_LIGAND_RED_ATTRACT2 = os.path.join(os.path.dirname(__file__), 'data', 'ligand_attract2.red')
 TEST_LIGAND_RED_SCORPION = os.path.join(os.path.dirname(__file__), 'data', 'ligand_scorpion.red')
-TEST_LIGAND_RED_SCORPION_CGOPT = os.path.join(os.path.dirname(__file__), 'data', 'ligand_scorpion.red')
+TEST_LIGAND_RED_SCORPION_CGOPT = os.path.join(os.path.dirname(__file__), 'data', 'ligand_scorpion_cgopt.red')
 
 TEST_ATTRACT_PARAMS = os.path.join(os.path.dirname(__file__), 'data', 'attract.inp')
 TEST_ATTRACT_PARAMS_WITH_LIGAND = os.path.join(os.path.dirname(__file__), 'data', 'attract_ligand.inp')

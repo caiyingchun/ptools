@@ -62,13 +62,13 @@ class TestReduceScorpion(unittest.TestCase):
         cmd_args.func(cmd_args)
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_SCORPION, self.output_name))
 
-    # @pytest.mark.skipif(sys.platform == 'darwin',
-    #                     reason="currently not working on OS X")
-    # def test_reduce_scorpion_cgopt(self):
-    #     args = ['reduce', TEST_LIGAND_PDB, '-o', self.output_name, 'scorpion', '--cgopt']
-    #     cmd_args = ptools_cli.parse_command_line(args)
-    #     cmd_args.func(cmd_args)
-    #     self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_SCORPION_CGOPT, self.output_name))
+    @pytest.mark.skipif(sys.platform == 'darwin',
+                        reason="currently not working on OS X")
+    def test_reduce_scorpion_cgopt(self):
+        args = ['reduce', TEST_LIGAND_PDB, '-o', self.output_name, 'scorpion', '--cgopt']
+        cmd_args = ptools_cli.parse_command_line(args)
+        cmd_args.func(cmd_args)
+        self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_SCORPION_CGOPT, self.output_name))
 
     def test_import_cgopt(self):
         import ptools.cgopt as cgopt
