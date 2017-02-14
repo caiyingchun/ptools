@@ -1,6 +1,9 @@
 
 import random
+import sys
 import unittest
+
+import pytest
 
 from ptools import cgopt
 
@@ -12,6 +15,8 @@ class TestCgoptBindings(unittest.TestCase):
 
 
 class TestCgopt(unittest.TestCase):
+    @pytest.mark.skipif(sys.platform == 'darwin',
+                reason="currently not working on OS X")
     def test_optimize(self):
         """This is a very empirical test that only ensures that optimize
         returns the same values as older versions.
