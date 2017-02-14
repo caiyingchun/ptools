@@ -70,14 +70,6 @@ class TestReduceScorpion(unittest.TestCase):
         cmd_args.func(cmd_args)
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_SCORPION_CGOPT, self.output_name))
 
-    def test_import_cgopt(self):
-        import ptools.cgopt as cgopt
-        self.assertTrue(hasattr(cgopt, 'optimize'))
-
-    def test_import_cgopt2(self):
-        from ptools import cgopt
-        self.assertTrue(hasattr(cgopt, 'optimize'))
-
 
 if __name__ == '__main__':
     unittest.main()
