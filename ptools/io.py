@@ -166,7 +166,7 @@ def read_forcefield_from_reduced(path):
         if not line.startswith('HEADER'):
             err = '{}: reduced PDB file first line must be a HEADER line '\
                   'specifying the chosen force field ({})'
-            err = err.format(path, PTOOLS_FORCEFIELDS)
+            err = err.format(path, list(PTOOLS_FORCEFIELDS.keys()))
             raise IOError(err)
         return line
 
