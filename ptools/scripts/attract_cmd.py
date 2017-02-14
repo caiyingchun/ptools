@@ -108,7 +108,11 @@ def create_subparser(parent):
     parser.add_argument('--ref', dest='reffile',
                         help="reference ligand for rmsd")
     parser.add_argument('-c', '--conf', default='attract.inp',
-                        help="attract configuration file (default=attract.inp)")
+                        help="attract configuration file "
+                             "(default=attract.inp)")
+    parser.add_argument('-p', '--param',
+                        help="attract force field parameter file "
+                             "(default=default force field file)")
     parser.add_argument('--start1', action='store_true',
                         help="(only useful with -t), use 1 for the first "
                              "translation point")
@@ -143,6 +147,8 @@ PTools revision {}
 
     ff_name = ptools.io.check_ff_version_match(args.receptor_name, args.ligand_name)
     ff_specs = ptools.forcefield.PTOOLS_FORCEFIELDS[ff_name]
+    if args.param:
+        ff_specs['ff_file'] = args.param
 
     # Load receptor and ligand.
     rec = ptools.AttractRigidbody(args.receptor_name)
