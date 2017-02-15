@@ -9,6 +9,7 @@ import filecmp
 import os
 import re
 import shutil
+import StringIO
 import sys
 import unittest
 
@@ -69,52 +70,40 @@ class TestAttract(unittest.TestCase):
         # Remove files created during the run.
         os.remove('rotation.dat')
         os.remove('translation.dat')
+     
 
+def itercontent(fileobj, delim):
+    """Iterate over a file content.
+    
+    Return the lines between two occurences of `delim`.
 
-    def test_coucou(self):
-        read_attract_output(TEST_DOCKING_ATTRACT_OUT)
+    Args:
+        fileobj (file): iterator that allow to iterate over a file lines.
+        delim (str): separator string.
 
+    Returns:
+        iterator[str]: lines between 2 occurences of `delim`.
+    """
+    current_token = ''
+    istoken = False
+    for line in fileobj:
+        if line.startswith(delim):
+            istoken = True
+            if current_token:
+                yield current_token
+                current_token = ''
+        if istoken:
+            current_token += line
+    yield current_token
 
-
-class AttractOutput(object):
-    """Class that help storing and parsing Attract output data."""
-    def __init__(self):
-        self.translations = [[]]
-
-
-    @classmethod
-    def from_string(cls, content):
-        def iterrotations():
-            lines = content.splitlines()
-            isrotation = False
-            current_rotation = []
-            for line in lines:
-                if line.startswith('----- Rotation nb'):
-                    isrotation = True
-                    if current_rotation:
-                        yield AttractOutputRotation.from_lines(current_rotation)
-                        current_rotation = []
-                if isrotation and line.strip():
-                    current_rotation.append(line)
-
-        for r in iterrotations():
-            print(r.id)
-            print(r.data)
-            print(r.matrix)
-            print("----------------------------")
-        
-
-class AttractOutputTranslation(object):
-    """Class that help storing a translation data from Attract output string."""
-    pass
 
 class AttractOutputRotation(object):
     """Class that help storing a rotation data from Attract output string."""
 
     # Parse a minimization result line.
     minim_re = re.compile(r'{{ minimization nb (?P<id>\d+) of (?P<total>\d+) ; '
-                      r'cutoff= (?P<cutoff>\d+\.\d+) \(A\) ; '
-                      r'maxiter= (?P<maxiter>\d+)')
+                          r'cutoff= (?P<cutoff>\d+\.\d+) \(A\) ; '
+                          r'maxiter= (?P<maxiter>\d+)')
 
     def __init__(self, i=0, minimlist=[], matrix=[], data={}):
         self.id = i
@@ -122,8 +111,15 @@ class AttractOutputRotation(object):
         self.matrix = matrix
         self.data = data
 
+    def format_matrix(self):
+        """Return a string reprenting the matrix."""
+        s = '\n'.join(' '.join('{: 14.7f}'.format(value) for value in row)
+                      for row in self.matrix)
+        return s
+
     @classmethod
-    def from_lines(cls, rotation_lines):
+    def from_string(cls, content):
+        """Initialization from string."""
         def parse_rotation_minim_output(match):
             typemap = {'id': int, 'total': int, 'cutoff': float, 'maxiter': int}
             minim = match.groupdict()
@@ -140,8 +136,9 @@ class AttractOutputRotation(object):
 
         minimlist = []
         matrix = []
-        i = int(rotation_lines[0].split()[-2])
-        for line in rotation_lines:
+        lines = content.splitlines()
+        i = int(lines[0].split()[-2])
+        for line in lines:
             match = cls.minim_re.match(line)
             if match:
                 minimlist.append(parse_rotation_minim_output(match))
@@ -151,18 +148,123 @@ class AttractOutputRotation(object):
                 matrix.append(list(float(tok) for tok in line.split()[1:]))
         return cls(i, minimlist, matrix, data)
 
-    
+    def cmp(self, other):
+        """Compare two AttractOutputRotation instances.
+        
+        Return:
+            str: empty string if rotations are identical, else
+                a description of the differences.
+        """
+        if self.matrix != other.matrix:
+            print('')
+        
 
-def read_attract_output(path):
-    """Read attract result string saved to a file."""
-    with open(path, 'rt') as f:
-        content = f.read()
-    return AttractOutput.from_string(content)
+class AttractOutputTranslation(object):
+    def __init__(self, id=0, rotations=[]):
+        self.id = id
+        self.rotations = rotations
 
+    @classmethod
+    def from_string(cls, content):
+        """Initialization from string."""
+        rotations = []
+        fileobj = StringIO.StringIO(content)
+        transid = int(next(fileobj).split()[-2])
+        for lines in itercontent(fileobj, '----- Rotation nb'):
+            rot = AttractOutputRotation.from_string(lines)
+            rotations.append(rot)
+        return cls(transid, rotations)
+
+    def number_of_rotations(self):
+        """Return the number of rotations."""
+        return len(self.rotations)
+
+    def cmp(self, other):
+        """Compare two AttractOutputTranslation instances.
+        
+        Return:
+            str: empty string if translations are identical, else
+                a description of the differences.
+        """
+        if self.id != other.id:
+            msg = 'translation {}: identifiers differ: {} != {}'
+            return msg.format(self.id, self.id, other.id)
+
+        if self.number_of_rotations() != other.number_of_rotations():
+            msg = 'translation {}: number of rotations differ: {} != {}'
+            return msg.format(self.id,
+                              self.number_of_translations(),
+                              other.number_of_translations())
+
+        for rot1, rot2 in zip(self.rotations, other.rotations):
+            result = rot1.cmp(rot2)
+            if result:
+                return result
+        return ''
+
+
+
+
+class AttractOutput(object):
+    def __init__(self):
+        self.translations = []
+
+    def number_of_translations(self):
+        """Return the number of translations."""
+        return len(self.translations)
+
+    def number_of_rotations(self):
+        """Return the list of the number of rotations for each translation."""
+        return [t.number_of_rotations() for t in self.translations]
+
+    @classmethod
+    def from_file(cls, path):
+        """Initialization from file."""
+        with open(path, 'rt') as stream:
+            return cls.from_stream(stream)
+
+    @classmethod
+    def from_string(cls, content):
+        """Initialization from string."""
+        return cls.from_stream(StringIO.StringIO(content))
+
+    @classmethod
+    def from_stream(cls, stream):
+        """Initialization from stream (typically file object)."""
+        output = cls() 
+        for trans in itercontent(stream, '@@@@@@@ Translation nb '):
+            t = AttractOutputTranslation.from_string(trans)
+            output.translations.append(t)
+        return output
+
+    def cmp(self, other):
+        """Compare two AttractOutput instances.
+        
+        Return:
+            str: empty string if outputs are identical, else
+                a description of the differences.
+        """
+        if self.number_of_translations() != other.number_of_translations():
+            msg = 'number of translations differ: {} != {}'
+            print(msg.format(self.number_of_translations(),
+                             other.number_of_translations()))
+            return False
+
+        for trans1, trans2 in zip(self.translations, other.translations):
+            if not trans1.cmp(trans2):
+                return False
+
+        return True
 
 
 def main():
-    read_attract_output('../data/docking/attract_trans3.out')
+    fname1 = '../data/docking/attract_trans3.out'
+    fname2 = '/Users/benoist/Desktop/foo.attract.out'
+    
+    output1 = AttractOutput.from_file(fname1)
+    output2 = AttractOutput.from_file(fname2)
+    
+    output1.cmp(output2)
 
 if __name__ == '__main__':
     main()
