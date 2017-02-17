@@ -7,7 +7,9 @@ import pytest
 
 from ptools.scripts import ptools_cli
 
+from .. import skip_on_osx
 from ..utils import mk_tmp_file
+
 from .. import (TEST_LIGAND_PDB,
                 TEST_LIGAND_RED_ATTRACT1,
                 TEST_LIGAND_RED_ATTRACT2,
@@ -62,8 +64,7 @@ class TestReduceScorpion(unittest.TestCase):
         cmd_args.func(cmd_args)
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_SCORPION, self.output_name))
 
-    @pytest.mark.skipif(sys.platform == 'darwin',
-                        reason="currently not working on OS X")
+    @skip_on_osx
     @pytest.mark.skip('Too slow')
     def test_reduce_scorpion_cgopt(self):
         args = ['reduce', TEST_LIGAND_PDB, '-o', self.output_name, 'scorpion', '--cgopt']

@@ -7,6 +7,8 @@ import pytest
 
 from ptools import cgopt
 
+from . import skip_on_osx
+
 
 class TestCgoptBindings(unittest.TestCase):
     """Check that the cgopt module provides required classes and functions."""
@@ -15,8 +17,7 @@ class TestCgoptBindings(unittest.TestCase):
 
 
 class TestCgopt(unittest.TestCase):
-    @pytest.mark.skipif(sys.platform == 'darwin',
-                reason="currently not working on OS X")
+    @skip_on_osx
     def test_optimize(self):
         """This is a very empirical test that only ensures that optimize
         returns the same values as older versions.

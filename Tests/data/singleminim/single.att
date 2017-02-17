@@ -1,0 +1,37 @@
+
+**********************************************************************
+**                                                                  **
+**                ATTRACT  (Python edition)                         **
+**                based on the PTools library                       **
+**                                                                  **
+**********************************************************************
+PTools revision 525
+from branch DNA
+unique id ben.b.boyer@googlemail.com-20130205235655-f03attfcis1cgicn
+
+Start time: 2016-03-02 12:34:25.990668
+Reading parameters file: attract.inp
+4 series of minimizations
+rstk =  0.0005
+Reading receptor (fixed): receptor.red with 522 particules
+Reading  ligand (mobile): ligand.red with 126 particules
+Reading reference file: ligand.red with 126 particules
+Single mode simulation
+@@@@@@@ Translation nb 1 @@@@@@@
+----- Rotation nb 1 -----
+{{ minimization nb 1 of 4 ; cutoff= 54.77 (A) ; maxiter= 30
+{{ minimization nb 2 of 4 ; cutoff= 31.62 (A) ; maxiter= 30
+{{ minimization nb 3 of 4 ; cutoff= 22.36 (A) ; maxiter= 50
+{{ minimization nb 4 of 4 ; cutoff= 7.07 (A) ; maxiter= 50
+      Trans    Rot          Ener    RmsdCA_ref
+==        1      1   -57.4844249 0.937420362399
+### MAT BEGIN
+MAT        0.9984221      0.0345919     -0.0442357      0.3359486 
+MAT       -0.0355473      0.9991474     -0.0209964      1.6639867 
+MAT        0.0434717      0.0225358      0.9988005     -2.1326983 
+MAT        0.0000000      0.0000000      0.0000000      1.0000000 
+### MAT END
+
+Saved all minimization variables (translations/rotations) in minimization.trj
+End time: 2016-03-02 12:34:26.112651
+Elapsed time: 0:00:00.121983

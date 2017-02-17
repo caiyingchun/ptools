@@ -1,6 +1,14 @@
 
 
 import os
+import sys
+
+import pytest
+
+# Fixture to ignore some test not working on OS X.
+skip_on_osx = pytest.mark.skipif(sys.platform == 'darwin',
+                                 reason="currently not working on OS X")
+
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 
@@ -16,6 +24,7 @@ TEST_SINGLEMINIM_ATTRACT_INP = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'attract.
 TEST_SINGLEMINIM_LIGAND = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'ligand.red')
 TEST_SINGLEMINIM_RECEPTOR = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'receptor.red')
 TEST_SINGLEMINIM_MINIMIZATION_OUT = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'minimization.trj')
+TEST_SINGLEMINIM_ATTRACT_OUT= os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'single.att')
 
 
 # ---------------------------------------------------------------------------
@@ -24,6 +33,7 @@ TEST_SINGLEMINIM_MINIMIZATION_OUT = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'min
 #
 # ---------------------------------------------------------------------------
 TEST_DOCKING_DATA_DIR = os.path.join(TEST_DATA_DIR, 'docking')
+TEST_DOCKING_FF_PARAM = os.path.join(TEST_DOCKING_DATA_DIR, 'aminon.par')
 TEST_DOCKING_ATTRACT_INP = os.path.join(TEST_DOCKING_DATA_DIR, 'attract.inp')
 TEST_DOCKING_LIGAND = os.path.join(TEST_DOCKING_DATA_DIR, 'ligand.red')
 TEST_DOCKING_RECEPTOR = os.path.join(TEST_DOCKING_DATA_DIR, 'receptor.red')
