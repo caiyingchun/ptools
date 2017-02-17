@@ -1,9 +1,6 @@
 
 import random
-import sys
 import unittest
-
-import pytest
 
 from ptools import cgopt
 
@@ -17,6 +14,7 @@ class TestCgoptBindings(unittest.TestCase):
 
 
 class TestCgopt(unittest.TestCase):
+
     @skip_on_osx
     def test_optimize(self):
         """This is a very empirical test that only ensures that optimize
@@ -54,7 +52,7 @@ class TestCgopt(unittest.TestCase):
         res = cgopt.optimize(natoms, charges, radii, x, y, z,
                              nbeads, bcharges, bradii, bx, by, bz,
                              delgrid)
-        
+
         self.assertEqual(len(ref), len(res))
         self.assertListEqual(ref, res)
 

@@ -1,5 +1,4 @@
 
-
 import os
 import sys
 
@@ -24,7 +23,7 @@ TEST_SINGLEMINIM_ATTRACT_INP = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'attract.
 TEST_SINGLEMINIM_LIGAND = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'ligand.red')
 TEST_SINGLEMINIM_RECEPTOR = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'receptor.red')
 TEST_SINGLEMINIM_MINIMIZATION_OUT = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'minimization.trj')
-TEST_SINGLEMINIM_ATTRACT_OUT= os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'single.att')
+TEST_SINGLEMINIM_ATTRACT_OUT = os.path.join(TEST_SINGLEMINIM_DATA_DIR, 'single.att')
 
 
 # ---------------------------------------------------------------------------
@@ -39,7 +38,7 @@ TEST_DOCKING_LIGAND = os.path.join(TEST_DOCKING_DATA_DIR, 'ligand.red')
 TEST_DOCKING_RECEPTOR = os.path.join(TEST_DOCKING_DATA_DIR, 'receptor.red')
 TEST_DOCKING_ROTATION = os.path.join(TEST_DOCKING_DATA_DIR, 'rotation.dat')
 TEST_DOCKING_TRANSLATION = os.path.join(TEST_DOCKING_DATA_DIR, 'translation.dat')
-TEST_DOCKING_ATTRACT_OUT= os.path.join(TEST_DOCKING_DATA_DIR, 'attract_trans3.out')
+TEST_DOCKING_ATTRACT_OUT = os.path.join(TEST_DOCKING_DATA_DIR, 'attract_trans3.out')
 
 
 # ---------------------------------------------------------------------------

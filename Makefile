@@ -59,8 +59,8 @@ clean-docs:
 
 
 lint:
-	flake8 --ignore=E501 tests Heligeom PyAttract
-	flake8 --ignore=F401 ptools  # Ignore the 'imported but unused' warnings
+	flake8 --ignore=E501 tests Heligeom
+	flake8 --ignore=F401,E501 ptools
 
 
 test:

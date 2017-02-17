@@ -10,8 +10,6 @@ import os
 import re
 import shutil
 import StringIO
-import sys
-import unittest
 
 import pytest
 
@@ -97,24 +95,24 @@ class AttractOutputRotation(object):
 
     def cmp(self, other):
         """Compare two AttractOutputRotation instances.
-        
+
         Raises:
             AttractOutputComparisonError: if two rotations are different.
         """
         def isnan(num):
             return num != num
-        
+
         # Compare identifiers.
         if self.id != other.id:
             err = 'identifiers differ: {} != {}'.format(self.id, other.id)
             raise AttractOutputComparisonError(err)
-        
+
         # Compare matrices.
-        if self.matrix != other.matrix: 
+        if self.matrix != other.matrix:
             err = 'matrices differ:\n{}\n-----\n{}'.format(self.format_matrix(),
                                                            other.format_matrix())
             raise AttractOutputComparisonError(err)
-        
+
         # Compare minimizations.
         if self.number_of_minimizations() != other.number_of_minimizations():
             err = 'different number of minimizations: {} != {}'
@@ -165,7 +163,7 @@ class AttractOutputTranslation(object):
 
     def cmp(self, other):
         """Compare two AttractOutputTranslation instances.
-        
+
         Raises:
             AttractOutputComparisonError: if two translations are different.
         """
@@ -215,7 +213,7 @@ class AttractOutput(object):
     @classmethod
     def from_stream(cls, stream):
         """Initialization from stream (typically file object)."""
-        output = cls() 
+        output = cls()
         for trans in itercontent(stream, '@@@@@@@ Translation nb '):
             t = AttractOutputTranslation.from_string(trans)
             output.translations.append(t)
@@ -244,7 +242,7 @@ class AttractOutput(object):
 
 def itercontent(fileobj, delim):
     """Iterate over a file content.
-    
+
     Return the lines between two occurences of `delim`.
 
     Args:
@@ -275,6 +273,7 @@ def minim_traj(request):
     request.addfinalizer(teardown)
     return traj
 
+
 @skip_on_osx
 def test_single_minimization(capfd, minim_traj):
     # output_name = 'minimization.trj'  # hard-coded in attract_cmd.py
@@ -298,7 +297,7 @@ def test_single_minimization(capfd, minim_traj):
         for e in errors:
             print(e.message)
     assert len(errors) == 0
-    assert filecmp.cmp(TEST_SINGLEMINIM_MINIMIZATION_OUT, output_name) == True
+    assert filecmp.cmp(TEST_SINGLEMINIM_MINIMIZATION_OUT, output_name) is True
 
 
 @pytest.fixture
@@ -335,5 +334,3 @@ def test_docking(capfd, docking_trans_rot):
         for e in errors:
             print(e.message)
     assert len(errors) == 0
-
- 

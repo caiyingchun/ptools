@@ -2,9 +2,7 @@
 """test_misc - Those tests should probably be moved somewhere adequat
 at some point."""
 
-
 import math
-import os
 import unittest
 
 from ptools import Rigidbody, Coord3D, Atom, Atomproperty, norm2, Rmsd

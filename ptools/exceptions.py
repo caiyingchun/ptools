@@ -5,10 +5,9 @@ from __future__ import print_function
 
 import collections
 import inspect
-import string
 import sys
 
-    
+
 class FileParsingError(Exception):
     """Exception raised when the parsing of a file fails.
 
@@ -34,7 +33,7 @@ class ResidueReductionError(Exception):
 
     Attrs:
         default_message_fmt (str): default message format.
-    
+
     Args:
         resname (str): residue name.
         resid (int): residue identifier.
@@ -152,6 +151,5 @@ def residue_reduction_errors():
 
 def exception_names_to_exception_list(exception_names):
     """Return a list of exception class from the list of exception names."""
-    exception_fmt = 'ptools.exceptions.{}'
     exception_list = [eval(name) for name in exception_names]
     return exception_list

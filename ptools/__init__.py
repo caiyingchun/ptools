@@ -25,8 +25,6 @@ from . import reduce
 __version__ = '2.0.0'
 
 
-
-
 one_letter_residue_dict = {
     "ALA": "A",
     "CYS": "C",

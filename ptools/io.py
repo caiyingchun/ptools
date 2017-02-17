@@ -70,7 +70,6 @@ def critical(*args, **kwargs):
     sys.exit(exitstatus)
 
 
-
 def is_comment(s, commentchar='#'):
     """Return True is `s` starts with `commentchar` or is empty."""
     return s.startswith(commentchar) or not len(s.strip())

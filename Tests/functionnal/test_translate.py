@@ -23,4 +23,3 @@ class TestTranslate(unittest.TestCase):
         cmd_args = ptools_cli.parse_command_line(args)
         cmd_args.func(cmd_args)
         self.assertTrue(filecmp.cmp(TEST_TRANSLATE_OUTPUT, self.output_name))
-

@@ -13,7 +13,7 @@ def random_filename():
 
 def mk_tmp_file(content='', mode='wt', **kwargs):
     """Create a temporary empty file.
-    
+
     Returns:
         tempfile.NamedTemporaryFile
     """

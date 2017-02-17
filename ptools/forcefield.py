@@ -13,7 +13,7 @@ ATTRACT2_FF_PARAMETER_FILE = os.path.join(ptools.DATA_DIR, 'mbest1u.par')
 SCORPION_FF_PARAMETER_FILE = os.path.join(ptools.DATA_DIR, 'scorpion.par')
 
 
-# Map the force field name with parameter file, force field class and 
+# Map the force field name with parameter file, force field class and
 # minimizer.
 PTOOLS_FORCEFIELDS = {
     'SCORPION': {'ff_file': SCORPION_FF_PARAMETER_FILE,
@@ -28,4 +28,3 @@ PTOOLS_FORCEFIELDS = {
                  'ff_class': AttractForceField2,
                  'minimizer_class': Lbfgs},
 }
-
