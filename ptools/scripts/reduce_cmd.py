@@ -1,5 +1,5 @@
 
-"""PTools reduce command."""
+"""reduce_cmd - PTools reduce command."""
 
 from __future__ import print_function
 

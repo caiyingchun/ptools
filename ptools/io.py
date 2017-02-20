@@ -158,6 +158,30 @@ class AttractOutputTranslation(object):
                 err = 'translation {}: rotation {}: {}'.format(self.id, rot1.id, e)
                 raise AssertionError(err)
 
+    def get_rotation(self, id):
+        """Return the rotation with id `id`.
+
+        Args:
+            id (int): id of the rotation to find in the list of rotations.
+
+        Returns:
+            AttractOutputRotation: rotation with id `id`.
+        
+        Raises:
+            IndexError: if rotation id cannot be found in
+               docking ouputs.
+
+            ValueError: if multiple entries with the same id have been found.
+        """
+        rlist = [r for r in self.rotations if r.id == id]
+        if not rlist:
+            err = 'rotation identifier {} not found'.format(rotid)
+            raise IndexError(err)
+        if len(rlist) > 1:
+            err = 'multiple rotations found with id {}'.format(rotid)
+            raise ValueError(err)
+        return rlist[0]
+
 
 class AttractOutput(object):
     def __init__(self):
@@ -211,6 +235,51 @@ class AttractOutput(object):
             except Exception as e:
                 errors.append(e)
         return errors
+
+    def get_translation(self, id):
+        """Return the translation with id `id`.
+
+        Args:
+            id (int): id of the translation to find in the list of translations.
+
+        Returns:
+            AttractOutputTranslation: translation with id `id`.
+        
+        Raises:
+            IndexError: if translation id cannot be found in
+               docking ouputs.
+
+            ValueError: if multiple entries with the same id have been found.
+        """
+        tlist = [t for t in self.translations if t.id == id]
+        if not tlist:
+            err = 'translation identifier {} not found'.format(rotid)
+            raise IndexError(err)
+        if len(tlist) > 1:
+            err = 'multiple translations found with id {}'.format(rotid)
+            raise ValueError(err)
+        return tlist[0]
+
+    def get_matrix(self, transid, rotid):
+        """Return rotation matrix for docking with translation id `transid`
+        and rotation id `rotid`.
+
+        Args:
+            transid (int): docking translation identifier.
+            rotid (int): docking rotation identifier.
+
+        Return:
+            list: 4x4 transformation matrix.
+
+        Raises:
+            IndexError: if `transid` or `rotid` cannot be found in
+               docking ouputs.
+
+            ValueError: if multiple entries with the same id have been found.
+        """
+        t = self.get_translation(transid)
+        r = t.get_rotation(rotid)
+        return r.matrix
 
 
 def itercontent(fileobj, delim):
