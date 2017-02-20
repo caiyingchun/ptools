@@ -1,10 +1,10 @@
 
+"""test_movement -- unit tests for Movement.h."""
+
 import math
 import unittest
 
 import ptools
-
-"""test_movement -- unit test for Movement.h."""
 
 
 class TestMovementBindings(unittest.TestCase):

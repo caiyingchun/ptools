@@ -136,8 +136,23 @@ public:
         return msa_data[r*m_columns+c];
     }
 
+    /// Item getter for Cython use.
+    const mytype& getItem(int r, int c) const
+    {
+        assert(r<m_rows);
+        assert(c<m_columns);
+        return msa_data[r*m_columns+c];
+    }
 
-    const void * id() {
+    /// Item setter for Cython use.
+    void setItem(int r, int c, const mytype & value)
+    {
+        assert(r<m_rows);
+        assert(c<m_columns);
+        msa_data[r*m_columns+c] = value;
+    }
+
+    void * id() {
         return (void *) &msa_data[0];
     }
 
@@ -172,6 +187,11 @@ public:
        out.second = m_columns;
        return out;
     }
+
+    int get_nrows(void) { return m_rows; }
+    int get_ncolumns(void) { return m_columns; }
+
+
 
     void Print() const
     {
