@@ -46,13 +46,13 @@ def run(args):
 
     # Read ligand topology and apply transformation.
     ligand = ptools.Rigidbody(args.ligand)
-    ligand_out = rigidXMat44(ligand, m)
+    ligand.ApplyMatrix(m)
 
     # Print output topology.
     header = 'REMARK 999 TRANSLATION ROTATION  {} {}'.format(args.transid,
                                                              args.rotid)
     if args.output:
         with open(args.output, 'wt') as f:
-            print(header, ligand_out, sep='\n', file=f)
+            print(header, ligand, sep='\n', file=f)
     else:
-        print(header, ligand_out, sep='\n', file=sys.stdout)
+        print(header, ligand, sep='\n', file=sys.stdout)

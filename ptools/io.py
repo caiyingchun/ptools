@@ -5,6 +5,8 @@ import re
 import StringIO
 import sys
 
+from _ptools import Matrix
+
 from .forcefield import PTOOLS_FORCEFIELDS
 from .exceptions import FileParsingError
 
@@ -20,9 +22,23 @@ class AttractOutputRotation(object):
     def __init__(self, i=0, minimlist=[], matrix=[], energie=0.0, rmsd=0.0):
         self.id = i
         self.minimlist = minimlist
-        self.matrix = matrix
+        self._matrix = Matrix(4, 4)
         self.energie = energie
         self.rmsd = rmsd
+        self.matrix = matrix
+
+    @property
+    def matrix(self):
+        return self._matrix
+
+    @matrix.setter
+    def matrix(self, m):
+        """Set matrix from list of list."""
+        assert len(m) == 4
+        assert len(m[0]) == 4
+        for i in xrange(4):
+            for j in xrange(4):
+                self._matrix[i, j] = m[i][j]
 
     def number_of_minimizations(self):
         """Return the number of minimizations ran."""
