@@ -24,18 +24,6 @@ def create_subparser(parent):
                              'on stout)')
 
 
-def rigidXMat44(rigid, mat):
-    out = ptools.Rigidbody(rigid)
-    for i in range(len(rigid)):
-        coords = rigid.getCoords(i)
-        coords2 = ptools.Coord3D()
-        coords2.x = mat[0][0] * coords.x + mat[0][1] * coords.y + mat[0][2] * coords.z + mat[0][3]
-        coords2.y = mat[1][0] * coords.x + mat[1][1] * coords.y + mat[1][2] * coords.z + mat[1][3]
-        coords2.z = mat[2][0] * coords.x + mat[2][1] * coords.y + mat[2][2] * coords.z + mat[2][3]
-        out.setCoords(i, coords2)
-    return out
-
-
 def run(args):
     ptools.io.check_file_exists(args.attract_output)
     ptools.io.check_file_exists(args.ligand)

@@ -22,23 +22,19 @@ class AttractOutputRotation(object):
     def __init__(self, i=0, minimlist=[], matrix=[], energie=0.0, rmsd=0.0):
         self.id = i
         self.minimlist = minimlist
-        self._matrix = Matrix(4, 4)
         self.energie = energie
         self.rmsd = rmsd
         self.matrix = matrix
 
     @property
-    def matrix(self):
-        return self._matrix
-
-    @matrix.setter
-    def matrix(self, m):
-        """Set matrix from list of list."""
-        assert len(m) == 4
-        assert len(m[0]) == 4
-        for i in xrange(4):
-            for j in xrange(4):
-                self._matrix[i, j] = m[i][j]
+    def ptools_matrix(self):
+        """Return a PTools Matrix instance for the current matrix."""
+        n = len(self.matrix)
+        m = len(self.matrix[0])
+        mat = Matrix(n, m)
+        for i in xrange(n):
+            for j in xrange(m):
+                mat[i, j] = self.matrix[i][j]
 
     def number_of_minimizations(self):
         """Return the number of minimizations ran."""
@@ -294,7 +290,7 @@ class AttractOutput(object):
         """
         t = self.get_translation(transid)
         r = t.get_rotation(rotid)
-        return r.matrix
+        return r.ptools_matrix
 
 
 def itercontent(fileobj, delim):
