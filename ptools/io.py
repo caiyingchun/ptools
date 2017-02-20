@@ -166,7 +166,7 @@ class AttractOutputTranslation(object):
 
         Returns:
             AttractOutputRotation: rotation with id `id`.
-        
+
         Raises:
             IndexError: if rotation id cannot be found in
                docking ouputs.
@@ -175,10 +175,10 @@ class AttractOutputTranslation(object):
         """
         rlist = [r for r in self.rotations if r.id == id]
         if not rlist:
-            err = 'rotation identifier {} not found'.format(rotid)
+            err = 'rotation identifier {} not found'.format(id)
             raise IndexError(err)
         if len(rlist) > 1:
-            err = 'multiple rotations found with id {}'.format(rotid)
+            err = 'multiple rotations found with id {}'.format(id)
             raise ValueError(err)
         return rlist[0]
 
@@ -227,7 +227,6 @@ class AttractOutput(object):
                              other.number_of_translations())
             raise AssertionError(err)
 
-
         errors = []
         for trans1, trans2 in zip(self.translations, other.translations):
             try:
@@ -244,7 +243,7 @@ class AttractOutput(object):
 
         Returns:
             AttractOutputTranslation: translation with id `id`.
-        
+
         Raises:
             IndexError: if translation id cannot be found in
                docking ouputs.
@@ -253,10 +252,10 @@ class AttractOutput(object):
         """
         tlist = [t for t in self.translations if t.id == id]
         if not tlist:
-            err = 'translation identifier {} not found'.format(rotid)
+            err = 'translation identifier {} not found'.format(id)
             raise IndexError(err)
         if len(tlist) > 1:
-            err = 'multiple translations found with id {}'.format(rotid)
+            err = 'multiple translations found with id {}'.format(id)
             raise ValueError(err)
         return tlist[0]
 
