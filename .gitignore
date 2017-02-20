@@ -15,6 +15,7 @@ Tests/cpp/runner.cpp
 Tests/cpp/ptoolstest.bin
 Tests/cpp/Makefile
 Tests/opt_scorpion.out
+Tests/iterate.dat
 .cache
 
 # Distribution / packaging

@@ -51,6 +51,7 @@ clean-test:
 	rm -f Tests/cpp/ptoolstest.bin
 	rm -f Tests/cpp/Makefile
 	rm -f Tests/opt_scorpion.out
+	rm -f Tests/iterate.dat
 	rm -rf .cache
 
 
