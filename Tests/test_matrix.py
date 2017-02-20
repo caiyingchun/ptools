@@ -67,7 +67,3 @@ class TestMatrix(unittest.TestCase):
         for i in xrange(self.nrows):
             for j in xrange(self.ncols):
                 self.assertEqual(self.mat[i, j], i)
-
-    
-
-
