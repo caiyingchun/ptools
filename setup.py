@@ -396,7 +396,7 @@ def setup_package():
                'src/superpose.cpp',
                'src/scorpionforcefield.cpp',
                'src/minimizers/lbfgs_interface.cpp',
-               'src/minimizers/routines.c',
+               'src/minimizers/lbfgs_wrapper/lbfgsb.c',
                'src/minimizers/lbfgs_wrapper/lbfgsb_wrapper.cpp',
                ]
 
