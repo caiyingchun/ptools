@@ -44,8 +44,9 @@ def run_attract_test(args, capfd, ref_output_file):
 
     errors = output_ref.assert_equal(output_test)
     if errors:
+        print("{} errors occured:".format(len(errors)))
         for e in errors:
-            print(e.message)
+            print(e.message, end='\n\n')
     assert len(errors) == 0
 
 

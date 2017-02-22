@@ -148,8 +148,8 @@ class AttractOutputTranslation(object):
     def assert_equal(self, other):
         """Compare two AttractOutputTranslation instances.
 
-        Raises:
-            AssertionError: if two translations are different.
+        Return:
+            list[AssertionError]: list of errors that occured 
         """
         if self.id != other.id:
             err = 'translation {}: identifiers differ: {} != {}'
@@ -163,12 +163,14 @@ class AttractOutputTranslation(object):
                              other.number_of_translations())
             raise AssertionError(err)
 
+        errors = []
         for rot1, rot2 in zip(self.rotations, other.rotations):
             try:
                 rot1.assert_equal(rot2)
             except Exception as e:
                 err = 'translation {}: rotation {}: {}'.format(self.id, rot1.id, e)
-                raise AssertionError(err)
+                errors.append(AssertionError(err))
+        return errors
 
     def get_rotation(self, id):
         """Return the rotation with id `id`.
@@ -241,10 +243,7 @@ class AttractOutput(object):
 
         errors = []
         for trans1, trans2 in zip(self.translations, other.translations):
-            try:
-                trans1.assert_equal(trans2)
-            except Exception as e:
-                errors.append(e)
+            errors += trans1.assert_equal(trans2)
         return errors
 
     def get_translation(self, id):
