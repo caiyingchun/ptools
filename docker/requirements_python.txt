@@ -2,3 +2,4 @@ cython
 pytest
 pytest-coverage
 PyYAML
+flake8
