@@ -1,9 +1,0 @@
-#AFF2.info: Attract Force Field format
-
-#### fields 1 and 2: describe file version.
-1st column: magic field => "AFF"
-2nd col:  format revision number => 2
-
-### fields 3+: specific to version 2
-3rd column: number of dummy atoms => 1
-4th col: list of dummy atoms types => atom type 32
