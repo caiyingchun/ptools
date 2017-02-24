@@ -15,4 +15,4 @@ install:
   - pip install -r docker/requirements_python.txt
   - make install
 
-script: "cd Tests && make testpython"
+script: "cd Tests && make unittests"
