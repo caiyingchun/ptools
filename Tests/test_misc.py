@@ -2,20 +2,17 @@
 """test_misc - Those tests should probably be moved somewhere adequat
 at some point."""
 
-
 import math
-import os
 import unittest
 
 from ptools import Rigidbody, Coord3D, Atom, Atomproperty, norm2, Rmsd
 
-
-TEST_1FINR_PDB = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r.pdb')
+from . import TEST_LIGAND_PDB
 
 
 class TestBasicMoves(unittest.TestCase):
     def setUp(self):
-        self.rigid1 = Rigidbody(TEST_1FINR_PDB)
+        self.rigid1 = Rigidbody(TEST_LIGAND_PDB)
         self.rigid2 = Rigidbody(self.rigid1)
         self.rigid3 = Rigidbody(self.rigid2)
 

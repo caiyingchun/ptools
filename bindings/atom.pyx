@@ -4,7 +4,8 @@ cdef extern from "atom.h" namespace "PTools":
         CppAtomproperty(CppAtomproperty&)
 
         void setAtomType(string &)
-        
+        string residuetag()
+
         string atomType
         string _pdbAtomType
         string residType
@@ -28,6 +29,11 @@ cdef extern from "atom.h" namespace "PTools":
 
 cdef extern from "cython_wrappers.h":
     cdef void cy_copy_atom(CppAtom* , CppAtom* )
+
+
+cdef extern from "atom.h" namespace "PTools::Atomproperty":
+    string getTagDelimiter()
+    void setTagDelimiter(string &)
     
         
 cdef class Atomproperty:
@@ -39,8 +45,19 @@ cdef class Atomproperty:
     def __dealloc__(self):
         if self.thisptr:
             del self.thisptr
-    
 
+    @classmethod
+    def get_tag_delimiter(cls):
+        return getTagDelimiter()
+
+    @classmethod
+    def set_tag_delimiter(cls, bytes value):
+        cdef char* c = value
+        setTagDelimiter(string(c))
+
+    def residuetag(self):
+        return self.thisptr.residuetag()
+    
     property atomType:
         def __get__(self):
             return <bytes> self.thisptr.atomType.c_str()
@@ -161,6 +178,7 @@ cdef class Atom(Atomproperty):
     
     def Translate(self,Coord3D co):
        (<CppAtom*>self.thisptr).Translate(deref(co.thisptr))
+
     
 def Dist(Atom at1, Atom at2):
     return cppDist(deref(<CppAtom*>at1.thisptr), deref(<CppAtom*>at2.thisptr))

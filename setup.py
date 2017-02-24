@@ -11,10 +11,12 @@ import textwrap
 import urllib2
 import StringIO
 
+from setuptools import setup, find_packages
 from distutils import log
-from distutils.core import setup
 from distutils.extension import Extension
 from distutils.errors import DistutilsOptionError
+
+
 
 try:
     from Cython.Distutils import build_ext as _build_ext
@@ -364,6 +366,12 @@ def setup_package():
     # Update version header.
     write_version_h('headers/gitrev.h')
 
+    # Install data files in <prefix>/share/ptools.
+    data_dir = os.path.join(sys.prefix, "share/ptools/data")
+
+    # Install all files in the data directory.
+    data_files = [os.path.join('data', path) for path in os.listdir('data')]
+
     sources = ['src/BasePair.cpp',
                'src/DNA.cpp',
                'src/Movement.cpp',
@@ -388,7 +396,7 @@ def setup_package():
                'src/superpose.cpp',
                'src/scorpionforcefield.cpp',
                'src/minimizers/lbfgs_interface.cpp',
-               'src/minimizers/routines.c',
+               'src/minimizers/lbfgs_wrapper/lbfgsb.c',
                'src/minimizers/lbfgs_wrapper/lbfgsb_wrapper.cpp',
                ]
 
@@ -399,17 +407,29 @@ def setup_package():
                        language='c++',
                        include_dirs=['headers'])
 
-    cgopt = Extension('cgopt',
-                      sources=['PyAttract/cgopt.pyx',
-                               'PyAttract/chrg_scorpion.c'],
+    cgopt = Extension('_cgopt',
+                      sources=['bindings/_cgopt.pyx',
+                               'src/cgopt/chrg_scorpion.c'],
                       language='c',
-                      include_dirs=['PyAttract'])
+                      include_dirs=['src/cgopt'])
+
+    packages = find_packages(exclude=['Heligeom',
+                                      'Tests',
+                                      'Tests.functionnal'])
 
     setup(ext_modules=[ptools, cgopt],
           cmdclass={'build_ext': build_ext},
-          packages=['ptools'],
           name='ptools',
-          version='1.2')
+          packages=packages,
+          version='1.2',
+          entry_points={
+              'console_scripts': ['ptools = ptools.scripts.ptools_cli:main']
+          },
+          include_package_data=True,
+          data_files=[
+              (data_dir, data_files)
+          ]
+    )
 
 
 def setup_cpp_tests():

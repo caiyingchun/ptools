@@ -9,6 +9,8 @@ using namespace std;
 namespace PTools{
 
 
+std::string Atomproperty::tagDelimiter = ":";
+
 //! Convert an atom to a string
 std::string Atom::ToString() const {
     std::stringstream info;

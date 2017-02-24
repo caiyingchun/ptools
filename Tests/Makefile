@@ -1,6 +1,6 @@
 
 
-all: unittests
+all: testpython
 
 help:
 	@echo "Usage: make <command>"
@@ -16,10 +16,9 @@ help:
 
 unittests: testcpp testpython
 
-
 testpython:
 	echo "running python tests"
-	py.test -v
+	py.test -vra
 
 testcpp:
 	$(MAKE) -C cpp unittests

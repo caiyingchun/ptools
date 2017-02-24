@@ -1,7 +1,10 @@
 .PHONY: help clean clean-build clean-pyc clean-test lint test docs 
 
-# Name of the docker image.
+# Docker image name.
 DOCKER_IMAGE = ptools:dev
+
+# File name in which installed files are recorded.
+MANIFEST_OUT = MANIFEST.out
 
 help:
 	@echo "usage: make <command>"
@@ -21,7 +24,7 @@ help:
 	@echo "    docker-test - use the docker container ptools:dev to run unit tests"
 
 
-clean: clean-build clean-pyc clean-test
+clean: clean-build clean-pyc clean-test clean-docs
 
 
 clean-build:
@@ -29,7 +32,9 @@ clean-build:
 	rm -fr dist/
 	rm -fr .eggs/
 	rm -f bindings/_ptools.cpp
-	rm -f PyAttract/cgopt.c
+	rm -f bindings/_cgopt.c
+	rm -f $(MANIFEST_OUT)
+	rm -f headers/gitrev.h
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
 
@@ -45,17 +50,26 @@ clean-test:
 	rm -f Tests/cpp/runner.cpp
 	rm -f Tests/cpp/ptoolstest.bin
 	rm -f Tests/cpp/Makefile
+	rm -f Tests/opt_scorpion.out
+	rm -f Tests/iterate.dat
 	rm -rf .cache
+	rm -rf .coverage
+
+
+clean-docs:
+	rm -rf docs/_build
 
 
 lint:
-	flake8 --ignore=E501 tests Heligeom PyAttract
-	flake8 --ignore=F401 ptools  # Ignore the 'imported but unused' warnings
+	flake8 --ignore=E501 tests Heligeom
+	flake8 --ignore=F401,E501 ptools
 
 
 test:
 	$(MAKE) -C Tests
 
+coverage:
+	pytest --cov-report term-missing --cov=ptools Tests
 
 docs:
 	$(MAKE) -C docs clean
@@ -66,8 +80,12 @@ build: clean
 	python setup.py build
 
 
-install: build
-	python setup.py install
+install:
+	python setup.py install --record $(MANIFEST_OUT)
+
+
+uninstall:
+	cat $(MANIFEST_OUT) | xargs rm -f 
 
 
 docker-build:

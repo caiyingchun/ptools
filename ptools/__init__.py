@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import os
+import sys
+
 from _ptools import (ADNA, Atom, AtomPair, AtomSelection, Atomproperty,
                      AttractForceField1, AttractForceField2, AttractPairList,
                      AttractRigidbody, BDNA, BaseAttractForceField, BasePair,
@@ -8,6 +11,19 @@ from _ptools import (ADNA, Atom, AtomPair, AtomSelection, Atomproperty,
                      ScorpionForceField, ScorpionLbfgs, Shift, Slide,
                      Superpose_t, Surface, Tilt, Twist, Version, WritePDB,
                      norm, norm2, strToAtom, superpose)
+
+
+DATA_DIR = os.path.join(sys.prefix, 'share', 'ptools', 'data')
+
+
+from . import io
+from . import exceptions
+from . import forcefield
+from . import reduce
+
+
+__version__ = '2.0.0'
+
 
 one_letter_residue_dict = {
     "ALA": "A",

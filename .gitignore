@@ -4,16 +4,20 @@ __pycache__/
 *$py.class
 
 
-# Generated at compilation time
+# Generated at compilation/install time
 bindings/_ptools.cpp
-PyAttract/cgopt.c
+bindings/_cgopt.c
+MANIFEST.out
 
 
 # Unit test / coverage
-Tests/cpp/runner.cpp
-Tests/cpp/ptoolstest.bin
+Tests/iterate.dat
 Tests/cpp/Makefile
+Tests/cpp/ptoolstest.bin
+Tests/cpp/runner.cpp
+opt_scorpion.out
 .cache
+.coverage
 
 # Distribution / packaging
 .Python

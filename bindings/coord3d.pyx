@@ -76,7 +76,6 @@ cdef class Coord3D:
         
         cdef Coord3D result = Coord3D(cppresult.x, cppresult.y, cppresult.z)
         return result
-        
           
     def __mul__(self, scal):
          cdef Coord3D pymyself
@@ -87,9 +86,12 @@ cdef class Coord3D:
          pymyself = <Coord3D> self
          cscal = <double> scal
          
-         cdef CppCoord3D r = cscal*deref(pymyself.thisptr)
+         cdef CppCoord3D r = cscal * deref(pymyself.thisptr)
          return makeCoord3D(r)
-    
+
+    def __div__(self, scal):
+         return Coord3D(self.x / scal, self.y / scal, self.z / scal)
+
     def __neg__(self):
          return makeCoord3D(CppCoord3D()-deref(self.thisptr))     
          

@@ -1,17 +1,15 @@
 
-import os
 import random
 import unittest
 
 from ptools import Rigidbody, Coord3D, superpose, Rmsd
 
-
-TEST_1FINR_PDB = os.path.join(os.path.dirname(__file__), 'data', '1FIN_r.pdb')
+from . import TEST_LIGAND_PDB
 
 
 class TestSuperposition(unittest.TestCase):
     def setUp(self):
-        self.prot1 = Rigidbody(TEST_1FINR_PDB)
+        self.prot1 = Rigidbody(TEST_LIGAND_PDB)
         random.seed(123)
 
     def testTransRot(self):
