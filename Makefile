@@ -53,6 +53,7 @@ clean-test:
 	rm -f Tests/opt_scorpion.out
 	rm -f Tests/iterate.dat
 	rm -rf .cache
+	rm -rf .coverage
 
 
 clean-docs:
@@ -67,6 +68,8 @@ lint:
 test:
 	$(MAKE) -C Tests
 
+coverage:
+	pytest --cov-report term-missing --cov=ptools Tests
 
 docs:
 	$(MAKE) -C docs clean

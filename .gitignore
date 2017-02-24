@@ -11,12 +11,13 @@ MANIFEST.out
 
 
 # Unit test / coverage
-Tests/cpp/runner.cpp
-Tests/cpp/ptoolstest.bin
-Tests/cpp/Makefile
-Tests/opt_scorpion.out
 Tests/iterate.dat
+Tests/cpp/Makefile
+Tests/cpp/ptoolstest.bin
+Tests/cpp/runner.cpp
+opt_scorpion.out
 .cache
+.coverage
 
 # Distribution / packaging
 .Python
