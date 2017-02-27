@@ -32,8 +32,6 @@ class TestMatTrans2screw(unittest.TestCase):
         assertCoordsAlmostEqual(self, s.point, ptools.Coord3D(0.0, 0.0, 0.0))
 
 
-
-
 class TestSuperposition(unittest.TestCase):
     def setUp(self):
         self.prot1 = ptools.Rigidbody(TEST_LIGAND_PDB)

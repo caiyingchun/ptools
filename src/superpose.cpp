@@ -25,9 +25,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include <cassert>
-#include <time.h>
-#include <stdlib.h> //drand
+#include <exception>
 
 #include "superpose.h"
 #include "geometry.h" // for ScalProd 
@@ -261,19 +259,20 @@ Screw MatTrans2screw(const Matrix& mat)
     Coord3D trans;
     Mat33 rotmatrix;
 
+    // Make sure input matrix is 3 x 3.
+    if (mat.get_nrows() != 3 or mat.get_ncolumns() != 3)
+    {
+        throw std::length_error("input matrix must be 3 x 3");
+    }
+    assert(mat.get_nrows() == 12);
+
     trans.x = mat(0,3);
     trans.y = mat(1,3);
     trans.z = mat(2,3);
 
-
-//     Coord3D trans = t0-t1;
-
-
     for(int i=0; i<3; i++)
       for(int j=0; j<3; j++)
           rotmatrix[i][j]=mat(i,j);
-
-//     std::cout << trans.toString();
 
     Screw screw;
     Coord3D eigenvect;

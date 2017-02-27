@@ -1,7 +1,7 @@
 
 cdef extern from "superpose.h" namespace "PTools":
     cdef cppSuperpose_t cppsuperpose "PTools::superpose" ( CppRigidbody& ,CppRigidbody& , int )
-    cdef CppScrew cppMatTrans2screw "PTools::MatTrans2screw" ( Array2D[double]& )
+    cdef CppScrew cppMatTrans2screw "PTools::MatTrans2screw" ( Array2D[double]& ) except +
     
 
 cdef extern from "screw.h" namespace "PTools":
