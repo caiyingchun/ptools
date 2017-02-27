@@ -63,7 +63,7 @@ clean-docs:
 
 lint:
 	flake8 --ignore=E501 tests Heligeom
-	flake8 --ignore=F401,E501 ptools
+	flake8 --ignore=E501 --exclude=ptools/__init__.py ptools
 
 
 test:

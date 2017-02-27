@@ -57,4 +57,3 @@ def random_float():
     [-max_float; +max_float]."""
     max_float = sys.float_info.max
     return random.randrange(-max_float, +max_float)
-
