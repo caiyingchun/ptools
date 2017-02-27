@@ -259,10 +259,11 @@ Screw MatTrans2screw(const Matrix& mat)
     Coord3D trans;
     Mat33 rotmatrix;
 
-    // Make sure input matrix is 3 x 3.
-    if (mat.get_nrows() != 3 or mat.get_ncolumns() != 3)
+    // Make sure input matrix is 3 x 3 or 4 x 4.
+    if ((mat.get_nrows() != 3 and mat.get_nrows() != 4) or
+        (mat.get_ncolumns() != 3 and mat.get_ncolumns() != 4))
     {
-        throw std::length_error("input matrix must be 3 x 3");
+        throw std::length_error("input matrix must be 3 x 3 or 4 x 4");
     }
     assert(mat.get_nrows() == 12);
 
