@@ -8,7 +8,7 @@ from _ptools import (ADNA, Atom, AtomPair, AtomSelection, Atomproperty,
                      AttractRigidbody, BDNA, BaseAttractForceField, BasePair,
                      Coord3D, CoordsArray, DNA, Dist, Dist2, Lbfgs, Matrix,
                      Movement, Rigidbody, Rise, Rmsd, Roll,
-                     ScorpionForceField, ScorpionLbfgs, Shift, Slide,
+                     ScorpionForceField, ScorpionLbfgs, Screw, Shift, Slide,
                      Superpose_t, Surface, Tilt, Twist, Version, WritePDB,
                      norm, norm2, strToAtom, superpose)
 
