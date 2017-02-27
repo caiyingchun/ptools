@@ -8,7 +8,6 @@ import sys
 from _ptools import Matrix
 
 from .forcefield import PTOOLS_FORCEFIELDS
-from .exceptions import FileParsingError
 
 
 class AttractOutputRotation(object):
@@ -149,7 +148,7 @@ class AttractOutputTranslation(object):
         """Compare two AttractOutputTranslation instances.
 
         Return:
-            list[AssertionError]: list of errors that occured 
+            list[AssertionError]: list of errors that occured
         """
         if self.id != other.id:
             err = 'translation {}: identifiers differ: {} != {}'

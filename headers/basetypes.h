@@ -180,7 +180,7 @@ public:
     }
 
     ///get size of the array
-    std::pair<int,int> getDim()
+    std::pair<int,int> getDim() const
     {
        std::pair<int,int> out;
        out.first = m_rows;
@@ -188,8 +188,8 @@ public:
        return out;
     }
 
-    int get_nrows(void) { return m_rows; }
-    int get_ncolumns(void) { return m_columns; }
+    int get_nrows(void) const { return m_rows; }
+    int get_ncolumns(void) const { return m_columns; }
 
 
 
