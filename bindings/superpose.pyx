@@ -1,5 +1,7 @@
+
 cdef extern from "superpose.h" namespace "PTools":
     cdef cppSuperpose_t cppsuperpose "PTools::superpose" ( CppRigidbody& ,CppRigidbody& , int )
+    cdef CppScrew cppMatTrans2screw "PTools::MatTrans2screw" ( Array2D[double]& )
     
 
 cdef extern from "screw.h" namespace "PTools":
@@ -65,6 +67,16 @@ def superpose(Rigidbody ref, Rigidbody mob, int verbosity=0):
     return pysup
 
 
-cdef int MatTrans2screw():
-    return 12
+def MatTrans2screw(Matrix mat):
+    cpp_screw = cppMatTrans2screw(deref(mat.thisptr))
+    screw = Screw()
+    screw.angle = cpp_screw.angle
+    screw.normtranslation = cpp_screw.normtranslation
+    screw.unitVector = cppCoord3D_to_Coord3D(cpp_screw.unitVector)
+    screw.point = cppCoord3D_to_Coord3D(cpp_screw.point)
+    return screw
+
+
+cdef cppCoord3D_to_Coord3D(CppCoord3D source):
+    return Coord3D(source.x, source.y, source.z)
 
