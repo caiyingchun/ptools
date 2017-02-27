@@ -53,8 +53,6 @@ cdef class Screw:
         def __set__(self, double value):
             self.thisptr.angle = value
 
-
-
     
 def superpose(Rigidbody ref, Rigidbody mob, int verbosity=0):
     cdef cppSuperpose_t sup = cppsuperpose(deref(ref.thisptr), deref(mob.thisptr), verbosity)
@@ -65,3 +63,8 @@ def superpose(Rigidbody ref, Rigidbody mob, int verbosity=0):
     pysup = Superpose_t(sup.rmsd, mat)
 
     return pysup
+
+
+cdef int MatTrans2screw():
+    return 12
+
