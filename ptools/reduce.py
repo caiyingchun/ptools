@@ -16,7 +16,7 @@ from .exceptions import (NoResidueReductionRulesFoundError,
 
 
 DEFAULT_ATTRACT1_PROT_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attract1_prot.yml')
-DEFAULT_ATTRACT1_DNA_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg.dna.dat')
+DEFAULT_ATTRACT1_DNA_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attract1_dna.yml')
 DEFAULT_NAME_CONVERSION_YML = os.path.join(ptools.DATA_DIR, 'name_conversion.yml')
 DEFAULT_ATTRACT2_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_attract2.yml')
 DEFAULT_SCORPION_REDUCTION_YML = os.path.join(ptools.DATA_DIR, 'at2cg_scorpion.yml')
