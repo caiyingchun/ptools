@@ -8,6 +8,7 @@ __pycache__/
 bindings/_ptools.cpp
 bindings/_cgopt.c
 MANIFEST.out
+headers/gitrev.h
 
 
 # Unit test / coverage
@@ -37,5 +38,5 @@ sdist/
 .*.swp
 
 
-# Build generated version files
-headers/gitrev.h
+# Misc
+.DS_Store
