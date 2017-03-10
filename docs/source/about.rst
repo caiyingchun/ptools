@@ -1,3 +1,7 @@
+
+About PTools
+============
+
 **The PTools library is a toolbox for macromolecular modeling and docking.**
 
 A more detailed introduction can be found here: http://www.biomedcentral.com/1472-6807/9/27.
