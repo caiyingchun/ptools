@@ -1,4 +1,6 @@
 
+.. _ptools_branching_model:
+
 PTools branching model
 ======================
 

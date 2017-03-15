@@ -103,4 +103,12 @@ To create a branch use ``git branch -b <branch_name>``, e.g.::
     $ git branch -b feature/heligeom
 
 
+.. warning::
+   It is core developers team responsability to merge features into the right
+   develop branch, i.e. ``develop-private`` for feature which have to remain
+   private and ``develop`` for other features (see :ref:`ptools_branching_model`).
+
+
+
+
 .. _`ptools private repository`: https://github.com/ptools/ptools-develop
