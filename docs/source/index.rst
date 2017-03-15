@@ -9,7 +9,6 @@ Welcome to ptools's documentation!
 Contents:
 
 .. toctree::
-   :glob:
    :maxdepth: 2
 
    about
@@ -17,7 +16,7 @@ Contents:
    usage
    contributing
    tutorial
-   developers_guide/*
+   developers_guide/index
    credits
 
 

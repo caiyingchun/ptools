@@ -11,4 +11,3 @@ Contents:
    branching_model
    setting_up_repo
    coding_style
-

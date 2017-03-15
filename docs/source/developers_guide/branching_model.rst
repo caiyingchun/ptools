@@ -37,6 +37,14 @@ the public repository.
 ``develop-private`` contains the work in progress for the next release, just
 as ``develop`` does, but includes features that will be made public only after
 the work is published.
+``develop`` should be continously merged into ``develop-private`` to ensure that
+public changes are integrated to the private repo as soon changes are made.
+
+Feature branches should originatd from one or the other develop branch,
+depending on whether the feature will be public or private.
+Quite naturally, private features will start from ``develop-private`` and be
+merged back to the same branch, while small features should be added
+to ``develop``.
 
 
 
