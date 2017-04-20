@@ -4,6 +4,7 @@ Add this CHANGELOG
 - add function get_group()] to split translations into groups; works with lists, tuples, dict (sorts by keys)
 - add options --ngroups and -ngroup to split translations into ngroups and work on the ngroup-th one
 - add function run_attract() to encompass loop over translations and rotations.
+- Responds to issue 84
 
 13 - 19 April
 - test_attract.py: add analytical "toy" minimization tests; data in "data/toyminim"
