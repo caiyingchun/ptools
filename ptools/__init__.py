@@ -8,7 +8,7 @@ from _ptools import (ADNA, Atom, AtomPair, AtomSelection, Atomproperty,
                      AttractRigidbody, BDNA, BaseAttractForceField, BasePair,
                      Coord3D, CoordsArray, DNA, Dist, Dist2, Lbfgs, Matrix,
                      MatTrans2screw, Movement, Rigidbody, Rise, Rmsd, Roll,
-                     ScorpionForceField, ScorpionLbfgs, Screw, Shift, Slide,
+                     ScorpionForceField, Screw, Shift, Slide,
                      Superpose_t, Surface, Tilt, Twist, Version, WritePDB,
                      norm, norm2, strToAtom, superpose)
 
@@ -20,6 +20,7 @@ from . import io
 from . import exceptions
 from . import forcefield
 from . import reduce
+from . import docking
 
 
 __version__ = '2.0.0'

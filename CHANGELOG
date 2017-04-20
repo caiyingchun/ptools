@@ -1,0 +1,14 @@
+Add this CHANGELOG
+
+31 March - 3 April 2017
+- add function get_group()] to split translations into groups; works with lists, tuples, dict (sorts by keys)
+- add options --ngroups and -ngroup to split translations into ngroups and work on the ngroup-th one
+- add function run_attract() to encompass loop over translations and rotations.
+
+13 - 19 April
+- test_attract.py: add analytical "toy" minimization tests; data in "data/toyminim"
+- attract_cmd.py: remove start1 option: all translations/rotations now indicated by number in corresponding file.
+- attract_cmd.py: redefine -s to mean a "starting-config-only" run or a run specifying both transnb and rotnb
+- add new module (ptools/docking.py) to hold run_attract(), read_translations(), and other functions that had been defined in attract.py
+- docking.py: replace Translation and Rotation classes with functions to read translation.dat and rotation.dat files and return dicts indexed by line numbers (1-based).
+- When invoked with -s, attract_cmd.py creates translation and rotation dictionaries with one entry keyed by 0, to indicate a run starting from the provided ligand position and orientation.
