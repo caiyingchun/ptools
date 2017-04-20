@@ -11,4 +11,5 @@ Add this CHANGELOG
 - attract_cmd.py: redefine -s to mean a "starting-config-only" run or a run specifying both transnb and rotnb
 - add new module (ptools/docking.py) to hold run_attract(), read_translations(), and other functions that had been defined in attract.py
 - docking.py: replace Translation and Rotation classes with functions to read translation.dat and rotation.dat files and return dicts indexed by line numbers (1-based).
-- When invoked with -s, attract_cmd.py creates translation and rotation dictionaries with one entry keyed by 0, to indicate a run starting from the provided ligand position and orientation.
+- When invoked with -s, attract_cmd.py now creates translation and rotation dictionaries with one entry keyed by 0, to indicate a run starting from the provided ligand position and orientation.
+- ptools_cli.py: (Issue 82) Add text to docstring with example for getting help for a command, e.g. "ptools attract --help"

@@ -1,5 +1,10 @@
 
-"""PTools command-line script."""
+"""PTools command-line script.
+
+For more specific help, provide the name of a positional argument, e.g.,
+
+   ptools attract --help
+"""
 
 
 from __future__ import print_function
