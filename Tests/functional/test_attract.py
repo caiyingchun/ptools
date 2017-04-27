@@ -1,5 +1,5 @@
 
-"""test_attract - Functionnal tests for the ptools attract command."""
+"""test_attract - Functional tests for the ptools attract command."""
 
 
 from __future__ import print_function
@@ -94,5 +94,5 @@ def test_docking(capfd, docking_trans_rot):
             '-l', TEST_DOCKING_LIGAND,
             '-c', TEST_DOCKING_ATTRACT_INP,
             '-p', TEST_DOCKING_FF_PARAM,
-            '-t', '3']
+            '-t', '4']
     run_attract_test(args, capfd, TEST_DOCKING_ATTRACT_OUT)

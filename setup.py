@@ -415,7 +415,7 @@ def setup_package():
 
     packages = find_packages(exclude=['Heligeom',
                                       'Tests',
-                                      'Tests.functionnal'])
+                                      'Tests.functional'])
 
     setup(ext_modules=[ptools, cgopt],
           cmdclass={'build_ext': build_ext},

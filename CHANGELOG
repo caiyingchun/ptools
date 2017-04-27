@@ -1,12 +1,11 @@
-Add this CHANGELOG
-
-31 March - 3 April 2017
+31 March - 3 April 2017 CHR 
 - add function get_group()] to split translations into groups; works with lists, tuples, dict (sorts by keys)
 - add options --ngroups and -ngroup to split translations into ngroups and work on the ngroup-th one
 - add function run_attract() to encompass loop over translations and rotations.
 - Responds to issue 84
 
-13 - 19 April
+13 - 19 April CHR
+- Add this CHANGELOG
 - test_attract.py: add analytical "toy" minimization tests; data in "data/toyminim"
 - attract_cmd.py: remove start1 option: all translations/rotations now indicated by number in corresponding file.
 - attract_cmd.py: redefine -s to mean a "starting-config-only" run or a run specifying both transnb and rotnb
@@ -14,3 +13,11 @@ Add this CHANGELOG
 - docking.py: replace Translation and Rotation classes with functions to read translation.dat and rotation.dat files and return dicts indexed by line numbers (1-based).
 - When invoked with -s, attract_cmd.py now creates translation and rotation dictionaries with one entry keyed by 0, to indicate a run starting from the provided ligand position and orientation.
 - ptools_cli.py: (Issue 82) Add text to docstring with example for getting help for a command, e.g. "ptools attract --help"
+
+27 April CHR
+- test_attract.py: update test_docking to reflect -transnb numbering convention
+- test_attract.py: modified test_docking to test fewer rotations (shorter test)
+- attract_cmd.py: rearrange calls to read translations.dat and rotations.dat
+- docking.py: fix error in read_rotations(), minor mods, identifier changes (zwopi->twopi, nrot->nchi, ...)
+- changed Tests directory name functionnal --> functional
+

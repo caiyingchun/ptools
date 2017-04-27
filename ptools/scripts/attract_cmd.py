@@ -83,9 +83,21 @@ PTools revision {}
     else:
         ref = None
 
+    if args.startconfig:
+        print("Minimize from starting configuration")
+        # Use transnb, rotnb = 0, 0 to indicate this
+        translations = { 0 : lig.FindCenter() }
+        rotations = { 0 : (0, 0, 0) }
+    else:
+        ptools.io.check_file_exists('rotation.dat', "rotation file 'rotation.dat' is required.")
+        ptools.io.check_file_exists('translation.dat', "translation file 'translation.dat' is required.")
+        translations = docking.read_translations()
+        rotations = docking.read_rotations()
+
     # CHR some logic re-worked. "single" now used to indicate any minimization
     # run from a single configuration-- either the start config or a specified
     # transnb and rotnb.
+
     single = args.startconfig or (args.transnb is not None and args.rotnb is not None)
 
     if single:
@@ -93,24 +105,13 @@ PTools revision {}
         print("Single minimization run")
         ftraj = open('minimization.trj', 'wt')
     else:
-        ptools.io.check_file_exists('rotation.dat', "rotation file 'rotation.dat' is required.")
-        ptools.io.check_file_exists('translation.dat', "translation file 'translation.dat' is required.")
-        translations = docking.read_translations()
-        rotations = docking.read_rotations()
         ftraj = None
-
-    if args.startconfig:
-        print("Minimize from starting configuration")
-        # Use transnb 0 to indicate this
-        translations = { 0 : lig.FindCenter() }
-        rotations = { 0 : (0, 0, 0) }
 
     printFiles = True
     if args.transnb is not None:
         # Limit to desired translation (translations dictionary is keyed by translation number)
         ntrans = len(translations)
         translations = { args.transnb : translations[args.transnb] }
-        #
         # CHR Keep the following, but I don't know what s for 
         if args.transnb != ntrans - 1:
             # don't append (print?) ligand, receptor, etc.
