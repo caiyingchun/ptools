@@ -2,11 +2,6 @@
 The PTools library
 ===================
 
-.. show travis-ci build status
-.. image:: https://img.shields.io/travis/ptools/ptools.svg?branch=develop
-        :target: https://travis-ci.org/ptools/ptools
-
-
 About
 -----
 **PTools** is an opensource molecular docking library implemented in Python/C++. PTools is designed to perform molecular and macromolecular assembly tasks efficiently, while facilitating development of new analyses in structural biology. PTools includes an implementation of the ATTRACT docking program (Zacharias M. (2003) Protein Science 12:1271).
