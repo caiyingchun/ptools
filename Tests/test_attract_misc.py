@@ -1,14 +1,27 @@
 import unittest
 
 from ptools import Rigidbody, AttractRigidbody, AttractForceField1, Lbfgs, Coord3D
-from ptools.docking import run_attract, get_group
+from ptools.docking import get_group
 
 from . import TEST_TOYMINIM_LIGAND, TEST_TOYMINIM_RECEPTOR, TEST_TOYMINIM_FF_PARAM
 
 class SubsetTests(unittest.TestCase):
 
-    def test1(self):
-        """When division is exact the last group should have length n"""
+    def test_concatenated_group_lists_should_match_original_data(self):
+        """Concatenated group lists should match original data list."""
+        ndata = 10
+        data = xrange(ndata)
+        ngroups = 5
+        n = ndata / ngroups
+        gdata = []
+        for ng in xrange(ngroups):
+            gdata += get_group(data, ngroups, 1 + ng)
+        self.assertEqual(len(gdata), len(data))
+        for d,e in zip(data,gdata):
+            self.assertEqual(d, e)
+
+    def test_for_exact_division_last_group_should_have_expected_length(self):
+        """When division is exact last group should have length n"""
         ndata = 10
         data = xrange(ndata)
         ngroups = 5
@@ -17,8 +30,8 @@ class SubsetTests(unittest.TestCase):
         group = get_group(data, ngroups, ngroup)
         self.assertEqual(len(group), n + ndata % ngroups)
 
-    def test2(self):
-        """When division is not exact the last group should have n + ndata % ngroups"""
+    def test_for_nonexact_division_last_group_should_have_expected_length(self):
+        """When division is not exact last group should have n + ndata % ngroups"""
         ndata = 11
         data = xrange(ndata)
         ngroups = 5
@@ -27,7 +40,7 @@ class SubsetTests(unittest.TestCase):
         group = get_group(data, ngroups, ngroup)
         self.assertEqual(len(group), n + ndata % ngroups)
 
-    def test3(self):
+    def test_for_different_nonexact_division_last_group_should_have_expected_length(self):
         """When division is not exact the last group should have length ndata % ngroups"""
         ndata = 49
         data = xrange(ndata)
@@ -70,7 +83,7 @@ class MinimizationTests(unittest.TestCase):
         self.niter = 100
         self.forcefield = AttractForceField1(TEST_TOYMINIM_FF_PARAM, self.cutoff)
 
-    def test1(self):
+    def test_find_analytical_solution_when_displaced_along_Y(self):
         """Minimization should displace ligand by -5A along Y-axis to minimum-energy position."""
         receptor = AttractRigidbody(TEST_TOYMINIM_RECEPTOR)
         receptor.setTranslation(False)
@@ -95,7 +108,7 @@ class MinimizationTests(unittest.TestCase):
         self.assertAlmostEqual(dy, -5.0)
         self.assertAlmostEqual(dz, 0.0)
 
-    def test2(self):
+    def test_find_analytical_solution_when_displaced_along_X_Y_Z(self):
         """Minimization should displace ligand by -5A along each axis to minimum-energy position."""
         # PGTOL not easily changeable through ptools, needs to be set tighter to get closer to optimum
         tolerance = 5e-5
