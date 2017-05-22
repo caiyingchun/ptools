@@ -1,1 +1,0 @@
-"""Functionnal Tests for PTools."""

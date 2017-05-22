@@ -1,8 +1,6 @@
-   7   6
-    0.0   1
-   30.0   5
-   60.0   9
-   90.0  13
-  120.0   9
-  150.0  5
-  180.0  1
+   5   2      # For testing only: number of rotations
+    0.0   1   # would normally be larger 
+   45.0   2 
+   90.0   4
+  135.0   2
+  180.0   1

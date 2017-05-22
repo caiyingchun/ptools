@@ -14,6 +14,20 @@ TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 
 # ---------------------------------------------------------------------------
 #
+# Toy minimization test files
+#
+# ---------------------------------------------------------------------------
+TEST_TOYMINIM_DATA_DIR = os.path.join(TEST_DATA_DIR, 'toyminim')
+TEST_TOYMINIM_FF_PARAM = os.path.join(TEST_TOYMINIM_DATA_DIR, 'aminon.par')
+TEST_TOYMINIM_ATTRACT_INP = os.path.join(TEST_TOYMINIM_DATA_DIR, 'attract.inp')
+TEST_TOYMINIM_LIGAND = os.path.join(TEST_TOYMINIM_DATA_DIR, 'ligand.red')
+TEST_TOYMINIM_RECEPTOR = os.path.join(TEST_TOYMINIM_DATA_DIR, 'receptor.red')
+TEST_TOYMINIM_MINIMIZATION_OUT = os.path.join(TEST_TOYMINIM_DATA_DIR, 'minimization.trj')
+TEST_TOYMINIM_ATTRACT_OUT = os.path.join(TEST_TOYMINIM_DATA_DIR, 'single.att')
+
+
+# ---------------------------------------------------------------------------
+#
 # Single minimization test files
 #
 # ---------------------------------------------------------------------------
