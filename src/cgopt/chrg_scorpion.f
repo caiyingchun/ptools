@@ -36,7 +36,7 @@
       REAL*8    coorx(*),coory(*),coorz(*)
       REAL*8    cgchg(*),cgrad(*)
       REAL*8    cgcox(*),cgcoy(*),cgcoz(*)
-      REAL*8    delgrid
+c      REAL*8    delgrid
 
 *-------------------- LOCAL VARIABLES ----------------------------------
 

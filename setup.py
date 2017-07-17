@@ -30,11 +30,6 @@ except ImportError:
 log.set_verbosity(log.INFO)
 
 
-# Directory where legacy f2c library will be downloaded and compiled if
-# required.
-LEGACY_F2C_DIR = 'f2c_legacy'
-
-
 # URL for downloading a tarball containing ptools dependencies.
 PTOOLS_DEP_URL = 'https://codeload.github.com/ptools/ptools_dep/legacy.tar.gz'\
                  '/master'
@@ -64,37 +59,18 @@ class build_ext(_build_ext):
     user_options.extend([
         ('use-legacy-boost', None, "download an old version "
                                    "of boost headers"),
-        ('use-legacy-f2c', None, "download and compile an old version "
-                                 "of libf2c"),
         ('with-boost-include-dir=', None, 'location of boost headers'),
-        ('with-f2c-include-dir=', None, 'location of libf2c headers'),
-        ('with-f2c-library=', None, 'location of libf2c.a'),
     ])
 
-    boolean_options.extend(['use-legacy-f2c', 'use_legacy_boost'])
+    boolean_options.extend(['use_legacy_boost'])
 
     def initialize_options(self):
         _build_ext.initialize_options(self)
-        self.use_legacy_f2c = False
         self.use_legacy_boost = False
         self.with_boost_include_dir = ''
-        self.with_f2c_include_dir = ''
-        self.with_f2c_library = ''
 
     def finalize_options(self):
         _build_ext.finalize_options(self)
-
-        # Cannot use '--use-legacy-f2c' with '--with-f2c-include-dir'
-        if self.use_legacy_f2c and self.with_f2c_include_dir:
-            msg = "must supply either --use-legacy-f2c either "\
-                  "--with-f2c-include-dir -- not both"
-            raise DistutilsOptionError(msg)
-
-        # Cannot use '--use-legacy-f2c' with '--with-f2c-library'
-        if self.use_legacy_f2c and self.with_f2c_library:
-            msg = "must supply either --use-legacy-f2c either "\
-                  "--with-f2c-library -- not both"
-            raise DistutilsOptionError(msg)
 
         # Cannot use '--use-legacy-boost' with '--with-boost-include-dir'
         if self.use_legacy_boost and self.with_boost_include_dir:
@@ -102,25 +78,10 @@ class build_ext(_build_ext):
                   "--with-boost-include-dir -- not both"
             raise DistutilsOptionError(msg)
 
-        # '--with-f2c-include-dir' and 'with-f2c-library' need to be both
-        # empty or filled.
-        if any((self.with_f2c_library, self.with_f2c_include_dir)) and not\
-           all((self.with_f2c_library, self.with_f2c_include_dir)):
-            msg = '--with-f2c-include-dir and --with-f2c-library need to be '\
-                  'both empty or both informed'
-            raise DistutilsOptionError(msg)
-
         boost_include_dir = ''
-        f2c_include_dir = ''
-        f2c_library = ''
 
         if self.with_boost_include_dir:
             boost_include_dir = self.with_boost_include_dir
-        if self.with_f2c_include_dir:
-            f2c_include_dir = self.with_f2c_include_dir
-            f2c_library = self.with_f2c_library
-        if self.use_legacy_f2c:
-            f2c_include_dir, f2c_library = install_legacy_f2c()
         if self.use_legacy_boost:
             raise NotImplementedError('not implemented yet')
 
@@ -128,16 +89,9 @@ class build_ext(_build_ext):
         # they have not been provided by the user.
         if not boost_include_dir:
             boost_include_dir = find_boost()
-        if not f2c_include_dir:
-            f2c_include_dir, f2c_library = find_f2c()
 
         if boost_include_dir:
             self.include_dirs.append(boost_include_dir)
-        if f2c_include_dir:
-            self.include_dirs.append(f2c_include_dir)
-        if f2c_library:
-            for ext in self.extensions:
-                ext.extra_objects.append(f2c_library)
 
 
 def git_version():
@@ -231,72 +185,6 @@ def find_executable(filename):
     """
     return find_file(filename, os.environ['PATH'].split(':'))
 
-
-def install_legacy_f2c():
-    """Download and build legacy libf2c from ptools_dep repository.
-
-    Returns:
-        tuple(str, str): libf2c include directory and the absolute
-            path to libf2c.a.
-    """
-    def f2c_files(members):
-        for tarinfo in members:
-            if 'libf2c2-20090411' in tarinfo.name:
-                yield tarinfo
-
-    def download_legacy_f2c():
-        url = PTOOLS_DEP_URL
-        tarball_f2c_dir = 'ptools-ptools_dep-66b145b/libf2c2-20090411'
-        log.info("Downloading f2c")
-        response = urllib2.urlopen(url)
-        compressed = StringIO.StringIO(response.read())
-        tar = tarfile.open(fileobj=compressed, mode='r:gz')
-        tar.extractall(members=f2c_files(tar))
-        tar.close()
-        shutil.move(tarball_f2c_dir, LEGACY_F2C_DIR)
-        shutil.rmtree(tarball_f2c_dir.split('/')[0])
-        log.info("Downloading f2c done")
-
-    if not os.path.exists(LEGACY_F2C_DIR):
-        download_legacy_f2c()
-
-    log.info("Compiling f2c")
-    cflags = 'CFLAGS=-ansi -g -O2 -fomit-frame-pointer -D_GNU_SOURCE '\
-             '-fPIC -DNON_UNIX_STDIO -Df2c'
-
-    # First compilation.
-    args = ['make', '-C', LEGACY_F2C_DIR, '-f', 'makefile.u', cflags]
-    subprocess.call(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-    # Library compilation (write log).
-    args = ['make', '-C', LEGACY_F2C_DIR, '-f', 'makefile.u', cflags,
-            'libf2c.a']
-    logfilename = os.path.join(LEGACY_F2C_DIR, 'compile.log')
-    with open(logfilename, 'wt') as logfile:
-        subprocess.call(args, stdout=logfile, stderr=subprocess.STDOUT)
-
-    tmpf2clib = os.path.join(LEGACY_F2C_DIR, 'libf2c.a')
-    if not os.path.exists(tmpf2clib):
-        log.fatal("error occured during f2c compilation. "
-                  "Please check {0}.".format(log))
-    log.info("Compiling f2c done")
-
-    # Move header and library to pseudo install directory.
-    f2cdir = os.path.join(os.path.join(LEGACY_F2C_DIR, 'install', 'include'))
-    if not os.path.exists(f2cdir):
-        os.makedirs(f2cdir)
-    shutil.copyfile(os.path.join(LEGACY_F2C_DIR, 'f2c.h'),
-                    os.path.join(f2cdir, 'f2c.h'))
-
-    f2clibdir = os.path.join(os.path.join(LEGACY_F2C_DIR, 'install', 'lib'))
-    f2clib = os.path.join(f2clibdir, 'libf2c.a')
-    if not os.path.exists(f2clibdir):
-        os.makedirs(f2clibdir)
-    shutil.copyfile(tmpf2clib, f2clib)
-
-    return f2cdir, f2clib
-
-
 def find_boost():
     """Try to locate the boost include directory (look for
     the shared_array.hpp header file).
@@ -319,42 +207,34 @@ def find_boost():
     return boostdir
 
 
-def find_f2c():
-    """Try to locate the libf2c include directory and libf2c.a library.
+def find_fortranlib():
+    """Try to locate the gfortran include directory and libgfortran library.
 
     Returns:
-        tuple(str, str): libf2c include directory and the absolute
-            path to libf2c.a.
+        str: fortran include directory and the absolute
+            path to libgfortran.
     """
-    # Search f2c.h.
-    f2cdir = find_directory('f2c.h',
-                            [get_environ('F2C_INCLUDE_DIR'),
-                             '/usr/include', '/usr/local/include',
-                             '/opt/local/include'])
-    if not f2cdir:
-        warn("f2c.h not found. Specify headers location by using the "
-             "F2C_INCLUDE_DIR environment variable. If it is not "
-             "installed, you can either install a recent version "
-             "or use the --use-legacy-f2c option.")
-        raise OSError('f2c.h not found')
-    else:
-        log.info("f2c.h found at {0}".format(f2cdir))
 
-    # Search libf2c.a.
-    f2clib = get_environ('F2C_LIBRARY') or\
-        find_file('libf2c.a',
-                  ['/usr/lib', '/usr/local/lib', '/opt/local/lib',
-                   '/usr/lib64', '/usr/local/lib64',
+    # Search libgfortran.
+    fortran_library_name = 'libgfortran.3.dylib' if sys.platform == 'darwin' else 'libgfortran.so.3'
+    fortlib = find_file(fortran_library_name,
+                  ['/usr/lib64', '/usr/local/lib64',
+                   '/usr/lib', '/usr/local/lib',
+                   '/opt/local/lib', '/opt/local/lib/libgcc',
                    '/usr/lib/x86_64-linux-gnu'])
-    if not f2clib:
-        warn("libf2c.a not found. Specify its location by using the "
-             "F2C_LIBRARY environment variable. If it is not "
-             "installed, you can either install a recent version "
-             "or use the --use-legacy-f2c option.")
-        raise OSError('libf2c.a not found')
+    if not fortlib:
+        warn("{:s} not found. Specify its location by using the "
+             "LD_LIBRARY_PATH environment variable.".format(fortran_library_name))
+        raise OSError('{:s} not found'.format(fortran_library_name))
     else:
-        log.info("libf2c.a found at {0}".format(f2clib))
-    return f2cdir, f2clib
+        log.info("{:s} found at {:s}".format(fortran_library_name, fortlib))
+    return fortlib
+
+
+def compile_fortran(sourcefile):
+    objfile = sourcefile.replace('.f','.o')
+    args = ["gfortran", "-fPIC", "-c", "-o", objfile, sourcefile]
+    return subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
 
 
 def warn(message, prefix='WARNING: '):
@@ -368,6 +248,7 @@ def setup_package():
 
     # Install data files in <prefix>/share/ptools.
     data_dir = os.path.join(sys.prefix, "share/ptools/data")
+    #data_dir = "/workdir/simlab_team/robert/.local/share/ptools/data"
 
     # Install all files in the data directory.
     data_files = [os.path.join('data', path) for path in os.listdir('data')]
@@ -396,28 +277,33 @@ def setup_package():
                'src/superpose.cpp',
                'src/scorpionforcefield.cpp',
                'src/minimizers/lbfgs_interface.cpp',
-               'src/minimizers/lbfgs_wrapper/lbfgsb.c',
                'src/minimizers/lbfgs_wrapper/lbfgsb_wrapper.cpp',
                ]
 
     sources.append("bindings/_ptools.pyx")
 
+    compile_fortran('src/minimizers/lbfgs_wrapper/lbfgsb.f')
+    compile_fortran('src/cgopt/chrg_scorpion.f')
+
     ptools = Extension('_ptools',
                        sources=sources,
                        language='c++',
-                       include_dirs=['headers'])
+                       include_dirs=['headers'],
+                       extra_objects = ['src/minimizers/lbfgs_wrapper/lbfgsb.o',
+                           find_fortranlib()])
 
     cgopt = Extension('_cgopt',
-                      sources=['bindings/_cgopt.pyx',
-                               'src/cgopt/chrg_scorpion.c'],
-                      language='c',
-                      include_dirs=['src/cgopt'])
+                      sources=['bindings/_cgopt.pyx'],
+                      language='c++',
+                      include_dirs=['src/cgopt'],
+                      extra_objects = ['src/minimizers/lbfgs_wrapper/lbfgsb.o',
+                           find_fortranlib()])
 
     packages = find_packages(exclude=['Heligeom',
                                       'Tests',
-                                      'Tests.functional'])
+                                      'Tests.functionnal'])
 
-    setup(ext_modules=[ptools, cgopt],
+    setup(ext_modules=[ptools],
           cmdclass={'build_ext': build_ext},
           name='ptools',
           packages=packages,
