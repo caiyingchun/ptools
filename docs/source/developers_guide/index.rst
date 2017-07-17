@@ -3,11 +3,14 @@
 PTools developer's guide
 ************************
 
-Contents:
 
-.. toctree::
-   :maxdepth: 2
+Coucou
 
-   branching_model
-   setting_up_repo
-   coding_style
+.. Contents:
+
+.. .. toctree::
+..    :maxdepth: 2
+
+..    branching_model
+..    setting_up_repo
+..    coding_style
