@@ -296,14 +296,14 @@ def setup_package():
                       sources=['bindings/_cgopt.pyx'],
                       language='c++',
                       include_dirs=['src/cgopt'],
-                      extra_objects = ['src/minimizers/lbfgs_wrapper/lbfgsb.o',
+                      extra_objects = ['src/cgopt/chrg_scorpion.o',
                            find_fortranlib()])
 
     packages = find_packages(exclude=['Heligeom',
                                       'Tests',
                                       'Tests.functionnal'])
 
-    setup(ext_modules=[ptools],
+    setup(ext_modules=[ptools, cgopt],
           cmdclass={'build_ext': build_ext},
           name='ptools',
           packages=packages,
