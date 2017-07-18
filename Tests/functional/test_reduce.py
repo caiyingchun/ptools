@@ -4,7 +4,7 @@ import unittest
 
 import pytest
 
-from ptools.scripts import ptools_cli
+from ptools.commands import ptools_cli
 
 from .. import skip_on_osx
 from ..utils import mk_tmp_file
