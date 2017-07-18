@@ -34,7 +34,7 @@ def run(args):
 
     # Read ligand topology and apply transformation.
     ligand = ptools.Rigidbody(args.ligand)
-    ligand.ApplyMatrix(m)
+    ligand.apply_matrix(m)
 
     # Print output topology.
     header = 'REMARK 999 TRANSLATION ROTATION  {} {}'.format(args.transid,
