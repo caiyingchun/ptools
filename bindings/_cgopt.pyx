@@ -6,7 +6,7 @@
 #                      double *, double* ,
 #                      double*
 #                      )
-cdef extern from "wrap.cpp":
+cdef extern from "chrg_scorpion_wrap.cpp":
     void chrg_scorpion_(int *, double *, double *, 
                       double *, double* ,
                       double *, int *,  double* ,
