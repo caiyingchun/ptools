@@ -276,6 +276,7 @@ def setup_package():
                'src/pdbio.cpp',
                'src/superpose.cpp',
                'src/scorpionforcefield.cpp',
+               'src/cgopt/wrap.cpp',
                'src/minimizers/lbfgs_interface.cpp',
                'src/minimizers/lbfgs_wrapper/lbfgsb_wrapper.cpp',
                ]
