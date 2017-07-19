@@ -5,8 +5,9 @@ import sys
 import pytest
 
 # Fixture to ignore some test not working on OS X.
-skip_on_osx = pytest.mark.skipif(sys.platform == 'darwin',
-                                 reason="currently not working on OS X")
+#skip_on_osx = pytest.mark.skipif(sys.platform == 'darwin',
+#                                 reason="currently not working on OS X")
+skip_on_osx = lambda x : False
 
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')

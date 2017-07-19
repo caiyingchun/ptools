@@ -1,10 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <vector>
-#include <string.h>
 #include <iostream>
-#include <math.h>
-#include <float.h>
 
 #if defined(WIN32) && !defined(__GNUC__) /* assume use Intel Fortran Compiler on win32 platform if not compiled with G    CC */
 #    define CHRG_SCORPION_FUN chrg_scorpion 
