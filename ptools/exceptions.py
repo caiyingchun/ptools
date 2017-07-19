@@ -68,7 +68,7 @@ class BeadCreationError(ResidueReductionError):
     an atomtic topology to a coarse grain topology.
 
     Attrs:
-        bead (ptools.scripts.reduce_cmd.Bead): bead where error occured.
+        bead (ptools.commands.reduce_cmd.Bead): bead where error occured.
         expected_atoms (list[str]): list of expected atom names.
         found_atoms (list[str]): list of actually found atom names.
     """

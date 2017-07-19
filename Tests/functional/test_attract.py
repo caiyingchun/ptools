@@ -12,7 +12,7 @@ import shutil
 import pytest
 
 import ptools
-from ptools.scripts import ptools_cli
+from ptools.commands import ptools_cli
 
 from .. import skip_on_osx
 

@@ -1,3 +1,6 @@
+
+import warnings
+
 from cython.operator cimport dereference as deref
 from libcpp.string cimport string
 
@@ -82,9 +85,6 @@ cdef class Rigidbody:
                 del cppname
                 self.thisptr = newrigid
 
-
-
-
         elif isinstance(filename, Rigidbody):
             oldrigid = <Rigidbody> filename
             oldrigidptr = <CppRigidbody*> (oldrigid.thisptr)
@@ -98,22 +98,21 @@ cdef class Rigidbody:
             #print "reading rigidbody from file-like"
             self.thisptr = new CppRigidbody()
             loadPDBfromPythonFileLike(filename, self.thisptr)
+
         else:
             raise RuntimeError("invalid argument in Rigidbody()")
-
    
     def __dealloc__(self):
         if self.thisptr:
             del self.thisptr
             self.thisptr = <CppRigidbody*> 0
+
     def __len__(self):
         return self.thisptr.Size()
-
 
     def __str__(self):
         s = self.thisptr.PrintPDB()
         return s
-
 
     def getCoords(self, unsigned int i):
         cdef Coord3D c = Coord3D () 
@@ -149,7 +148,7 @@ cdef class Rigidbody:
     def syncCoords(self):
         self.thisptr.syncCoords()
 
-    def ApplyMatrix(self, Matrix mat):
+    def apply_matrix(self, Matrix mat):
         self.thisptr.ApplyMatrix(deref(mat.thisptr))
 
     def CopyAtom(self, unsigned int atid):

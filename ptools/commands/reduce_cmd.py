@@ -29,7 +29,7 @@ def create_scorpion_subparser(parent):
                                help='reduce using the scorpion force field')
     parser.set_defaults(forcefield='scorpion')
     parser.add_argument('--cgopt', dest='optimizedcharges', action='store_true',
-                        help='path to output file (default=stdout)')
+                        help='if present, optimize bead charges')
     parser.add_argument('--delgrid', type=float, default=1.5,
                         help='grid spacing (A) for charge optimization'
                              '(default is 1.5), works only with --cgopt '

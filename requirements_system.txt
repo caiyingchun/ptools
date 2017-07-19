@@ -1,4 +1,5 @@
 g++
+gfortran
 git
 libboost-dev
 libf2c2-dev

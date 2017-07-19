@@ -94,7 +94,7 @@ def extend(hp, mono1, nb, Z=False):
         # 2 superpose and get matrix
         m = superpose(Zaxis, Protaxis).matrix
         # 3 apply matrix to rigidbody
-        monoTest.ApplyMatrix(m)
+        monoTest.apply_matrix(m)
     # 4 modify axis
     # etend la structure pdb.
     monoTest = changeChain(monoTest, string.ascii_uppercase[i % 26])

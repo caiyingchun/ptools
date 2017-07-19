@@ -310,7 +310,7 @@ def setup_package():
           packages=packages,
           version='1.2',
           entry_points={
-              'console_scripts': ['ptools = ptools.scripts.ptools_cli:main']
+              'console_scripts': ['ptools = ptools.commands.ptools_cli:main']
           },
           include_package_data=True,
           data_files=[

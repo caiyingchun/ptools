@@ -2,7 +2,7 @@
 import filecmp
 import unittest
 
-from ptools.scripts import ptools_cli
+from ptools.commands import ptools_cli
 
 from ..utils import mk_tmp_file
 from .. import (TEST_LIGAND_RED_ATTRACT1,
