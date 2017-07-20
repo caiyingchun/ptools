@@ -6,6 +6,7 @@ cdef extern from "atom.h" namespace "PTools":
         void setAtomType(string &)
         string residuetag()
 
+        string atomElement
         string atomType
         string _pdbAtomType
         string residType
@@ -65,7 +66,6 @@ cdef class Atomproperty:
             cdef char* c = b
             cdef string cppname = string(c)
             self.thisptr.setAtomType(cppname)
-    
 
     property _pdbAtomType:
         def __get__(self):
@@ -74,8 +74,6 @@ cdef class Atomproperty:
             cdef char* c = b
             cdef string cppname = string(c)
             self.thisptr._pdbAtomType = cppname
-
-
         
     property residType:
         def __get__(self):   
@@ -91,7 +89,13 @@ cdef class Atomproperty:
     
         def __set__(self, double charge):
             self.thisptr.atomCharge = charge
+
+    property atomElement:
+        def __get__(self):
+            return self.thisptr.atomElement
     
+        def __set__(self, bytes element):
+            self.thisptr.atomElement = element
     
     property chainId:
         def __get__(self):
