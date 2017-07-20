@@ -99,6 +99,5 @@ class TestAtom(unittest.TestCase):
         self.assertAlmostEqual(self.atom.coords.z, 17)
 
 
-
 if __name__ == '__main__':
     unittest.main()
