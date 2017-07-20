@@ -171,6 +171,9 @@ cdef class Atom(Atomproperty):
         
         def __set__(self, Coord3D co):
             (<CppAtom*>self.thisptr).coords = deref(co.thisptr)
+
+    def set_coords(self, co):
+        self.coords = co
         
     def ToString(self):
         return <bytes> (<CppAtom*>self.thisptr).ToString().c_str()

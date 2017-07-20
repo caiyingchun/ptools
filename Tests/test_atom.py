@@ -24,6 +24,12 @@ class TestAtomBindings(unittest.TestCase):
     def test_Atom_has_atomElement(self):
         self.assertTrue(hasattr(Atom, 'atomElement'))
 
+    def test_Atom_has_coords(self):
+        self.assertTrue(hasattr(Atom, 'coords'))
+
+    def test_Atom_has_set_coords(self):
+        self.assertTrue(hasattr(Atom, 'set_coords'))
+
 
 class TestAtom(unittest.TestCase):
     def setUp(self):
@@ -74,6 +80,24 @@ class TestAtom(unittest.TestCase):
     def test_set_negative_residId(self):
         self.atom.residId = -5
         self.assertEqual(self.atom.residId, -5)
+
+    def test_get_coords(self):
+        self.assertAlmostEqual(self.atom.coords.x, 1.)
+        self.assertAlmostEqual(self.atom.coords.y, 2.)
+        self.assertAlmostEqual(self.atom.coords.z, 3.)
+
+    def test_set_coords(self):
+        self.atom.coords = Coord3D(-12, 12, 17)
+        self.assertAlmostEqual(self.atom.coords.x, -12)
+        self.assertAlmostEqual(self.atom.coords.y, 12)
+        self.assertAlmostEqual(self.atom.coords.z, 17)
+
+    def test_set_coords_with_method(self):
+        self.atom.set_coords(Coord3D(-12, 12, 17))
+        self.assertAlmostEqual(self.atom.coords.x, -12)
+        self.assertAlmostEqual(self.atom.coords.y, 12)
+        self.assertAlmostEqual(self.atom.coords.z, 17)
+
 
 
 if __name__ == '__main__':
