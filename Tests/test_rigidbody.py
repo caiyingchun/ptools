@@ -92,6 +92,9 @@ class TestRigidbodyBindings(unittest.TestCase):
     def test_has_operator_add(self):
         self.assertTrue(hasattr(Rigidbody, '__add__'))
 
+    def test_has_center_to_origin(self):
+        self.assertTrue(hasattr(Rigidbody, 'center_to_origin'))
+
 
 class TestRigidbody(unittest.TestCase):
     def setUp(self):
@@ -120,6 +123,16 @@ class TestRigidbody(unittest.TestCase):
         r3 = self.r + self.r2
         self.assertTrue(isinstance(r3, Rigidbody))
         self.assertEqual(len(r3), len(self.r) + len(self.r2))
+
+    def test_center_to_origin(self):
+        def coordinates_equal(test, ref):
+            t = 1e-6
+            d = abs(test - ref)
+            return d.x < t and d.y < t and d.z < t
+        origin = Coord3D(0, 0, 0)
+        self.assertFalse(coordinates_equal(origin, self.r.FindCenter()))  # assertEqual won't work
+        self.r.center_to_origin()
+        self.assertTrue(coordinates_equal(origin, self.r.FindCenter()))  # assertEqual won't work
 
     def testCopyAtom(self):
         atom = self.r.CopyAtom(3)

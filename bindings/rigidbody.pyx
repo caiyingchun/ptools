@@ -33,6 +33,7 @@ cdef extern from "rigidbody.h" namespace "PTools":
         void SetAtom(unsigned int, CppAtom &)
         string PrintPDB()
         CppRigidbody operator+(CppRigidbody &)
+        void CenterToOrigin()
 
         # Returns radius of gyration.
         double RadiusGyration()
@@ -243,6 +244,9 @@ cdef class Rigidbody:
         cdef CppAtomSelection new_sel = self.thisptr.Backbone()
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
+
+    def center_to_origin(self):
+        self.thisptr.CenterToOrigin()
 
 
 cdef CppRigidbody* _getRigidbody_from_py_name(pyname):
