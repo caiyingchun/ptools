@@ -184,6 +184,11 @@ cdef class Rigidbody:
         pyAtprop.thisptr = new_atomprop
         return pyAtprop
 
+    def SetAtomProperty(self, unsigned int position, Atomproperty prop):     
+        if position < 0  or position >= len(self):
+            raise IndexError('atom index out of bounds')
+        self.thisptr.SetAtomProperty(position, deref(<CppAtomproperty*>prop.thisptr))
+
     def Radius(self):
         return self.thisptr.Radius()
 

@@ -2,7 +2,7 @@
 import os
 import unittest
 
-from ptools import Rigidbody, Coord3D, Atom
+from ptools import Rigidbody, Coord3D, Atom, Atomproperty
 
 from . import TEST_LIGAND_PDB
 from . import assertCoordsAlmostEqual
@@ -61,6 +61,9 @@ class TestRigidbodyBindings(unittest.TestCase):
 
     def test_Rigidbody_has_GetAtomProperty(self):
         self.assertTrue(hasattr(Rigidbody, 'GetAtomProperty'))
+
+    def test_Rigidbody_has_SetAtomProperty(self):
+        self.assertTrue(hasattr(Rigidbody, 'SetAtomProperty'))
 
     def test_Rigidbody_has_Radius(self):
         self.assertTrue(hasattr(Rigidbody, 'Radius'))
@@ -168,6 +171,15 @@ class TestRigidbody(unittest.TestCase):
         assertCoordsAlmostEqual(self, atom2.coords, Coord3D(3, 4, 5))
         assertCoordsAlmostEqual(self, coords2, Coord3D(3, 4, 5))
 
+    def testSetAtomWithOutOfBoundsPosition(self):
+        maxpos = len(self.r) - 1
+        with self.assertRaisesRegexp(IndexError, 'out of bounds'):
+            self.r.SetAtomProperty(maxpos + 1, Atom())
+
+    def testSetAtomWithNegativePosition(self):
+        with self.assertRaisesRegexp(OverflowError, "can't convert negative value to unsigned int"):
+            self.r.SetAtomProperty(-1, Atom())
+
     def testUnsafeGetCoords(self):
         """in principle GetCoords(i,co) and unsafeGetCoords(i,co) should
         lead to the exact same coordinates if a sync has been done before
@@ -203,6 +215,22 @@ class TestRigidbody(unittest.TestCase):
         self.assertEqual(atprop.residType, 'GLU')
         self.assertEqual(atprop.residId, 2)
         self.assertEqual(atprop.atomId, 9)
+
+    def testSetAtomProperty(self):
+        prop = Atomproperty()
+        prop.residType = 'AAA'
+        self.r.SetAtomProperty(0, prop)
+        prop = self.r.GetAtomProperty(0)
+        self.assertEqual(prop.residType, 'AAA')
+
+    def testSetAtomPropertyWithOutOfBoundsPosition(self):
+        maxpos = len(self.r) - 1
+        with self.assertRaisesRegexp(IndexError, 'out of bounds'):
+            self.r.SetAtomProperty(maxpos + 1, Atomproperty())
+
+    def testSetAtomPropertyWithNegativePosition(self):
+        with self.assertRaisesRegexp(OverflowError, "can't convert negative value to unsigned int"):
+            self.r.SetAtomProperty(-1, Atomproperty())
 
     def testNegativeResId(self):
         rigid = Rigidbody(TEST_2AAV_PDB)
