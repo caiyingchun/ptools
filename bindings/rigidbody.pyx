@@ -34,6 +34,7 @@ cdef extern from "rigidbody.h" namespace "PTools":
         void AddAtom(CppAtom&)
         void SetAtom(unsigned int, CppAtom&)
         string PrintPDB()
+        CppRigidbody operator+(CppRigidbody&)
 
         #returns radius of gyration
         double RadiusGyration()
@@ -114,6 +115,18 @@ cdef class Rigidbody:
         s = self.thisptr.PrintPDB()
         return s
 
+    def __add__(Rigidbody self, Rigidbody other):
+        cdef CppRigidbody cppself = deref(self.thisptr)
+        cdef CppRigidbody cppother = deref(other.thisptr)
+        cdef CppRigidbody* result = new CppRigidbody(cppself + cppother)
+        cdef Rigidbody pyrb = Rigidbody()
+        del pyrb.thisptr
+        pyrb.thisptr = result
+        return pyrb
+
+    def size(self):
+        return len(self)
+
     def getCoords(self, unsigned int i):
         cdef Coord3D c = Coord3D () 
         cdef CppCoord3D cpp = self.thisptr.GetCoords(i)
@@ -158,15 +171,12 @@ cdef class Rigidbody:
         cdef CppAtom* cpp_dest =<CppAtom*> at.thisptr
         cy_copy_atom(&cpp_at , cpp_dest )
         return at
-        
-        
+         
     def AddAtom(self, Atom at):
         self.thisptr.AddAtom(deref(<CppAtom*>at.thisptr))
-        
 
     def SetAtom(self, unsigned int position, Atom at):
         self.thisptr.SetAtom(position, deref(<CppAtom*>at.thisptr))
-    
     
     def GetAtomProperty(self, unsigned int position):
         cdef CppAtomproperty cppatprop = self.thisptr.GetAtomProperty(position)
@@ -176,11 +186,6 @@ cdef class Rigidbody:
         pyAtprop.thisptr = new_atomprop
         
         return pyAtprop
-        
-    
-    
-    #    void SetAtomProperty(unsigned int, Atomproperty& )
-
 
     def Radius(self):
        return self.thisptr.Radius()
@@ -188,14 +193,12 @@ cdef class Rigidbody:
     def RadiusGyration(self):
        return self.thisptr.RadiusGyration()
 
-    #AtomSelection:
     def SelectAllAtoms(self):
        ret = AtomSelection()
        del ret.thisptr
        cdef CppAtomSelection new_sel =  self.thisptr.SelectAllAtoms()
        ret.thisptr  = new CppAtomSelection(new_sel)
        return ret
-
 
     def SelectAtomType(self, bytes b):
        ret = AtomSelection()
@@ -206,8 +209,6 @@ cdef class Rigidbody:
        del cpp_atomtype
        ret.thisptr  = new CppAtomSelection(new_sel)
        return ret
-       
-
 
     def SelectResidType(self, bytes b):
        ret = AtomSelection()
@@ -219,7 +220,6 @@ cdef class Rigidbody:
        ret.thisptr  = new CppAtomSelection(new_sel)
        return ret
 
-
     def SelectChainId(self, bytes b):
        ret = AtomSelection()
        del ret.thisptr
@@ -230,7 +230,6 @@ cdef class Rigidbody:
        ret.thisptr  = new CppAtomSelection(new_sel)
        return ret
 
-
     def SelectResRange(self, int i, int j):
        ret = AtomSelection()
        del ret.thisptr
@@ -238,14 +237,12 @@ cdef class Rigidbody:
        ret.thisptr  = new CppAtomSelection(new_sel)
        return ret
 
-
     def CA(self):
        ret = AtomSelection()
        del ret.thisptr
        cdef CppAtomSelection new_sel =  self.thisptr.CA()
        ret.thisptr  = new CppAtomSelection(new_sel)
        return ret
-
 
     def Backbone(self):
        ret = AtomSelection()
@@ -276,7 +273,6 @@ cdef loadPDBfromPythonFileLike(file, CppRigidbody* rigid):
       sstr.str(cppstring)
       ReadPDB(sstr, deref(rigid))
 
-      
 
 cdef c_to_python_string():
     cdef char * test = "hello world"

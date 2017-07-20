@@ -11,6 +11,88 @@ from . import assertCoordsAlmostEqual
 TEST_2AAV_PDB = os.path.join(os.path.dirname(__file__), 'data', '2AAV.one.pdb')
 
 
+class TestRigidbodyBindings(unittest.TestCase):
+
+    def test_ptools_has_rigidbody(self):
+        import ptools
+        self.assertTrue(hasattr(ptools, 'Rigidbody'))
+
+    def test_Rigidbody_has_len(self):
+        self.assertTrue(hasattr(Rigidbody, '__len__'))
+
+    def test_Rigidbody_has_size(self):
+        self.assertTrue(hasattr(Rigidbody, 'size'))
+
+    def test_Rigidbody_has_getCoords(self):
+        self.assertTrue(hasattr(Rigidbody, 'getCoords'))
+
+    def test_Rigidbody_has_unsafeGetCoords(self):
+        self.assertTrue(hasattr(Rigidbody, 'unsafeGetCoords'))
+
+    def test_Rigidbody_has_setCoords(self):
+        self.assertTrue(hasattr(Rigidbody, 'setCoords'))
+
+    def test_Rigidbody_has_Translate(self):
+        self.assertTrue(hasattr(Rigidbody, 'Translate'))
+
+    def test_Rigidbody_has_FindCenter(self):
+        self.assertTrue(hasattr(Rigidbody, 'FindCenter'))
+
+    def test_Rigidbody_has_ABrotate(self):
+        self.assertTrue(hasattr(Rigidbody, 'ABrotate'))
+
+    def test_Rigidbody_has_AttractEulerRotate(self):
+        self.assertTrue(hasattr(Rigidbody, 'AttractEulerRotate'))
+
+    def test_Rigidbody_has_syncCoords(self):
+        self.assertTrue(hasattr(Rigidbody, 'syncCoords'))
+
+    def test_Rigidbody_has_apply_matrix(self):
+        self.assertTrue(hasattr(Rigidbody, 'apply_matrix'))
+
+    def test_Rigidbody_has_CopyAtom(self):
+        self.assertTrue(hasattr(Rigidbody, 'CopyAtom'))
+
+    def test_Rigidbody_has_AddAtom(self):
+        self.assertTrue(hasattr(Rigidbody, 'AddAtom'))
+
+    def test_Rigidbody_has_SetAtom(self):
+        self.assertTrue(hasattr(Rigidbody, 'SetAtom'))
+
+    def test_Rigidbody_has_GetAtomProperty(self):
+        self.assertTrue(hasattr(Rigidbody, 'GetAtomProperty'))
+
+    def test_Rigidbody_has_Radius(self):
+        self.assertTrue(hasattr(Rigidbody, 'Radius'))
+
+    def test_Rigidbody_has_RadiusGyration(self):
+        self.assertTrue(hasattr(Rigidbody, 'RadiusGyration'))
+
+    def test_Rigidbody_has_SelectAllAtoms(self):
+        self.assertTrue(hasattr(Rigidbody, 'SelectAllAtoms'))
+
+    def test_Rigidbody_has_SelectAtomType(self):
+        self.assertTrue(hasattr(Rigidbody, 'SelectAtomType'))
+
+    def test_Rigidbody_has_SelectResidType(self):
+        self.assertTrue(hasattr(Rigidbody, 'SelectResidType'))
+
+    def test_Rigidbody_has_SelectChainId(self):
+        self.assertTrue(hasattr(Rigidbody, 'SelectChainId'))
+
+    def test_Rigidbody_has_SelectResRange(self):
+        self.assertTrue(hasattr(Rigidbody, 'SelectResRange'))
+
+    def test_Rigidbody_has_CA(self):
+        self.assertTrue(hasattr(Rigidbody, 'CA'))
+
+    def test_Rigidbody_has_Backbone(self):
+        self.assertTrue(hasattr(Rigidbody, 'Backbone'))
+
+    def test_has_operator_add(self):
+        self.assertTrue(hasattr(Rigidbody, '__add__'))
+
+
 class TestRigidbody(unittest.TestCase):
     def setUp(self):
         self.r = Rigidbody(TEST_LIGAND_PDB)
@@ -28,8 +110,16 @@ class TestRigidbody(unittest.TestCase):
         self.assertEqual(len(s), len(self.r))
         self.assertEqual(self.r.FindCenter(), s.FindCenter())
 
-    def testSize(self):
+    def test_len(self):
         self.assertEqual(len(self.r), 2365)
+
+    def test_size(self):
+        self.assertEqual(self.r.size(), 2365)
+
+    def test_operator_plus(self):
+        r3 = self.r + self.r2
+        self.assertTrue(isinstance(r3, Rigidbody))
+        self.assertEqual(len(r3), len(self.r) + len(self.r2))
 
     def testCopyAtom(self):
         atom = self.r.CopyAtom(3)
