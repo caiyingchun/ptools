@@ -130,6 +130,9 @@ cdef class Rigidbody:
         c.z = cpp.z
         return c
 
+    def print_pdb(self):
+        return str(self)
+
     def unsafeGetCoords(self, unsigned int i, Coord3D co):
         self.thisptr.unsafeGetCoords(i, deref(co.thisptr))
 
