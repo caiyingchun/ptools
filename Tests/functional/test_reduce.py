@@ -65,7 +65,7 @@ class TestReduceScorpion(unittest.TestCase):
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_SCORPION, self.output_name))
 
     def test_reduce_scorpion_cgopt(self):
-        args = ['reduce', TEST_LIGAND_PDB_CGOPT, '-o', self.output_name, 'scorpion', '--cgopt']
+        args = ['reduce', TEST_LIGAND_PDB_CGOPT, '-o', self.output_name, '--ff', 'scorpion', '--cgopt']
         cmd_args = ptools_cli.parse_command_line(args)
         cmd_args.func(cmd_args)
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_SCORPION_CGOPT, self.output_name))
