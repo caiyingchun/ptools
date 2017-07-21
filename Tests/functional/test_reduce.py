@@ -27,7 +27,7 @@ class TestReduceAttract1(unittest.TestCase):
         self.output_file.close()
 
     def test_reduce_attract1(self):
-        args = ['reduce', TEST_LIGAND_PDB, '-o', self.output_name, 'attract1', '--prot']
+        args = ['reduce', TEST_LIGAND_PDB, '-o', self.output_name, '--ff', 'attract1', '--prot']
         cmd_args = ptools_cli.parse_command_line(args)
         cmd_args.func(cmd_args)
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_ATTRACT1, self.output_name))
@@ -43,7 +43,7 @@ class TestReduceAttract2(unittest.TestCase):
         self.output_file.close()
 
     def test_reduce_attract2(self):
-        args = ['reduce', TEST_LIGAND_PDB, '-o', self.output_name, 'attract2']
+        args = ['reduce', TEST_LIGAND_PDB, '-o', self.output_name, '--ff', 'attract2']
         cmd_args = ptools_cli.parse_command_line(args)
         cmd_args.func(cmd_args)
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_ATTRACT2, self.output_name))
@@ -59,7 +59,7 @@ class TestReduceScorpion(unittest.TestCase):
         self.output_file.close()
 
     def test_reduce_scorpion(self):
-        args = ['reduce', TEST_LIGAND_PDB, '-o', self.output_name, 'scorpion']
+        args = ['reduce', TEST_LIGAND_PDB, '-o', self.output_name, '--ff', 'scorpion']
         cmd_args = ptools_cli.parse_command_line(args)
         cmd_args.func(cmd_args)
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_SCORPION, self.output_name))

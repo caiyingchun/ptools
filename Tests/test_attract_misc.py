@@ -1,9 +1,10 @@
 import unittest
 
-from ptools import Rigidbody, AttractRigidbody, AttractForceField1, Lbfgs, Coord3D
+from ptools import AttractRigidbody, AttractForceField1, Lbfgs, Coord3D
 from ptools.docking import get_group
 
 from . import TEST_TOYMINIM_LIGAND, TEST_TOYMINIM_RECEPTOR, TEST_TOYMINIM_FF_PARAM
+
 
 class SubsetTests(unittest.TestCase):
 
@@ -12,12 +13,11 @@ class SubsetTests(unittest.TestCase):
         ndata = 10
         data = xrange(ndata)
         ngroups = 5
-        n = ndata / ngroups
         gdata = []
         for ng in xrange(ngroups):
             gdata += get_group(data, ngroups, 1 + ng)
         self.assertEqual(len(gdata), len(data))
-        for d,e in zip(data,gdata):
+        for d, e in zip(data, gdata):
             self.assertEqual(d, e)
 
     def test_for_exact_division_last_group_should_have_expected_length(self):
@@ -64,7 +64,7 @@ class MinimizationTests(unittest.TestCase):
     which is equidistant from the two CA atoms 1 and 2 forming the receptor.
 
         Ligand:                  L
-                                 . 
+                                 .
                                  .
                                  .
         Receptor:  ----1-------------------2---
@@ -135,4 +135,3 @@ class MinimizationTests(unittest.TestCase):
         self.assertLess(abs(dx + 5.0), tolerance)
         self.assertLess(abs(dy + 5.0), tolerance)
         self.assertLess(abs(dz + 5.0), tolerance)
-

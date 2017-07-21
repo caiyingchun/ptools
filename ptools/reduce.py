@@ -88,6 +88,15 @@ class Bead(ptools.Atomproperty):
         """Return the bead description as a PDB formatted string."""
         return self.toatom().ToPdbString()
 
+    def is_incomplete(self):
+        """Return True if the number of atoms found to build the bead is
+        different from the number of atoms expected."""
+        return len(self.atom_reduction_parameters) > len(self.atoms)
+
+    def has_duplicate_atoms(self):
+        """Return True if two atoms with the same name have been found."""
+        return len(self.atom_reduction_parameters) < len(self.atoms)
+
     def check_composition(self):
         """Check if some atoms were unused or duplicated when creating
         the bead.
@@ -96,9 +105,9 @@ class Bead(ptools.Atomproperty):
             IncompleteBeadError: if an atom is missing.
             DuplicateAtomInBeadError: if the same atom has been found twice.
         """
-        if len(self.atom_reduction_parameters) > len(self.atoms):
+        if self.is_incomplete():
             raise IncompleteBeadError(self)
-        elif len(self.atom_reduction_parameters) < len(self.atoms):
+        elif self.has_duplicate_atoms():
             raise DuplicateAtomInBeadError(self)
 
 
@@ -427,6 +436,12 @@ class Reducer(object):
                                        self.reduction_parameters[resname])
             try:
                 coarse_res.check_composition()
+            except IncompleteBeadError as e:
+                msg = 'An incomplete bead was found: {}.\n'.format(e.report())
+                msg += 'Ignoring this bead as requested.'
+                ptools.io.warning(msg)
+                coarse_res.beads = [bead for bead in coarse_res.beads
+                                    if not bead.is_incomplete()]
             except Exception as e:
                 check_exception_ignored(e)
             self.beads += coarse_res.beads

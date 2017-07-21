@@ -2,12 +2,13 @@
 import os
 import unittest
 
+import ptools
 from ptools import (DNA, BasePair, ADNA, BDNA, Roll,
                     AttractRigidbody, AttractForceField1, AttractPairList)
 
 
-TEST_BP_RED = os.path.join(os.path.dirname(__file__), 'data', 'bp.red.pdb')
-TEST_BP_PDB = os.path.join(os.path.dirname(__file__), 'data', 'bp.ato.pdb')
+TEST_BP_RED = os.path.join(ptools.DATA_DIR, 'bp.red.pdb')
+TEST_BP_PDB = os.path.join(ptools.DATA_DIR, 'bp.ato.pdb')
 TEST_BDNA_EXPECTED_PDB = os.path.join(os.path.dirname(__file__), 'data', 'generate_B_DNA.expected.pdb')
 TEST_BASIC_MANIP_EXPECTED_PDB = os.path.join(os.path.dirname(__file__), 'data', 'basicManipulation.expected.pdb')
 TEST_CG_FROM_PDBFILE_EXPECTED_PDB = os.path.join(os.path.dirname(__file__), 'data', 'CGfromPDBFile.expected.pdb')

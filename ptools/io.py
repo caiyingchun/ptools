@@ -34,6 +34,7 @@ class AttractOutputRotation(object):
         for i in xrange(n):
             for j in xrange(m):
                 mat[i, j] = self.matrix[i][j]
+        return mat
 
     def number_of_minimizations(self):
         """Return the number of minimizations ran."""

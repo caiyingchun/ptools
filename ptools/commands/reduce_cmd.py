@@ -3,43 +3,16 @@
 
 from __future__ import print_function
 
+import sys
+
 import ptools
-
-
-def create_attract1_subparser(parent):
-    parser = parent.add_parser('attract1',
-                               help='reduce using the attract1 force field')
-    parser.set_defaults(forcefield='attract1')
-
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('--prot', action='store_true', dest='molProt',
-                       help='reduce protein')
-    group.add_argument('--dna', action='store_true', dest='molDNA',
-                       help='reduce DNA')
-
-
-def create_attract2_subparser(parent):
-    parser = parent.add_parser('attract2',
-                               help='reduce using the attract2 force field')
-    parser.set_defaults(forcefield='attract2')
-
-
-def create_scorpion_subparser(parent):
-    parser = parent.add_parser('scorpion',
-                               help='reduce using the scorpion force field')
-    parser.set_defaults(forcefield='scorpion')
-    parser.add_argument('--cgopt', dest='optimizedcharges', action='store_true',
-                        help='if present, optimize bead charges')
-    parser.add_argument('--delgrid', type=float, default=1.5,
-                        help='grid spacing (A) for charge optimization'
-                             '(default is 1.5), works only with --cgopt '
-                             'option')
 
 
 def create_subparser(parent):
     parser = parent.add_parser('reduce', help=__doc__)
     parser.set_defaults(func=run)
 
+    # Global arguments.
     parser.add_argument('pdb',
                         help="path to input PDB file (atomistic resolution)")
     parser.add_argument('--red', dest='redName',
@@ -49,7 +22,7 @@ def create_subparser(parent):
                         default=ptools.reduce.DEFAULT_NAME_CONVERSION_YML,
                         help="path type conversion file")
     parser.add_argument('-o', '--output',
-                        help='path to output file (default=stdout)')
+                        help="path to output file (default=stdout)")
     parser.add_argument('--ignore-error', nargs='?', default=[],
                         action='append',
                         choices=ptools.exceptions.residue_reduction_errors() + ['all'],
@@ -57,10 +30,53 @@ def create_subparser(parent):
                              "(by default the program crashes by raising the "
                              "appropriate exception)")
 
-    subparsers = parser.add_subparsers()
-    create_attract1_subparser(subparsers)
-    create_attract2_subparser(subparsers)
-    create_scorpion_subparser(subparsers)
+    parser.add_argument('--ff', choices=['attract1', 'attract2', 'scorpion'],
+                        default='attract1', dest='forcefield',
+                        help="reduction model (force field; default='attract1')")
+
+    # Attract1 options.
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--prot', action='store_true', dest='molProt',
+                       help='reduce protein')
+    group.add_argument('--dna', action='store_true', dest='molDNA',
+                       help="reduce DNA")
+
+    # Scorpion options.
+    parser.add_argument('--cgopt', dest='optimizedcharges', action='store_true',
+                        help="if present, optimize bead charges")
+    parser.add_argument('--delgrid', type=float, default=1.5,
+                        help="grid spacing (A) for charge optimization"
+                             "(default is 1.5), works only with --cgopt "
+                             "option")
+
+def parse_args(args):
+    """Check that command-line arguments are valid.
+
+    Check that the options uses are compatible with the force field used.
+    Also makes '--prot' option default if attract1 force field was required.
+
+    Args:
+        args (argparse.Namespace): input arguments
+    """
+    # Attract1-specific options.
+    if (args.molProt or args.molDNA) and args.forcefield != 'attract1':
+        ptools.io.critical("option --prot and --dna are valid only with"
+                           "--ff=attract1",
+                           exitstatus=2)
+
+    if args.forcefield == 'attract1' and not (args.molProt or args.molDNA):
+        ptools.io.critical("one of the arguments --prot --dna is required "
+                           "when not using --red option",
+                           exitstatus=2)
+
+    # Scorpion-specific options.
+    if '--cgopt' in sys.argv and args.forcefield != 'scorpion':
+        ptools.io.critical("option --cgopt requires --ff=scorpion",
+                           exitstatus=2)
+
+    if '--delgrid' in sys.argv and args.forcefield != 'scorpion':
+        ptools.io.critical("option --delgrid requires --ff=scorpion",
+                           exitstatus=2)
 
 
 def get_reduction_data_path(args):
@@ -77,10 +93,6 @@ def get_reduction_data_path(args):
                 return ptools.reduce.DEFAULT_ATTRACT1_PROT_REDUCTION_YML
             elif args.molDNA:
                 return ptools.reduce.DEFAULT_ATTRACT1_DNA_REDUCTION_YML
-            else:
-                err = "one of the arguments --prot --dna is required "\
-                      "when not using --red option"
-                ptools.io.critical(err, exitstatus=2)
         elif args.forcefield == 'attract2':
             return ptools.reduce.DEFAULT_ATTRACT2_REDUCTION_YML
         elif args.forcefield == 'scorpion':
@@ -89,6 +101,8 @@ def get_reduction_data_path(args):
 
 
 def run(args):
+    parse_args(args)
+
     redname = get_reduction_data_path(args)
     convname = args.convName
     atomicname = args.pdb

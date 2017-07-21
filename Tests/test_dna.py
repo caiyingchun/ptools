@@ -9,8 +9,8 @@ import ptools
 from ptools import DNA
 
 
-PDB_BASE_PAIR = os.path.join(os.path.dirname(__file__), 'heligeom', 'data', 'bp.red.pdb')
-PDB_BASE_PAIR2 = os.path.join(os.path.dirname(__file__), 'heligeom', 'data', 'bp.ato.pdb')
+PDB_BASE_PAIR = os.path.join(ptools.DATA_DIR, 'bp.red.pdb')
+PDB_BASE_PAIR2 = os.path.join(ptools.DATA_DIR, 'bp.ato.pdb')
 PDB_DNA = os.path.join(os.path.dirname(__file__), 'heligeom', 'data', 'generate_B_DNA.expected.pdb')
 
 
