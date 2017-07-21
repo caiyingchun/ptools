@@ -10,6 +10,7 @@ from .. import skip_on_osx
 from ..utils import mk_tmp_file
 
 from .. import (TEST_LIGAND_PDB,
+                TEST_LIGAND_PDB_CGOPT,
                 TEST_LIGAND_RED_ATTRACT1,
                 TEST_LIGAND_RED_ATTRACT2,
                 TEST_LIGAND_RED_SCORPION,
@@ -63,10 +64,8 @@ class TestReduceScorpion(unittest.TestCase):
         cmd_args.func(cmd_args)
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_SCORPION, self.output_name))
 
-    @skip_on_osx
-    @pytest.mark.skip('Too slow')
     def test_reduce_scorpion_cgopt(self):
-        args = ['reduce', TEST_LIGAND_PDB, '-o', self.output_name, 'scorpion', '--cgopt']
+        args = ['reduce', TEST_LIGAND_PDB_CGOPT, '-o', self.output_name, 'scorpion', '--cgopt']
         cmd_args = ptools_cli.parse_command_line(args)
         cmd_args.func(cmd_args)
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_SCORPION_CGOPT, self.output_name))
