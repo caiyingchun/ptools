@@ -9,7 +9,7 @@ python:
 
 before_install:
   - sudo apt-get update -qq
-  - cat docker/requirements_system.txt | sudo xargs apt-get install -y
+  - cat docker/requirements_apt-get.txt | sudo xargs apt-get install -y
 
 install:
   - pip install -r docker/requirements_python.txt

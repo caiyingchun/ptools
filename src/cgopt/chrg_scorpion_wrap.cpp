@@ -10,7 +10,6 @@
 
 
 extern"C" {
-	//void fortfunc_(int *ii, float *ff);
 	void CHRG_SCORPION_FUN(int *natom, double *charge, double *radius, double *coorx, double *coory, double *coorz,
 						int *nbead, double *cgchg, double *cgrad, double *cgcox, double *cgcoy, double *cgcoz, double *delgrid);
 }
