@@ -21,3 +21,8 @@
 - docking.py: fix error in read_rotations(), minor mods, identifier changes (zwopi->twopi, nrot->nchi, ...)
 - changed Tests directory name functionnal --> functional
 
+17 - 21 July 2017 CHR, NB
+- remove f2c dependency, add gfortran dependency
+- modify setup.py to compile lbfgsb.f directly
+- added chrg_scorpion_wrap.cpp to interface with chrg_scorpion.f
+- shortened test for reduce scorpion --cgopt

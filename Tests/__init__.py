@@ -5,8 +5,9 @@ import sys
 import pytest
 
 # Fixture to ignore some test not working on OS X.
-skip_on_osx = pytest.mark.skipif(sys.platform == 'darwin',
-                                 reason="currently not working on OS X")
+#skip_on_osx = pytest.mark.skipif(sys.platform == 'darwin',
+#                                 reason="currently not working on OS X")
+skip_on_osx = lambda x : False
 
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
@@ -62,6 +63,7 @@ TEST_DOCKING_ATTRACT_OUT = os.path.join(TEST_DOCKING_DATA_DIR, 'docking_results.
 # ---------------------------------------------------------------------------
 TEST_REDUCE_DATA_DIR = os.path.join(TEST_DATA_DIR, 'reduce')
 TEST_LIGAND_PDB = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r.pdb')
+TEST_LIGAND_PDB_CGOPT = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r_trunc.pdb')
 
 # Attract1 reduced topology.
 # Generated from f46b895 with:
@@ -88,7 +90,7 @@ TEST_LIGAND_RED_SCORPION = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r.scorpion.r
 #   python reduce_scorpion.py --cgopt 1FIN_r.pdb > 1FIN_r.scorpion.red
 # Input topology has been adapted to acomodate the fact that reduce_scorpion.py
 # did not handle OT2 atoms: last atom from 1FIN_r.pdb has been renamed OT2 => OT.
-TEST_LIGAND_RED_SCORPION_CGOPT = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r.scorpion_cgopt.red')
+TEST_LIGAND_RED_SCORPION_CGOPT = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r_trunc.scorpion_cgopt.red')
 
 
 # ---------------------------------------------------------------------------

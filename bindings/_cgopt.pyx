@@ -1,5 +1,5 @@
-cdef extern from "chrg_scorpion.h":
-    int chrg_scorpion__(int *, double *, double *, 
+cdef extern from "chrg_scorpion_wrap.cpp":
+    void chrg_scorpion_(int *, double *, double *, 
                       double *, double* ,
                       double *, int *,  double* ,
                       double *, double* ,
@@ -26,7 +26,7 @@ def optimize(int natom, charge, radius, cx, cy, cz, int nbead, cgch, cgr, cgx, c
        ccgy[i] = cgy[i] 
        ccgz[i] = cgz[i]
   
-    result = chrg_scorpion__( &natom, ccharge, cradius, ccx, ccy, ccz, &nbead, ccgch, ccgr, ccgx, ccgy, ccgz,&delgrid)
+    result = chrg_scorpion_( &natom, ccharge, cradius, ccx, ccy, ccz, &nbead, ccgch, ccgr, ccgx, ccgy, ccgz,&delgrid)
 
     output = []
     for i in range(nbead):
