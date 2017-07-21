@@ -9,10 +9,10 @@ python:
 
 before_install:
   - sudo apt-get update -qq
-  - cat docker/requirements_apt-get.txt | sudo xargs apt-get install -y
+  - cat requirements_apt-get.txt | sudo xargs apt-get install -y
 
 install:
-  - pip install -r docker/requirements_python.txt
+  - pip install -r requirements_python.txt
   - make install
 
 script: "cd Tests && make unittests"
