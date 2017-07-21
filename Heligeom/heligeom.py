@@ -160,6 +160,7 @@ if __name__ == "__main__":
         print("with the -Z option, the generated pdb file is aligned on the Z axis")
         raise SystemExit
 
+    N = 0
     if nargs > 3:
         try:
             N = max(0, int(sys.argv[3]))
