@@ -66,6 +66,20 @@ inline Coord3D & operator+=(Coord3D & a, const Coord3D & x ){a = a + x ; return 
 inline Coord3D & operator-=(Coord3D & a, const Coord3D & x ){a = a - x ; return a; }  //operator -=
 
 
+/// Vector dot product.
+inline dbl dotProduct(const Coord3D & a, const Coord3D & b)
+{
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+/// Vector cross product.
+inline Coord3D crossProduct(const Coord3D & u, const Coord3D & v)
+{
+    return Coord3D(u.y * v.z - u.z * v.y,
+                   u.z * v.x - u.x * v.z,
+                   u.x * v.y - u.y * v.x);
+}
+
 
 /// Vector Norm
 inline dbl Norm(const Coord3D & A)

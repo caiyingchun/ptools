@@ -16,6 +16,8 @@ cdef extern from "coord3d.h" namespace "PTools":
     
     cdef double Norm(CppCoord3D&)
     cdef double Norm2(CppCoord3D&)
+    cdef double dotProduct(CppCoord3D&, CppCoord3D&)
+    cdef CppCoord3D crossProduct(CppCoord3D&, CppCoord3D&)
     
         
 cdef makeCoord3D(CppCoord3D c):
@@ -105,3 +107,10 @@ def norm(Coord3D v):
 def norm2(Coord3D v):
     return Norm2(deref(v.thisptr))
 
+def dotproduct(Coord3D u, Coord3D v):
+    return  dotProduct(deref(u.thisptr), deref(v.thisptr))
+
+def crossproduct(Coord3D u, Coord3D v):
+    cdef CppCoord3D cppresult = crossProduct(deref(u.thisptr), deref(v.thisptr))
+    cdef Coord3D result = Coord3D(cppresult.x, cppresult.y, cppresult.z)
+    return result
