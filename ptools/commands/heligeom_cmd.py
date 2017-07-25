@@ -84,11 +84,8 @@ def distAxis(rig, hp):
     """Return the minimal and maximal distances between the axis and the
     rigid body."""
     natoms = len(rig)
-    vect = ptools.Coord3D()
-
     all_distances = [distance(rig.getCoords(i) - hp.point, hp.unitVector)
                      for i in xrange(0, natoms)]
-
     return min(all_distances), max(all_distances)
 
 
