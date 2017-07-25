@@ -413,8 +413,7 @@ def setup_package():
                       language='c',
                       include_dirs=['src/cgopt'])
 
-    packages = find_packages(exclude=['Heligeom',
-                                      'Tests',
+    packages = find_packages(exclude=['Tests',
                                       'Tests.functional'])
 
     setup(ext_modules=[ptools, cgopt],
