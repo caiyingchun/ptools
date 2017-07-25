@@ -13,26 +13,50 @@ in a Python virtual environment.
 
 First, install all system dependencies. 
 This requires administrator permissions. 
-E.g., for a debian- or ubuntu-like system::
 
-1. Install git and download PTools last release::
+Here are examples of installing system-level dependencies for one or two systems:
+
++ For a __debian__- or __ubuntu__-like system::
+
+    1. Install git and download PTools last release::
 
     $ sudo apt-get update
     $ sudo apt-get install -y git
     $ git clone https://github.com/ptools/ptools.git
     $ cd ptools
 
-2. Install system requirements::
+    2.  Install system requirements::
 
     $ cat requirements_system.txt | xargs sudo apt-get install -y
 
++ For __macos__ (with MacPorts installed)::
 
-The rest can be installed as a normal user::
+    1. Download PTools last release::
 
-1. Create and activate the virtual environment::
+    $ git clone https://github.com/ptools/ptools.git
+    $ cd ptools
 
-    $ virtualenv venv-ptools
+    2. Install system requirements::
+
+    $ cat requirements_system_macos.txt | xargs sudo port install -N
+
+    3. Select the gcc compiler::
+
+    $ sudo port select gcc mp-gcc6
+
+    4. _Note: after installation is complete_ return to the macos default compiler
+
+    $ sudo port select gcc none
+
+
+The rest should be installed as a normal user::
+
+1. Create and activate the virtual environment (can be anywhere)::
+
+    $ virtualenv ../venv-ptools
     $ source venv-ptools/bin/activate
+
+    An alias to the second command is recommended, as the virtual environment must be activated when installing or using PTools.
 
 2. Install ptools dependencies::
 
@@ -42,6 +66,6 @@ The rest can be installed as a normal user::
 
     (venv-ptools) $ make install
 
-4. Test everything went fine::
+4. Test to see that everything went fine::
    
     (venv-ptools) $ make test

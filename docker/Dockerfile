@@ -16,8 +16,8 @@
 FROM debian:latest
 
 # Install system dependecies.
-COPY requirements_system.txt /opt/
-RUN apt-get update && cat /opt/requirements_system.txt | xargs apt-get install -y
+COPY requirements_apt-get.txt /opt/
+RUN apt-get update && cat /opt/requirements_apt-get.txt | xargs apt-get install -y
 
 # Install python dependencies
 COPY requirements_python.txt /opt/
