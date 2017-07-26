@@ -9,6 +9,8 @@ cdef extern from "coord3d.h" namespace "PTools":
         CppCoord3D(double nx, double ny, double nz)
         CppCoord3D(CppCoord3D &)
         bint operator==(CppCoord3D&)
+        CppCoord3D Normalize()
+
 
     cdef CppCoord3D operator+ (CppCoord3D& A, CppCoord3D& B)
     cdef CppCoord3D operator- (CppCoord3D& A, CppCoord3D& B)
@@ -16,6 +18,9 @@ cdef extern from "coord3d.h" namespace "PTools":
     
     cdef double Norm(CppCoord3D&)
     cdef double Norm2(CppCoord3D&)
+    cdef double dotProduct(CppCoord3D&, CppCoord3D&)
+    cdef CppCoord3D crossProduct(CppCoord3D&, CppCoord3D&)
+
     
         
 cdef makeCoord3D(CppCoord3D c):
@@ -97,11 +102,21 @@ cdef class Coord3D:
          
     def __str__(self):
         return "%f %f %f"%(self.x, self.y, self.z)
-        
-          
+    
+    def Normalize(self):
+        return makeCoord3D(deref(self.thisptr).Normalize())
+
+
 def norm(Coord3D v):
     return Norm(deref(v.thisptr))
 
 def norm2(Coord3D v):
     return Norm2(deref(v.thisptr))
 
+def dotproduct(Coord3D u, Coord3D v):
+    return  dotProduct(deref(u.thisptr), deref(v.thisptr))
+
+def crossproduct(Coord3D u, Coord3D v):
+    cdef CppCoord3D cppresult = crossProduct(deref(u.thisptr), deref(v.thisptr))
+    cdef Coord3D result = Coord3D(cppresult.x, cppresult.y, cppresult.z)
+    return result

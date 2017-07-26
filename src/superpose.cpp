@@ -394,9 +394,10 @@ Superpose_t superpose(const Rigidbody& ref, const Rigidbody& mob, int verbosity)
     Rigidbody reference(ref); //copie de ref pour pouvoir centrer
     Rigidbody mobile(mob); // copie de mobile
 
-    if (ref.Size()!=mob.Size()) {std::cout << "Error in superpose.cpp: \
-                                       the two AtomSelection objects must have\
-                                       the same size !" << std::endl;  abort();};
+    if (ref.Size()!=mob.Size()) {
+        std::cout << "Error in superpose.cpp: the two AtomSelection objects must have the same size !" << std::endl;
+        abort();
+    };
 
 
     Mat33 rot;

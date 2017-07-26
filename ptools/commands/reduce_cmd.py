@@ -49,6 +49,7 @@ def create_subparser(parent):
                              "(default is 1.5), works only with --cgopt "
                              "option")
 
+
 def parse_args(args):
     """Check that command-line arguments are valid.
 

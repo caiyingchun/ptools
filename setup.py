@@ -300,9 +300,8 @@ def setup_package():
                       extra_objects = ['src/cgopt/chrg_scorpion.o',
                            find_fortranlib()])
 
-    packages = find_packages(exclude=['Heligeom',
-                                      'Tests',
-                                      'Tests.functionnal'])
+    packages = find_packages(exclude=['Tests',
+                                      'Tests.functional'])
 
     setup(ext_modules=[ptools, cgopt],
           cmdclass={'build_ext': build_ext},

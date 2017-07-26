@@ -10,7 +10,8 @@ from _ptools import (ADNA, Atom, AtomPair, AtomSelection, Atomproperty,
                      MatTrans2screw, Movement, Rigidbody, Rise, Rmsd, Roll,
                      ScorpionForceField, Screw, Shift, Slide,
                      Superpose_t, Surface, Tilt, Twist, Version, WritePDB,
-                     norm, norm2, strToAtom, superpose)
+                     crossproduct, dotproduct, norm, norm2, strToAtom,
+                     superpose)
 
 
 DATA_DIR = os.path.join(sys.prefix, 'share', 'ptools', 'data')
