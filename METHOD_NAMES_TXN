@@ -15,6 +15,10 @@ ChangeType	change_type
 CopyAtom	copy_atom
 createRigid	create_rigid
 CreateRigid create_rigid
+crossproduct	cross_product
+Dist2	dist2
+Dist	dist
+dotproduct	dot_product
 FindCenter	find_center
 GetAtomProperty	get_atom_property
 GetChainId	get_chainid

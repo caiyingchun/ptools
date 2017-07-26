@@ -1,9 +1,11 @@
 import sys
 import os
+import subprocess
+import time
 import re
 
 # Set CONTEXT True to print latest context line for each match found
-CONTEXT = False
+CONTEXT = True
 
 def find_names_in_file(filename, names={}, context=CONTEXT):
     """Find all class.method and module.class names in one file, return as keys in names dict."""
@@ -52,6 +54,7 @@ def find_names(searchdirs='./', suffix=".py"):
 
 
 def print_names(names, key=lambda x: x.upper(), print_values=CONTEXT):
+    """Print in sorted order. Must re-order as necessary to avoid renaming problems."""
     for name in sorted(names.keys(), key=key):
         if print_values:
             print name, "  :  ", names[name]
@@ -59,22 +62,30 @@ def print_names(names, key=lambda x: x.upper(), print_values=CONTEXT):
             print name
 
 
-def read_names_data(filename):
-    """Read data from file to create names dict."""
-    names = {}
+def print_translations(tlist, print_values=CONTEXT):
+    for entry in tlist:
+        if print_values:
+            old, new = entry
+            print old, "  :  ", new
+        else:
+            print entry[0]
+
+
+def read_translations(filename):
+    """Read data from file to create translations list."""
+    translations = []
     with open(filename) as fin:
         for line in fin.readlines():
             #print filename, line.strip()
-            entries = line.strip().split()
-            if len(entries) == 2:
-                old, new = line.strip().split()
-                names[old] = new
+            entry = line.strip().split()
+            if len(entry) == 2:
+                translations.append(entry)
             else:
-                print entries
-    return names
+                print entry
+    return translations
 
 
-def rename_all(names):
+def rename_all(translations):
     """Use unix sed command to rename identifiers in all relevant files."""
     # find . -name \*.h -exec sed --in-place 's/ABrotate/rotate/g' {} \;
     # find . -name \*.cpp -exec sed --in-place 's/ABrotate/rotate/g' {} \;
@@ -84,8 +95,27 @@ def rename_all(names):
     # make clean
     # make install
     # make test
-    for old in sorted(names.keys(), key=lambda x: x.upper()):
-        print old, "  -->  ", names[old]
+
+    ## TEST: Use .T suffix and a file named "test.T" for testing
+    #suffixes = [".T"]
+    suffixes = [".h", ".cpp", ".py", ".pyx"]
+    #suffixes = [".rst"]
+
+    name_arg_template = "*%s"
+    sed_command_template = "s/%s/%s/g"
+
+    for entry in translations:
+        if len(entry) != 2:
+            continue
+        old, new = entry
+        print "Renaming %s  -->  %s" % (old, new)
+        for suffix in suffixes:
+            name_arg = name_arg_template % (suffix)
+            sed_command = sed_command_template % (old, new)
+            args = ('find', '.', '-name', name_arg, '-exec', 'sed', '-i', sed_command, '{}', ';')
+            print args
+            subprocess.Popen(args)
+        time.sleep(1)
     return
 
 
@@ -100,6 +130,6 @@ if __name__ == "__main__":
 
     elif task.startswith('rename'):
         namesfile = sys.argv[2]
-        names = read_names_data(namesfile)
-        rename_all(names)
+        translations = read_translations(namesfile)
+        rename_all(translations)
 

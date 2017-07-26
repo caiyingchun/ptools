@@ -22,7 +22,8 @@ C. Guiding principles
 2. To eliminate a manual step for distinguishing C++ and python calls, both C++ and python names will be changed
 3. Python scripts alone will be searched in identify names to be changed. This means it is possible that some naming inconsistencies may result on the C++ side. This won't matter in a python-only future.
 4. No fortran names will be changed; no fortran subroutines/functions are called directly by python anyway.
-4. Automated tools will be used as much as possible to find candidates for renaming and to do the renaming (see "names.py")
+5. Automated tools will be used as much as possible to find candidates for renaming and to do the renaming (see "names.py")
+6. Attention to the order of the substitutions -- any shorter word should be translated AFTER longer words containing it.
 
 
 D. Detailed protocol:
@@ -53,5 +54,6 @@ D. Detailed protocol:
 	$ grep -f METHOD_NAMES METHOD_NAMES_TXN
 	$ grep -cf METHOD_NAMES METHOD_NAMES_TXN (compare count to wc METHOD_NAMES)
 
+6. Verify the order of the substitutions list! Any shorter word should be translated AFTER longer words containing it. Note that the translations are thus processed as a list, not a dictionary.
 
 
