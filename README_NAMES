@@ -1,0 +1,57 @@
+CHR 24 juillet 2017
+
+Making more canonical identifiers in ptools (après discussion avec Chantal et Benoist)
+
+A. Goals
+
+1. Method and function names should start with a small letter
+2. Underscores between words lowercase) should be preferred to camelCase
+
+
+B. "Domains"
+
+1. Python modules and scripts
+2. Cython bindings
+3. C/C++ code
+4. Fortran code
+
+
+C. Guiding principles
+
+1. All work should be done in a branch ("renames")
+2. To eliminate a manual step for distinguishing C++ and python calls, both C++ and python names will be changed
+3. Python scripts alone will be searched in identify names to be changed. This means it is possible that some naming inconsistencies may result on the C++ side. This won't matter in a python-only future.
+4. No fortran names will be changed; no fortran subroutines/functions are called directly by python anyway.
+4. Automated tools will be used as much as possible to find candidates for renaming and to do the renaming (see "names.py")
+
+
+D. Detailed protocol:
+
+1. Find names using regular expressions: any name with letters and numbers and _, preceded by '.' and followed by '('
+
+	$ sed --in-place 's/CONTEXT = True/CONTEXT = False/' names.py
+	$ python names.py find ../ptools ../ptools-vrac > NAMES
+
+	$ sed --in-place 's/CONTEXT = False/CONTEXT = True/' names.py
+	$ python names.py find ../ptools ../ptools-vrac > NAMES_WITH_CONTEXT
+
+2. Eliminate as many known PTools class names as possible
+
+	$ grep -vf CLASS_NAMES_PYTHON NAMES > METHOD_NAMES
+
+3. Manually eliminate any names referring to external modules, classes, or names that are already OK. It helps to look in NAMES_WITH_CONTEXT, or grep other context examples if in doubt.
+
+	$ vi METHOD_NAMES
+
+4. Add 2nd column with new method names (translations)
+
+	$ cp METHOD_NAMES METHOD_NAMES_TXN
+	$ vi !$
+
+5. Verify that no old names are present in multiple locations in the names list
+
+	$ grep -f METHOD_NAMES METHOD_NAMES_TXN
+	$ grep -cf METHOD_NAMES METHOD_NAMES_TXN (compare count to wc METHOD_NAMES)
+
+
+
