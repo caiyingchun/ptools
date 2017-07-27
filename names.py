@@ -6,8 +6,8 @@ import re
 
 # Set CONTEXT True to print latest context line for each match found
 CONTEXT = True
-DRY_RUN = False
-STRIP_TERMINALS = False
+DRY_RUN = True
+STRIP_TERMINALS = True
 
 def find_names_in_file(filename, names={}, context=CONTEXT):
     """Use regex to find all class.method and module.class names in one file, return as keys in names dict."""
@@ -125,7 +125,7 @@ def rename_all(substitutions, dry_run=DRY_RUN, strip_terminals=STRIP_TERMINALS):
             print "sed command is: ", sed_command
             if dry_run:
                 if strip_terminals:
-                    target = old
+                    olde = old
                 else:
                     # Escape the metacharacters
                     olde = "\\%s\\%s" % (old[:-1], old[-1])
