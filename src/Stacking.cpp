@@ -35,49 +35,49 @@ Rigidbody Stacking::Axis( Rigidbody& bp1,  Rigidbody& bp2)
     Rigidbody pyrBp1;
     if (bp1isGC)
     {
-        pyrBp1 = bp1.SelectAtomType("GC1").CreateRigid() + bp1.SelectAtomType("GC2").CreateRigid();
+        pyrBp1 = bp1.SelectAtomType("GC1").create_rigid() + bp1.SelectAtomType("GC2").create_rigid();
     }
     else
     {
-        pyrBp1 = bp1.SelectAtomType("GT1").CreateRigid() + bp1.SelectAtomType("GT2").CreateRigid();
+        pyrBp1 = bp1.SelectAtomType("GT1").create_rigid() + bp1.SelectAtomType("GT2").create_rigid();
     }
 
     Rigidbody pyrBp2;
     if (bp2isGC)
     {
-        pyrBp2 = bp2.SelectAtomType("GC1").CreateRigid() + bp2.SelectAtomType("GC2").CreateRigid();
+        pyrBp2 = bp2.SelectAtomType("GC1").create_rigid() + bp2.SelectAtomType("GC2").create_rigid();
     }
     else
     {
-        pyrBp2 = bp2.SelectAtomType("GT1").CreateRigid() + bp2.SelectAtomType("GT2").CreateRigid();
+        pyrBp2 = bp2.SelectAtomType("GT1").create_rigid() + bp2.SelectAtomType("GT2").create_rigid();
     }
 
     //3 build rigidbody for purine
     Rigidbody purBp1;
      if (bp1isGC)
     {
-        purBp1 = bp1.SelectAtomType("GG1").CreateRigid() + bp1.SelectAtomType("GG2").CreateRigid() + bp1.SelectAtomType("GG3").CreateRigid();
+        purBp1 = bp1.SelectAtomType("GG1").create_rigid() + bp1.SelectAtomType("GG2").create_rigid() + bp1.SelectAtomType("GG3").create_rigid();
     }
     else
     {
-        purBp1 = bp1.SelectAtomType("GA1").CreateRigid() + bp1.SelectAtomType("GA2").CreateRigid() + bp1.SelectAtomType("GA3").CreateRigid();
+        purBp1 = bp1.SelectAtomType("GA1").create_rigid() + bp1.SelectAtomType("GA2").create_rigid() + bp1.SelectAtomType("GA3").create_rigid();
     }
 
     Rigidbody purBp2;
     if (bp2isGC)
     {
-        purBp2 = bp2.SelectAtomType("GG1").CreateRigid() + bp2.SelectAtomType("GG2").CreateRigid() + bp2.SelectAtomType("GG3").CreateRigid();
+        purBp2 = bp2.SelectAtomType("GG1").create_rigid() + bp2.SelectAtomType("GG2").create_rigid() + bp2.SelectAtomType("GG3").create_rigid();
     }
     else
     {
-        purBp2 = bp2.SelectAtomType("GA1").CreateRigid() + bp2.SelectAtomType("GA2").CreateRigid() + bp2.SelectAtomType("GA3").CreateRigid();
+        purBp2 = bp2.SelectAtomType("GA1").create_rigid() + bp2.SelectAtomType("GA2").create_rigid() + bp2.SelectAtomType("GA3").create_rigid();
     }
 
     //4 compute center
-    Coord3D pyrBp1center = pyrBp1.FindCenter() ;
-    Coord3D pyrBp2center = pyrBp2.FindCenter() ;
-    Coord3D purBp1center = purBp1.FindCenter() ;
-    Coord3D purBp2center = purBp2.FindCenter() ;
+    Coord3D pyrBp1center = pyrBp1.find_center() ;
+    Coord3D pyrBp2center = pyrBp2.find_center() ;
+    Coord3D purBp1center = purBp1.find_center() ;
+    Coord3D purBp2center = purBp2.find_center() ;
 
     Rigidbody axis;
     
@@ -108,29 +108,29 @@ Rigidbody Stacking::Axis( Rigidbody& basePair)
     Rigidbody pyrBp;
     if (basePairIsGC)
     {
-        pyrBp = basePair.SelectAtomType("GC1").CreateRigid() + basePair.SelectAtomType("GC2").CreateRigid();
+        pyrBp = basePair.SelectAtomType("GC1").create_rigid() + basePair.SelectAtomType("GC2").create_rigid();
     }
     else
     {
-        pyrBp = basePair.SelectAtomType("GT1").CreateRigid() + basePair.SelectAtomType("GT2").CreateRigid();
+        pyrBp = basePair.SelectAtomType("GT1").create_rigid() + basePair.SelectAtomType("GT2").create_rigid();
     }
 
     //3 build rigidbody for purine
     Rigidbody purBp;
      if (basePairIsGC)
     {
-        purBp = basePair.SelectAtomType("GG1").CreateRigid() + basePair.SelectAtomType("GG2").CreateRigid() + basePair.SelectAtomType("GG3").CreateRigid();
+        purBp = basePair.SelectAtomType("GG1").create_rigid() + basePair.SelectAtomType("GG2").create_rigid() + basePair.SelectAtomType("GG3").create_rigid();
     }
     else
     {
-        purBp = basePair.SelectAtomType("GA1").CreateRigid() + basePair.SelectAtomType("GA2").CreateRigid() + basePair.SelectAtomType("GA3").CreateRigid();
+        purBp = basePair.SelectAtomType("GA1").create_rigid() + basePair.SelectAtomType("GA2").create_rigid() + basePair.SelectAtomType("GA3").create_rigid();
     }
 
 
 
     //4 compute center
-    Coord3D pyrBp1center = pyrBp.FindCenter() ;
-    Coord3D purBp1center = purBp.FindCenter() ;
+    Coord3D pyrBp1center = pyrBp.find_center() ;
+    Coord3D purBp1center = purBp.find_center() ;
 
     Rigidbody axis;
 
@@ -149,7 +149,7 @@ Rigidbody Stacking::AxisPyrimidine(const Rigidbody& pyr, const Coord3D& centerBa
     //1 get the projection of the center of the first base on the line defines
     //by the center of the second base and the vector of the first base.
     Coord3D vectorBp1Bp2 = centerBase1 - centerBase2;
-    Coord3D vectorBp1pyr2 = (pyr.CopyAtom(1).coords - centerBase1).Normalize();
+    Coord3D vectorBp1pyr2 = (pyr.copy_atom(1).coords - centerBase1).Normalize();
 
     double proj=ScalProd(vectorBp1Bp2,vectorBp1pyr2);
 

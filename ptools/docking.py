@@ -76,7 +76,7 @@ def surreal(i):
 def rmsdca(l1, l2):
     """Return the RMSD between the alpha-carbone atom of two RigidBody
     instances."""
-    return ptools.Rmsd(l1.CA().CreateRigid(), l2.CA().CreateRigid())
+    return ptools.Rmsd(l1.get_CA().create_rigid(), l2.get_CA().create_rigid())
 
 
 def get_group(collection, ngroups, ngroup):
@@ -107,7 +107,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
 
     # Use appropriate rmsd calculation
     if ref is not None:
-        refca = ref.CA()
+        refca = ref.get_CA()
         if len(refca) == 0:  # No C alpha atom, ligand is probably a dna
             rmsd_func = ptools.Rmsd
             print("No Calpha atom found for ligand (DNA?). RMSD will be "
@@ -129,7 +129,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
             ligand = ptools.AttractRigidbody(lig)
             receptor = ptools.AttractRigidbody(rec)
 
-            center = ligand.FindCenter()
+            center = ligand.find_center()
             ligand.Translate(ptools.Coord3D() - center)  # set ligand center of mass to 0,0,0
             ligand.euler_rotate(surreal(rot[0]), surreal(rot[1]), surreal(rot[2]))
             ligand.Translate(trans)
@@ -159,7 +159,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
 
                 output = ptools.AttractRigidbody(ligand)
 
-                center = output.FindCenter()
+                center = output.find_center()
                 output.Translate(ptools.Coord3D() - center)
                 output.euler_rotate(surreal(X[0]), surreal(X[1]), surreal(X[2]))
                 output.Translate(ptools.Coord3D(surreal(X[3]), surreal(X[4]), surreal(X[5])))

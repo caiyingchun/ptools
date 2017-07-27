@@ -324,7 +324,7 @@ class Reducer(object):
     def read_topology(self):
         """Read PDB topology file."""
         rb = ptools.Rigidbody(self.allatom_file)
-        self.atoms = [rb.CopyAtom(i) for i in xrange(len(rb))]
+        self.atoms = [rb.copy_atom(i) for i in xrange(len(rb))]
 
     def read_name_conversion_file(self):
         """Read YAML file containing residue and atom name conversion rules.

@@ -88,13 +88,13 @@ public:
 
 
 /// distance between two atoms
-inline dbl Dist(const Atom& at1, const Atom& at2)
+inline dbl dist(const Atom& at1, const Atom& at2)
 {
     return Norm(at1.coords-at2.coords);
 }
 
 /// distance**2 between two atoms
-inline dbl Dist2(const Atom& at1, const Atom& at2)
+inline dbl dist2(const Atom& at1, const Atom& at2)
 {
     return Norm2(at1.coords - at2.coords );
 }

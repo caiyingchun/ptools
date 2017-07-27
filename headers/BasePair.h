@@ -68,7 +68,7 @@ namespace PTools
     /// return the i-th Atom of the basePair
     Atom operator[] (uint i) const {
           if (i>=this->Size()) throw std::range_error("DNA: array out of bounds");
-          return rigbody.CopyAtom(i);};
+          return rigbody.copy_atom(i);};
 
     private:
     //atribut

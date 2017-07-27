@@ -43,12 +43,12 @@ class TestCoord3D(unittest.TestCase):
         self.assertAlmostEqual(ptools.norm2(self.coo1), 7.0710678118654755 ** 2)
         self.assertAlmostEqual(ptools.norm2(self.coo2), 7.8262379212492643 ** 2)
 
-    def test_dotproduct(self):
-        res = ptools.dotproduct(self.coo1, self.coo2)
+    def test_dot_product(self):
+        res = ptools.dot_product(self.coo1, self.coo2)
         self.assertAlmostEqual(res, 48.5)
 
-    def test_crossproduct(self):
-        res = ptools.crossproduct(self.coo1, self.coo2)
+    def test_cross_product(self):
+        res = ptools.cross_product(self.coo1, self.coo2)
         self.assertAlmostEqual(res.x, 20.)
         self.assertAlmostEqual(res.y, -17.5)
         self.assertAlmostEqual(res.z, 2.)

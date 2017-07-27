@@ -10,16 +10,16 @@
 # AttractEulerRotate	euler_rotate
 # Backbone	backbone
 CA(	get_CA(
-ChangeRepresentation(	change_representation(
-ChangeType(	change_type(
-CopyAtom(	copy_atom(
-createRigid(	create_rigid(
-CreateRigid( create_rigid(
-crossproduct(	cross_product(
-Dist2(	dist2(
-Dist(	dist(
-dotproduct(	dot_product(
-FindCenter(	find_center(
+ChangeRepresentation	change_representation
+ChangeType	change_type
+CopyAtom	copy_atom
+createRigid	create_rigid
+CreateRigid create_rigid
+crossproduct	cross_product
+# Dist2(	dist2(
+Dist	dist
+dotproduct	dot_product
+FindCenter	find_center
 # GetAtomProperty(	get_atom_property(
 # GetChainId(	get_chainid(
 # getCoords(	get_coords(

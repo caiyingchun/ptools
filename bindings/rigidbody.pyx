@@ -23,11 +23,11 @@ cdef extern from "rigidbody.h" namespace "PTools":
         void SetCoords(unsigned int, CppCoord3D &)
         void rotate(CppCoord3D &, CppCoord3D &, double)
         void Translate(CppCoord3D &)
-        CppCoord3D FindCenter()
+        CppCoord3D find_center()
         void syncCoords()
         void euler_rotate(double, double, double)
         void apply_matrix(Array2D[double] &)
-        CppAtom CopyAtom(unsigned int)
+        CppAtom copy_atom(unsigned int)
         void add_atom(CppAtomproperty &, CppCoord3D)
         void add_atom(CppAtom &)
         void SetAtom(unsigned int, CppAtom &)
@@ -50,7 +50,7 @@ cdef extern from "rigidbody.h" namespace "PTools":
         CppAtomSelection SelectResidType(string)
         CppAtomSelection SelectChainId(string)
         CppAtomSelection SelectResRange(int, int)
-        CppAtomSelection CA()
+        CppAtomSelection get_CA()
         CppAtomSelection backbone()
 
 
@@ -142,9 +142,9 @@ cdef class Rigidbody:
     def Translate(self, Coord3D tr):
         self.thisptr.Translate(deref(tr.thisptr))
 
-    def FindCenter(self):
+    def find_center(self):
         cdef Coord3D c = Coord3D()
-        cdef CppCoord3D cpp = self.thisptr.FindCenter()
+        cdef CppCoord3D cpp = self.thisptr.find_center()
         c.x = cpp.x
         c.y = cpp.y
         c.z = cpp.z
@@ -163,8 +163,8 @@ cdef class Rigidbody:
     def apply_matrix(self, Matrix mat):
         self.thisptr.apply_matrix(deref(mat.thisptr))
 
-    def CopyAtom(self, unsigned int atid):
-        cdef CppAtom cpp_at = self.thisptr.CopyAtom(atid)
+    def copy_atom(self, unsigned int atid):
+        cdef CppAtom cpp_at = self.thisptr.copy_atom(atid)
         cdef Atom at = Atom()
         cdef CppAtom * cpp_dest = <CppAtom*> at.thisptr
         cy_copy_atom(& cpp_at, cpp_dest)
@@ -239,10 +239,10 @@ cdef class Rigidbody:
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def CA(self):
+    def get_CA(self):
         ret = AtomSelection()
         del ret.thisptr
-        cdef CppAtomSelection new_sel = self.thisptr.CA()
+        cdef CppAtomSelection new_sel = self.thisptr.get_CA()
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 

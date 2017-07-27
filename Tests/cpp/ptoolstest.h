@@ -72,7 +72,7 @@ Coord3D A, B;
     {
         s = Rigidbody(r);
         TS_ASSERT_EQUALS(s.Size(), r.Size())
-        TS_ASSERT_EQUALS(r.FindCenter(), s.FindCenter());
+        TS_ASSERT_EQUALS(r.find_center(), s.find_center());
     }
 
 
@@ -82,11 +82,11 @@ Coord3D A, B;
 
     void testSetAtom()
     {
-        Atom atom (r.CopyAtom(3) ) ;
+        Atom atom (r.copy_atom(3) ) ;
         atom.coords = Coord3D(3,4,5);
         r.SetAtom(3,atom);
         //#test to see if the mofification worked:
-        Atom atom2 = r.CopyAtom(3);
+        Atom atom2 = r.copy_atom(3);
         TS_ASSERT( Norm2(atom2.coords - Coord3D(3,4,5) ) < 1e6 );
 
     }
@@ -144,9 +144,9 @@ Rigidbody rigid1, rigid2, rigid3;
 
     void testTranslation1()
     {
-        Coord3D CoM1 = rigid1.FindCenter() ;
+        Coord3D CoM1 = rigid1.find_center() ;
         rigid1.Translate(Coord3D(3.0, -55.67, 1));
-        Coord3D CoM2 = rigid1.FindCenter();
+        Coord3D CoM2 = rigid1.find_center();
         Coord3D diff=CoM2-CoM1;
         TS_ASSERT( Norm2(diff + Coord3D(-3.0, 55.67, -1.0)) < 1e-6);
         rigid1.Translate(Coord3D(-3.0, 55.67, -1.0));   //# translate back

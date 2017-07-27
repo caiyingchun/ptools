@@ -77,7 +77,7 @@ def check_args(args):
 
 def distance(a, b):
     """Calculate the distance between two ptools.Coord3D."""
-    return ptools.norm(ptools.crossproduct(a, b))
+    return ptools.norm(ptools.cross_product(a, b))
 
 
 def distAxis(rig, hp):
@@ -94,9 +94,9 @@ def getpstart(start, hp, dmin, dmax):
     # position of the sphere point
     ap = ptools.Atomproperty()
     m1 = start
-    cm = m1.FindCenter()
+    cm = m1.find_center()
     v = cm - hp.point
-    s = ptools.dotproduct(v, hp.unitVector)
+    s = ptools.dot_product(v, hp.unitVector)
     p = (hp.point + hp.unitVector * s)
 
     # normal to the axis that contains the center of mass of the monomer
@@ -118,10 +118,10 @@ def getpstart(start, hp, dmin, dmax):
 def getpart(groove, n, nbmono):
     inf = ptools.Rigidbody()
     for i in xrange(n - 1, n + 3):
-        inf = inf + groove.SelectChainId(string.ascii_uppercase[i % 26]).CreateRigid()
+        inf = inf + groove.SelectChainId(string.ascii_uppercase[i % 26]).create_rigid()
     sup = ptools.Rigidbody()
     for i in xrange(n - 2 + nbmono, n + 2 + nbmono):
-        sup = sup + groove.SelectChainId(string.ascii_uppercase[i % 26]).CreateRigid()
+        sup = sup + groove.SelectChainId(string.ascii_uppercase[i % 26]).create_rigid()
     return inf, sup
 
 
@@ -133,7 +133,7 @@ def groove_width_calculation(hp, mono1):
     O = hp.point
     axe = hp.unitVector
     groove = extend(hp, mono1, nbmono * 3, False, False)
-    start = groove.SelectChainId(string.ascii_uppercase[n]).CreateRigid()
+    start = groove.SelectChainId(string.ascii_uppercase[n]).create_rigid()
     dmin, dmax = distAxis(mono1, hp)
 
     nb = 0
@@ -152,16 +152,16 @@ def groove_width_calculation(hp, mono1):
                 pstart = getpstart(start, hp, k, k)
 
                 # get the min dist on the inferior part
-                mindistinf = ptools.Dist(pstart.CopyAtom(0), inf.CopyAtom(0))
+                mindistinf = ptools.dist(pstart.copy_atom(0), inf.copy_atom(0))
                 for k in xrange(1, infSize):
-                    tempdist = ptools.Dist(pstart.CopyAtom(0), inf.CopyAtom(k))
+                    tempdist = ptools.dist(pstart.copy_atom(0), inf.copy_atom(k))
                     if tempdist < mindistinf:
                         mindistinf = tempdist
 
                 # the same on the superior part
-                mindistsup = ptools.Dist(pstart.CopyAtom(0), sup.CopyAtom(0))
+                mindistsup = ptools.dist(pstart.copy_atom(0), sup.copy_atom(0))
                 for k in xrange(1, supSize):
-                    tempdist = ptools.Dist(pstart.CopyAtom(0), sup.CopyAtom(k))
+                    tempdist = ptools.dist(pstart.copy_atom(0), sup.copy_atom(k))
                     if tempdist < mindistsup:
                         mindistsup = tempdist
                 # get the two point on the vector and take the mid size
@@ -182,7 +182,7 @@ def changeChain(rig, letter):
 
 def extend(hp, mono1, nb, Z=False, seq=False):
     final = ptools.Rigidbody()
-    monoTest = mono1.SelectAllAtoms().CreateRigid()
+    monoTest = mono1.SelectAllAtoms().create_rigid()
     i = 0
     O = hp.point
     axe = hp.unitVector

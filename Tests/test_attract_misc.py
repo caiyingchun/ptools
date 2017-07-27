@@ -89,7 +89,7 @@ class MinimizationTests(unittest.TestCase):
         receptor.setTranslation(False)
         receptor.setRotation(False)
         ligand = AttractRigidbody(TEST_TOYMINIM_LIGAND)
-        atom = ligand.CopyAtom(0)
+        atom = ligand.copy_atom(0)
         # Ligand position in file            5.0, 5.0, 0.0
         # Minimum-energy ligand position is  5.0, 0.0, 0.0
         print "Ligand starting position: %s" % atom.ToPdbString()
@@ -119,7 +119,7 @@ class MinimizationTests(unittest.TestCase):
         # New starting ligand position      10.0, 5.0, 5.0
         # Minimum-energy ligand position is  5.0, 0.0, 0.0
         ligand.Translate(Coord3D(5.0, 0.0, 5.0))
-        atom = ligand.CopyAtom(0)
+        atom = ligand.copy_atom(0)
         print "Ligand starting position: %s" % atom.ToPdbString()
 
         self.forcefield.addLigand(receptor)

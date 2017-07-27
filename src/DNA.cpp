@@ -160,8 +160,8 @@ bool DNA::IsJumna ( Rigidbody& model)
     if (sel.Size() == 0) sel = model.SelectAtomType("GS1");
 
 
-    double d1 = Dist(sel[0],sel[sel.Size()-1]);
-    double d2 = Dist(sel[0],sel[sel.Size()/2]);
+    double d1 = dist(sel[0],sel[sel.Size()-1]);
+    double d2 = dist(sel[0],sel[sel.Size()/2]);
 
     return (d1>d2);
 }
@@ -333,7 +333,7 @@ Rigidbody DNA::DelSingleBase (Rigidbody& model)
     {
         if ( solution[i]==1)
         {
-              newModel= newModel + model.SelectResRange(i,i).CreateRigid();
+              newModel= newModel + model.SelectResRange(i,i).create_rigid();
         }
     }
     //cout << newModel.PrintPDB()<< endl;
@@ -383,7 +383,7 @@ bool DNA::IsAlign(std::string s1,std::string s2,int shift)const
 
 Rigidbody DNA::GetModelOfBasePair( Rigidbody& model,int posA,int posB)
 {
-        return (model.SelectResRange(posA, posA)|model.SelectResRange(posB, posB)).CreateRigid();
+        return (model.SelectResRange(posA, posA)|model.SelectResRange(posB, posB)).create_rigid();
 
 
 }
@@ -437,7 +437,7 @@ vector<Rigidbody> DNA::BuildVbase(string chainIDs, Rigidbody& dataBase)const
   for (unsigned int i = 0; i < chainIDsSize ; i++)
   {
 
-    vbase.push_back(dataBase.SelectChainId(chainIDs.substr(i,1)).CreateRigid());
+    vbase.push_back(dataBase.SelectChainId(chainIDs.substr(i,1)).create_rigid());
   }
   return vbase;
 }
@@ -581,22 +581,22 @@ void DNA::WritePDB(std::string fileName)
   myfile.close();
 }
 
-Rigidbody DNA::CreateRigid()
+Rigidbody DNA::create_rigid()
 {
-  //we use the method createRigidOfStrand() to make sure that the rigidbody returned follow the established format
-  Rigidbody chainA = CreateRigidOfStrand("A");
-  Rigidbody chainB = CreateRigidOfStrand("B");
+  //we use the method create_rigidOfStrand() to make sure that the rigidbody returned follow the established format
+  Rigidbody chainA = create_rigidOfStrand("A");
+  Rigidbody chainB = create_rigidOfStrand("B");
 
   //we add the atoms of the chain B to the chainA
   unsigned int chainBsize  = chainB.Size();
   for ( unsigned int i =0; i < chainBsize ; i++ )
   {
-      chainA.add_atom(chainB.CopyAtom(i));
+      chainA.add_atom(chainB.copy_atom(i));
   }
   return chainA;
 }
 
-Rigidbody DNA::CreateRigidOfStrand(std::string chain)
+Rigidbody DNA::create_rigidOfStrand(std::string chain)
 {
       Rigidbody dna;
   unsigned int strandSize  = strand.size();
@@ -616,14 +616,14 @@ Rigidbody DNA::CreateRigidOfStrand(std::string chain)
       unsigned int basePairSize  = basePair.Size();
       for (unsigned int j=0; j <basePairSize ; j++)
       {
-          Atom a =basePair.CopyAtom(j);
+          Atom a =basePair.copy_atom(j);
           dna.add_atom(a);
       }
   }
   return dna;
 }
 
-void DNA::ChangeRepresentation(std::string dataBaseFile)
+void DNA::change_representation(std::string dataBaseFile)
 {
   Rigidbody dataBase = Rigidbody(dataBaseFile);
   string chainIDs = GetChainIDs(dataBase);
@@ -769,7 +769,7 @@ double DNA::Rmsd(const DNA& model)const
             Atom atom1=model[i][j];
             Atom atom2=strand[i][j];
 
-            total+=Dist2(atom1,atom2);
+            total+=dist2(atom1,atom2);
         }
     }
     return sqrt(total/(dbl) aSize) ;
@@ -858,11 +858,11 @@ void DNA::Replace(const DNA & d,int start)
 
 }
 
-void DNA::ChangeType(int pos, std::string type, std::string filename) {
+void DNA::change_type(int pos, std::string type, std::string filename) {
     Rigidbody dataBase = Rigidbody(filename);
     Movement mov = Movement(strand[pos].GetMatrix());
 
-    strand[pos] = BasePair(dataBase.SelectChainId(type).CreateRigid());
+    strand[pos] = BasePair(dataBase.SelectChainId(type).create_rigid());
     strand[pos].apply(mov);
 
     ChangeFormat();

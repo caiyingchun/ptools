@@ -25,8 +25,8 @@ cdef extern from "atom.h" namespace "PTools":
         void Translate(CppCoord3D&)
         CppCoord3D coords
         
-    cdef double cppDist "PTools::Dist" (CppAtom& , CppAtom& )
-    cdef double cppDist2 "PTools::Dist2" (CppAtom& , CppAtom& )
+    cdef double cppdist "PTools::dist" (CppAtom& , CppAtom& )
+    cdef double cppdist2 "PTools::dist2" (CppAtom& , CppAtom& )
 
 cdef extern from "cython_wrappers.h":
     cdef void cy_copy_atom(CppAtom* , CppAtom* )
@@ -187,9 +187,9 @@ cdef class Atom(Atomproperty):
        (<CppAtom*>self.thisptr).Translate(deref(co.thisptr))
 
     
-def Dist(Atom at1, Atom at2):
-    return cppDist(deref(<CppAtom*>at1.thisptr), deref(<CppAtom*>at2.thisptr))
+def dist(Atom at1, Atom at2):
+    return cppdist(deref(<CppAtom*>at1.thisptr), deref(<CppAtom*>at2.thisptr))
     
-def Dist2(Atom at1, Atom at2):
-    return cppDist2(deref(<CppAtom*>at1.thisptr), deref(<CppAtom*>at2.thisptr))
+def dist2(Atom at1, Atom at2):
+    return cppdist2(deref(<CppAtom*>at1.thisptr), deref(<CppAtom*>at2.thisptr))
         

@@ -75,7 +75,7 @@ public:
     void PrintMatrix() const {std::cout << CoordsArray::PrintMatrix() << std::endl; }
 
     /// make a deep copy of one atom (the atom extracted is then totally independent)
-    virtual Atom CopyAtom(uint i) const ;
+    virtual Atom copy_atom(uint i) const ;
 
 /*    /// const version of GetAtom*/
     /*Atom GetAtom(uint pos) const
@@ -134,7 +134,7 @@ public:
     }
 
     /// return geometric center of all atoms
-    Coord3D FindCenter() const;
+    Coord3D find_center() const;
 
     /// center the rigidbody to the Origin (0,0,0)
     void CenterToOrigin();
@@ -178,7 +178,7 @@ public:
     AtomSelection SelectResRange(int start, int stop);
 
     /// selection shortcut for C-alpha
-    AtomSelection CA();
+    AtomSelection get_CA();
 
     /// selection of backbone atoms:
     AtomSelection backbone();

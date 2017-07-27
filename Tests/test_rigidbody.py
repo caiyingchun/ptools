@@ -35,8 +35,8 @@ class TestRigidbodyBindings(unittest.TestCase):
     def test_Rigidbody_has_Translate(self):
         self.assertTrue(hasattr(Rigidbody, 'Translate'))
 
-    def test_Rigidbody_has_FindCenter(self):
-        self.assertTrue(hasattr(Rigidbody, 'FindCenter'))
+    def test_Rigidbody_has_find_center(self):
+        self.assertTrue(hasattr(Rigidbody, 'find_center'))
 
     def test_Rigidbody_has_rotate(self):
         self.assertTrue(hasattr(Rigidbody, 'rotate'))
@@ -50,8 +50,8 @@ class TestRigidbodyBindings(unittest.TestCase):
     def test_Rigidbody_has_apply_matrix(self):
         self.assertTrue(hasattr(Rigidbody, 'apply_matrix'))
 
-    def test_Rigidbody_has_CopyAtom(self):
-        self.assertTrue(hasattr(Rigidbody, 'CopyAtom'))
+    def test_Rigidbody_has_copy_atom(self):
+        self.assertTrue(hasattr(Rigidbody, 'copy_atom'))
 
     def test_Rigidbody_has_add_atom(self):
         self.assertTrue(hasattr(Rigidbody, 'add_atom'))
@@ -86,8 +86,8 @@ class TestRigidbodyBindings(unittest.TestCase):
     def test_Rigidbody_has_SelectResRange(self):
         self.assertTrue(hasattr(Rigidbody, 'SelectResRange'))
 
-    def test_Rigidbody_has_CA(self):
-        self.assertTrue(hasattr(Rigidbody, 'CA'))
+    def test_Rigidbody_has_get_CA(self):
+        self.assertTrue(hasattr(Rigidbody, 'get_CA'))
 
     def test_Rigidbody_has_backbone(self):
         self.assertTrue(hasattr(Rigidbody, 'backbone'))
@@ -114,7 +114,7 @@ class TestRigidbody(unittest.TestCase):
     def testCopy(self):
         s = Rigidbody(self.r)
         self.assertEqual(len(s), len(self.r))
-        self.assertEqual(self.r.FindCenter(), s.FindCenter())
+        self.assertEqual(self.r.find_center(), s.find_center())
 
     def test_len(self):
         self.assertEqual(len(self.r), 2365)
@@ -133,12 +133,12 @@ class TestRigidbody(unittest.TestCase):
             d = abs(test - ref)
             return d.x < t and d.y < t and d.z < t
         origin = Coord3D(0, 0, 0)
-        self.assertFalse(coordinates_equal(origin, self.r.FindCenter()))  # assertEqual won't work
+        self.assertFalse(coordinates_equal(origin, self.r.find_center()))  # assertEqual won't work
         self.r.center_to_origin()
-        self.assertTrue(coordinates_equal(origin, self.r.FindCenter()))  # assertEqual won't work
+        self.assertTrue(coordinates_equal(origin, self.r.find_center()))  # assertEqual won't work
 
-    def testCopyAtom(self):
-        atom = self.r.CopyAtom(3)
+    def testcopy_atom(self):
+        atom = self.r.copy_atom(3)
         coords = atom.coords
         assertCoordsAlmostEqual(self, coords, Coord3D(-16.159, 189.782, 106.402))
         self.assertEqual(atom.atomId, 4)
@@ -156,17 +156,17 @@ class TestRigidbody(unittest.TestCase):
         ref = Coord3D(-16.159 + 3.2, 189.782 + 2.98, 106.402 + 14.22)
         assertCoordsAlmostEqual(self, coords, ref)
 
-    def testFindCenter(self):
-        cen = self.r.FindCenter()
+    def testfind_center(self):
+        cen = self.r.find_center()
         ref = Coord3D(-20.171249, 215.498060, 119.427781)
         assertCoordsAlmostEqual(self, cen, ref)
 
     def testSetAtom(self):
-        atom = self.r.CopyAtom(3)
+        atom = self.r.copy_atom(3)
         atom.coords = Coord3D(3, 4, 5)
         self.r.SetAtom(3, atom)
         # test to see if the mofification worked:
-        atom2 = self.r.CopyAtom(3)
+        atom2 = self.r.copy_atom(3)
         coords2 = atom2.coords
         assertCoordsAlmostEqual(self, atom2.coords, Coord3D(3, 4, 5))
         assertCoordsAlmostEqual(self, coords2, Coord3D(3, 4, 5))
@@ -234,7 +234,7 @@ class TestRigidbody(unittest.TestCase):
 
     def testNegativeResId(self):
         rigid = Rigidbody(TEST_2AAV_PDB)
-        at1 = rigid.CopyAtom(0)
+        at1 = rigid.copy_atom(0)
         self.assertEqual(at1.residId, -4)
 
 

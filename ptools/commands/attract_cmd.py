@@ -84,7 +84,7 @@ PTools revision {}
     if args.startconfig:
         print("Minimize from starting configuration")
         # Use transnb, rotnb = 0, 0 to indicate this
-        translations = {0: lig.FindCenter()}
+        translations = {0: lig.find_center()}
         rotations = {0: (0, 0, 0)}
     else:
         ptools.io.check_file_exists('rotation.dat', "rotation file 'rotation.dat' is required.")

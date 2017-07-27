@@ -113,10 +113,10 @@ def norm(Coord3D v):
 def norm2(Coord3D v):
     return Norm2(deref(v.thisptr))
 
-def dotproduct(Coord3D u, Coord3D v):
+def dot_product(Coord3D u, Coord3D v):
     return  dotProduct(deref(u.thisptr), deref(v.thisptr))
 
-def crossproduct(Coord3D u, Coord3D v):
+def cross_product(Coord3D u, Coord3D v):
     cdef CppCoord3D cppresult = crossProduct(deref(u.thisptr), deref(v.thisptr))
     cdef Coord3D result = Coord3D(cppresult.x, cppresult.y, cppresult.z)
     return result

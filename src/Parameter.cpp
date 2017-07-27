@@ -57,7 +57,7 @@ Rigidbody Parameter::BuildAxisCGGeometricCenter( Rigidbody& bp)
     // build base3D
     Rigidbody base3D;
     // define atoms for base3D construction
-    Coord3D center = selSugar.CreateRigid().FindCenter(); // middle of GS2
+    Coord3D center = selSugar.create_rigid().find_center(); // middle of GS2
     Coord3D pointY = selSugar[0].coords; // point toward Y (first GS2)
     AtomSelection grain1 = bp.SelectAtomType("GG1"); // GG1 or GA1
     if (grain1.Size() == 0) {
@@ -91,7 +91,7 @@ Rigidbody Parameter::BuildAxisCGGeometricCenter( Rigidbody& bp)
     VectProd(axeY, axeZ, axeX);
     axeX = axeX.Normalize();
     // origin
-    Coord3D origin=bp.FindCenter();
+    Coord3D origin=bp.find_center();
     // save base3D
     Atomproperty atp;
 
@@ -117,7 +117,7 @@ Rigidbody Parameter::BuildAxisAAGeometricCenter( Rigidbody& bp)
     // build base3D
     Rigidbody base3D;
     // define atoms for base3D construction
-    Coord3D center = selSugar.CreateRigid().FindCenter(); // middle of GS2
+    Coord3D center = selSugar.create_rigid().find_center(); // middle of GS2
     Coord3D pointY = selSugar[0].coords; // point toward Y (first GS2)
     AtomSelection grain = bp.SelectAtomType("C5"); // GG1 or GA1
     if (grain.Size() == 0) {
@@ -144,7 +144,7 @@ Rigidbody Parameter::BuildAxisAAGeometricCenter( Rigidbody& bp)
     VectProd(axeY, axeZ, axeX);
     axeX = axeX.Normalize();
     // origin
-    Coord3D origin=bp.FindCenter();
+    Coord3D origin=bp.find_center();
     // save base3D
     Atomproperty atp;
 

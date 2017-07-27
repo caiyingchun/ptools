@@ -44,7 +44,7 @@ namespace PTools
     void WritePDB(std::string);
 
     ///change the database use for the BasePair. the new database must contain the same names for pdb that the old one.
-    void ChangeRepresentation(std::string);
+    void change_representation(std::string);
 
     ///apply a Matrix/Movement to a specified BasePair. you can specify an anchor
     void apply_local(const Matrix&,int posMov, int posAnchor = 0);
@@ -68,9 +68,9 @@ namespace PTools
     Parameter GetLocalParameter(int pos);
 
     ///return a Rigidbody of the DNA()
-    Rigidbody CreateRigid();
+    Rigidbody create_rigid();
     ///return a Rigidbody of the strand
-    Rigidbody CreateRigidOfStrand(std::string chain);
+    Rigidbody create_rigidOfStrand(std::string chain);
 
 
     //replace the base pair at the indicated position by the new base pair
@@ -99,7 +99,7 @@ namespace PTools
     void Replace(const DNA & d,int start);
 
     ///change the type of the base pair at position pos to the indicated type using the coresponding structure in the designed database of pdb.
-    void ChangeType(int pos, std::string type, std::string filename );
+    void change_type(int pos, std::string type, std::string filename );
 
 
 

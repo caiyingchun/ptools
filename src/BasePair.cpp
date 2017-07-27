@@ -38,7 +38,7 @@ string BasePair::PrintPDB()const
 
 std::string BasePair::PrintPDBofBase(std::string chain) 
 {
-    return rigbody.SelectChainId(chain).CreateRigid().PrintPDB();
+    return rigbody.SelectChainId(chain).create_rigid().PrintPDB();
 }
 
 void BasePair::SetChainID(){
@@ -89,7 +89,7 @@ Rigidbody BasePair::GetRigidBody()const
 
 Rigidbody BasePair::GetRigidBodyOfBase(std::string chain)
 {
-  return rigbody.SelectChainId(chain).CreateRigid();
+  return rigbody.SelectChainId(chain).create_rigid();
 }
 
 
@@ -129,7 +129,7 @@ uint BasePair::SetAtomNumberOfBase(std::string chain,int num)
 
 uint BasePair::GetResIDofBase(std::string chain)
 {
-  Atomproperty ap = rigbody.SelectChainId(chain).CreateRigid().GetAtomProperty(0);
+  Atomproperty ap = rigbody.SelectChainId(chain).create_rigid().GetAtomProperty(0);
   return ap.residId;
 }
 

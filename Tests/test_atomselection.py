@@ -17,8 +17,8 @@ class TestAtomSelection(unittest.TestCase):
         allAtoms = self.rig.SelectAllAtoms()
         self.assertEqual(len(allAtoms), 5067)
 
-    def testSelectCA(self):
-        CAatoms = self.rig.CA()
+    def testSelectget_CA(self):
+        CAatoms = self.rig.get_CA()
         self.assertEqual(len(CAatoms), 643)
 
     def testSelectAtomType_simple(self):
@@ -39,7 +39,7 @@ class TestAtomSelection(unittest.TestCase):
 
     def testSelectResRangeNegativeResId(self):
         rigid = Rigidbody(TEST_2AAV_PDB)
-        selection = rigid.SelectResRange(-4, -1) & rigid.CA()
+        selection = rigid.SelectResRange(-4, -1) & rigid.get_CA()
         self.assertEqual(len(selection), 4)
 
     def testAnd(self):
@@ -59,18 +59,18 @@ class TestAtomSelection(unittest.TestCase):
         chainA = self.rig.SelectChainId("A")
         self.assertEqual(len(chainA), 2638)
 
-    def testCreateRigid(self):
+    def testcreate_rigid(self):
         met1A = self.rig.SelectResidType("MET") & self.rig.SelectResRange(1, 5) & self.rig.SelectChainId("A")
-        rigid = met1A.CreateRigid()
+        rigid = met1A.create_rigid()
         self.assertEqual(len(rigid), 8)
 
     def testNotOperator(self):
-        sel_ca = self.rig.CA()
+        sel_ca = self.rig.get_CA()
         sel_not_ca = ~ sel_ca  # operator NOT
         self.assertEqual(len(sel_ca) + len(sel_not_ca), len(self.rig))
 
     def testAlternateNotOperator(self):
-        sel_ca = self.rig.CA()
+        sel_ca = self.rig.get_CA()
         sel_not_ca = sel_ca.not_()  # operator NOT
         self.assertEqual(len(sel_ca) + len(sel_not_ca), len(self.rig))
 

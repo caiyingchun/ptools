@@ -66,7 +66,7 @@ void Rigidbody::add_atom(const Atomproperty& at, Coord3D co)
 }
 
 
-Atom Rigidbody::CopyAtom(uint i) const
+Atom Rigidbody::copy_atom(uint i) const
 {
     Atom at(mAtomProp[i],GetCoords(i));
     return at;
@@ -98,7 +98,7 @@ void Rigidbody::add_atom(const Atom& at)
 }
 
 
-Coord3D Rigidbody::FindCenter() const
+Coord3D Rigidbody::find_center() const
 {
     Coord3D center(0.0,0.0,0.0);
     for (uint i=0; i< this->Size() ; i++)
@@ -111,13 +111,13 @@ Coord3D Rigidbody::FindCenter() const
 
 void Rigidbody::CenterToOrigin()
 {
-    Coord3D c = FindCenter();
+    Coord3D c = find_center();
     Translate(Coord3D()-c);
 }
 
 dbl Rigidbody::RadiusGyration()
 {
-    Coord3D c = this->FindCenter();
+    Coord3D c = this->find_center();
     dbl r=0.0;
     for (uint i=0; i< this->Size(); i++)
     {
@@ -130,7 +130,7 @@ dbl Rigidbody::RadiusGyration()
 
 dbl Rigidbody::Radius()
 {
-    Coord3D center = this->FindCenter();
+    Coord3D center = this->find_center();
     uint size = this->Size();
     dbl radius = 0.0;
     for (uint i=0; i < size; i++)
@@ -246,7 +246,7 @@ AtomSelection Rigidbody::SelectResRange(int start, int stop)
 }
 
 
-AtomSelection Rigidbody::CA() {
+AtomSelection Rigidbody::get_CA() {
     return SelectAtomType("CA");
 }
 
@@ -272,7 +272,7 @@ AtomSelection Rigidbody::backbone()
 
     for (uint i=0; i<this->Size(); i++)
     {
-        if (isbackbone(CopyAtom(i).atomType) )
+        if (isbackbone(copy_atom(i).atomType) )
         {
             newsel.add_atomIndex(i);
         }

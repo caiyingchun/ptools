@@ -408,8 +408,8 @@ Superpose_t superpose(const Rigidbody& ref, const Rigidbody& mob, int verbosity)
 
 
     //find the translational component 
-    Coord3D t0 = ref.FindCenter();
-    Coord3D t1 = mob.FindCenter();
+    Coord3D t0 = ref.find_center();
+    Coord3D t1 = mob.find_center();
 
 
     //centre les deux objets:
@@ -513,7 +513,7 @@ Superpose_t superpose(const Rigidbody& ref, const Rigidbody& mob, int verbosity)
         selmob.setRigid(newmob);
         newmob.transform(screw);
 
-        std::cout << "verif screw, rmsdca = " << rmsd(selmob && CA(newmob),selref && CA(newref)) << std::endl ;
+        std::cout << "verif screw, rmsdca = " << rmsd(selmob && get_CA(newmob),selref && get_CA(newref)) << std::endl ;
 
     }
 */

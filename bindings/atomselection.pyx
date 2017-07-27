@@ -11,9 +11,9 @@ cdef extern from "atomselection.h" namespace "PTools":
         unsigned int Size()
         void SetRigid(CppRigidbody&)
         CppAtom operator[]
-        CppAtom CopyAtom(unsigned int)
+        CppAtom copy_atom(unsigned int)
         void add_atomIndex(unsigned int)
-        CppRigidbody CreateRigid()
+        CppRigidbody create_rigid()
 
         CppAtomSelection non(CppAtomSelection &)
 
@@ -85,11 +85,11 @@ cdef class AtomSelection:
         return self.__invert__()
     
     
-    def CreateRigid(self):
+    def create_rigid(self):
         ret = Rigidbody()
         if ret.thisptr:
             del ret.thisptr
-        cdef CppRigidbody rig = self.thisptr.CreateRigid()
+        cdef CppRigidbody rig = self.thisptr.create_rigid()
         ret.thisptr = new CppRigidbody(rig)
         return ret
 

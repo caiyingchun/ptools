@@ -20,7 +20,7 @@ cdef extern from "attractrigidbody.h" namespace "PTools":
  
         void setRotation(int)
         void setTranslation(int)
-        CppCoord3D FindCenter()
+        CppCoord3D find_center()
 
         unsigned int Size()
 
@@ -33,7 +33,7 @@ cdef extern from "attractrigidbody.h" namespace "PTools":
 
         void PrintMatrix()
 
-        CppAtomSelection CA()
+        CppAtomSelection get_CA()
 
 
 
@@ -110,9 +110,9 @@ cdef class AttractRigidbody (Rigidbody) :
         return self.thisptr.Size()
 
         
-    def FindCenter(self):
+    def find_center(self):
         cdef CppRigidbody* rig = <CppRigidbody*> self.thisptr
-        cdef CppCoord3D* co = new CppCoord3D (rig.FindCenter())
+        cdef CppCoord3D* co = new CppCoord3D (rig.find_center())
         ret = Coord3D()
         del ret.thisptr
         ret.thisptr = co
@@ -140,9 +140,9 @@ cdef class AttractRigidbody (Rigidbody) :
     def PrintMatrix(self):
        (<CppAttractRigidbody*> self.thisptr).PrintMatrix()
 
-    def CA(self):
+    def get_CA(self):
        ret = AtomSelection()
        del ret.thisptr
-       cdef CppAtomSelection new_sel =  self.thisptr.CA()
+       cdef CppAtomSelection new_sel =  self.thisptr.get_CA()
        ret.thisptr  = new CppAtomSelection(new_sel)
        return ret

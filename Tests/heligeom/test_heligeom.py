@@ -45,7 +45,7 @@ class TestHeligeom(unittest.TestCase):
         dna.add(new, BDNA())
 
         # change the type of a base
-        dna.ChangeType(0, "A", TEST_BP_RED)
+        dna.change_type(0, "A", TEST_BP_RED)
 
         # turn the center base
         dna.apply_local(Roll(30), dna.Size() / 2)
@@ -54,7 +54,7 @@ class TestHeligeom(unittest.TestCase):
         dna = dna.SubDNA(2, dna.Size() - 3)
 
         # change to a All Atom representation
-        dna.ChangeRepresentation(TEST_BP_PDB)
+        dna.change_representation(TEST_BP_PDB)
 
         result = dna.PrintPDB()
         with open(TEST_BASIC_MANIP_EXPECTED_PDB, 'rt') as f:

@@ -14,9 +14,9 @@ cdef extern from "DNA.h" namespace "PTools":
         void add(CppBasePair)
         void add(CppDNA, const CppMovement &)
         void add(CppDNA)
-        void ChangeType(int, string, string)
+        void change_type(int, string, string)
         void apply_local(const CppMovement&, int)
-        void ChangeRepresentation(string)
+        void change_representation(string)
         string PrintPDB()
 
 
@@ -86,16 +86,16 @@ cdef class DNA:
         else:
             self.thisptr.add(deref(dna.thisptr), deref(mov.thisptr))
     
-    def ChangeType(self, int pos, bytes basetype, bytes filename):
+    def change_type(self, int pos, bytes basetype, bytes filename):
         cdef const char * c_basetype = basetype
         cdef const char * c_filename = filename
-        self.thisptr.ChangeType(pos, str(c_basetype), str(c_filename))
+        self.thisptr.change_type(pos, str(c_basetype), str(c_filename))
 
     def apply_local(self, Movement mov, int posMov):
         self.thisptr.apply_local(deref(mov.thisptr), posMov)
 
-    def ChangeRepresentation(self, bytes rep):
-        self.thisptr.ChangeRepresentation(rep)
+    def change_representation(self, bytes rep):
+        self.thisptr.change_representation(rep)
 
     def PrintPDB(self):
         return self.thisptr.PrintPDB()

@@ -205,7 +205,7 @@ void WritePDB(const Rigidbody& rigid, std::string filename)
 
         const char * chainID="A" ;
 
-        Atom at = rigid.CopyAtom(i);
+        Atom at = rigid.copy_atom(i);
         const char* atomname=at._pdbAtomType.c_str();
         const char* residName=at.residType.c_str();
         int residnumber = at.residId;

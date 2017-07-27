@@ -699,7 +699,7 @@ void BaseAttractForceField::addLigand(AttractRigidbody & lig)
     setDummyTypeList(lig); // sets the dummy atom type. (virtual function customized for each Attract forcefield)
 
     AttractRigidbody centeredlig = lig ;
-    Coord3D com = lig.FindCenter();
+    Coord3D com = lig.find_center();
     m_ligcenter.push_back(com);
 
     m_movedligand.push_back(lig);

@@ -71,7 +71,7 @@ def run(args):
     rec = ptools.Rigidbody(args.receptor)
     lig = ptools.Rigidbody(args.ligand)
 
-    # Distance to receptor.
+    # distance to receptor.
     distance_to_receptor = args.distance_to_receptor or lig.Radius()
     distance_to_receptor *= args.distance_to_receptor_factor
 

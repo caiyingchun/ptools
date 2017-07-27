@@ -35,10 +35,10 @@ dbl Rmsd(const AtomSelection& atsel1, const AtomSelection& atsel2)
 
     for (uint i=0; i<atsel1.Size(); ++i)
     {
-        Atom atom1=atsel1.CopyAtom(i);
-        Atom atom2=atsel2.CopyAtom(i);
+        Atom atom1=atsel1.copy_atom(i);
+        Atom atom2=atsel2.copy_atom(i);
 
-        sum+=Dist2(atom1,atom2);
+        sum+=dist2(atom1,atom2);
     }
 
     return sqrt(sum/(dbl) atsel1.Size()) ;

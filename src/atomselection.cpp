@@ -33,12 +33,12 @@ AtomSelection::AtomSelection(const AtomSelection& oldsel)
 
 
 
-Rigidbody AtomSelection::CreateRigid()
+Rigidbody AtomSelection::create_rigid()
 {
     Rigidbody newrigid;
     for (uint i=0; i<this->Size(); i++)
     {
-        Atom at = m_rigid->CopyAtom(m_list[i]);
+        Atom at = m_rigid->copy_atom(m_list[i]);
         newrigid.add_atom(at);
     }
 

@@ -17,7 +17,7 @@ Mcoprigid::Mcoprigid()
 
 void Mcoprigid::setMain(AttractRigidbody& main) {
     _main=main;
-    _center = _main.FindCenter();
+    _center = _main.find_center();
 
 };
 

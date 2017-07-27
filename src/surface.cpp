@@ -83,7 +83,7 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
     { m_atomtypenumber[i] = rigid_tmp.getAtomTypeNumber(i);}
     for (int i=0; i<size_rigid; i++)
     {
-        Atom m_atom = rigid_tmp.CopyAtom(i);
+        Atom m_atom = rigid_tmp.copy_atom(i);
         radius.push_back(radi[m_atomtypenumber[i]]);
     }
 
@@ -136,7 +136,7 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
                     }
                     if (!coverd)
                     {
-                        Atom m_atom2 = rigid.CopyAtom(i);
+                        Atom m_atom2 = rigid.copy_atom(i);
                         m_atom2.coords = coord1 + coord4;
                         rigidsurf.add_atom(m_atom2);
                     }
@@ -163,7 +163,7 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
                 }
                 if (!coverd)
                 {
-                    Atom m_atom2 = rigid.CopyAtom(i);
+                    Atom m_atom2 = rigid.copy_atom(i);
                     m_atom2.coords = coord1 + coord4 ;
                     rigidsurf.add_atom(m_atom2);
                 }
@@ -193,7 +193,7 @@ Rigidbody Surface::outergrid(const Rigidbody & grid, const Rigidbody & rigid2, d
             dbl dist=Norm2(xyz1-xyz2);
             if (dist < srad) { select = false; }
         }
-        if (select) { rigid3.add_atom(grid.CopyAtom(i)); }
+        if (select) { rigid3.add_atom(grid.copy_atom(i)); }
     }
     return rigid3;
 }
@@ -220,7 +220,7 @@ Rigidbody Surface::removeclosest(const Rigidbody & rigid, dbl srad)
             }
     }
     for (int i=0; i<size; i++)
-    if (list[i]) { rigid2.add_atom(rigid.CopyAtom(i)); }
+    if (list[i]) { rigid2.add_atom(rigid.copy_atom(i)); }
     return rigid2;
 }
 
