@@ -6,9 +6,11 @@ import re
 
 # Set CONTEXT True to print latest context line for each match found
 CONTEXT = True
+DRY_RUN = True
+STRIP_TERMINALS = False
 
 def find_names_in_file(filename, names={}, context=CONTEXT):
-    """Find all class.method and module.class names in one file, return as keys in names dict."""
+    """Use regex to find all class.method and module.class names in one file, return as keys in names dict."""
     #e = re.compile('\.[A-Z]([A-Z0-9]*[a-z][a-z0-9]*[A-Z]|[a-z0-9]*[A-Z][A-Z0-9]*[a-z])[A-Za-z0-9]*')
     #e = re.compile('\.[a-zA-Z]([A-Z0-9]*[a-z][a-z0-9]*[A-Z]|[a-z0-9]*[A-Z][A-Z0-9]*[a-z])[A-Za-z0-9]*\(')
     e = re.compile('\.[a-zA-Z]+[a-zA-Z0-9_]*\(')
@@ -17,8 +19,8 @@ def find_names_in_file(filename, names={}, context=CONTEXT):
             line = linee.strip()
             match = e.search(line)
             try:
-                # group includes leading "." and trailing "("
-                name = match.group()[1:-1]
+                # Note: matching group includes leading "." and trailing "("
+                name = match.group()
                 if context:
                     names[name] = line
                 else:
@@ -53,17 +55,18 @@ def find_names(searchdirs='./', suffix=".py"):
     return names
 
 
-def print_names(names, key=lambda x: x.upper(), print_values=CONTEXT):
-    """Print in sorted order. Must re-order as necessary to avoid renaming problems."""
-    for name in sorted(names.keys(), key=key):
+def print_names(namesdict, key=lambda x: x.upper(), print_values=CONTEXT):
+    """Print names dictionary in sorted order. May need to re-order some entries to avoid renaming problems."""
+    for name in sorted(namesdict.keys(), key=key):
         if print_values:
-            print name, "  :  ", names[name]
+            print name, "  :  ", namesdict[name]
         else:
             print name
 
 
-def print_translations(tlist, print_values=CONTEXT):
-    for entry in tlist:
+def print_substitutions(subslist, print_values=CONTEXT):
+    """Print substitutions list in order."""
+    for entry in subslist:
         if print_values:
             old, new = entry
             print old, "  :  ", new
@@ -71,21 +74,28 @@ def print_translations(tlist, print_values=CONTEXT):
             print entry[0]
 
 
-def read_translations(filename):
-    """Read data from file to create translations list."""
-    translations = []
+def read_substitutions(filename):
+    """Read data from file to create substitutions list."""
+    substitutions = []
     with open(filename) as fin:
         for line in fin.readlines():
             #print filename, line.strip()
             entry = line.strip().split()
             if len(entry) == 2:
-                translations.append(entry)
+                substitutions.append(entry)
             else:
                 print entry
-    return translations
+    return substitutions
 
 
-def rename_all(translations):
+def  parse_entry(entry, strip_terminals=False):
+    """Return target and new value for substitution entry with or without terminal "." and "(" characters."""
+    target = entry[0] if not strip_terminals else entry[0][1:-1]
+    newvalue = entry[1] if not strip_terminals else entry[1][1:-1]
+    return target, newvalue
+
+
+def rename_all(substitutions, dry_run=DRY_RUN, strip_terminals=STRIP_TERMINALS):
     """Use unix sed command to rename identifiers in all relevant files."""
     # find . -name \*.h -exec sed --in-place 's/ABrotate/rotate/g' {} \;
     # find . -name \*.cpp -exec sed --in-place 's/ABrotate/rotate/g' {} \;
@@ -104,15 +114,25 @@ def rename_all(translations):
     name_arg_template = "*%s"
     sed_command_template = "s/%s/%s/g"
 
-    for entry in translations:
+    for entry in substitutions:
         if len(entry) != 2:
             continue
-        old, new = entry
+        old, new = parse_entry(entry, strip_terminals=strip_terminals)
         print "Renaming %s  -->  %s" % (old, new)
         for suffix in suffixes:
             name_arg = name_arg_template % (suffix)
             sed_command = sed_command_template % (old, new)
-            args = ('find', '.', '-name', name_arg, '-exec', 'sed', '-i', sed_command, '{}', ';')
+            print "sed command is: ", sed_command
+            if dry_run:
+                if strip_terminals:
+                    target = old
+                else:
+                    # Escape the metacharacters
+                    olde = "\\%s\\%s" % (old[:-1], old[-1])
+                    print "Escaping ", old, olde
+                args = ('find', '.', '-name', name_arg, '-exec', 'egrep', '-Hs', olde, '{}', ';')
+            else:
+                args = ('find', '.', '-name', name_arg, '-exec', 'sed', '-i', sed_command, '{}', ';')
             print args
             subprocess.Popen(args)
         time.sleep(1)
@@ -130,6 +150,6 @@ if __name__ == "__main__":
 
     elif task.startswith('rename'):
         namesfile = sys.argv[2]
-        translations = read_translations(namesfile)
-        rename_all(translations)
+        substitutions = read_substitutions(namesfile)
+        rename_all(substitutions)
 
