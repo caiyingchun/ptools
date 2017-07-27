@@ -60,7 +60,7 @@ public:
     void Rota(uint molIndex, dbl phi, dbl ssi, dbl rot, Vdouble& delta, uint shift, bool print=false);
 
     ///return van der waals energy
-    dbl getVdw(){return m_vdw;}
+    dbl get_vdw(){return m_vdw;}
 
     ///coulomb (electrostatic) energy
     dbl getCoulomb(){return m_elec;}

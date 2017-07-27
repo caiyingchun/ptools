@@ -50,7 +50,7 @@ def write_grid_to_pdb(grid, fp):
         fp (file): file pointer to output file
     """
     for i in xrange(len(grid)):
-        coords = grid.getCoords(i)
+        coords = grid.get_coords(i)
         print(PDB_FMT % {'atomid': i + 1,
                          'atomname': 'POSI',
                          'resname': 'PRO',

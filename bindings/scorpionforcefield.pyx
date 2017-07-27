@@ -7,7 +7,7 @@ cdef extern from "scorpionforcefield.h" namespace "PTools":
        CppScorpionForceField(string&, double)
        void addLigand(CppAttractRigidbody&)
        double Function(vector[double]&)
-       double getVdw()
+       double get_vdw()
        double getCoulomb()
        double nonbon8(CppAttractRigidbody& , CppAttractRigidbody& , CppAttractPairList & , int) 
 
@@ -39,8 +39,8 @@ cdef class ScorpionForceField:
 
         return self.thisptr.Function(v)
         
-    def getVdw(self):
-        return self.thisptr.getVdw()
+    def get_vdw(self):
+        return self.thisptr.get_vdw()
     
     def getCoulomb(self):
         return self.thisptr.getCoulomb()

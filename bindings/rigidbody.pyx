@@ -18,8 +18,8 @@ cdef extern from "rigidbody.h" namespace "PTools":
         CppRigidbody()
         CppRigidbody(CppRigidbody &)
         unsigned int Size()
-        CppCoord3D GetCoords(unsigned int)
-        void unsafeGetCoords(unsigned int, CppCoord3D &)
+        CppCoord3D get_coords(unsigned int)
+        void unsafeget_coords(unsigned int, CppCoord3D &)
         void SetCoords(unsigned int, CppCoord3D &)
         void rotate(CppCoord3D &, CppCoord3D &, double)
         void Translate(CppCoord3D &)
@@ -41,7 +41,7 @@ cdef extern from "rigidbody.h" namespace "PTools":
         # Returns the radius of a Rigidbody (max distance from center).
         double Radius()
 
-        CppAtomproperty & GetAtomProperty(unsigned int)
+        CppAtomproperty & get_atom_property(unsigned int)
         void SetAtomProperty(unsigned int, CppAtomproperty &)
 
         # AtomSelection:
@@ -122,9 +122,9 @@ cdef class Rigidbody:
     def size(self):
         return len(self)
 
-    def getCoords(self, unsigned int i):
+    def get_coords(self, unsigned int i):
         cdef Coord3D c = Coord3D()
-        cdef CppCoord3D cpp = self.thisptr.GetCoords(i)
+        cdef CppCoord3D cpp = self.thisptr.get_coords(i)
         c.x = cpp.x
         c.y = cpp.y
         c.z = cpp.z
@@ -133,8 +133,8 @@ cdef class Rigidbody:
     def print_pdb(self):
         return str(self)
 
-    def unsafeGetCoords(self, unsigned int i, Coord3D co):
-        self.thisptr.unsafeGetCoords(i, deref(co.thisptr))
+    def unsafeget_coords(self, unsigned int i, Coord3D co):
+        self.thisptr.unsafeget_coords(i, deref(co.thisptr))
 
     def setCoords(self, int i, Coord3D co):
         self.thisptr.SetCoords(i, deref(co.thisptr))
@@ -176,8 +176,8 @@ cdef class Rigidbody:
     def SetAtom(self, unsigned int position, Atom at):
         self.thisptr.SetAtom(position, deref(<CppAtom*>at.thisptr))
 
-    def GetAtomProperty(self, unsigned int position):
-        cdef CppAtomproperty cppatprop = self.thisptr.GetAtomProperty(position)
+    def get_atom_property(self, unsigned int position):
+        cdef CppAtomproperty cppatprop = self.thisptr.get_atom_property(position)
         cdef Atomproperty pyAtprop = Atomproperty()
         cdef CppAtomproperty * new_atomprop = new CppAtomproperty(cppatprop)
         del pyAtprop.thisptr

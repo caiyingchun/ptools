@@ -99,7 +99,7 @@ class MinimizationTests(unittest.TestCase):
         lbfgs_minimizer = Lbfgs(self.forcefield)
         lbfgs_minimizer.minimize(self.niter)
 
-        X = lbfgs_minimizer.GetMinimizedVars()  # variables after minimization
+        X = lbfgs_minimizer.get_minimized_vars()  # variables after minimization
         euler_angles = X[0:3]
         dx, dy, dz = X[3:]
         for angle in euler_angles:
@@ -127,7 +127,7 @@ class MinimizationTests(unittest.TestCase):
         lbfgs_minimizer = Lbfgs(self.forcefield)
         lbfgs_minimizer.minimize(self.niter)
 
-        X = lbfgs_minimizer.GetMinimizedVars()  # variables after minimization
+        X = lbfgs_minimizer.get_minimized_vars()  # variables after minimization
         euler_angles = X[0:3]
         dx, dy, dz = X[3:]
         for angle in euler_angles:

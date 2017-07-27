@@ -16,14 +16,14 @@ class TestSuperposeBindings(unittest.TestCase):
     def test_ptools_has_superpose(self):
         self.assertTrue(hasattr(ptools, 'superpose'))
 
-    def test_ptools_has_MatTrans2screw(self):
-        self.assertTrue(hasattr(ptools, 'MatTrans2screw'))
+    def test_ptools_has_mat44_to_screw(self):
+        self.assertTrue(hasattr(ptools, 'mat44_to_screw'))
 
 
-class TestMatTrans2screw(unittest.TestCase):
-    def test_MatTrans2screw(self):
+class Testmat44_to_screw(unittest.TestCase):
+    def test_mat44_to_screw(self):
         m = ptools.Matrix(3, 3)  # Initialize 3 x 3 matrix
-        s = ptools.MatTrans2screw(m)
+        s = ptools.mat44_to_screw(m)
         self.assertTrue(isinstance(s, ptools.Screw))
 
         self.assertAlmostEqual(s.angle, 1.57079632679)

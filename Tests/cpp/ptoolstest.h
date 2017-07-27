@@ -92,9 +92,9 @@ Coord3D A, B;
     }
 
 
-    void testUnsafeGetCoords()
+    void testUnsafeget_coords()
     {
-//         """in principle GetCoords(i,co) and unsafeGetCoords(i,co) should
+//         """in principle get_coords(i,co) and unsafeget_coords(i,co) should
 //         lead to the exact same coordinates if a sync has been done before
 //         calling the 'unsafe' version"""
         r2 = Rigidbody(TEST_1FIN_R_PDB);
@@ -112,8 +112,8 @@ Coord3D A, B;
         {
             Coord3D co1 = Coord3D();
             Coord3D co2 = Coord3D();
-            co1 = r.GetCoords(i);
-            r2.unsafeGetCoords(i,co2);
+            co1 = r.get_coords(i);
+            r2.unsafeget_coords(i,co2);
             TS_ASSERT_EQUALS(co1,co2);
         }
     }
@@ -192,7 +192,7 @@ public:
     void  testGetAtom()
     {
         Coord3D c1 ;
-        c.GetCoords(0, c1);
+        c.get_coords(0, c1);
         TS_ASSERT(  Norm2(c1 - Coord3D(3.0, 4.0, 5.0))<1e-6 );
     }
 
@@ -201,8 +201,8 @@ public:
         c.Translate(tr);
         Coord3D c1;
         Coord3D c2;
-        c.GetCoords(0, c1 );
-        c.GetCoords(1, c2 );
+        c.get_coords(0, c1 );
+        c.get_coords(1, c2 );
         TS_ASSERT(c1 == Coord3D(6.0, 8.5, 2.0));
     }
 
@@ -218,7 +218,7 @@ public:
         Coord3D co = Coord3D(3,2,1); // #new coordinates to be added
         c.SetCoords(0,co);
         Coord3D co2=Coord3D();
-        c.GetCoords(0,co2); // #get the coordinates back
+        c.get_coords(0,co2); // #get the coordinates back
         TS_ASSERT(Norm2(co-co2)<1.0e-6);
     }
 
@@ -365,7 +365,7 @@ public:
 
         Superpose_t  s = superpose(r1,r2);
 
-        Screw v =  MatTrans2screw(s.matrix);
+        Screw v =  mat44_to_screw(s.matrix);
 //        v.Print();
 
         Rigidbody r3;
@@ -373,22 +373,22 @@ public:
         r3.Translate(v.normtranslation*v.unitVector);
 
 
-//        r3.GetMatrix().Print();
+//        r3.get_matrix().Print();
 
 //        s.matrix.Print();
 
-        if(!s.matrix.almostEqual(r3.GetMatrix(),1e-2))
+        if(!s.matrix.almostEqual(r3.get_matrix(),1e-2))
            {
                cout << "(((((((((((((((((\n";
                s.matrix.Print();
                cout << "\n";
-               r3.GetMatrix().Print();
+               r3.get_matrix().Print();
                cout << v.angle << "\n";
 
            }
 
 
-         TS_ASSERT(s.matrix.almostEqual(r3.GetMatrix(),1e-2));
+         TS_ASSERT(s.matrix.almostEqual(r3.get_matrix(),1e-2));
 
 
         }

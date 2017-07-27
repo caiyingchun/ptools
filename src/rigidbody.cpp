@@ -68,7 +68,7 @@ void Rigidbody::add_atom(const Atomproperty& at, Coord3D co)
 
 Atom Rigidbody::copy_atom(uint i) const
 {
-    Atom at(mAtomProp[i],GetCoords(i));
+    Atom at(mAtomProp[i],get_coords(i));
     return at;
 }
 
@@ -103,7 +103,7 @@ Coord3D Rigidbody::find_center() const
     Coord3D center(0.0,0.0,0.0);
     for (uint i=0; i< this->Size() ; i++)
     {
-        center =  center + GetCoords(i);
+        center =  center + get_coords(i);
     }
     return ( (1.0/(dbl)this->Size())*center);
 }
@@ -121,7 +121,7 @@ dbl Rigidbody::RadiusGyration()
     dbl r=0.0;
     for (uint i=0; i< this->Size(); i++)
     {
-        r += Norm2( c - this->GetCoords(i) );
+        r += Norm2( c - this->get_coords(i) );
     }
 
     dbl result = sqrt( r/ (double) this->Size() );
@@ -135,7 +135,7 @@ dbl Rigidbody::Radius()
     dbl radius = 0.0;
     for (uint i=0; i < size; i++)
     {
-        dbl rad=Norm(center - this->GetCoords(i));
+        dbl rad=Norm(center - this->get_coords(i));
         if (radius < rad) {radius=rad;}
     }
     return radius;
@@ -286,7 +286,7 @@ AtomSelection Rigidbody::backbone()
 Rigidbody Rigidbody::operator+(const Rigidbody& rig) {
     Rigidbody rigFinal(*this);
     for (uint i=0; i< rig.Size() ; i++) {
-        rigFinal.add_coord(rig.GetCoords(i));
+        rigFinal.add_coord(rig.get_coords(i));
         rigFinal.mAtomProp.push_back(rig.mAtomProp[i]);
     }
     return rigFinal;
@@ -307,10 +307,10 @@ std::string Rigidbody::PrintPDB() const
     std::string output;
     for (uint i=0; i < size-1 ; i++)
     {
-         Atom at(mAtomProp[i], this->GetCoords(i));
+         Atom at(mAtomProp[i], this->get_coords(i));
          output = output + at.ToPdbString() + "\n" ;
     }
-    Atom at(mAtomProp[size-1], this->GetCoords(size-1));
+    Atom at(mAtomProp[size-1], this->get_coords(size-1));
     output += at.ToPdbString(); // append the last pdb string, without "\n"
 
 

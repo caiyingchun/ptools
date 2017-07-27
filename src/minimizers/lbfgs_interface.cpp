@@ -195,7 +195,7 @@ void Lbfgs::minimize(int maxiter)
 
 
 
-std::vector<double>Lbfgs::GetMinimizedVarsAtIter(uint iter)
+std::vector<double>Lbfgs::get_minimized_vars_at_iter(uint iter)
 {
 if (iter>=m_vars_over_time.size())
   {

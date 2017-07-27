@@ -15,7 +15,7 @@ def read_translations(filename="translation.dat"):
     """Return dictionary of translations from PDB-format file indexed by translation number (atomid)."""
     rb = ptools.Rigidbody("translation.dat")
     print("Read {:d} translations from translation.dat".format(len(rb)))
-    translations = [(rb.GetAtomProperty(i).atomId, rb.getCoords(i)) for i in xrange(len(rb))]
+    translations = [(rb.get_atom_property(i).atomId, rb.get_coords(i)) for i in xrange(len(rb))]
     return dict(translations)
 
 
@@ -154,8 +154,8 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
                 lbfgs_minimizer = ff_specs['minimizer_class'](forcefield)
 
                 lbfgs_minimizer.minimize(niter)
-                ntraj = lbfgs_minimizer.GetNumberIter()
-                X = lbfgs_minimizer.GetMinimizedVars()  # optimized freedom variables after minimization
+                ntraj = lbfgs_minimizer.get_number_iter()
+                X = lbfgs_minimizer.get_minimized_vars()  # optimized freedom variables after minimization
 
                 output = ptools.AttractRigidbody(ligand)
 
@@ -169,7 +169,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
 
                 if ftraj is not None:
                     for iteration in range(ntraj):
-                        traj = lbfgs_minimizer.GetMinimizedVarsAtIter(iteration)
+                        traj = lbfgs_minimizer.get_minimized_vars_at_iter(iteration)
                         for t in traj[0:6]:
                             ftraj.write("%f " % t)
                         ftraj.write("\n")
@@ -186,5 +186,5 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
             forcefield = ff_specs['ff_class'](ff_specs['ff_file'], surreal(500))
             print("{:>4s} {:>6s} {:>6s} {:>13s} {:>13s} {:>13s} {:>13s}".format(' ', 'Trans', 'Rot', 'Ener', 'RmsdCA_ref', "VDW", "Coulomb"))
             pl = ptools.AttractPairList(receptor, ligand, surreal(500))
-            print("{:<4s} {:6d} {:6d} {:13.7f} {:>13s} {:13.7f} {:13.7f}".format("==", transnb, rotnb, forcefield.nonbon8(receptor, ligand, pl), str(rms), forcefield.getVdw(), forcefield.getCoulomb()))
+            print("{:<4s} {:6d} {:6d} {:13.7f} {:>13s} {:13.7f} {:13.7f}".format("==", transnb, rotnb, forcefield.nonbon8(receptor, ligand, pl), str(rms), forcefield.get_vdw(), forcefield.getCoulomb()))
             output.PrintMatrix()

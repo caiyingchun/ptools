@@ -84,7 +84,7 @@ def distAxis(rig, hp):
     """Return the minimal and maximal distances between the axis and the
     rigid body."""
     natoms = len(rig)
-    all_distances = [distance(rig.getCoords(i) - hp.point, hp.unitVector)
+    all_distances = [distance(rig.get_coords(i) - hp.point, hp.unitVector)
                      for i in xrange(0, natoms)]
     return min(all_distances), max(all_distances)
 
@@ -174,7 +174,7 @@ def groove_width_calculation(hp, mono1):
 def changeChain(rig, letter):
     rsize = rig.size()
     for i in xrange(0, rsize):
-        at = rig.GetAtomProperty(i)
+        at = rig.get_atom_property(i)
         at.chainId = letter
         rig.SetAtomProperty(i, at)
     return rig
@@ -228,7 +228,7 @@ def heliAnalyze(mono1, mono2, doprint=True):
     def coord3d_to_str(v):
         return '{:6.2f}{:8.2f}{:8.2f}'.format(v.x, v.y, v.z)
 
-    hp = ptools.MatTrans2screw(ptools.superpose(mono2, mono1).matrix)
+    hp = ptools.mat44_to_screw(ptools.superpose(mono2, mono1).matrix)
 
     if doprint:
         dmin, dmax = distAxis(mono1, hp)

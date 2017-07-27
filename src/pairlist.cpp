@@ -83,8 +83,8 @@ void AttractPairList::update()
             uint j=activerec[jj];
 
 
-            Coord3D c1 = mp_ligand->GetCoords(i) ;
-            Coord3D c2 = mp_receptor->GetCoords(j);
+            Coord3D c1 = mp_ligand->get_coords(i) ;
+            Coord3D c2 = mp_receptor->get_coords(j);
             if (Norm2(c1-c2) <= squarecutoff)
             {
                 vectl.push_back(i);

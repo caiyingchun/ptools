@@ -78,7 +78,7 @@ private: //private methods
 
         _uptodate = true;
         //modify the function pointer _getcoords to call the "unsafe" method next time (faster)
-        _getcoords = & CoordsArray::unsafeGetCoords;
+        _getcoords = & CoordsArray::unsafeget_coords;
         (*this.* _getcoords)(i, co); //return the correct function
 
     };
@@ -92,13 +92,13 @@ public:
     CoordsArray(const CoordsArray & ca); //copy constructor
 
     /// get the cached coordinates. You must ensure that update() has been called first !
-    void inline unsafeGetCoords(const uint i, Coord3D& co) const { co = _movedcoords[i];};
+    void inline unsafeget_coords(const uint i, Coord3D& co) const { co = _movedcoords[i];};
 
     void add_coord(const Coord3D& co) {_refcoords.push_back(co); _movedcoords.push_back(co);  _modified();  };
     uint Size() const {return _refcoords.size();};
 
 
-    void GetCoords(const uint i, Coord3D& co)  const throw(std::out_of_range) ;
+    void get_coords(const uint i, Coord3D& co)  const throw(std::out_of_range) ;
 
     void SetCoords(const uint k, const Coord3D& co);
 
@@ -112,7 +112,7 @@ public:
     std::string PrintMatrix() const;
 
     ///return the rotation/translation matrix
-    Matrix GetMatrix() const;
+    Matrix get_matrix() const;
 
 
 

@@ -2,10 +2,10 @@ cdef extern from "coordsarray.h" namespace "PTools":
     cdef cppclass CppCoordsArray "PTools::CoordsArray":
       CppCoordsArray() 
       CppCoordsArray( CppCoordsArray & )
-      void unsafeGetCoords(unsigned int , CppCoord3D& )
+      void unsafeget_coords(unsigned int , CppCoord3D& )
       void add_coord(CppCoord3D& co)
       unsigned int Size()
-      void GetCoords(unsigned int, CppCoord3D&) 
+      void get_coords(unsigned int, CppCoord3D&) 
       void SetCoords(unsigned int, CppCoord3D&)
       void Translate(CppCoord3D&)
       void euler_rotate(double , double, double)
@@ -29,22 +29,22 @@ cdef class CoordsArray:
         print "Depreciated, use len(obj) instead"
         return self.thisptr.Size()
 
-    #def unsafeGetCoords(self, int i, Coord3D co):
+    #def unsafeget_coords(self, int i, Coord3D co):
     #    cdef Coord3D c
     #    cdef CppCoord3D *coptr
     #    c = <Coord3D> co
     #    coptr = c.thisptr
-    #    self.thisptr.unsafeGetCoords(i, deref(coptr))
+    #    self.thisptr.unsafeget_coords(i, deref(coptr))
     
 
-    def unsafeGetCoords(self, int i, Coord3D co):
-       self.thisptr.unsafeGetCoords(i, deref(co.thisptr))
+    def unsafeget_coords(self, int i, Coord3D co):
+       self.thisptr.unsafeget_coords(i, deref(co.thisptr))
 
     def add_coord(self, Coord3D co):
         self.thisptr.add_coord( deref(co.thisptr) )
 
-    def GetCoords(self, i, Coord3D co):
-        self.thisptr.GetCoords(i, deref(co.thisptr))
+    def get_coords(self, i, Coord3D co):
+        self.thisptr.get_coords(i, deref(co.thisptr))
 
     def SetCoords(self, i, Coord3D co):
         self.thisptr.SetCoords(i, deref(co.thisptr))

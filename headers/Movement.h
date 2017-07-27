@@ -30,7 +30,7 @@ namespace PTools
     void apply(Rigidbody& rigbody)const;
     
     ///return the Matrix
-    const Matrix& GetMatrix() const;
+    const Matrix& get_matrix() const;
     
     ///print the Matrix
     void Print() const;

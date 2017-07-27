@@ -91,13 +91,13 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
     for (int i=0; i<size_rigid; i++)
         if ( radius[i] != 0.0 )
         {
-            Coord3D coord1 = rigid.GetCoords(i);
+            Coord3D coord1 = rigid.get_coords(i);
             int numneh = 0;
             neigh.clear();
             for (int j=0; j<size_rigid; j++) // generate neighbor list
                 if (i!=j)
                 {
-                    Coord3D coord2 = rigid.GetCoords(j);
+                    Coord3D coord2 = rigid.get_coords(j);
                     dbl ccdist = Norm2(coord1 - coord2);
                     dbl rr = (radius[i]+radius[j]+2.0*srad) * (radius[i]+radius[j]+2.0*srad);
                     if (ccdist <= rr)
@@ -128,7 +128,7 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
                     bool coverd = false;
                     while ((!coverd) && (l <= numneh))
                     {
-                        Coord3D coord5 = rigid.GetCoords(neigh[l]);
+                        Coord3D coord5 = rigid.get_coords(neigh[l]);
                         dbl ddd = Norm2(coord1 + coord4 - coord5);
                         if (ddd < (radius[neigh[l]] + srad+m_sradshift)*(radius[neigh[l]] + srad+m_sradshift))
                         { coverd = true; }
@@ -155,7 +155,7 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
                 bool coverd = false;
                 while ((!coverd) && (l <= numneh))
                 {
-                    Coord3D coord5 = rigid.GetCoords(neigh[l]);
+                    Coord3D coord5 = rigid.get_coords(neigh[l]);
                     dbl ddd = Norm2(coord1 + coord4 - coord5);
                     if (ddd < (radius[neigh[l]] + srad+m_sradshift)*(radius[neigh[l]] + srad+m_sradshift))
                     { coverd = true; }
@@ -185,11 +185,11 @@ Rigidbody Surface::outergrid(const Rigidbody & grid, const Rigidbody & rigid2, d
     
     for (int i=0; i < grid_size; i++)
     {
-        Coord3D xyz1 = grid.GetCoords(i);
+        Coord3D xyz1 = grid.get_coords(i);
         bool select = true;
         for (int j=0; j<size2; j++)
         {
-            Coord3D xyz2 = rigid2.GetCoords(j);
+            Coord3D xyz2 = rigid2.get_coords(j);
             dbl dist=Norm2(xyz1-xyz2);
             if (dist < srad) { select = false; }
         }
@@ -210,11 +210,11 @@ Rigidbody Surface::removeclosest(const Rigidbody & rigid, dbl srad)
 
     for (int i=0; i<size; i++)
     {
-        Coord3D  xyz1 = rigid.GetCoords(i);
+        Coord3D  xyz1 = rigid.get_coords(i);
         for (int j=0; j<size; j++)
             if ((list[i]) && (i!=j))
             {
-                Coord3D  xyz2 = rigid.GetCoords(j);
+                Coord3D  xyz2 = rigid.get_coords(j);
                 dbl dist=Norm2(xyz1 - xyz2);
                 if (dist < srad) { list[j] = false; }
             }

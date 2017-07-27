@@ -88,7 +88,7 @@ void DNA::PlaceBasePairs( Rigidbody& model)
 Matrix DNA::GetMatBetwenBasePair( Rigidbody& modelOfBasePair,int pos)
 {
     Parameter param =Parameter();
-    Rigidbody secondAxis = strand[pos].GetRigidBody();
+    Rigidbody secondAxis = strand[pos].get_rigid();
     Superpose_t sup =superpose (param.BuildAxisCentered(modelOfBasePair), param.BuildAxisCentered( secondAxis ) );
     return sup.matrix;
 }
@@ -97,7 +97,7 @@ Matrix DNA::GetMatBetwenBasePair( Rigidbody& modelOfBasePair,int pos)
 void DNA::RenumberModel (Rigidbody& model)
 {
 
-  unsigned int tempId = model.GetAtomProperty(0).residId;
+  unsigned int tempId = model.get_atom_property(0).residId;
   string chain;
   unsigned int nbRes=0;
   unsigned int second = 0;
@@ -116,7 +116,7 @@ void DNA::RenumberModel (Rigidbody& model)
   chain = "A";
   for (unsigned int i =0; i < modelSize; i++ )
   {
-    Atomproperty ap=model.GetAtomProperty(i);
+    Atomproperty ap=model.get_atom_property(i);
     unsigned int Id = ap.residId;
     if ( tempId != Id )
     {
@@ -607,11 +607,11 @@ Rigidbody DNA::create_rigidOfStrand(std::string chain)
       Rigidbody basePair;
       if (chain == "B" || chain == "b")
       {
-          basePair = strand[strandSize-1-i].GetRigidBodyOfBase(chain);
+          basePair = strand[strandSize-1-i].get_rigidOfBase(chain);
       }
       else
       {
-          basePair = strand[i].GetRigidBodyOfBase(chain);
+          basePair = strand[i].get_rigidOfBase(chain);
       }
       unsigned int basePairSize  = basePair.Size();
       for (unsigned int j=0; j <basePairSize ; j++)
@@ -636,11 +636,11 @@ void DNA::change_representation(std::string dataBaseFile)
   unsigned int strandSize  = strand.size();
   for (unsigned int i = 0; i < strandSize ; i++)
   {
-    Movement mov = Movement(strand[i].GetMatrix());
+    Movement mov = Movement(strand[i].get_matrix());
 
     for (unsigned int j =0; j < chainIDsSize; j++ )
     {
-      if ( strand[i].GetType()[0] == chainIDs[j])
+      if ( strand[i].get_type()[0] == chainIDs[j])
       {
 	strand[i]=BasePair(vbase[j]);
 	strand[i].apply(mov);
@@ -654,10 +654,10 @@ void DNA::change_representation(std::string dataBaseFile)
 
 Matrix DNA::GetLocalMatrix(int pos)const
 {
-   if (pos == 0) return strand[0].GetMatrix();
+   if (pos == 0) return strand[0].get_matrix();
 
-   Matrix mtot = strand[pos].GetMatrix();
-   Matrix prec = inverseMatrix44(strand[pos-1].GetMatrix());
+   Matrix mtot = strand[pos].get_matrix();
+   Matrix prec = inverseMatrix44(strand[pos-1].get_matrix());
 
    return matrixMultiply( prec, mtot );
 
@@ -666,8 +666,8 @@ Matrix DNA::GetLocalMatrix(int pos)const
 Parameter DNA::GetLocalParameter(int pos)
 {
   Parameter param =Parameter();
-  Rigidbody firstAxis = strand[pos-1].GetRigidBody();
-  Rigidbody secondAxis = strand[pos].GetRigidBody();
+  Rigidbody firstAxis = strand[pos-1].get_rigid();
+  Rigidbody secondAxis = strand[pos].get_rigid();
   param.MeasureParameters(param.BuildAxisCentered(firstAxis),param.BuildAxisCentered(secondAxis));
   return param;
 
@@ -734,7 +734,7 @@ void DNA::applyGlobal(const Matrix& m ,int posAnchor)
 
 void DNA::apply(const Movement& mov)
 {
-    DNA::apply(mov.GetMatrix());
+    DNA::apply(mov.get_matrix());
 }
 
 
@@ -743,7 +743,7 @@ void DNA::apply(const Matrix& m)
   unsigned int strandSize  = strand.size();
   for (unsigned int i=0; i <strandSize; i++)
   {
-    Rigidbody rb = strand[i].GetRigidBody();
+    Rigidbody rb = strand[i].get_rigid();
     rb.apply_matrix(m);
     strand[i].SetRigidBody(rb);
   }
@@ -783,7 +783,7 @@ void DNA::ChangeBasePair(const BasePair& bp, int pos)
 
 void DNA::Relocate(const BasePair& anchor,int posAnchor)
 {
-  apply(superpose(anchor.GetRigidBody(),strand[posAnchor].GetRigidBody(),0).matrix);
+  apply(superpose(anchor.get_rigid(),strand[posAnchor].get_rigid(),0).matrix);
 }
 
 
@@ -792,9 +792,9 @@ Matrix DNA::Reconstruct(int pos, const Matrix& local)
   Matrix nextlocal;
   if ((unsigned int)pos<strand.size()) nextlocal = GetLocalMatrix(pos+1);
 
-  Matrix prec = strand[pos-1].GetMatrix();
+  Matrix prec = strand[pos-1].get_matrix();
 
-  strand[pos].apply(inverseMatrix44(strand[pos].GetMatrix()));//erasing the old matrix
+  strand[pos].apply(inverseMatrix44(strand[pos].get_matrix()));//erasing the old matrix
 
   strand[pos].apply(prec);
   strand[pos].apply(local);
@@ -815,13 +815,13 @@ void DNA::add(const DNA & d, const Movement & mov)
 /// add a basepair at the end of the strand of this DNA
 void DNA::add(BasePair bp, const Movement & mov)
 {
-    Matrix oldmouvement = bp.GetMatrix ();
+    Matrix oldmouvement = bp.get_matrix ();
     bp.apply(inverseMatrix44 (oldmouvement));
     if (strand.size()>0)
     {
-        bp.apply(matrixMultiply(strand[strand.size()-1].GetMatrix(),mov.GetMatrix()));
+        bp.apply(matrixMultiply(strand[strand.size()-1].get_matrix(),mov.get_matrix()));
     }
-    else bp.apply(mov.GetMatrix());
+    else bp.apply(mov.get_matrix());
     strand.push_back(bp);
     this->ChangeFormat();
 }
@@ -834,7 +834,7 @@ DNA DNA::SubDNA(uint start, uint end)const
     }
     DNA newdna = DNA();
 
-    newdna.add(strand[start],Movement(strand[start].GetMatrix()));
+    newdna.add(strand[start],Movement(strand[start].get_matrix()));
     for (uint i=start+1; i<end ;i++)
     {
         newdna.add(strand[i],Movement(this->GetLocalMatrix(i)));
@@ -847,7 +847,7 @@ void DNA::Replace(const DNA & d,int start)
     DNA preDNA = this->SubDNA(0,start);
     DNA postDNA =this->SubDNA(start+d.Size(),this->Size());
 
-    Movement initMov = Movement(strand[0].GetMatrix());
+    Movement initMov = Movement(strand[0].get_matrix());
     strand.clear();
 
 
@@ -860,7 +860,7 @@ void DNA::Replace(const DNA & d,int start)
 
 void DNA::change_type(int pos, std::string type, std::string filename) {
     Rigidbody dataBase = Rigidbody(filename);
-    Movement mov = Movement(strand[pos].GetMatrix());
+    Movement mov = Movement(strand[pos].get_matrix());
 
     strand[pos] = BasePair(dataBase.SelectChainId(type).create_rigid());
     strand[pos].apply(mov);
@@ -873,7 +873,7 @@ void DNA::Translate(Coord3D coord)
   unsigned int strandSize  = strand.size();
   for (unsigned int i=0; i <strandSize; i++)
   {
-    Rigidbody rb = strand[i].GetRigidBody();
+    Rigidbody rb = strand[i].get_rigid();
     rb.Translate(coord);
     strand[i].SetRigidBody(rb);
   }

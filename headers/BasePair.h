@@ -37,15 +37,15 @@ namespace PTools
     void apply(const Matrix&);
     
     /// return the Matrix of the BasePair
-    Matrix GetMatrix()const;
+    Matrix get_matrix()const;
     
     /// return the Movemeny of the BasePair
     Movement GetMovement()const;
     
     /// return the Rigidbody of the BasePair
-    Rigidbody GetRigidBody()const;
+    Rigidbody get_rigid()const;
     /// return the Rigidbody of the specified base (by chain)
-    Rigidbody GetRigidBodyOfBase(std::string chain);
+    Rigidbody get_rigidOfBase(std::string chain);
     /// define the Rigidbody of the BasePair
     void SetRigidBody(const Rigidbody&);
     
@@ -57,7 +57,7 @@ namespace PTools
     uint SetAtomNumberOfBase(std::string chain,int);
 
     
-    std::string GetType() const;
+    std::string get_type() const;
 
     void SetType(std::string type);
     

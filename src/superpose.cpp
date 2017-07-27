@@ -131,7 +131,7 @@ void Rotate(Rigidbody& rigid, Mat33 mat)
     for (uint i=0; i<rigid.Size(); i++)
     {
         Coord3D c;
-        c=rigid.GetCoords(i);
+        c=rigid.get_coords(i);
         x=c.x;
         y=c.y;
         z=c.z;
@@ -167,7 +167,7 @@ static void rigidToMatrix(const Rigidbody & rig, double output[][3])
 {
     for (uint atom=0; atom<rig.Size();atom++)
     {
-        Coord3D c = rig.GetCoords(atom);
+        Coord3D c = rig.get_coords(atom);
         output[atom][0]=c.x;
         output[atom][1]=c.y;
         output[atom][2]=c.z;
@@ -252,8 +252,8 @@ trans.z = mat44[3][2];
 * Alexis Angelidis. 
 * Departement of Computer Science, University of Otago. (2004). Technical Report
 */
-// Vissage MatTrans2screw(Mat33 rotmatrix, Coord3D t0, Coord3D t1)
-Screw MatTrans2screw(const Matrix& mat)
+// Vissage mat44_to_screw(Mat33 rotmatrix, Coord3D t0, Coord3D t1)
+Screw mat44_to_screw(const Matrix& mat)
 {
 
     Coord3D trans;
@@ -496,7 +496,7 @@ Superpose_t superpose(const Rigidbody& ref, const Rigidbody& mob, int verbosity)
 
 
 
-//     screw = MatTrans2screw(ident, t0, t1);
+//     screw = mat44_to_screw(ident, t0, t1);
 //     screw.point = screw.point + t1 ;
 
 

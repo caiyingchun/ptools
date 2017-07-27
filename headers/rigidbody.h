@@ -81,13 +81,13 @@ public:
     /*Atom GetAtom(uint pos) const
     {
         Coord3D co;
-        CoordsArray::GetCoords(pos, co);
+        CoordsArray::get_coords(pos, co);
         Atom at(mAtomProp[pos], co );
         return at;
     }*/
 
     /// return atom properties
-    Atomproperty const & GetAtomProperty(uint pos) const
+    Atomproperty const & get_atom_property(uint pos) const
     {
         return mAtomProp[pos];
     }
@@ -108,22 +108,22 @@ public:
     void add_atom(const Atom& at);
 
     //returns the coordinates of atom i
-    Coord3D GetCoords(uint i) const
+    Coord3D get_coords(uint i) const
     {
         assert(i<Size());
         Coord3D c;
-        CoordsArray::GetCoords(i,c) ;  //get the coordinates after translation/rotation
+        CoordsArray::get_coords(i,c) ;  //get the coordinates after translation/rotation
 
         return c;  //finally returns the final coordinates
     }
 
 
-    void unsafeGetCoords(uint i, Coord3D& co)
-      { CoordsArray::unsafeGetCoords(i,co); }
+    void unsafeget_coords(uint i, Coord3D& co)
+      { CoordsArray::unsafeget_coords(i,co); }
 
     void syncCoords()
     {
-      GetCoords(0);
+      get_coords(0);
     }
 
 	/// define coordinates of atom i
@@ -147,9 +147,9 @@ public:
     void apply_matrix(const Matrix & mat);
 
    /// get the 4x4 matrix
-   Matrix GetMatrix() const
+   Matrix get_matrix() const
    {
-     return CoordsArray::GetMatrix();
+     return CoordsArray::get_matrix();
    }
 
 

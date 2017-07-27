@@ -22,8 +22,8 @@ class TestBasePairBindings(unittest.TestCase):
     def test_has_len(self):
         self.assertTrue(hasattr(BasePair, '__len__'))
 
-    def test_has_GetRigidBody(self):
-        self.assertTrue(hasattr(BasePair, 'GetRigidBody'))
+    def test_has_get_rigid(self):
+        self.assertTrue(hasattr(BasePair, 'get_rigid'))
 
 
 class TestBasePair(unittest.TestCase):

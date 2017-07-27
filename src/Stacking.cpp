@@ -170,7 +170,7 @@ Rigidbody Stacking::AxisPyrimidine(const Rigidbody& pyr, const Coord3D& centerBa
 
 Rigidbody Stacking::AxisPyrimidineCopyPurine( const Coord3D& centerBase1, const Rigidbody& axisPurine )const
 {
-    Coord3D vectorPlanPur = axisPurine.GetCoords(1)-axisPurine.GetCoords(0);
+    Coord3D vectorPlanPur = axisPurine.get_coords(1)-axisPurine.get_coords(0);
     
     Rigidbody pyrAxis;
     pyrAxis.add_atom(Atomproperty(),centerBase1);
@@ -183,14 +183,14 @@ Rigidbody Stacking::AxisPurine(const Rigidbody& pur, const Coord3D& center)const
     //1 define two vector of the plan (check the chain to assure a clockwise order)
     Coord3D vectorPlan1 ;
     Coord3D vectorPlan2 ;
-    if (pur.GetAtomProperty(0).chainId=="A"){
-        vectorPlan1 = pur.GetCoords(1)-center;
-        vectorPlan2 = pur.GetCoords(0)-center;
+    if (pur.get_atom_property(0).chainId=="A"){
+        vectorPlan1 = pur.get_coords(1)-center;
+        vectorPlan2 = pur.get_coords(0)-center;
     }
     else
     {
-        vectorPlan1 = pur.GetCoords(0)-center;
-        vectorPlan2 = pur.GetCoords(1)-center;
+        vectorPlan1 = pur.get_coords(0)-center;
+        vectorPlan2 = pur.get_coords(1)-center;
     }
 
     //2 find orthogonal vector to defined plan
@@ -207,9 +207,9 @@ Rigidbody Stacking::AxisPurine(const Rigidbody& pur, const Coord3D& center)const
 
 bool Stacking::IsStacked(const Rigidbody& axe1, const Rigidbody& axe2,double angleThreshold,double overlapThreshold)const
 {
-    Coord3D vector1 =axe1.GetCoords(1)-axe1.GetCoords(0);
-    Coord3D vector2 =axe2.GetCoords(1)-axe2.GetCoords(0);
-    Coord3D vectorD =(axe2.GetCoords(0)-axe1.GetCoords(0)).Normalize();
+    Coord3D vector1 =axe1.get_coords(1)-axe1.get_coords(0);
+    Coord3D vector2 =axe2.get_coords(1)-axe2.get_coords(0);
+    Coord3D vectorD =(axe2.get_coords(0)-axe1.get_coords(0)).Normalize();
 //    cerr <<acos(ScalProd(vector1,vector2)) <<endl;
 //    cerr <<acos(ScalProd(vector1,vectorD)) <<endl;
 

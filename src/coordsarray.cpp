@@ -117,7 +117,7 @@ std::string CoordsArray::PrintMatrix() const
 }
 
 
-Matrix CoordsArray::GetMatrix() const
+Matrix CoordsArray::get_matrix() const
 {
 Matrix matrix(4,4);
 
@@ -131,13 +131,13 @@ return matrix;
 
 
 
-void CoordsArray::GetCoords(const uint i, Coord3D& co)  const throw(std::out_of_range)
+void CoordsArray::get_coords(const uint i, Coord3D& co)  const throw(std::out_of_range)
 {
 
     if (i>=Size())
     {
         std::stringstream ss (std::stringstream::in | std::stringstream::out);
-        ss <<  "CoordsArray::GetCoords : out of range :  ";
+        ss <<  "CoordsArray::get_coords : out of range :  ";
         ss << i << " is out of bounds (object size: " << Size() << ")\n";
         std::string message = ss.str() ;
         std::cerr << message ;

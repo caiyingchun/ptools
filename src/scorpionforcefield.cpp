@@ -131,7 +131,7 @@ dbl ScorpionForceField::nonbon8_forces(AttractRigidbody& rec, AttractRigidbody& 
     dbl sumElectrostatic=0.0;
 
 
-    //synchronize coordinates for using unsafeGetCoords
+    //synchronize coordinates for using unsafeget_coords
     rec.syncCoords();
     lig.syncCoords();
 
@@ -152,8 +152,8 @@ dbl ScorpionForceField::nonbon8_forces(AttractRigidbody& rec, AttractRigidbody& 
         dbl eij = m_epsij[ rAtomCat ][ lAtomCat ];
 
 
-        lig.unsafeGetCoords(jl,a);
-        rec.unsafeGetCoords(ir,b);
+        lig.unsafeget_coords(jl,a);
+        rec.unsafeget_coords(ir,b);
 
         Coord3D dx = a-b ;
         dbl r2 = Norm2(dx);

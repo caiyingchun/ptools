@@ -22,15 +22,15 @@ class TestCoordsArray(unittest.TestCase):
 
     def testGetAtom(self):
         c1 = Coord3D()
-        self.c.GetCoords(0, c1)
+        self.c.get_coords(0, c1)
         assertCoordsAlmostEqual(self, c1, Coord3D(3.0, 4.0, 5.0))
 
     def testBasicTranslation(self):
         self.c.Translate(self.tr)
         c1 = Coord3D()
         c2 = Coord3D()
-        self.c.GetCoords(0, c1)
-        self.c.GetCoords(1, c2)
+        self.c.get_coords(0, c1)
+        self.c.get_coords(1, c2)
         assertCoordsAlmostEqual(self, c1, Coord3D(6.0, 8.5, 2.0))
 
     def testSetCoords(self):
@@ -45,7 +45,7 @@ class TestCoordsArray(unittest.TestCase):
         co = Coord3D(3, 2, 1)  # new coordinates to be added
         self.c.SetCoords(0, co)
         co2 = Coord3D()
-        self.c.GetCoords(0, co2)  # get the coordinates back
+        self.c.get_coords(0, co2)  # get the coordinates back
         assertCoordsAlmostEqual(self, co, co2)
 
 

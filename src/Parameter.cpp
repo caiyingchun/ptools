@@ -165,14 +165,14 @@ void Parameter::MeasureParameters(const Rigidbody& oxyz1, const Rigidbody& oxyz2
 
 
     //the vector of the first coordinate
-    Coord3D X = oxyz1.GetCoords(1) - oxyz1.GetCoords(0);
-    Coord3D Y = oxyz1.GetCoords(2) - oxyz1.GetCoords(0);
-    Coord3D Z = oxyz1.GetCoords(3) - oxyz1.GetCoords(0);
+    Coord3D X = oxyz1.get_coords(1) - oxyz1.get_coords(0);
+    Coord3D Y = oxyz1.get_coords(2) - oxyz1.get_coords(0);
+    Coord3D Z = oxyz1.get_coords(3) - oxyz1.get_coords(0);
 
     //the vector of the second coordinate
-    Coord3D I = oxyz2.GetCoords(1) - oxyz2.GetCoords(0);
-    Coord3D J = oxyz2.GetCoords(2) - oxyz2.GetCoords(0);
-    Coord3D K = oxyz2.GetCoords(3) - oxyz2.GetCoords(0);
+    Coord3D I = oxyz2.get_coords(1) - oxyz2.get_coords(0);
+    Coord3D J = oxyz2.get_coords(2) - oxyz2.get_coords(0);
+    Coord3D K = oxyz2.get_coords(3) - oxyz2.get_coords(0);
 
     //the vector of the second axis are projeted in the first axis
     Coord3D e1(ScalProd(I, X), ScalProd(I, Y), ScalProd(I, Z));
@@ -190,7 +190,7 @@ void Parameter::MeasureParameters(const Rigidbody& oxyz1, const Rigidbody& oxyz2
 //    roll   = acos(ScalProd(Y,J));
 //    tilt    = acos(ScalProd(Z,K));
     //the vector between the two origins
-    Coord3D OO = oxyz2.GetCoords(0) - oxyz1.GetCoords(0);
+    Coord3D OO = oxyz2.get_coords(0) - oxyz1.get_coords(0);
     //the projection of the vector between the two origins on each axis.
     shift = ScalProd(OO,I);
     slide = ScalProd(OO,J);

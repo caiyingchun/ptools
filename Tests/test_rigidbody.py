@@ -23,11 +23,11 @@ class TestRigidbodyBindings(unittest.TestCase):
     def test_Rigidbody_has_size(self):
         self.assertTrue(hasattr(Rigidbody, 'size'))
 
-    def test_Rigidbody_has_getCoords(self):
-        self.assertTrue(hasattr(Rigidbody, 'getCoords'))
+    def test_Rigidbody_has_get_coords(self):
+        self.assertTrue(hasattr(Rigidbody, 'get_coords'))
 
-    def test_Rigidbody_has_unsafeGetCoords(self):
-        self.assertTrue(hasattr(Rigidbody, 'unsafeGetCoords'))
+    def test_Rigidbody_has_unsafeget_coords(self):
+        self.assertTrue(hasattr(Rigidbody, 'unsafeget_coords'))
 
     def test_Rigidbody_has_setCoords(self):
         self.assertTrue(hasattr(Rigidbody, 'setCoords'))
@@ -59,8 +59,8 @@ class TestRigidbodyBindings(unittest.TestCase):
     def test_Rigidbody_has_SetAtom(self):
         self.assertTrue(hasattr(Rigidbody, 'SetAtom'))
 
-    def test_Rigidbody_has_GetAtomProperty(self):
-        self.assertTrue(hasattr(Rigidbody, 'GetAtomProperty'))
+    def test_Rigidbody_has_get_atom_property(self):
+        self.assertTrue(hasattr(Rigidbody, 'get_atom_property'))
 
     def test_Rigidbody_has_SetAtomProperty(self):
         self.assertTrue(hasattr(Rigidbody, 'SetAtomProperty'))
@@ -144,15 +144,15 @@ class TestRigidbody(unittest.TestCase):
         self.assertEqual(atom.atomId, 4)
         self.assertEqual(atom.chainId, '')
 
-    def testGetCoords(self):
-        coords = self.r.getCoords(3)
+    def testget_coords(self):
+        coords = self.r.get_coords(3)
         assertCoordsAlmostEqual(self, coords, Coord3D(-16.159, 189.782, 106.402))
 
     def testTranslate(self):
         tr = Coord3D(3.2, 2.98, 14.22)
         s = Rigidbody(self.r)
         s.Translate(tr)
-        coords = s.getCoords(3)
+        coords = s.get_coords(3)
         ref = Coord3D(-16.159 + 3.2, 189.782 + 2.98, 106.402 + 14.22)
         assertCoordsAlmostEqual(self, coords, ref)
 
@@ -180,8 +180,8 @@ class TestRigidbody(unittest.TestCase):
         with self.assertRaisesRegexp(OverflowError, "can't convert negative value to unsigned int"):
             self.r.SetAtomProperty(-1, Atom())
 
-    def testUnsafeGetCoords(self):
-        """in principle GetCoords(i,co) and unsafeGetCoords(i,co) should
+    def testUnsafeget_coords(self):
+        """in principle get_coords(i,co) and unsafeget_coords(i,co) should
         lead to the exact same coordinates if a sync has been done before
         calling the 'unsafe' version"""
         r2 = Rigidbody(TEST_LIGAND_PDB)
@@ -198,8 +198,8 @@ class TestRigidbody(unittest.TestCase):
         for i in range(len(self.r)):
             co1 = Coord3D()
             co2 = Coord3D()
-            co1 = self.r.getCoords(i)
-            r2.unsafeGetCoords(i, co2)
+            co1 = self.r.get_coords(i)
+            r2.unsafeget_coords(i, co2)
             assertCoordsAlmostEqual(self, co1, co2)
 
     def testadd_atoms(self):
@@ -210,8 +210,8 @@ class TestRigidbody(unittest.TestCase):
         r.add_atom(at)
         self.assertAlmostEqual(len(r), 1)
 
-    def testGetAtomProperty(self):
-        atprop = self.r.GetAtomProperty(8)
+    def testget_atom_property(self):
+        atprop = self.r.get_atom_property(8)
         self.assertEqual(atprop.residType, 'GLU')
         self.assertEqual(atprop.residId, 2)
         self.assertEqual(atprop.atomId, 9)
@@ -220,7 +220,7 @@ class TestRigidbody(unittest.TestCase):
         prop = Atomproperty()
         prop.residType = 'AAA'
         self.r.SetAtomProperty(0, prop)
-        prop = self.r.GetAtomProperty(0)
+        prop = self.r.get_atom_property(0)
         self.assertEqual(prop.residType, 'AAA')
 
     def testSetAtomPropertyWithOutOfBoundsPosition(self):

@@ -23,10 +23,10 @@ class Lbfgs
             Lbfgs(ForceField& toMinim);
             ~Lbfgs();
             void minimize(int maxiter);
-            std::vector<double> GetMinimizedVars() const {return x;};
+            std::vector<double> get_minimized_vars() const {return x;};
 
-            std::vector<double> GetMinimizedVarsAtIter(uint iter);
-            int GetNumberIter() {return m_opt->niter;}
+            std::vector<double> get_minimized_vars_at_iter(uint iter);
+            int get_number_iter() {return m_opt->niter;}
 
 
 

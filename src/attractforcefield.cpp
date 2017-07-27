@@ -26,7 +26,7 @@ void extractExtra( Rigidbody& rig, std::vector<uint>& vCat, std::vector<dbl>& vC
 
     for (uint i=0; i<rig.Size(); i++)
     {
-        const Atomproperty at = rig.GetAtomProperty(i);
+        const Atomproperty at = rig.get_atom_property(i);
         std::string extra = at.extra;
         //std::cout << extra << std::endl;
         std::istringstream iss( extra );
@@ -100,7 +100,7 @@ dbl AttractForceField1::nonbon8_forces(AttractRigidbody& rec, AttractRigidbody& 
     dbl sumElectrostatic=0.0;
 
 
-    //synchronize coordinates for using unsafeGetCoords
+    //synchronize coordinates for using unsafeget_coords
     rec.syncCoords();
     lig.syncCoords();
 
@@ -124,8 +124,8 @@ dbl AttractForceField1::nonbon8_forces(AttractRigidbody& rec, AttractRigidbody& 
         dbl rlen = m_rc[ rAtomCat ][ lAtomCat ];
 
 
-        lig.unsafeGetCoords(jl,a);
-        rec.unsafeGetCoords(ir,b);
+        lig.unsafeget_coords(jl,a);
+        rec.unsafeget_coords(ir,b);
 
         Coord3D dx = a-b ;
         dbl r2 = Norm2(dx);
@@ -478,7 +478,7 @@ dbl AttractForceField2::nonbon8_forces(AttractRigidbody& rec, AttractRigidbody& 
 
     std::cout.precision(20);
 
-    //synchronise coordinates to later use unsafeGetCoords (should be faster)
+    //synchronise coordinates to later use unsafeget_coords (should be faster)
     rec.syncCoords();
     lig.syncCoords();
 
@@ -506,7 +506,7 @@ dbl AttractForceField2::nonbon8_forces(AttractRigidbody& rec, AttractRigidbody& 
         dbl charge= rec.m_charge[i]* lig.m_charge[j];  //charge product of the two atoms
         //std::cout << "charge: " << charge << std::endl;
 
-        rec.unsafeGetCoords(i,a); lig.unsafeGetCoords(j,b);
+        rec.unsafeget_coords(i,a); lig.unsafeget_coords(j,b);
 
         Coord3D dx  ( a-b ) ;
 
@@ -659,7 +659,7 @@ void BaseAttractForceField::Rota(uint molIndex, dbl phi,dbl ssi, dbl rot, Vdoubl
     {
         uint atomIndex = pLigCentered->m_activeAtoms[i];
 
-        Coord3D coords = pLigCentered->GetCoords(atomIndex);
+        Coord3D coords = pLigCentered->get_coords(atomIndex);
         X = coords.x;
         Y = coords.y;
         Z = coords.z;
