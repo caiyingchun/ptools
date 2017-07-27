@@ -26,7 +26,7 @@ cdef extern from "rigidbody.h" namespace "PTools":
         CppCoord3D FindCenter()
         void syncCoords()
         void AttractEulerRotate(double, double, double)
-        void ApplyMatrix(Array2D[double] &)
+        void apply_matrix(Array2D[double] &)
         CppAtom CopyAtom(unsigned int)
         void AddAtom(CppAtomproperty &, CppCoord3D)
         void AddAtom(CppAtom &)
@@ -161,7 +161,7 @@ cdef class Rigidbody:
         self.thisptr.syncCoords()
 
     def apply_matrix(self, Matrix mat):
-        self.thisptr.ApplyMatrix(deref(mat.thisptr))
+        self.thisptr.apply_matrix(deref(mat.thisptr))
 
     def CopyAtom(self, unsigned int atid):
         cdef CppAtom cpp_at = self.thisptr.CopyAtom(atid)

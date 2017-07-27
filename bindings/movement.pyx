@@ -22,7 +22,7 @@ cdef extern from "Movement.h" namespace "PTools":
         CppMovement() except+
         CppMovement(Array2D[double] &)
         Array2D[double] m
-        void Apply(CppRigidbody&)
+        void apply(CppRigidbody&)
         void Print() const
         string toString() const;
 
@@ -64,8 +64,8 @@ cdef class Movement:
         if self.thisptr:
             del self.thisptr
     
-    def Apply(self, Rigidbody rigid):
-        self.thisptr.Apply(deref(rigid.thisptr))
+    def apply(self, Rigidbody rigid):
+        self.thisptr.apply(deref(rigid.thisptr))
 
     def Print(self):
         self.thisptr.Print()

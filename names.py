@@ -6,8 +6,8 @@ import re
 
 # Set CONTEXT True to print latest context line for each match found
 CONTEXT = True
-DRY_RUN = True
-STRIP_TERMINALS = True
+DRY_RUN = False
+STRIP_TERMINALS = False
 
 def find_names_in_file(filename, names={}, context=CONTEXT):
     """Use regex to find all class.method and module.class names in one file, return as keys in names dict."""

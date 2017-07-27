@@ -284,7 +284,7 @@ Rigidbody prot1;
 
             Superpose_t sup = superpose(prot1,prot2); //# superpose(reference, mobile)
             Matrix matrix = sup.matrix;
-            prot2.ApplyMatrix(matrix);
+            prot2.apply_matrix(matrix);
             TS_ASSERT(Rmsd(prot2,prot1)<1e-6);
 
         }
@@ -340,7 +340,7 @@ public:
 
             Superpose_t s = superpose(r1,r2);
 
-            r2.ApplyMatrix(s.matrix);
+            r2.apply_matrix(s.matrix);
             TS_ASSERT( Rmsd(r1,r2) < 1e-4 );
 
 

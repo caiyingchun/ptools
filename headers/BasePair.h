@@ -32,9 +32,9 @@ namespace PTools
     void SetChainID();
 
     /// apply a Movement to the BasePair 
-    void Apply(const Movement& );
+    void apply(const Movement& );
     /// apply a Matrix to the BasePair
-    void Apply(const Matrix&);
+    void apply(const Matrix&);
     
     /// return the Matrix of the BasePair
     Matrix GetMatrix()const;

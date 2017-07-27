@@ -80,7 +80,7 @@ void DNA::PlaceBasePairs( Rigidbody& model)
     for ( unsigned int i = 0; i < strandSize; i++ )// strandSize
     {
         Rigidbody modelOfBasePair = GetModelOfBasePair( model, i, DNASize-i);
-        strand[i].Apply(GetMatBetwenBasePair ( modelOfBasePair,i ));
+        strand[i].apply(GetMatBetwenBasePair ( modelOfBasePair,i ));
     }
 }
 
@@ -514,8 +514,8 @@ void DNA::ApplyInitialMov(const Movement& mov)
   unsigned int strandSize  = strand.size();
   for (unsigned int i=1; i <strandSize; i++)
   {
-    strand[i].Apply(strand[i-1].GetMovement());
-    strand[i].Apply(mov);
+    strand[i].apply(strand[i-1].GetMovement());
+    strand[i].apply(mov);
   }
 }
 
@@ -643,7 +643,7 @@ void DNA::ChangeRepresentation(std::string dataBaseFile)
       if ( strand[i].GetType()[0] == chainIDs[j])
       {
 	strand[i]=BasePair(vbase[j]);
-	strand[i].Apply(mov);
+	strand[i].apply(mov);
       }
     }
   }
@@ -676,7 +676,7 @@ Parameter DNA::GetLocalParameter(int pos)
 void DNA::ApplylocalMov(const Movement& mov,int pos)
 {
   Matrix nextlocal = GetLocalMatrix(pos+1);
-  strand[pos].Apply(mov);
+  strand[pos].apply(mov);
 
   unsigned int strandSize  = strand.size();
   for (unsigned int i=pos+1; i <strandSize; i++)
@@ -693,12 +693,12 @@ void DNA::ApplyglobalMov(const Movement& mov)
   if (strandSize>1){
     nextlocal = GetLocalMatrix(1);
   }
-  strand[0].Apply(mov);
+  strand[0].apply(mov);
 
   for (unsigned int i=1; i <strandSize; i++)
   {
     nextlocal = Reconstruct(i,nextlocal);
-    strand[i].Apply(mov);
+    strand[i].apply(mov);
   }
 
 }
@@ -732,19 +732,19 @@ void DNA::ApplyGlobal(const Matrix& m ,int posAnchor)
 }
 
 
-void DNA::Apply(const Movement& mov)
+void DNA::apply(const Movement& mov)
 {
-    DNA::Apply(mov.GetMatrix());
+    DNA::apply(mov.GetMatrix());
 }
 
 
-void DNA::Apply(const Matrix& m)
+void DNA::apply(const Matrix& m)
 {
   unsigned int strandSize  = strand.size();
   for (unsigned int i=0; i <strandSize; i++)
   {
     Rigidbody rb = strand[i].GetRigidBody();
-    rb.ApplyMatrix(m);
+    rb.apply_matrix(m);
     strand[i].SetRigidBody(rb);
   }
 }
@@ -783,7 +783,7 @@ void DNA::ChangeBasePair(const BasePair& bp, int pos)
 
 void DNA::Relocate(const BasePair& anchor,int posAnchor)
 {
-  Apply(superpose(anchor.GetRigidBody(),strand[posAnchor].GetRigidBody(),0).matrix);
+  apply(superpose(anchor.GetRigidBody(),strand[posAnchor].GetRigidBody(),0).matrix);
 }
 
 
@@ -794,10 +794,10 @@ Matrix DNA::Reconstruct(int pos, const Matrix& local)
 
   Matrix prec = strand[pos-1].GetMatrix();
 
-  strand[pos].Apply(inverseMatrix44(strand[pos].GetMatrix()));//erasing the old matrix
+  strand[pos].apply(inverseMatrix44(strand[pos].GetMatrix()));//erasing the old matrix
 
-  strand[pos].Apply(prec);
-  strand[pos].Apply(local);
+  strand[pos].apply(prec);
+  strand[pos].apply(local);
 
   return nextlocal;
 }
@@ -816,12 +816,12 @@ void DNA::Add(const DNA & d, const Movement & mov)
 void DNA::Add(BasePair bp, const Movement & mov)
 {
     Matrix oldmouvement = bp.GetMatrix ();
-    bp.Apply(inverseMatrix44 (oldmouvement));
+    bp.apply(inverseMatrix44 (oldmouvement));
     if (strand.size()>0)
     {
-        bp.Apply(matrixMultiply(strand[strand.size()-1].GetMatrix(),mov.GetMatrix()));
+        bp.apply(matrixMultiply(strand[strand.size()-1].GetMatrix(),mov.GetMatrix()));
     }
-    else bp.Apply(mov.GetMatrix());
+    else bp.apply(mov.GetMatrix());
     strand.push_back(bp);
     this->ChangeFormat();
 }
@@ -863,7 +863,7 @@ void DNA::ChangeType(int pos, std::string type, std::string filename) {
     Movement mov = Movement(strand[pos].GetMatrix());
 
     strand[pos] = BasePair(dataBase.SelectChainId(type).CreateRigid());
-    strand[pos].Apply(mov);
+    strand[pos].apply(mov);
 
     ChangeFormat();
 }

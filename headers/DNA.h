@@ -55,8 +55,8 @@ namespace PTools
     void ApplyGlobal(const Movement&,int posAnchor);
     
     ///apply a Matrix/Movement to the DNA as a rigidbody
-    void Apply(const Matrix&);
-    void Apply(const Movement&);
+    void apply(const Matrix&);
+    void apply(const Movement&);
     
 
     ///apply a vector to the DNA as a rigidbody

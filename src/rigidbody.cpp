@@ -318,7 +318,7 @@ std::string Rigidbody::PrintPDB() const
 }
 
 
-void Rigidbody::ApplyMatrix(const Matrix& mat)
+void Rigidbody::apply_matrix(const Matrix& mat)
 {
 
    dbl mat44[4][4];

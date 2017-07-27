@@ -58,15 +58,15 @@ void BasePair::SetChainID(){
   }
 }
 
-void BasePair::Apply( const Movement& m)
+void BasePair::apply( const Movement& m)
 {
-  m.Apply(rigbody);
+  m.apply(rigbody);
 }
 
 
-void BasePair::Apply(const Matrix& m)
+void BasePair::apply(const Matrix& m)
 {
-  Apply(Movement (m));
+  apply(Movement (m));
 }
 
 Matrix BasePair::GetMatrix() const

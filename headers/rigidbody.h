@@ -144,7 +144,7 @@ public:
     void Translate(const Coord3D& tr);
 
     /// apply a 4x4 matrix
-    void ApplyMatrix(const Matrix & mat);
+    void apply_matrix(const Matrix & mat);
 
    /// get the 4x4 matrix
    Matrix GetMatrix() const

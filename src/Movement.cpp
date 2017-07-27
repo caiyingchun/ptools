@@ -28,12 +28,12 @@ Movement::~Movement()
 }
 
 
-void Movement::Apply(Rigidbody& rigbody)const
+void Movement::apply(Rigidbody& rigbody)const
 {
   Matrix oldmouvement = rigbody.GetMatrix ();
-  //rigbody.ApplyMatrix(inverseTranformationMatrixPlusPlus(oldmouvement));
-  rigbody.ApplyMatrix(inverseMatrix44 (oldmouvement));
-  rigbody.ApplyMatrix(matrixMultiply(oldmouvement,m));
+  //rigbody.apply_matrix(inverseTranformationMatrixPlusPlus(oldmouvement));
+  rigbody.apply_matrix(inverseMatrix44 (oldmouvement));
+  rigbody.apply_matrix(matrixMultiply(oldmouvement,m));
 }
 
 
