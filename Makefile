@@ -33,7 +33,7 @@ clean-build:
 	rm -fr dist/
 	rm -fr .eggs/
 	rm -f bindings/_ptools.cpp
-	rm -f bindings/_cgopt.c
+	rm -f bindings/_cgopt.cpp
 	rm -f $(MANIFEST_OUT)
 	rm -f headers/gitrev.h
 	find . -name '*.egg-info' -exec rm -fr {} +

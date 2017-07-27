@@ -85,8 +85,6 @@ def read_substitutions(filename):
             entry = line.strip().split()
             if len(entry) == 2:
                 substitutions.append(entry)
-            else:
-                print entry
     return substitutions
 
 
