@@ -40,7 +40,7 @@
 ### Print	print					# Error when converting, not done
 # RadiusGyration radius_of_gyration
 # Radius	radius
-# ## Reducer	reducer
+# ## Reducer	reducer				# Redundant change when no "(" is used
 # Reduce	reduce
 # removeclosest remove_closest
 # # rigidXMat44	rigidXMat44			# Will change manually, forgot why
