@@ -24,7 +24,7 @@ cdef extern from "Movement.h" namespace "PTools":
         Array2D[double] m
         void apply(CppRigidbody&)
         void Print() const
-        string toString() const;
+        string to_string() const;
 
     cdef cppclass CppShift "PTools::Shift"(CppMovement):
         CppShift(double alpha)
@@ -70,8 +70,8 @@ cdef class Movement:
     def Print(self):
         self.thisptr.Print()
 
-    def toString(self):
-        return self.thisptr.toString()
+    def to_string(self):
+        return self.thisptr.to_string()
 
 
 cdef class Shift(Movement):

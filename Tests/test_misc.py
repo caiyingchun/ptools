@@ -19,7 +19,7 @@ class TestBasicMoves(unittest.TestCase):
     def testBasicrmsd(self):
         rigtmp = Rigidbody(self.rigid1)
         self.assertEqual(rmsd(self.rigid1, self.rigid1), 0.0)
-        self.rigid1.Translate(Coord3D(4, 0, 0))
+        self.rigid1.translate(Coord3D(4, 0, 0))
         self.assertEqual(rmsd(rigtmp, self.rigid1), 4)
 
     def testErrorsrmsd(self):
@@ -44,19 +44,19 @@ class TestBasicMoves(unittest.TestCase):
 
     def testTranslation1(self):
         CoM1 = self.rigid1.find_center()
-        self.rigid1.Translate(Coord3D(3.0, -55.67, 1))
+        self.rigid1.translate(Coord3D(3.0, -55.67, 1))
         CoM2 = self.rigid1.find_center()
         diff = CoM2 - CoM1
         self.assertAlmostEqual(norm2(diff + Coord3D(-3.0, 55.67, -1.0)), 0.0)
-        self.rigid1.Translate(Coord3D(-3.0, 55.67, -1.0))   # translate back
+        self.rigid1.translate(Coord3D(-3.0, 55.67, -1.0))   # translate back
         self.assertAlmostEqual(rmsd(self.rigid1, self.rigid2), 0.0)
 
     def testTranslation2(self):
         vec1 = Coord3D(-123.54, 45.62, -99.003)
         vec2 = Coord3D(36.3125, 2.78, -36.378)
-        self.rigid2.Translate(vec1 + vec2)
-        self.rigid2.Translate(vec1 - vec2)
-        self.rigid2.Translate(Coord3D() - 2 * vec1)  # should be a global null translation + round error
+        self.rigid2.translate(vec1 + vec2)
+        self.rigid2.translate(vec1 - vec2)
+        self.rigid2.translate(Coord3D() - 2 * vec1)  # should be a global null translation + round error
         self.assertAlmostEqual(rmsd(self.rigid2, self.rigid3), 0)
 
 

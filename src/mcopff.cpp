@@ -40,15 +40,15 @@ void Mcoprigid::euler_rotate(const dbl& phi, const dbl& ssi, const dbl& rot)
 }
 
 
-void Mcoprigid::Translate(const Coord3D& c)
+void Mcoprigid::translate(const Coord3D& c)
 {
 //translates the main body:
-    _main.Translate(c);
+    _main.translate(c);
 
 //for each multicopy region, translates the copy:
     for (uint i=0; i < _vregion.size(); i++)
         for (uint j=0; j<_vregion[i].size(); j++)
-            _vregion[i][j].Translate(c);
+            _vregion[i][j].translate(c);
 
 }
 
@@ -157,7 +157,7 @@ dbl McopForceField::Function(const Vdouble & v)
 
 
     lig.euler_rotate(v[0],v[1],v[2]);
-    lig.Translate(Coord3D(v[3],v[4],v[5]));
+    lig.translate(Coord3D(v[3],v[4],v[5]));
 
 
 //2) calculates the energy
@@ -259,7 +259,7 @@ for (uint i=0; i <_receptor._vregion.size(); i++)
    }
 
 //TODO DEBUG:
-std::cout << "differences between the two forces: " <<  (ligtransForces - receptortransForces).toString() << std::endl ;
+std::cout << "differences between the two forces: " <<  (ligtransForces - receptortransForces).to_string() << std::endl ;
 
  }
 

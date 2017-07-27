@@ -62,3 +62,4 @@ D. Detailed protocol:
 
 	- specific filetypes: git checkout -- "*.py" "*.pyx" "*.cpp" "*.h"
 
+8. I added new Makefile targets "undo" and "rename" for the commands often used in this branch

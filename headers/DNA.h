@@ -41,7 +41,7 @@ namespace PTools
     std::string print_param();
 
     ///write in a file the atoms data following the PDB format
-    void WritePDB(std::string);
+    void write_pdb(std::string);
 
     ///change the database use for the BasePair. the new database must contain the same names for pdb that the old one.
     void change_representation(std::string);
@@ -60,7 +60,7 @@ namespace PTools
     
 
     ///apply a vector to the DNA as a rigidbody
-    void Translate(Coord3D coord);
+    void translate(Coord3D coord);
 
     ///return the local Matrix of the specified BasePair (for the position i the Matrix to go from i-1 to i)
     Matrix GetLocalMatrix(int pos)const;

@@ -61,7 +61,7 @@ CoordsArray::CoordsArray(const CoordsArray & ca) //copy constructor
 }
 
 
-void CoordsArray::Translate(const Coord3D& tr)
+void CoordsArray::translate(const Coord3D& tr)
 {
     //updates rotation/translation matrix:
     this->mat44[0][3]+=tr.x;
@@ -190,7 +190,7 @@ _modified();
 *
 *   Note that for this new implementation only the 4x4 rotational/translational
 *   matrix is updated. This may allow a big speedup (to be tested) and a
-*   higher flexibility  (  rig.Translate(a); rig.Translate(minus(a)); may now be delayed
+*   higher flexibility  (  rig.translate(a); rig.translate(minus(a)); may now be delayed
 *   until the coordinates are really needed.
 *   If coordinates are never asked (why?), then no costly calculation is performed !
 */

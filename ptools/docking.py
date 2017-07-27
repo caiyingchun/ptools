@@ -130,9 +130,9 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
             receptor = ptools.AttractRigidbody(rec)
 
             center = ligand.find_center()
-            ligand.Translate(ptools.Coord3D() - center)  # set ligand center of mass to 0,0,0
+            ligand.translate(ptools.Coord3D() - center)  # set ligand center of mass to 0,0,0
             ligand.euler_rotate(surreal(rot[0]), surreal(rot[1]), surreal(rot[2]))
-            ligand.Translate(trans)
+            ligand.translate(trans)
 
             for minim in minimlist:
                 minimcounter += 1
@@ -160,10 +160,10 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
                 output = ptools.AttractRigidbody(ligand)
 
                 center = output.find_center()
-                output.Translate(ptools.Coord3D() - center)
+                output.translate(ptools.Coord3D() - center)
                 output.euler_rotate(surreal(X[0]), surreal(X[1]), surreal(X[2]))
-                output.Translate(ptools.Coord3D(surreal(X[3]), surreal(X[4]), surreal(X[5])))
-                output.Translate(center)
+                output.translate(ptools.Coord3D(surreal(X[3]), surreal(X[4]), surreal(X[5])))
+                output.translate(center)
 
                 ligand = ptools.AttractRigidbody(output)
 

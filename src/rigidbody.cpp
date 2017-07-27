@@ -112,7 +112,7 @@ Coord3D Rigidbody::find_center() const
 void Rigidbody::CenterToOrigin()
 {
     Coord3D c = find_center();
-    Translate(Coord3D()-c);
+    translate(Coord3D()-c);
 }
 
 dbl Rigidbody::radius_of_gyration()
@@ -142,9 +142,9 @@ dbl Rigidbody::radius()
 }
 
 
-void Rigidbody::Translate(const Coord3D& tr)
+void Rigidbody::translate(const Coord3D& tr)
 {
-    CoordsArray::Translate(tr);
+    CoordsArray::translate(tr);
 }
 
 void Rigidbody::euler_rotate(dbl phi, dbl ssi, dbl rot)
@@ -308,10 +308,10 @@ std::string Rigidbody::print_pdb() const
     for (uint i=0; i < size-1 ; i++)
     {
          Atom at(mAtomProp[i], this->get_coords(i));
-         output = output + at.ToPdbString() + "\n" ;
+         output = output + at.to_pdb_string() + "\n" ;
     }
     Atom at(mAtomProp[size-1], this->get_coords(size-1));
-    output += at.ToPdbString(); // append the last pdb string, without "\n"
+    output += at.to_pdb_string(); // append the last pdb string, without "\n"
 
 
     return output;

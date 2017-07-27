@@ -102,8 +102,8 @@ public:
 
     void set_coords(const uint k, const Coord3D& co);
 
-    /// Translate the whole object
-    void Translate(const Coord3D& tr);
+    /// translate the whole object
+    void translate(const Coord3D& tr);
      /// Euler Rotation
     void euler_rotate(dbl phi, dbl ssi, dbl rot);
 

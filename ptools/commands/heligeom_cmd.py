@@ -147,7 +147,7 @@ def groove_width_calculation(hp, mono1):
         for j in xrange(nbpoint):
             ldist = []
             start.rotate(O, O + axe, hp.angle / nbpoint)
-            start.Translate(axe * hp.normtranslation / nbpoint)
+            start.translate(axe * hp.normtranslation / nbpoint)
             for k in xrange(int(round(dmin + (dmax - dmin) / 2)), int(round(dmax))):
                 pstart = getpstart(start, hp, k, k)
 
@@ -213,7 +213,7 @@ def extend(hp, mono1, nb, Z=False, seq=False):
     i += 1
     for j in xrange(nb - 1):
         monoTest.rotate(O, O + axe, hp.angle)
-        monoTest.Translate(axe * hp.normtranslation)
+        monoTest.translate(axe * hp.normtranslation)
         monoTest = changeChain(monoTest, string.ascii_uppercase[i % 26])
         if seq:
             print(monoTest.print_pdb())
@@ -263,7 +263,7 @@ def heliConstruct(mono1, hp, N, Z=False, seq=False, writefile=None):
     else:
         if writefile is not None:
             # Write to file with name provided
-            ptools.WritePDB(final, writefile)
+            ptools.write_pdb(final, writefile)
     return final
 
 

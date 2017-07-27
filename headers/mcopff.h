@@ -33,11 +33,11 @@ public:
 
    };
 
-   void Translate(const Coord3D& co)
+   void translate(const Coord3D& co)
    {
        for(uint i =0; i< _copies.size(); ++i)
        {
-          _copies[i].Translate(co);
+          _copies[i].translate(co);
        }
    }*/
 
@@ -68,7 +68,7 @@ public:
 
 
     void euler_rotate(const dbl& phi, const dbl& ssi, const dbl& rot);
-    void Translate(const Coord3D& c);
+    void translate(const Coord3D& c);
 
 
     void PrintWeights();

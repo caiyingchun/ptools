@@ -9,7 +9,7 @@ from _ptools import (ADNA, Atom, AtomPair, AtomSelection, Atomproperty,
                      Coord3D, CoordsArray, DNA, dist, dist2, Lbfgs, Matrix,
                      mat44_to_screw, Movement, Rigidbody, Rise, rmsd, Roll,
                      ScorpionForceField, Screw, Shift, Slide,
-                     Superpose_t, Surface, Tilt, Twist, Version, WritePDB,
+                     Superpose_t, Surface, Tilt, Twist, Version, write_pdb,
                      cross_product, dot_product, norm, norm2, strToAtom,
                      superpose)
 

@@ -141,7 +141,7 @@ public:
 
 
     /// translate the whole object
-    void Translate(const Coord3D& tr);
+    void translate(const Coord3D& tr);
 
     /// apply a 4x4 matrix
     void apply_matrix(const Matrix & mat);

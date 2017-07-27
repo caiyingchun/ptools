@@ -16,7 +16,7 @@
 # createRigid	create_rigid
 # CreateRigid create_rigid
 # crossproduct	cross_product
-## Dist2	dist2
+## Dist2	dist2					# Redundant change when no "(" is used
 # Dist	dist
 # dotproduct	dot_product
 # FindCenter	find_center
@@ -37,13 +37,13 @@
 # PrintMatrix	print_matrix
 # PrintParam	print_param
 # PrintPDB	print_pdb
-### Print	print
+### Print	print					# Error when converting, not done
 # RadiusGyration radius_of_gyration
 # Radius	radius
 # ## Reducer	reducer
 # Reduce	reduce
 # removeclosest remove_closest
-# # rigidXMat44	rigidXMat44_CHANGEMANUALLY
+# # rigidXMat44	rigidXMat44			# Will change manually, forgot why
 # Rmsd	rmsd
 SelectAllAtoms	select_all_atoms
 SelectAtomID	select_atomid
@@ -65,9 +65,9 @@ setTranslation	set_translation
 Size	size
 surfpointParams	surfpoint_params
 syncCoords	sync_coords
-# toatom(	to_atom(
-# ToPdbString(	to_pdb_string(
-# toString(	to_string(
-# Translate(	translate(
-# unsafeGetCoords(	unsafe_get_coords(
-# WritePDB(	write_pdb(
+toatom	to_atom
+ToPdbString	to_pdb_string
+toString	to_string
+Translate	translate
+unsafeGetCoords	unsafe_get_coords
+WritePDB	write_pdb

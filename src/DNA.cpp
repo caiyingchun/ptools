@@ -573,7 +573,7 @@ string DNA::print_param()
 }
 
 
-void DNA::WritePDB(std::string fileName)
+void DNA::write_pdb(std::string fileName)
 {
   ofstream myfile;
   myfile.open(fileName.c_str());
@@ -868,13 +868,13 @@ void DNA::change_type(int pos, std::string type, std::string filename) {
     ChangeFormat();
 }
 
-void DNA::Translate(Coord3D coord)
+void DNA::translate(Coord3D coord)
 {
   unsigned int strandsize  = strand.size();
   for (unsigned int i=0; i <strandsize; i++)
   {
     Rigidbody rb = strand[i].get_rigid();
-    rb.Translate(coord);
+    rb.translate(coord);
     strand[i].set_rigidBody(rb);
   }
 

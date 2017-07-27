@@ -368,12 +368,12 @@ dbl BaseAttractForceField::Function(const Vdouble& stateVars )
         }
 
 
-        m_movedligand[i].Translate(m_ligcenter[i]);
+        m_movedligand[i].translate(m_ligcenter[i]);
 
         if (m_movedligand[i].hastranslation)
         {
             assert(svptr+2 < stateVars.size());
-            m_movedligand[i].Translate(Coord3D(stateVars[svptr],stateVars[svptr+1],stateVars[svptr+2]));
+            m_movedligand[i].translate(Coord3D(stateVars[svptr],stateVars[svptr+1],stateVars[svptr+2]));
             svptr+=3;
         }
 

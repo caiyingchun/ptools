@@ -102,8 +102,8 @@ Coord3D A, B;
         B = Coord3D(1.23, 6.33, 1.234);
         r.rotate(A,B, 2.2345);
         r2.rotate(A,B, 2.2345);
-        r.Translate(Coord3D(34.23, 123.45,11.972));
-        r2.Translate(Coord3D(34.23, 123.45,11.972));
+        r.translate(Coord3D(34.23, 123.45,11.972));
+        r2.translate(Coord3D(34.23, 123.45,11.972));
 
         r2.sync_coords();
 //         #same rotation and translation for r and r2: should have exact same coordinates
@@ -138,27 +138,27 @@ Rigidbody rigid1, rigid2, rigid3;
     {
         Rigidbody rigtmp(rigid1);
         TS_ASSERT_EQUALS(rmsd(rigid1, rigid1), 0.0);
-        rigid1.Translate(Coord3D(4,0,0));
+        rigid1.translate(Coord3D(4,0,0));
         TS_ASSERT_EQUALS(rmsd(rigtmp, rigid1), 4);
     }
 
     void testTranslation1()
     {
         Coord3D CoM1 = rigid1.find_center() ;
-        rigid1.Translate(Coord3D(3.0, -55.67, 1));
+        rigid1.translate(Coord3D(3.0, -55.67, 1));
         Coord3D CoM2 = rigid1.find_center();
         Coord3D diff=CoM2-CoM1;
         TS_ASSERT( Norm2(diff + Coord3D(-3.0, 55.67, -1.0)) < 1e-6);
-        rigid1.Translate(Coord3D(-3.0, 55.67, -1.0));   //# translate back
+        rigid1.translate(Coord3D(-3.0, 55.67, -1.0));   //# translate back
         TS_ASSERT(rmsd(rigid1, rigid2) < 1e-6);
     }
 
     void testTranslation2(){
         Coord3D vec1 = Coord3D (-123.54, 45.62, -99.003);
         Coord3D vec2 = Coord3D (36.3125, 2.78, -36.378);
-        rigid2.Translate(vec1+vec2);
-        rigid2.Translate(vec1-vec2);
-        rigid2.Translate(Coord3D() - 2*vec1) ; //  #should be a global null translation + round error
+        rigid2.translate(vec1+vec2);
+        rigid2.translate(vec1-vec2);
+        rigid2.translate(Coord3D() - 2*vec1) ; //  #should be a global null translation + round error
         TS_ASSERT(rmsd(rigid2, rigid3) < 1e-6);
     }
 
@@ -198,7 +198,7 @@ public:
 
     void  testBasicTranslation()
     {
-        c.Translate(tr);
+        c.translate(tr);
         Coord3D c1;
         Coord3D c2;
         c.get_coords(0, c1 );
@@ -213,7 +213,7 @@ public:
         with the rotation/translation 4x4 matrix. When user set the coordinates,
         this means: 'change the current coordinates of atom i' and not 'change
         the initial coordinates of atom i' so here we check that this is the case"""*/
-        c.Translate(tr); //#do some translation
+        c.translate(tr); //#do some translation
         c.euler_rotate(2.0,4.0,5.0); // # do a rotation
         Coord3D co = Coord3D(3,2,1); // #new coordinates to be added
         c.set_coords(0,co);
@@ -276,7 +276,7 @@ Rigidbody prot1;
             x = (random.random()-0.5)*50.0;
             y = (random.random()-0.5)*50.0;
             z = (random.random()-0.5)*50.0;
-            prot2.Translate(Coord3D(x,y,z));
+            prot2.translate(Coord3D(x,y,z));
             a = (random.random()-0.5)*50.0;
             b = (random.random()-0.5)*50.0;
             c = (random.random()-0.5)*50.0;
@@ -336,7 +336,7 @@ public:
 
             r2.rotate(rdCoord(-20,20), rdCoord(-10,10), rdrange(-3.1415926,3.1415926) );
 
-            r2.Translate(Coord3D(x,y,z));
+            r2.translate(Coord3D(x,y,z));
 
             Superpose_t s = superpose(r1,r2);
 
@@ -361,7 +361,7 @@ public:
 
         r2.rotate(rdCoord(-20,20), rdCoord(-10,10), rdrange(-3.1415926,3.1415926) );
 
-        r2.Translate(Coord3D(x,y,z));
+        r2.translate(Coord3D(x,y,z));
 
         Superpose_t  s = superpose(r1,r2);
 
@@ -370,7 +370,7 @@ public:
 
         Rigidbody r3;
         r3.rotate(v.point, v.point+v.unitVector, v.angle);
-        r3.Translate(v.normtranslation*v.unitVector);
+        r3.translate(v.normtranslation*v.unitVector);
 
 
 //        r3.get_matrix().Print();

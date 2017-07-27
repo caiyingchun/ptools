@@ -95,7 +95,7 @@ TEST_LIGAND_RED_SCORPION_CGOPT = os.path.join(TEST_REDUCE_DATA_DIR, '1FIN_r_trun
 
 # ---------------------------------------------------------------------------
 #
-# Translate test files
+# translate test files
 #
 # ---------------------------------------------------------------------------
 

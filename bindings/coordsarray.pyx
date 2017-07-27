@@ -7,7 +7,7 @@ cdef extern from "coordsarray.h" namespace "PTools":
       unsigned int size()
       void get_coords(unsigned int, CppCoord3D&) 
       void set_coords(unsigned int, CppCoord3D&)
-      void Translate(CppCoord3D&)
+      void translate(CppCoord3D&)
       void euler_rotate(double , double, double)
 
 
@@ -49,8 +49,8 @@ cdef class CoordsArray:
     def set_coords(self, i, Coord3D co):
         self.thisptr.set_coords(i, deref(co.thisptr))
 
-    def Translate(self, Coord3D co):
-        self.thisptr.Translate(deref(co.thisptr))
+    def translate(self, Coord3D co):
+        self.thisptr.translate(deref(co.thisptr))
 
     def euler_rotate(self, double phi, double ssi, double rot):
         self.thisptr.euler_rotate(phi, ssi, rot)

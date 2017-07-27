@@ -21,8 +21,8 @@ cdef extern from "atom.h" namespace "PTools":
         CppAtom(CppAtomproperty, CppCoord3D)
         
         string ToString()
-        string ToPdbString()
-        void Translate(CppCoord3D&)
+        string to_pdb_string()
+        void translate(CppCoord3D&)
         CppCoord3D coords
         
     cdef double cppdist "PTools::dist" (CppAtom& , CppAtom& )
@@ -180,11 +180,11 @@ cdef class Atom(Atomproperty):
     def __str__(self):
         return self.ToString()
         
-    def ToPdbString(self):
-        return <bytes> (<CppAtom*>self.thisptr).ToPdbString().c_str()
+    def to_pdb_string(self):
+        return <bytes> (<CppAtom*>self.thisptr).to_pdb_string().c_str()
     
-    def Translate(self,Coord3D co):
-       (<CppAtom*>self.thisptr).Translate(deref(co.thisptr))
+    def translate(self,Coord3D co):
+       (<CppAtom*>self.thisptr).translate(deref(co.thisptr))
 
     
 def dist(Atom at1, Atom at2):

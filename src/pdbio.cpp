@@ -195,7 +195,7 @@ void ReadPDB(const std::string name,Rigidbody& protein ) {
 
 }
 
-void WritePDB(const Rigidbody& rigid, std::string filename)
+void write_pdb(const Rigidbody& rigid, std::string filename)
 {
 
     FILE* file= fopen(filename.c_str(),"w") ;

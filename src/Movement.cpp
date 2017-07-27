@@ -55,7 +55,7 @@ void Movement::Print() const
   m.Print();
 }
 
-std::string Movement::toString() const
+std::string Movement::to_string() const
 {
     return m.str();
 }

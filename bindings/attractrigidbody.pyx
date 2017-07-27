@@ -119,9 +119,9 @@ cdef class AttractRigidbody (Rigidbody) :
         
         return ret
         
-    def Translate(self, Coord3D co):
+    def translate(self, Coord3D co):
         cdef CppRigidbody* rig = <CppRigidbody*> self.thisptr
-        rig.Translate(deref(co.thisptr))
+        rig.translate(deref(co.thisptr))
         
     def  euler_rotate(self, double phi, double ssi, double rot):
         cdef CppRigidbody* rig = <CppRigidbody*> self.thisptr

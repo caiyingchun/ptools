@@ -79,14 +79,14 @@ class Bead(ptools.Atomproperty):
         """Set bead name."""
         self.atomType = value
 
-    def toatom(self):
+    def to_atom(self):
         """Return a ptools.Atom instance with current bead properties and
         coordinates."""
         return ptools.Atom(self, self.coords)
 
     def topdb(self):
         """Return the bead description as a PDB formatted string."""
-        return self.toatom().ToPdbString()
+        return self.to_atom().to_pdb_string()
 
     def is_incomplete(self):
         """Return True if the number of atoms found to build the bead is
@@ -516,7 +516,7 @@ class reducer(object):
         """
         forcefield = self.forcefield
         header = 'HEADER    {} REDUCED PDB FILE'.format(forcefield)
-        content = '\n'.join(bead.toatom().ToPdbString() for bead in self.beads)
+        content = '\n'.join(bead.to_atom().to_pdb_string() for bead in self.beads)
         f = sys.stdout
         if path:
             f = open(path, 'wt')

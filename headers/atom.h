@@ -79,10 +79,10 @@ public:
     std::string ToString() const;
 
     /// convert atom (properties and coordinates) to classical PDB-like string
-    std::string ToPdbString() const ;
+    std::string to_pdb_string() const ;
 
     /// translation of an atom
-    void Translate(const Coord3D& tr);
+    void translate(const Coord3D& tr);
 
 };
 

@@ -26,7 +26,7 @@ class TestCoordsArray(unittest.TestCase):
         assertCoordsAlmostEqual(self, c1, Coord3D(3.0, 4.0, 5.0))
 
     def testBasicTranslation(self):
-        self.c.Translate(self.tr)
+        self.c.translate(self.tr)
         c1 = Coord3D()
         c2 = Coord3D()
         self.c.get_coords(0, c1)
@@ -40,7 +40,7 @@ class TestCoordsArray(unittest.TestCase):
         When user set the coordinates, this means: 'change the current
         coordinates of atom i' and not 'change the initial coordinates of
         atom i' so here we check that this is the case"""
-        self.c.Translate(self.tr)  # do some translation
+        self.c.translate(self.tr)  # do some translation
         self.c.euler_rotate(2.0, 4.0, 5.0)  # do a rotation
         co = Coord3D(3, 2, 1)  # new coordinates to be added
         self.c.set_coords(0, co)

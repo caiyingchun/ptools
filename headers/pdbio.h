@@ -19,7 +19,7 @@ namespace PTools
 void readAtom(const std::string & line, Atom& at); ///< create an Atom from a PDB-formatted string
 void ReadPDB(std::istream& fichier,Rigidbody& protein ); ///< read a PDB file from a file pointer and load data in Rigidbody
 void ReadPDB(const std::string name,Rigidbody& protein ); ///< read a PDB file from a filename and load data in Rigidbody
-void WritePDB(const Rigidbody& rigid, std::string filename); ///< write a PDB file given a Rigidbody and a filename
+void write_pdb(const Rigidbody& rigid, std::string filename); ///< write a PDB file given a Rigidbody and a filename
 
 }
 

@@ -36,7 +36,7 @@ namespace PTools
     void Print() const;
 
     /// Return a string representing the Movement' matrix.
-    std::string toString() const;
+    std::string to_string() const;
   };
   
   //fonction pour les matrices, a relocaliser dans la partie ptools adapter

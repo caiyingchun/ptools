@@ -32,8 +32,8 @@ class TestRigidbodyBindings(unittest.TestCase):
     def test_Rigidbody_has_set_coords(self):
         self.assertTrue(hasattr(Rigidbody, 'set_coords'))
 
-    def test_Rigidbody_has_Translate(self):
-        self.assertTrue(hasattr(Rigidbody, 'Translate'))
+    def test_Rigidbody_has_translate(self):
+        self.assertTrue(hasattr(Rigidbody, 'translate'))
 
     def test_Rigidbody_has_find_center(self):
         self.assertTrue(hasattr(Rigidbody, 'find_center'))
@@ -148,10 +148,10 @@ class TestRigidbody(unittest.TestCase):
         coords = self.r.get_coords(3)
         assertCoordsAlmostEqual(self, coords, Coord3D(-16.159, 189.782, 106.402))
 
-    def testTranslate(self):
+    def testtranslate(self):
         tr = Coord3D(3.2, 2.98, 14.22)
         s = Rigidbody(self.r)
-        s.Translate(tr)
+        s.translate(tr)
         coords = s.get_coords(3)
         ref = Coord3D(-16.159 + 3.2, 189.782 + 2.98, 106.402 + 14.22)
         assertCoordsAlmostEqual(self, coords, ref)
@@ -189,8 +189,8 @@ class TestRigidbody(unittest.TestCase):
         B = Coord3D(1.23, 6.33, 1.234)
         self.r.rotate(A, B, 2.2345)
         r2.rotate(A, B, 2.2345)
-        self.r.Translate(Coord3D(34.23, 123.45, 11.972))
-        r2.Translate(Coord3D(34.23, 123.45, 11.972))
+        self.r.translate(Coord3D(34.23, 123.45, 11.972))
+        r2.translate(Coord3D(34.23, 123.45, 11.972))
 
         r2.sync_coords()
         # same rotation and translation for r and r2: should have exact
