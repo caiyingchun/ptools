@@ -134,7 +134,7 @@ def rename_all(substitutions, dry_run=DRY_RUN, strip_terminals=STRIP_TERMINALS):
             else:
                 args = ('find', '.', '-name', name_arg, '-exec', 'sed', '-i', sed_command, '{}', ';')
             print args
-            #subprocess.Popen(args)
+            subprocess.Popen(args)
         time.sleep(1)
     return
 
