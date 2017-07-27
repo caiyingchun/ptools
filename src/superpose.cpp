@@ -491,7 +491,7 @@ Superpose_t superpose(const Rigidbody& ref, const Rigidbody& mob, int verbosity)
     Rigidbody probe(mob);
     probe.apply_matrix(output);
 
-    sup.rmsd = Rmsd(ref,probe);
+    sup.rmsd = rmsd(ref,probe);
     return sup;
 
 

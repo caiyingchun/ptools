@@ -72,7 +72,7 @@ public:
     uint Size() const {return CoordsArray::Size();};
 
     
-    void PrintMatrix() const {std::cout << CoordsArray::PrintMatrix() << std::endl; }
+    void print_matrix() const {std::cout << CoordsArray::print_matrix() << std::endl; }
 
     /// make a deep copy of one atom (the atom extracted is then totally independent)
     virtual Atom copy_atom(uint i) const ;
@@ -154,13 +154,13 @@ public:
 
 
     /// returns radius of gyration
-    dbl RadiusGyration();
+    dbl radius_of_gyration();
 
     /// returns the radius of a Rigidbody (max distance from center)
-    dbl Radius();
+    dbl radius();
 
     /// converts rigidbody to classical PDB-like string
-    std::string PrintPDB() const ;
+    std::string print_pdb() const ;
 
     /// selection : complete
     AtomSelection SelectAllAtoms() const;

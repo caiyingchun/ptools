@@ -38,8 +38,8 @@ class TestDNABindings(unittest.TestCase):
     def test_has_change_representation(self):
         self.assertTrue(hasattr(DNA, 'change_representation'))
 
-    def test_has_PrintPDB(self):
-        self.assertTrue(hasattr(DNA, 'PrintPDB'))
+    def test_has_print_pdb(self):
+        self.assertTrue(hasattr(DNA, 'print_pdb'))
 
 
 class TestDNA(unittest.TestCase):
@@ -81,8 +81,8 @@ class TestDNA(unittest.TestCase):
         warnings.warn("only check the call, not the result")
         self.dna.change_representation(PDB_BASE_PAIR2)
 
-    def test_PrintPDB(self):
-        s = self.dna.PrintPDB()
+    def test_print_pdb(self):
+        s = self.dna.print_pdb()
         self.assertNotEqual(s, '')
 
 

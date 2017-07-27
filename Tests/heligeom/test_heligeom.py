@@ -26,7 +26,7 @@ class TestHeligeom(unittest.TestCase):
 
     def testGenerateBDNA(self):
         dna = DNA(TEST_BP_PDB, "AAAAAATCGATCTATC", ADNA())  # tout atom
-        result = dna.PrintPDB()
+        result = dna.print_pdb()
         expected = open(TEST_BDNA_EXPECTED_PDB).read()
         self.assertEqual(result, expected)
 
@@ -56,14 +56,14 @@ class TestHeligeom(unittest.TestCase):
         # change to a All Atom representation
         dna.change_representation(TEST_BP_PDB)
 
-        result = dna.PrintPDB()
+        result = dna.print_pdb()
         with open(TEST_BASIC_MANIP_EXPECTED_PDB, 'rt') as f:
             expected = f.read()
         self.assertEqual(result, expected)
 
     def testCGfromPDBFile(self):
         dna = DNA(TEST_BP_PDB, TEST_BDNA_EXPECTED_PDB)  # gros grain
-        result = dna.PrintPDB()
+        result = dna.print_pdb()
         expected = open(TEST_CG_FROM_PDBFILE_EXPECTED_PDB).read()
         self.assertEqual(result, expected)
 

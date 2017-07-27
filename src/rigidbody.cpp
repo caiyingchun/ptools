@@ -115,7 +115,7 @@ void Rigidbody::CenterToOrigin()
     Translate(Coord3D()-c);
 }
 
-dbl Rigidbody::RadiusGyration()
+dbl Rigidbody::radius_of_gyration()
 {
     Coord3D c = this->find_center();
     dbl r=0.0;
@@ -128,7 +128,7 @@ dbl Rigidbody::RadiusGyration()
     return result;
 }
 
-dbl Rigidbody::Radius()
+dbl Rigidbody::radius()
 {
     Coord3D center = this->find_center();
     uint size = this->Size();
@@ -300,7 +300,7 @@ void Rigidbody::rotate(const Coord3D& A, const Coord3D& B, dbl theta)
 
 
 
-std::string Rigidbody::PrintPDB() const
+std::string Rigidbody::print_pdb() const
 {
     uint size=this->Size();
 

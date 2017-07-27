@@ -156,7 +156,7 @@ class CoarseResidue:
         return '\n'.join(b.topdb() for b in self.beads)
 
 
-class Reducer(object):
+class reducer(object):
     """Class that handle reduction from an atomistic topology to a coarse
     grain model.
 
@@ -191,7 +191,7 @@ class Reducer(object):
     """
 
     def __init__(self, topology_file, reduction_parameters_file):
-        """Initialize Reduce from topology file and reduction parameter file.
+        """Initialize reduce from topology file and reduction parameter file.
 
         Args:
             topology_file (str): path to all-atom topology file (PDB format).

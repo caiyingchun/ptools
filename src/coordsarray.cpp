@@ -95,7 +95,7 @@ void CoordsArray::ResetMatrix()
 
 
 
-std::string CoordsArray::PrintMatrix() const
+std::string CoordsArray::print_matrix() const
 {
     std::string out;
     out += "### MAT BEGIN\n";

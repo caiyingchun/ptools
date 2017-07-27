@@ -31,14 +31,14 @@ BasePair::BasePair(const Rigidbody& rigbody)
   this->type = rigbody.get_atom_property(0).residType;
 }
 
-string BasePair::PrintPDB()const
+string BasePair::print_pdb()const
 {
-  return rigbody.PrintPDB ();
+  return rigbody.print_pdb ();
 }
 
-std::string BasePair::PrintPDBofBase(std::string chain) 
+std::string BasePair::print_pdbofBase(std::string chain) 
 {
-    return rigbody.SelectChainId(chain).create_rigid().PrintPDB();
+    return rigbody.SelectChainId(chain).create_rigid().print_pdb();
 }
 
 void BasePair::SetChainID(){

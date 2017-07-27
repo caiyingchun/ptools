@@ -5,7 +5,7 @@ at some point."""
 import math
 import unittest
 
-from ptools import Rigidbody, Coord3D, Atom, Atomproperty, norm2, Rmsd
+from ptools import Rigidbody, Coord3D, Atom, Atomproperty, norm2, rmsd
 
 from . import TEST_LIGAND_PDB
 
@@ -16,31 +16,31 @@ class TestBasicMoves(unittest.TestCase):
         self.rigid2 = Rigidbody(self.rigid1)
         self.rigid3 = Rigidbody(self.rigid2)
 
-    def testBasicRmsd(self):
+    def testBasicrmsd(self):
         rigtmp = Rigidbody(self.rigid1)
-        self.assertEqual(Rmsd(self.rigid1, self.rigid1), 0.0)
+        self.assertEqual(rmsd(self.rigid1, self.rigid1), 0.0)
         self.rigid1.Translate(Coord3D(4, 0, 0))
-        self.assertEqual(Rmsd(rigtmp, self.rigid1), 4)
+        self.assertEqual(rmsd(rigtmp, self.rigid1), 4)
 
-    def testErrorsRmsd(self):
+    def testErrorsrmsd(self):
         rigid1 = Rigidbody()
         rigid2 = Rigidbody()
         # cannot calculate an rmsd on an empty object
-        self.assertRaises(ValueError, Rmsd, rigid1, rigid2)
+        self.assertRaises(ValueError, rmsd, rigid1, rigid2)
 
         # check input paramter types:
-        self.assertRaises(RuntimeError, Rmsd, self.rigid1, "hello")
-        self.assertRaises(RuntimeError, Rmsd, "hello", self.rigid1)
+        self.assertRaises(RuntimeError, rmsd, self.rigid1, "hello")
+        self.assertRaises(RuntimeError, rmsd, "hello", self.rigid1)
 
-    def testRmsdAtomSelection1(self):
-        # tests Rmsd with an AtomSelection object
+    def testrmsdAtomSelection1(self):
+        # tests rmsd with an AtomSelection object
         atsel = self.rigid1.SelectAllAtoms()
-        self.assertEqual(Rmsd(atsel, self.rigid2), 0)
+        self.assertEqual(rmsd(atsel, self.rigid2), 0)
 
-    def testRmsdAtomSelection2(self):
-        # tests Rmsd with an AtomSelection object
+    def testrmsdAtomSelection2(self):
+        # tests rmsd with an AtomSelection object
         atsel = self.rigid1.SelectAllAtoms()
-        self.assertEqual(Rmsd(self.rigid2, atsel), 0)
+        self.assertEqual(rmsd(self.rigid2, atsel), 0)
 
     def testTranslation1(self):
         CoM1 = self.rigid1.find_center()
@@ -49,7 +49,7 @@ class TestBasicMoves(unittest.TestCase):
         diff = CoM2 - CoM1
         self.assertAlmostEqual(norm2(diff + Coord3D(-3.0, 55.67, -1.0)), 0.0)
         self.rigid1.Translate(Coord3D(-3.0, 55.67, -1.0))   # translate back
-        self.assertAlmostEqual(Rmsd(self.rigid1, self.rigid2), 0.0)
+        self.assertAlmostEqual(rmsd(self.rigid1, self.rigid2), 0.0)
 
     def testTranslation2(self):
         vec1 = Coord3D(-123.54, 45.62, -99.003)
@@ -57,7 +57,7 @@ class TestBasicMoves(unittest.TestCase):
         self.rigid2.Translate(vec1 + vec2)
         self.rigid2.Translate(vec1 - vec2)
         self.rigid2.Translate(Coord3D() - 2 * vec1)  # should be a global null translation + round error
-        self.assertAlmostEqual(Rmsd(self.rigid2, self.rigid3), 0)
+        self.assertAlmostEqual(rmsd(self.rigid2, self.rigid3), 0)
 
 
 class TestRotations(unittest.TestCase):

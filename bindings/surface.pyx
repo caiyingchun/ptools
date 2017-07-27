@@ -8,7 +8,7 @@ cdef extern from "surface.h" namespace "PTools":
         CppRigidbody surfpoint(CppRigidbody & , double)
         void surfpointParams(int, double)
         CppRigidbody outergrid(CppRigidbody &, CppRigidbody & , double)
-        CppRigidbody removeclosest(CppRigidbody & , double)
+        CppRigidbody remove_closest(CppRigidbody & , double)
         void readsolvparam(string)
 
 
@@ -43,8 +43,8 @@ cdef class Surface:
         ret.thisptr = new CppRigidbody(r)
         return ret
 
-    def removeclosest(self, Rigidbody rigid1, double srad):
-        cdef CppRigidbody r = self.thisptr.removeclosest(deref(rigid1.thisptr), srad)
+    def remove_closest(self, Rigidbody rigid1, double srad):
+        cdef CppRigidbody r = self.thisptr.remove_closest(deref(rigid1.thisptr), srad)
         ret = Rigidbody()
         del ret.thisptr
         ret.thisptr = new CppRigidbody(r)

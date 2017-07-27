@@ -134,12 +134,12 @@ Rigidbody rigid1, rigid2, rigid3;
         rigid3=Rigidbody(rigid2);
     }
 
-    void testBasicRmsd()
+    void testBasicrmsd()
     {
         Rigidbody rigtmp(rigid1);
-        TS_ASSERT_EQUALS(Rmsd(rigid1, rigid1), 0.0);
+        TS_ASSERT_EQUALS(rmsd(rigid1, rigid1), 0.0);
         rigid1.Translate(Coord3D(4,0,0));
-        TS_ASSERT_EQUALS(Rmsd(rigtmp, rigid1), 4);
+        TS_ASSERT_EQUALS(rmsd(rigtmp, rigid1), 4);
     }
 
     void testTranslation1()
@@ -150,7 +150,7 @@ Rigidbody rigid1, rigid2, rigid3;
         Coord3D diff=CoM2-CoM1;
         TS_ASSERT( Norm2(diff + Coord3D(-3.0, 55.67, -1.0)) < 1e-6);
         rigid1.Translate(Coord3D(-3.0, 55.67, -1.0));   //# translate back
-        TS_ASSERT(Rmsd(rigid1, rigid2) < 1e-6);
+        TS_ASSERT(rmsd(rigid1, rigid2) < 1e-6);
     }
 
     void testTranslation2(){
@@ -159,7 +159,7 @@ Rigidbody rigid1, rigid2, rigid3;
         rigid2.Translate(vec1+vec2);
         rigid2.Translate(vec1-vec2);
         rigid2.Translate(Coord3D() - 2*vec1) ; //  #should be a global null translation + round error
-        TS_ASSERT(Rmsd(rigid2, rigid3) < 1e-6);
+        TS_ASSERT(rmsd(rigid2, rigid3) < 1e-6);
     }
 
 
@@ -285,7 +285,7 @@ Rigidbody prot1;
             Superpose_t sup = superpose(prot1,prot2); //# superpose(reference, mobile)
             Matrix matrix = sup.matrix;
             prot2.apply_matrix(matrix);
-            TS_ASSERT(Rmsd(prot2,prot1)<1e-6);
+            TS_ASSERT(rmsd(prot2,prot1)<1e-6);
 
         }
 
@@ -341,7 +341,7 @@ public:
             Superpose_t s = superpose(r1,r2);
 
             r2.apply_matrix(s.matrix);
-            TS_ASSERT( Rmsd(r1,r2) < 1e-4 );
+            TS_ASSERT( rmsd(r1,r2) < 1e-4 );
 
 
         }

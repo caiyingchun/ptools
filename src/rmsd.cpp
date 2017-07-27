@@ -18,7 +18,7 @@
 
 namespace PTools {
 
-dbl Rmsd(const AtomSelection& atsel1, const AtomSelection& atsel2)
+dbl rmsd(const AtomSelection& atsel1, const AtomSelection& atsel2)
 {
     if (atsel1.Size() == 0  ||  atsel2.Size() == 0)
     {
@@ -27,7 +27,7 @@ dbl Rmsd(const AtomSelection& atsel1, const AtomSelection& atsel2)
 
     if (atsel1.Size() != atsel2.Size())
     {
-        throw std::invalid_argument("RmsdSizesDiffers");
+        throw std::invalid_argument("rmsdSizesDiffers");
     }
 
     dbl sum = 0.0;

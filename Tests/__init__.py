@@ -58,7 +58,7 @@ TEST_DOCKING_ATTRACT_OUT = os.path.join(TEST_DOCKING_DATA_DIR, 'docking_results.
 
 # ---------------------------------------------------------------------------
 #
-# Reduce test files
+# reduce test files
 #
 # ---------------------------------------------------------------------------
 TEST_REDUCE_DATA_DIR = os.path.join(TEST_DATA_DIR, 'reduce')

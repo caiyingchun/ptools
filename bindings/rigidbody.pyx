@@ -31,15 +31,15 @@ cdef extern from "rigidbody.h" namespace "PTools":
         void add_atom(CppAtomproperty &, CppCoord3D)
         void add_atom(CppAtom &)
         void SetAtom(unsigned int, CppAtom &)
-        string PrintPDB()
+        string print_pdb()
         CppRigidbody operator+(CppRigidbody &)
         void CenterToOrigin()
 
         # Returns radius of gyration.
-        double RadiusGyration()
+        double radius_of_gyration()
 
         # Returns the radius of a Rigidbody (max distance from center).
-        double Radius()
+        double radius()
 
         CppAtomproperty & get_atom_property(unsigned int)
         void SetAtomProperty(unsigned int, CppAtomproperty &)
@@ -107,7 +107,7 @@ cdef class Rigidbody:
         return self.thisptr.Size()
 
     def __str__(self):
-        s = self.thisptr.PrintPDB()
+        s = self.thisptr.print_pdb()
         return s
 
     def __add__(Rigidbody self, Rigidbody other):
@@ -189,11 +189,11 @@ cdef class Rigidbody:
             raise IndexError('atom index out of bounds')
         self.thisptr.SetAtomProperty(position, deref(<CppAtomproperty*>prop.thisptr))
 
-    def Radius(self):
-        return self.thisptr.Radius()
+    def radius(self):
+        return self.thisptr.radius()
 
-    def RadiusGyration(self):
-        return self.thisptr.RadiusGyration()
+    def radius_of_gyration(self):
+        return self.thisptr.radius_of_gyration()
 
     def SelectAllAtoms(self):
         ret = AtomSelection()

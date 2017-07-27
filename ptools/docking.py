@@ -76,7 +76,7 @@ def surreal(i):
 def rmsdca(l1, l2):
     """Return the RMSD between the alpha-carbone atom of two RigidBody
     instances."""
-    return ptools.Rmsd(l1.get_CA().create_rigid(), l2.get_CA().create_rigid())
+    return ptools.rmsd(l1.get_CA().create_rigid(), l2.get_CA().create_rigid())
 
 
 def get_group(collection, ngroups, ngroup):
@@ -109,7 +109,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
     if ref is not None:
         refca = ref.get_CA()
         if len(refca) == 0:  # No C alpha atom, ligand is probably a dna
-            rmsd_func = ptools.Rmsd
+            rmsd_func = ptools.rmsd
             print("No Calpha atom found for ligand (DNA?). RMSD will be "
                   "calculated on all grains")
         else:
@@ -184,7 +184,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
             # calculates true energy, and rmsd if possible
             # with the new ligand position
             forcefield = ff_specs['ff_class'](ff_specs['ff_file'], surreal(500))
-            print("{:>4s} {:>6s} {:>6s} {:>13s} {:>13s} {:>13s} {:>13s}".format(' ', 'Trans', 'Rot', 'Ener', 'RmsdCA_ref', "VDW", "Coulomb"))
+            print("{:>4s} {:>6s} {:>6s} {:>13s} {:>13s} {:>13s} {:>13s}".format(' ', 'Trans', 'Rot', 'Ener', 'rmsdCA_ref', "VDW", "Coulomb"))
             pl = ptools.AttractPairList(receptor, ligand, surreal(500))
             print("{:<4s} {:6d} {:6d} {:13.7f} {:>13s} {:13.7f} {:13.7f}".format("==", transnb, rotnb, forcefield.nonbon8(receptor, ligand, pl), str(rms), forcefield.get_vdw(), forcefield.getCoulomb()))
-            output.PrintMatrix()
+            output.print_matrix()

@@ -198,7 +198,7 @@ Rigidbody Surface::outergrid(const Rigidbody & grid, const Rigidbody & rigid2, d
     return rigid3;
 }
 
-Rigidbody Surface::removeclosest(const Rigidbody & rigid, dbl srad)
+Rigidbody Surface::remove_closest(const Rigidbody & rigid, dbl srad)
 {
     
     int const size=rigid.Size();

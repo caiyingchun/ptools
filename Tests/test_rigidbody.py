@@ -65,11 +65,11 @@ class TestRigidbodyBindings(unittest.TestCase):
     def test_Rigidbody_has_SetAtomProperty(self):
         self.assertTrue(hasattr(Rigidbody, 'SetAtomProperty'))
 
-    def test_Rigidbody_has_Radius(self):
-        self.assertTrue(hasattr(Rigidbody, 'Radius'))
+    def test_Rigidbody_has_radius(self):
+        self.assertTrue(hasattr(Rigidbody, 'radius'))
 
-    def test_Rigidbody_has_RadiusGyration(self):
-        self.assertTrue(hasattr(Rigidbody, 'RadiusGyration'))
+    def test_Rigidbody_has_radius_of_gyration(self):
+        self.assertTrue(hasattr(Rigidbody, 'radius_of_gyration'))
 
     def test_Rigidbody_has_SelectAllAtoms(self):
         self.assertTrue(hasattr(Rigidbody, 'SelectAllAtoms'))

@@ -72,7 +72,7 @@ def run(args):
     lig = ptools.Rigidbody(args.ligand)
 
     # distance to receptor.
-    distance_to_receptor = args.distance_to_receptor or lig.Radius()
+    distance_to_receptor = args.distance_to_receptor or lig.radius()
     distance_to_receptor *= args.distance_to_receptor_factor
 
     # Initialize surface.
@@ -84,7 +84,7 @@ def run(args):
 
     # Remove points too clore from the receptor.
     outergrid = surf.outergrid(grid, rec, distance_to_receptor)
-    outergrid = surf.removeclosest(outergrid, args.density)
+    outergrid = surf.remove_closest(outergrid, args.density)
 
     # Generate output PDB.
     if args.output:

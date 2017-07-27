@@ -336,7 +336,7 @@ Rigidbody DNA::DelSingleBase (Rigidbody& model)
               newModel= newModel + model.SelectResRange(i,i).create_rigid();
         }
     }
-    //cout << newModel.PrintPDB()<< endl;
+    //cout << newModel.print_pdb()<< endl;
     RenumberModel (newModel);
 
 
@@ -537,31 +537,31 @@ unsigned int DNA::AtomSize() const
 }
 
 
-string DNA::PrintPDB()
+string DNA::print_pdb()
 {
   string strandA, strandB;
   unsigned int strandSize  = strand.size();
   for ( unsigned int i =0; i < strandSize ; i++ )
   {
-    strandA += strand[i].PrintPDBofBase("A") + "\n";
-    strandB += strand[strandSize-1-i].PrintPDBofBase("B") + "\n";
+    strandA += strand[i].print_pdbofBase("A") + "\n";
+    strandB += strand[strandSize-1-i].print_pdbofBase("B") + "\n";
   }
   string out= strandA + strandB;
   return out.substr(0,out.size()-1);
 }
 
-std::string DNA::PrintPDBofStrand( std::string chain )
+std::string DNA::print_pdbofStrand( std::string chain )
 {
   string out;
   unsigned int strandSize  = strand.size();
   for ( unsigned int i =0; i < strandSize ; i++ )
   {
-    out += strand[i].PrintPDBofBase( chain );
+    out += strand[i].print_pdbofBase( chain );
   }
   return out.substr(0,out.size()-1);
 }
 
-string DNA::PrintParam()
+string DNA::print_param()
 {
   stringstream ss;
   unsigned int strandSize  = strand.size();
@@ -577,7 +577,7 @@ void DNA::WritePDB(std::string fileName)
 {
   ofstream myfile;
   myfile.open(fileName.c_str());
-  myfile << PrintPDB();
+  myfile << print_pdb();
   myfile.close();
 }
 
@@ -750,14 +750,14 @@ void DNA::apply(const Matrix& m)
 }
 
 
-double DNA::Rmsd(const DNA& model)const
+double DNA::rmsd(const DNA& model)const
 {
 
     double aSize=AtomSize();
     if (model.AtomSize() != aSize)
     {
         std::cerr << "Error: trying to superpose two DNA of different sizes" << std::endl ;
-        throw std::invalid_argument("RmsdSizesDiffers");
+        throw std::invalid_argument("rmsdSizesDiffers");
     }
 
     double total = 0.0;

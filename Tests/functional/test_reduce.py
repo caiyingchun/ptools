@@ -17,7 +17,7 @@ from .. import (TEST_LIGAND_PDB,
                 TEST_LIGAND_RED_SCORPION_CGOPT)
 
 
-class TestReduceAttract1(unittest.TestCase):
+class TestreduceAttract1(unittest.TestCase):
 
     def setUp(self):
         self.output_file = mk_tmp_file()
@@ -33,7 +33,7 @@ class TestReduceAttract1(unittest.TestCase):
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_ATTRACT1, self.output_name))
 
 
-class TestReduceAttract2(unittest.TestCase):
+class TestreduceAttract2(unittest.TestCase):
 
     def setUp(self):
         self.output_file = mk_tmp_file()
@@ -49,7 +49,7 @@ class TestReduceAttract2(unittest.TestCase):
         self.assertTrue(filecmp.cmp(TEST_LIGAND_RED_ATTRACT2, self.output_name))
 
 
-class TestReduceScorpion(unittest.TestCase):
+class TestreduceScorpion(unittest.TestCase):
 
     def setUp(self):
         self.output_file = mk_tmp_file()

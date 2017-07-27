@@ -26,12 +26,12 @@ cdef extern from "attractrigidbody.h" namespace "PTools":
 
 
         #returns radius of gyration
-        double RadiusGyration()
+        double radius_of_gyration()
 
         #returns the radius of a Rigidbody (max distance from center)
-        double Radius()
+        double radius()
 
-        void PrintMatrix()
+        void print_matrix()
 
         CppAtomSelection get_CA()
 
@@ -130,15 +130,15 @@ cdef class AttractRigidbody (Rigidbody) :
 
     #these function should be defined only in Rigdibody object and attractrigdbody should inherit from it:œ
 
-    def Radius(self):
-       return self.thisptr.Radius()
+    def radius(self):
+       return self.thisptr.radius()
 
-    def RadiusGyration(self):
-       return self.thisptr.RadiusGyration()      
+    def radius_of_gyration(self):
+       return self.thisptr.radius_of_gyration()      
 
 
-    def PrintMatrix(self):
-       (<CppAttractRigidbody*> self.thisptr).PrintMatrix()
+    def print_matrix(self):
+       (<CppAttractRigidbody*> self.thisptr).print_matrix()
 
     def get_CA(self):
        ret = AtomSelection()

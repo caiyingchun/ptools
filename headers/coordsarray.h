@@ -109,7 +109,7 @@ public:
 
     void ResetMatrix();
 
-    std::string PrintMatrix() const;
+    std::string print_matrix() const;
 
     ///return the rotation/translation matrix
     Matrix get_matrix() const;

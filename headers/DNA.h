@@ -32,13 +32,13 @@ namespace PTools
     unsigned int AtomSize() const;
 
     ///return a string containing the atoms data following the PDB format
-    std::string PrintPDB() ;
+    std::string print_pdb() ;
 
     ///return a string containing the atoms data following the PDB format
-    std::string PrintPDBofStrand( std::string chain );
+    std::string print_pdbofStrand( std::string chain );
 
     ///return a string containing all the local parameter formated
-    std::string PrintParam();
+    std::string print_param();
 
     ///write in a file the atoms data following the PDB format
     void WritePDB(std::string);
@@ -78,7 +78,7 @@ namespace PTools
 
 
     /// return the RMSD between two DNA (not aligning them and assuming they are comparable)
-    double Rmsd(const DNA&)const;
+    double rmsd(const DNA&)const;
 
     ///------edition functions------
 

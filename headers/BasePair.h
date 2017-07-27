@@ -23,10 +23,10 @@ namespace PTools
     virtual ~BasePair() {}
     
     ///return a string containing the atoms data following the PDB format 
-    std::string PrintPDB() const;
+    std::string print_pdb() const;
 
     ///return a string containing the atoms data of a base (identified by its chain) following the PDB format
-    std::string PrintPDBofBase(std::string chain) ;
+    std::string print_pdbofBase(std::string chain) ;
 
     ///change the chainID of the internal bases to 'A' for the first base (coresponding to the type) and 'B' for the second one
     void SetChainID();
