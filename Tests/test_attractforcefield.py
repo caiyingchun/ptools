@@ -16,8 +16,8 @@ class TestAttractForceField2(unittest.TestCase):
         a = AttractRigidbody(TEST_PK6C_RED)
         c = AttractRigidbody(TEST_PK6A_RED)
 
-        a.setRotation(False)
-        a.setTranslation(False)
+        a.set_rotation(False)
+        a.set_translation(False)
         FF = AttractForceField2(TEST_FF_MBEST1K, 20.0)
         FF.addLigand(a)
         FF.addLigand(c)

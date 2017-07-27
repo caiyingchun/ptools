@@ -14,7 +14,7 @@ namespace PTools {
 AtomSelection::AtomSelection(const Rigidbody& rigid)
 {
     m_rigid=&rigid;
-    for (uint i=0; i < rigid.Size(); i++)
+    for (uint i=0; i < rigid.size(); i++)
     {
         this->add_atomIndex(i);
     }
@@ -36,7 +36,7 @@ AtomSelection::AtomSelection(const AtomSelection& oldsel)
 Rigidbody AtomSelection::create_rigid()
 {
     Rigidbody newrigid;
-    for (uint i=0; i<this->Size(); i++)
+    for (uint i=0; i<this->size(); i++)
     {
         Atom at = m_rigid->copy_atom(m_list[i]);
         newrigid.add_atom(at);
@@ -101,8 +101,8 @@ AtomSelection operator! (const AtomSelection& seltoinverse)
 {
       //TODO: tests!
       AtomSelection selout;
-      selout.SetRigid(*seltoinverse.m_rigid);
-      AtomSelection all = seltoinverse.m_rigid->SelectAllAtoms();
+      selout.set_rigid(*seltoinverse.m_rigid);
+      AtomSelection all = seltoinverse.m_rigid->select_all_atoms();
       set_difference(all.m_list.begin(), all.m_list.end(),
                      seltoinverse.m_list.begin(), seltoinverse.m_list.end(),
                      back_inserter(selout.m_list));

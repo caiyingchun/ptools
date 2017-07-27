@@ -69,7 +69,7 @@ public:
     virtual ~Rigidbody(){};
 
 	/// return number of atoms in the rigidbody
-    uint Size() const {return CoordsArray::Size();};
+    uint size() const {return CoordsArray::size();};
 
     
     void print_matrix() const {std::cout << CoordsArray::print_matrix() << std::endl; }
@@ -93,13 +93,13 @@ public:
     }
 	
 	/// define atom properties
-    void SetAtomProperty(uint pos, const Atomproperty& atprop)
+    void set_atom_property(uint pos, const Atomproperty& atprop)
     {
        mAtomProp[pos] = atprop;
     }
 
 	/// define atom pos
-    void SetAtom(uint pos, const Atom& atom);
+    void set_atom(uint pos, const Atom& atom);
 
     /// add an atom to the molecule (deep copy)
     void add_atom(const Atomproperty& at, Coord3D co);
@@ -110,7 +110,7 @@ public:
     //returns the coordinates of atom i
     Coord3D get_coords(uint i) const
     {
-        assert(i<Size());
+        assert(i<size());
         Coord3D c;
         CoordsArray::get_coords(i,c) ;  //get the coordinates after translation/rotation
 
@@ -121,16 +121,16 @@ public:
     void unsafeget_coords(uint i, Coord3D& co)
       { CoordsArray::unsafeget_coords(i,co); }
 
-    void syncCoords()
+    void sync_coords()
     {
       get_coords(0);
     }
 
 	/// define coordinates of atom i
-    void SetCoords(uint i, const Coord3D& co)
+    void set_coords(uint i, const Coord3D& co)
     {
-       assert(i<Size());
-       CoordsArray::SetCoords(i,co);
+       assert(i<size());
+       CoordsArray::set_coords(i,co);
     }
 
     /// return geometric center of all atoms
@@ -163,19 +163,19 @@ public:
     std::string print_pdb() const ;
 
     /// selection : complete
-    AtomSelection SelectAllAtoms() const;
+    AtomSelection select_all_atoms() const;
 
     /// selection : by atom type
-    AtomSelection SelectAtomType(std::string atomtype);
+    AtomSelection select_atomtype(std::string atomtype);
 
     /// selection by residue type
-    AtomSelection SelectResidType(std::string residtype);
+    AtomSelection select_restype(std::string residtype);
 
     /// selection by chain ID
-    AtomSelection SelectChainId(std::string chainid);
+    AtomSelection select_chainid(std::string chainid);
 
     /// selection by range of residue ID
-    AtomSelection SelectResRange(int start, int stop);
+    AtomSelection select_resid_range(int start, int stop);
 
     /// selection shortcut for C-alpha
     AtomSelection get_CA();

@@ -45,7 +45,7 @@ void AttractRigidbody::init_()
     uint   atcategory  = 0;
     dbl  atcharge   = 0.0;
 
-    for (uint i = 0; i < Size() ; ++i)
+    for (uint i = 0; i < size() ; ++i)
     {
         Atomproperty & at (mAtomProp[i]);
         std::string extra = at.extra;
@@ -56,8 +56,8 @@ void AttractRigidbody::init_()
 
     }
 
-    setRotation(true);
-    setTranslation(true);
+    set_rotation(true);
+    set_translation(true);
 
     resetForces();
 }
@@ -75,7 +75,7 @@ void AttractRigidbody::updateActiveList()
 {
  std::vector<uint> newactivelist;
 
- for(uint i=0; i<this->Size(); i++)
+ for(uint i=0; i<this->size(); i++)
  {
    if( isAtomActive(i) ) newactivelist.push_back(i);
  }

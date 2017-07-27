@@ -17,8 +17,8 @@ PDB_DNA = os.path.join(os.path.dirname(__file__), 'heligeom', 'data', 'generate_
 class TestDNABindings(unittest.TestCase):
     """Check that the DNA class provides required methods."""
 
-    def test_has_Size(self):
-        self.assertTrue(hasattr(DNA, 'Size'))
+    def test_has_size(self):
+        self.assertTrue(hasattr(DNA, 'size'))
 
     def test_has_len(self):
         self.assertTrue(hasattr(DNA, '__len__'))
@@ -46,24 +46,24 @@ class TestDNA(unittest.TestCase):
 
     def setUp(self):
         self.dna = DNA(PDB_BASE_PAIR, PDB_DNA)
-        self.assertEqual(self.dna[0].Size(), 11)
+        self.assertEqual(self.dna[0].size(), 11)
         self.assertEqual(len(self.dna[0].get_rigid()), 11)
 
-    def test_Size(self):
-        self.assertEqual(self.dna.Size(), 16)
+    def test_size(self):
+        self.assertEqual(self.dna.size(), 16)
 
     def test_len(self):
         self.assertEqual(len(self.dna), 16)
-        self.assertEqual(len(self.dna), self.dna.Size())
+        self.assertEqual(len(self.dna), self.dna.size())
 
     def test_add(self):
         bp = ptools.BasePair(self.dna[0].get_rigid())
         self.dna.add(bp)
-        self.assertEqual(self.dna.Size(), 17)
+        self.assertEqual(self.dna.size(), 17)
 
         dna = ptools.DNA(self.dna)
         self.dna.add(dna)
-        self.assertEqual(self.dna.Size(), 34)
+        self.assertEqual(self.dna.size(), 34)
 
     def test_change_type(self):
         warnings.warn("only check the call, not the result")
@@ -71,11 +71,11 @@ class TestDNA(unittest.TestCase):
 
     def test_apply_local(self):
         warnings.warn("only check the call, not the result")
-        self.dna.apply_local(ptools.Roll(30), self.dna.Size() / 2)
+        self.dna.apply_local(ptools.Roll(30), self.dna.size() / 2)
 
     def test_SubDNA(self):
         warnings.warn("only check the call, not the result")
-        self.dna.SubDNA(2, self.dna.Size() - 3)
+        self.dna.SubDNA(2, self.dna.size() - 3)
 
     def test_change_representation(self):
         warnings.warn("only check the call, not the result")

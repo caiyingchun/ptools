@@ -4,9 +4,9 @@ cdef extern from "coordsarray.h" namespace "PTools":
       CppCoordsArray( CppCoordsArray & )
       void unsafeget_coords(unsigned int , CppCoord3D& )
       void add_coord(CppCoord3D& co)
-      unsigned int Size()
+      unsigned int size()
       void get_coords(unsigned int, CppCoord3D&) 
-      void SetCoords(unsigned int, CppCoord3D&)
+      void set_coords(unsigned int, CppCoord3D&)
       void Translate(CppCoord3D&)
       void euler_rotate(double , double, double)
 
@@ -23,11 +23,11 @@ cdef class CoordsArray:
           self.thisptr = new CppCoordsArray()
 
     def __len__(self):
-        return self.thisptr.Size()
+        return self.thisptr.size()
 
-    def Size(self):
+    def size(self):
         print "Depreciated, use len(obj) instead"
-        return self.thisptr.Size()
+        return self.thisptr.size()
 
     #def unsafeget_coords(self, int i, Coord3D co):
     #    cdef Coord3D c
@@ -46,8 +46,8 @@ cdef class CoordsArray:
     def get_coords(self, i, Coord3D co):
         self.thisptr.get_coords(i, deref(co.thisptr))
 
-    def SetCoords(self, i, Coord3D co):
-        self.thisptr.SetCoords(i, deref(co.thisptr))
+    def set_coords(self, i, Coord3D co):
+        self.thisptr.set_coords(i, deref(co.thisptr))
 
     def Translate(self, Coord3D co):
         self.thisptr.Translate(deref(co.thisptr))

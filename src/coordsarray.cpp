@@ -134,11 +134,11 @@ return matrix;
 void CoordsArray::get_coords(const uint i, Coord3D& co)  const throw(std::out_of_range)
 {
 
-    if (i>=Size())
+    if (i>=size())
     {
         std::stringstream ss (std::stringstream::in | std::stringstream::out);
         ss <<  "CoordsArray::get_coords : out of range :  ";
-        ss << i << " is out of bounds (object size: " << Size() << ")\n";
+        ss << i << " is out of bounds (object size: " << size() << ")\n";
         std::string message = ss.str() ;
         std::cerr << message ;
         throw std::out_of_range (message);
@@ -148,7 +148,7 @@ void CoordsArray::get_coords(const uint i, Coord3D& co)  const throw(std::out_of
 };
 
 
-void CoordsArray::SetCoords(const uint k, const Coord3D& co)
+void CoordsArray::set_coords(const uint k, const Coord3D& co)
 {
 //sets the coordinate [i] to be 'co' after rotation/translation
 

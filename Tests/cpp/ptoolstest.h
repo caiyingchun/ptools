@@ -71,20 +71,20 @@ Coord3D A, B;
     void testCopy()
     {
         s = Rigidbody(r);
-        TS_ASSERT_EQUALS(s.Size(), r.Size())
+        TS_ASSERT_EQUALS(s.size(), r.size())
         TS_ASSERT_EQUALS(r.find_center(), s.find_center());
     }
 
 
-    void testSize()
-    {        TS_ASSERT_EQUALS(r.Size(), 2365);
+    void testsize()
+    {        TS_ASSERT_EQUALS(r.size(), 2365);
     }
 
-    void testSetAtom()
+    void testset_atom()
     {
         Atom atom (r.copy_atom(3) ) ;
         atom.coords = Coord3D(3,4,5);
-        r.SetAtom(3,atom);
+        r.set_atom(3,atom);
         //#test to see if the mofification worked:
         Atom atom2 = r.copy_atom(3);
         TS_ASSERT( Norm2(atom2.coords - Coord3D(3,4,5) ) < 1e6 );
@@ -105,10 +105,10 @@ Coord3D A, B;
         r.Translate(Coord3D(34.23, 123.45,11.972));
         r2.Translate(Coord3D(34.23, 123.45,11.972));
 
-        r2.syncCoords();
+        r2.sync_coords();
 //         #same rotation and translation for r and r2: should have exact same coordinates
 
-        for (int i=0; i<r.Size(); i++)
+        for (int i=0; i<r.size(); i++)
         {
             Coord3D co1 = Coord3D();
             Coord3D co2 = Coord3D();
@@ -184,9 +184,9 @@ public:
         //c = c;
         tr = Coord3D(3.0, 4.5, -3.0);
     }
-    void  testSize()
+    void  testsize()
     {
-        TS_ASSERT(c.Size() == 2);
+        TS_ASSERT(c.size() == 2);
     }
      
     void  testGetAtom()
@@ -206,7 +206,7 @@ public:
         TS_ASSERT(c1 == Coord3D(6.0, 8.5, 2.0));
     }
 
-    void  testSetCoords()
+    void  testset_coords()
     {
         /*"""brief explanation:
         For lazy evaluation, corrdinates are stored unrotated/untranslated along
@@ -216,7 +216,7 @@ public:
         c.Translate(tr); //#do some translation
         c.euler_rotate(2.0,4.0,5.0); // # do a rotation
         Coord3D co = Coord3D(3,2,1); // #new coordinates to be added
-        c.SetCoords(0,co);
+        c.set_coords(0,co);
         Coord3D co2=Coord3D();
         c.get_coords(0,co2); // #get the coordinates back
         TS_ASSERT(Norm2(co-co2)<1.0e-6);

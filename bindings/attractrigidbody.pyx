@@ -18,11 +18,11 @@ cdef extern from "attractrigidbody.h" namespace "PTools":
         void resetForces()
         #void addForces(  #TODO: later
  
-        void setRotation(int)
-        void setTranslation(int)
+        void set_rotation(int)
+        void set_translation(int)
         CppCoord3D find_center()
 
-        unsigned int Size()
+        unsigned int size()
 
 
         #returns radius of gyration
@@ -86,13 +86,13 @@ cdef class AttractRigidbody (Rigidbody) :
     def getCharge(self, atomid):
          return (<CppAttractRigidbody*>self.thisptr).getCharge(atomid)
 
-    #void setRotation(bool)
-    def setRotation(self, flag):
-        (<CppAttractRigidbody*> self.thisptr).setRotation(flag)
+    #void set_rotation(bool)
+    def set_rotation(self, flag):
+        (<CppAttractRigidbody*> self.thisptr).set_rotation(flag)
 
-    #void setTranslation(bool)
-    def setTranslation(self, flag):
-        (<CppAttractRigidbody*> self.thisptr).setTranslation(flag)
+    #void set_translation(bool)
+    def set_translation(self, flag):
+        (<CppAttractRigidbody*> self.thisptr).set_translation(flag)
 
     def isAtomActive(self, atomid):
         return (<CppAttractRigidbody*> self.thisptr).isAtomActive(atomid)
@@ -102,12 +102,12 @@ cdef class AttractRigidbody (Rigidbody) :
         (<CppAttractRigidbody*> self.thisptr).resetForces()
 
     
-    def Size(self):
-        return self.thisptr.Size()
+    def size(self):
+        return self.thisptr.size()
 
     #define also the __len__ method:
     def __len__(self):
-        return self.thisptr.Size()
+        return self.thisptr.size()
 
         
     def find_center(self):

@@ -47,14 +47,14 @@ namespace PTools
     /// return the Rigidbody of the specified base (by chain)
     Rigidbody get_rigidOfBase(std::string chain);
     /// define the Rigidbody of the BasePair
-    void SetRigidBody(const Rigidbody&);
+    void set_rigidBody(const Rigidbody&);
     
     /// return the Residue ID of the specified base (by chain)
     uint GetResIDofBase(std::string chain);
     /// change the ID of res to idA for base on strand A and idB for the one on strand B
     void SetResID(int idA,int idB);
     /// change the atoms numbers of the specified base (by chain) starting at startnum and returning the last atom number
-    uint SetAtomNumberOfBase(std::string chain,int);
+    uint set_atomNumberOfBase(std::string chain,int);
 
     
     std::string get_type() const;
@@ -63,11 +63,11 @@ namespace PTools
     
     
     ///return the number of Atom
-    unsigned int Size() const { return rigbody.Size(); }
+    unsigned int size() const { return rigbody.size(); }
 
     /// return the i-th Atom of the basePair
     Atom operator[] (uint i) const {
-          if (i>=this->Size()) throw std::range_error("DNA: array out of bounds");
+          if (i>=this->size()) throw std::range_error("DNA: array out of bounds");
           return rigbody.copy_atom(i);};
 
     private:

@@ -17,20 +17,20 @@ cdef extern from "rigidbody.h" namespace "PTools":
         CppRigidbody(string) except+
         CppRigidbody()
         CppRigidbody(CppRigidbody &)
-        unsigned int Size()
+        unsigned int size()
         CppCoord3D get_coords(unsigned int)
         void unsafeget_coords(unsigned int, CppCoord3D &)
-        void SetCoords(unsigned int, CppCoord3D &)
+        void set_coords(unsigned int, CppCoord3D &)
         void rotate(CppCoord3D &, CppCoord3D &, double)
         void Translate(CppCoord3D &)
         CppCoord3D find_center()
-        void syncCoords()
+        void sync_coords()
         void euler_rotate(double, double, double)
         void apply_matrix(Array2D[double] &)
         CppAtom copy_atom(unsigned int)
         void add_atom(CppAtomproperty &, CppCoord3D)
         void add_atom(CppAtom &)
-        void SetAtom(unsigned int, CppAtom &)
+        void set_atom(unsigned int, CppAtom &)
         string print_pdb()
         CppRigidbody operator+(CppRigidbody &)
         void CenterToOrigin()
@@ -42,14 +42,14 @@ cdef extern from "rigidbody.h" namespace "PTools":
         double radius()
 
         CppAtomproperty & get_atom_property(unsigned int)
-        void SetAtomProperty(unsigned int, CppAtomproperty &)
+        void set_atom_property(unsigned int, CppAtomproperty &)
 
         # AtomSelection:
-        CppAtomSelection SelectAllAtoms()
-        CppAtomSelection SelectAtomType(string)
-        CppAtomSelection SelectResidType(string)
-        CppAtomSelection SelectChainId(string)
-        CppAtomSelection SelectResRange(int, int)
+        CppAtomSelection select_all_atoms()
+        CppAtomSelection select_atomtype(string)
+        CppAtomSelection select_restype(string)
+        CppAtomSelection select_chainid(string)
+        CppAtomSelection select_resid_range(int, int)
         CppAtomSelection get_CA()
         CppAtomSelection backbone()
 
@@ -104,7 +104,7 @@ cdef class Rigidbody:
             self.thisptr = <CppRigidbody*> 0
 
     def __len__(self):
-        return self.thisptr.Size()
+        return self.thisptr.size()
 
     def __str__(self):
         s = self.thisptr.print_pdb()
@@ -136,8 +136,8 @@ cdef class Rigidbody:
     def unsafeget_coords(self, unsigned int i, Coord3D co):
         self.thisptr.unsafeget_coords(i, deref(co.thisptr))
 
-    def setCoords(self, int i, Coord3D co):
-        self.thisptr.SetCoords(i, deref(co.thisptr))
+    def set_coords(self, int i, Coord3D co):
+        self.thisptr.set_coords(i, deref(co.thisptr))
 
     def Translate(self, Coord3D tr):
         self.thisptr.Translate(deref(tr.thisptr))
@@ -157,8 +157,8 @@ cdef class Rigidbody:
     def euler_rotate(self, double phi, double ssi, double rot):
         self.thisptr.euler_rotate(phi, ssi, rot)
 
-    def syncCoords(self):
-        self.thisptr.syncCoords()
+    def sync_coords(self):
+        self.thisptr.sync_coords()
 
     def apply_matrix(self, Matrix mat):
         self.thisptr.apply_matrix(deref(mat.thisptr))
@@ -173,8 +173,8 @@ cdef class Rigidbody:
     def add_atom(self, Atom at):
         self.thisptr.add_atom(deref(<CppAtom*>at.thisptr))
 
-    def SetAtom(self, unsigned int position, Atom at):
-        self.thisptr.SetAtom(position, deref(<CppAtom*>at.thisptr))
+    def set_atom(self, unsigned int position, Atom at):
+        self.thisptr.set_atom(position, deref(<CppAtom*>at.thisptr))
 
     def get_atom_property(self, unsigned int position):
         cdef CppAtomproperty cppatprop = self.thisptr.get_atom_property(position)
@@ -184,10 +184,10 @@ cdef class Rigidbody:
         pyAtprop.thisptr = new_atomprop
         return pyAtprop
 
-    def SetAtomProperty(self, unsigned int position, Atomproperty prop):     
+    def set_atom_property(self, unsigned int position, Atomproperty prop):     
         if position < 0  or position >= len(self):
             raise IndexError('atom index out of bounds')
-        self.thisptr.SetAtomProperty(position, deref(<CppAtomproperty*>prop.thisptr))
+        self.thisptr.set_atom_property(position, deref(<CppAtomproperty*>prop.thisptr))
 
     def radius(self):
         return self.thisptr.radius()
@@ -195,47 +195,47 @@ cdef class Rigidbody:
     def radius_of_gyration(self):
         return self.thisptr.radius_of_gyration()
 
-    def SelectAllAtoms(self):
+    def select_all_atoms(self):
         ret = AtomSelection()
         del ret.thisptr
-        cdef CppAtomSelection new_sel = self.thisptr.SelectAllAtoms()
+        cdef CppAtomSelection new_sel = self.thisptr.select_all_atoms()
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def SelectAtomType(self, bytes b):
+    def select_atomtype(self, bytes b):
         ret = AtomSelection()
         del ret.thisptr
         cdef char * c_typename = b
         cdef string * cpp_atomtype = new string(c_typename)
-        cdef CppAtomSelection new_sel = self.thisptr.SelectAtomType(deref(cpp_atomtype))
+        cdef CppAtomSelection new_sel = self.thisptr.select_atomtype(deref(cpp_atomtype))
         del cpp_atomtype
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def SelectResidType(self, bytes b):
+    def select_restype(self, bytes b):
         ret = AtomSelection()
         del ret.thisptr
         cdef char * c_typename = b
         cdef string * cpp_residtype = new string(c_typename)
-        cdef CppAtomSelection new_sel = self.thisptr.SelectResidType(deref(cpp_residtype))
+        cdef CppAtomSelection new_sel = self.thisptr.select_restype(deref(cpp_residtype))
         del cpp_residtype
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def SelectChainId(self, bytes b):
+    def select_chainid(self, bytes b):
         ret = AtomSelection()
         del ret.thisptr
         cdef char * c_typename = b
         cdef string * cpp_chainid = new string(c_typename)
-        cdef CppAtomSelection new_sel = self.thisptr.SelectChainId(deref(cpp_chainid))
+        cdef CppAtomSelection new_sel = self.thisptr.select_chainid(deref(cpp_chainid))
         del cpp_chainid
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def SelectResRange(self, int i, int j):
+    def select_resid_range(self, int i, int j):
         ret = AtomSelection()
         del ret.thisptr
-        cdef CppAtomSelection new_sel = self.thisptr.SelectResRange(i, j)
+        cdef CppAtomSelection new_sel = self.thisptr.select_resid_range(i, j)
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 

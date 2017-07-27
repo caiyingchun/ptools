@@ -200,7 +200,7 @@ void WritePDB(const Rigidbody& rigid, std::string filename)
 
     FILE* file= fopen(filename.c_str(),"w") ;
 
-    for (uint i=0; i<rigid.Size();i++)
+    for (uint i=0; i<rigid.size();i++)
     {
 
         const char * chainID="A" ;

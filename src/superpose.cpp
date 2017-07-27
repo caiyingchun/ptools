@@ -128,7 +128,7 @@ void Rotate(Rigidbody& rigid, Mat33 mat)
 {
     double x,y,z;
     double X,Y,Z;
-    for (uint i=0; i<rigid.Size(); i++)
+    for (uint i=0; i<rigid.size(); i++)
     {
         Coord3D c;
         c=rigid.get_coords(i);
@@ -144,7 +144,7 @@ void Rotate(Rigidbody& rigid, Mat33 mat)
         c.y=Y;
         c.z=Z;
 
-        rigid.SetCoords(i,c) ;
+        rigid.set_coords(i,c) ;
     }
 
 
@@ -165,7 +165,7 @@ static void Mat33xcoord3D(Mat33 mat, Coord3D& in, Coord3D& out)
 
 static void rigidToMatrix(const Rigidbody & rig, double output[][3])
 {
-    for (uint atom=0; atom<rig.Size();atom++)
+    for (uint atom=0; atom<rig.size();atom++)
     {
         Coord3D c = rig.get_coords(atom);
         output[atom][0]=c.x;
@@ -184,7 +184,7 @@ Calculates the tensor, as described by Sippl.
 static void MakeTensor( Rigidbody & ref, Rigidbody & mob, Mat33 out)
 {
 
-    if (ref.Size()!=mob.Size())
+    if (ref.size()!=mob.size())
     {
         std::string msg = "in superpose.cpp, in MakeTensor: Error, the two rigidbodies must have the same size !!!\n";
         std::runtime_error fail(msg);
@@ -192,8 +192,8 @@ static void MakeTensor( Rigidbody & ref, Rigidbody & mob, Mat33 out)
     }
 
     //get coordinates into an array
-    double cref[ref.Size()][3];
-    double cmob[mob.Size()][3];
+    double cref[ref.size()][3];
+    double cmob[mob.size()][3];
     rigidToMatrix(ref,cref);
     rigidToMatrix(mob,cmob);
 
@@ -202,7 +202,7 @@ static void MakeTensor( Rigidbody & ref, Rigidbody & mob, Mat33 out)
         for(uint l=0;l<3; l++)
         {
             out[l][c]=0;
-            for (uint k=0;k<ref.Size();k++)
+            for (uint k=0;k<ref.size();k++)
                 out[l][c]+=cref[k][c]*cmob[k][l];
         }
 
@@ -394,7 +394,7 @@ Superpose_t superpose(const Rigidbody& ref, const Rigidbody& mob, int verbosity)
     Rigidbody reference(ref); //copie de ref pour pouvoir centrer
     Rigidbody mobile(mob); // copie de mobile
 
-    if (ref.Size()!=mob.Size()) {
+    if (ref.size()!=mob.size()) {
         std::cout << "Error in superpose.cpp: the two AtomSelection objects must have the same size !" << std::endl;
         abort();
     };

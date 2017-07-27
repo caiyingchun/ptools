@@ -118,10 +118,10 @@ def getpstart(start, hp, dmin, dmax):
 def getpart(groove, n, nbmono):
     inf = ptools.Rigidbody()
     for i in xrange(n - 1, n + 3):
-        inf = inf + groove.SelectChainId(string.ascii_uppercase[i % 26]).create_rigid()
+        inf = inf + groove.select_chainid(string.ascii_uppercase[i % 26]).create_rigid()
     sup = ptools.Rigidbody()
     for i in xrange(n - 2 + nbmono, n + 2 + nbmono):
-        sup = sup + groove.SelectChainId(string.ascii_uppercase[i % 26]).create_rigid()
+        sup = sup + groove.select_chainid(string.ascii_uppercase[i % 26]).create_rigid()
     return inf, sup
 
 
@@ -133,7 +133,7 @@ def groove_width_calculation(hp, mono1):
     O = hp.point
     axe = hp.unitVector
     groove = extend(hp, mono1, nbmono * 3, False, False)
-    start = groove.SelectChainId(string.ascii_uppercase[n]).create_rigid()
+    start = groove.select_chainid(string.ascii_uppercase[n]).create_rigid()
     dmin, dmax = distAxis(mono1, hp)
 
     nb = 0
@@ -141,8 +141,8 @@ def groove_width_calculation(hp, mono1):
     for i in xrange(n, end):
         # gen point
         inf, sup = getpart(groove, i, nbmono)
-        infSize = inf.size()
-        supSize = sup.size()
+        infsize = inf.size()
+        supsize = sup.size()
         nbpoint = abs(int(math.degrees(hp.angle)) * 2)
         for j in xrange(nbpoint):
             ldist = []
@@ -153,14 +153,14 @@ def groove_width_calculation(hp, mono1):
 
                 # get the min dist on the inferior part
                 mindistinf = ptools.dist(pstart.copy_atom(0), inf.copy_atom(0))
-                for k in xrange(1, infSize):
+                for k in xrange(1, infsize):
                     tempdist = ptools.dist(pstart.copy_atom(0), inf.copy_atom(k))
                     if tempdist < mindistinf:
                         mindistinf = tempdist
 
                 # the same on the superior part
                 mindistsup = ptools.dist(pstart.copy_atom(0), sup.copy_atom(0))
-                for k in xrange(1, supSize):
+                for k in xrange(1, supsize):
                     tempdist = ptools.dist(pstart.copy_atom(0), sup.copy_atom(k))
                     if tempdist < mindistsup:
                         mindistsup = tempdist
@@ -176,13 +176,13 @@ def changeChain(rig, letter):
     for i in xrange(0, rsize):
         at = rig.get_atom_property(i)
         at.chainId = letter
-        rig.SetAtomProperty(i, at)
+        rig.set_atom_property(i, at)
     return rig
 
 
 def extend(hp, mono1, nb, Z=False, seq=False):
     final = ptools.Rigidbody()
-    monoTest = mono1.SelectAllAtoms().create_rigid()
+    monoTest = mono1.select_all_atoms().create_rigid()
     i = 0
     O = hp.point
     axe = hp.unitVector

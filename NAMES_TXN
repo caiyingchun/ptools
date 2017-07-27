@@ -34,37 +34,37 @@
 # GetType	get_type
 # getVdw	get_vdw
 # MatTrans2screw	mat44_to_screw
-PrintMatrix	print_matrix
-PrintParam	print_param
-PrintPDB	print_pdb
+# PrintMatrix	print_matrix
+# PrintParam	print_param
+# PrintPDB	print_pdb
 ### Print	print
-RadiusGyration radius_of_gyration
-Radius	radius
-## Reducer	reducer
-Reduce	reduce
-removeclosest remove_closest
-# rigidXMat44	rigidXMat44_CHANGEMANUALLY
-Rmsd	rmsd
-# SelectAllAtoms(	select_all_atoms(
-# SelectAtomID(	select_atomid(
-# SelectAtomType(	select_atomtype(
-# SelectChainId(	select_chainid(
-# SelectResidType(	select_restype(
-# SelectResRange select_resid_range(
-# SetAtomProperty(	set_atom_property(
-# SetAtom(	set_atom(
-# SetChainId(	set_chainid(
-# setCoords(	set_coords(
-# SetCoords(	set_coords(
-# setdefault(	set_default(
-# SetResidId(	set_resid(
-# SetRestraint(	set_restraint(
-# SetRigid(	set_rigid(
-# setRotation(	set_rotation(
-# setTranslation(	set_translation(
-# Size(	size(
-# surfpointParams(	surfpoint_params(
-# syncCoords(	sync_coords(
+# RadiusGyration radius_of_gyration
+# Radius	radius
+# ## Reducer	reducer
+# Reduce	reduce
+# removeclosest remove_closest
+# # rigidXMat44	rigidXMat44_CHANGEMANUALLY
+# Rmsd	rmsd
+SelectAllAtoms	select_all_atoms
+SelectAtomID	select_atomid
+SelectAtomType	select_atomtype
+SelectChainId	select_chainid
+SelectResidType	select_restype
+SelectResRange select_resid_range
+SetAtomProperty	set_atom_property
+SetAtom	set_atom
+SetChainId	set_chainid
+setCoords	set_coords
+SetCoords	set_coords
+setdefault	set_default
+SetResidId	set_resid
+SetRestraint	set_restraint
+SetRigid	set_rigid
+setRotation	set_rotation
+setTranslation	set_translation
+Size	size
+surfpointParams	surfpoint_params
+syncCoords	sync_coords
 # toatom(	to_atom(
 # ToPdbString(	to_pdb_string(
 # toString(	to_string(

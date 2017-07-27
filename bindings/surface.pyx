@@ -6,7 +6,7 @@ cdef extern from "surface.h" namespace "PTools":
     cdef cppclass CppSurface "PTools::Surface":
         CppSurface(int, int , string ) 
         CppRigidbody surfpoint(CppRigidbody & , double)
-        void surfpointParams(int, double)
+        void surfpoint_params(int, double)
         CppRigidbody outergrid(CppRigidbody &, CppRigidbody & , double)
         CppRigidbody remove_closest(CppRigidbody & , double)
         void readsolvparam(string)
@@ -33,8 +33,8 @@ cdef class Surface:
         ret.thisptr = new CppRigidbody(r)
         return ret
 
-    def surfpointParams(self, int max, double shift):
-        self.thisptr.surfpointParams(max, shift)
+    def surfpoint_params(self, int max, double shift):
+        self.thisptr.surfpoint_params(max, shift)
 
     def outergrid(self, Rigidbody rigid1, Rigidbody rigid2, double srad):
         cdef CppRigidbody r = self.thisptr.outergrid(deref(rigid1.thisptr), deref(rigid2.thisptr), srad)

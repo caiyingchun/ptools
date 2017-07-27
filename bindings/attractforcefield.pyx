@@ -25,7 +25,7 @@ cdef extern from "forcefield.h" namespace "PTools":
 cdef extern from "attractforcefield.h" namespace "PTools":
     
     cdef cppclass CppBaseAttractForceField "PTools::BaseAttractForceField" (CppForceField):
-        unsigned int ProblemSize()
+        unsigned int Problemsize()
         double Function(vector[double]&)
         void addLigand(CppAttractRigidbody &)
         double get_vdw()

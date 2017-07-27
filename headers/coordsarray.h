@@ -95,12 +95,12 @@ public:
     void inline unsafeget_coords(const uint i, Coord3D& co) const { co = _movedcoords[i];};
 
     void add_coord(const Coord3D& co) {_refcoords.push_back(co); _movedcoords.push_back(co);  _modified();  };
-    uint Size() const {return _refcoords.size();};
+    uint size() const {return _refcoords.size();};
 
 
     void get_coords(const uint i, Coord3D& co)  const throw(std::out_of_range) ;
 
-    void SetCoords(const uint k, const Coord3D& co);
+    void set_coords(const uint k, const Coord3D& co);
 
     /// Translate the whole object
     void Translate(const Coord3D& tr);

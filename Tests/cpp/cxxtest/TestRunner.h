@@ -82,7 +82,7 @@ namespace CxxTest
 #ifdef _CXXTEST_HAVE_EH
             bool _abortTestOnFail;
 #endif // _CXXTEST_HAVE_EH
-            unsigned _maxDumpSize;
+            unsigned _maxDumpsize;
             
         public:
             StateGuard()
@@ -90,7 +90,7 @@ namespace CxxTest
 #ifdef _CXXTEST_HAVE_EH
                 _abortTestOnFail = abortTestOnFail();
 #endif // _CXXTEST_HAVE_EH
-                _maxDumpSize = maxDumpSize();
+                _maxDumpsize = maxDumpsize();
             }
             
             ~StateGuard()
@@ -98,7 +98,7 @@ namespace CxxTest
 #ifdef _CXXTEST_HAVE_EH
                 setAbortTestOnFail( _abortTestOnFail );
 #endif // _CXXTEST_HAVE_EH
-                setMaxDumpSize( _maxDumpSize );
+                setMaxDumpsize( _maxDumpsize );
             }
         };
 
@@ -110,7 +110,7 @@ namespace CxxTest
 #ifdef _CXXTEST_HAVE_EH
                 setAbortTestOnFail( CXXTEST_DEFAULT_ABORT );
 #endif // _CXXTEST_HAVE_EH
-                setMaxDumpSize( CXXTEST_MAX_DUMP_SIZE );
+                setMaxDumpsize( CXXTEST_MAX_DUMP_SIZE );
             }
         };
     };

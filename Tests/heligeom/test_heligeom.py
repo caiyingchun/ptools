@@ -33,7 +33,7 @@ class TestHeligeom(unittest.TestCase):
     def testBasicManipulation(self):
         # translate the DNA in coarse grain representation
         dna = DNA(TEST_BP_RED, TEST_BDNA_EXPECTED_PDB)
-        self.assertEqual(dna[0].Size(), 11)
+        self.assertEqual(dna[0].size(), 11)
         self.assertEqual(len(dna[0].get_rigid()), 11)
 
         # add a base Pair
@@ -48,10 +48,10 @@ class TestHeligeom(unittest.TestCase):
         dna.change_type(0, "A", TEST_BP_RED)
 
         # turn the center base
-        dna.apply_local(Roll(30), dna.Size() / 2)
+        dna.apply_local(Roll(30), dna.size() / 2)
 
         # trim the extremities
-        dna = dna.SubDNA(2, dna.Size() - 3)
+        dna = dna.SubDNA(2, dna.size() - 3)
 
         # change to a All Atom representation
         dna.change_representation(TEST_BP_PDB)
@@ -77,8 +77,8 @@ class TestHeligeom(unittest.TestCase):
         ener = forcefield.nonbon8(prot, dna, AttractPairList(prot, dna, cutoff))
 
         self.assertAlmostEqual(ener, -51.6955215854)
-        self.assertEqual(prot.Size(), 706)
-        self.assertEqual(dna.Size(), 231)
+        self.assertEqual(prot.size(), 706)
+        self.assertEqual(dna.size(), 231)
 
 
 if __name__ == "__main__":

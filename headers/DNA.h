@@ -26,10 +26,10 @@ namespace PTools
 
 
     ///return the number of BasePair
-    unsigned int Size() const;
+    unsigned int size() const;
 
     ///return the number of Atom
-    unsigned int AtomSize() const;
+    unsigned int Atomsize() const;
 
     ///return a string containing the atoms data following the PDB format
     std::string print_pdb() ;
@@ -84,7 +84,7 @@ namespace PTools
 
     /// return the i-th BasePair of the strand
     BasePair operator[] (uint i) const {
-          if (i>=this->Size()) throw std::range_error("DNA: array out of bounds");
+          if (i>=this->size()) throw std::range_error("DNA: array out of bounds");
           return strand[i];};
 
     /// add the basePairs of a DNA to the strand of this DNA. the specified movement do the liason betwen the two strand

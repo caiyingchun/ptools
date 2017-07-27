@@ -77,7 +77,7 @@ def run(args):
 
     # Initialize surface.
     surf = ptools.Surface(30, 30, SOLVATION_PARAMETER_FILE)
-    surf.surfpointParams(5000, distance_to_receptor)
+    surf.surfpoint_params(5000, distance_to_receptor)
 
     # Generate grid points.
     grid = surf.surfpoint(rec, 1.4)

@@ -24,7 +24,7 @@ void extractExtra( Rigidbody& rig, std::vector<uint>& vCat, std::vector<dbl>& vC
     uint   atcategory  = 0;
     dbl  atcharge   = 0.0;
 
-    for (uint i=0; i<rig.Size(); i++)
+    for (uint i=0; i<rig.size(); i++)
     {
         const Atomproperty at = rig.get_atom_property(i);
         std::string extra = at.extra;
@@ -93,21 +93,21 @@ void AttractForceField1::InitParams(const std::string & paramsFileName )
 dbl AttractForceField1::nonbon8_forces(AttractRigidbody& rec, AttractRigidbody& lig, AttractPairList & pairlist, std::vector<Coord3D>& forcerec, std::vector<Coord3D>& forcelig, bool print)
 {
 
-    assert(forcerec.size() == rec.Size());
-    assert(forcelig.size() == lig.Size());
+    assert(forcerec.size() == rec.size());
+    assert(forcelig.size() == lig.size());
 
     dbl sumLJ=0.0 ;
     dbl sumElectrostatic=0.0;
 
 
     //synchronize coordinates for using unsafeget_coords
-    rec.syncCoords();
-    lig.syncCoords();
+    rec.sync_coords();
+    lig.sync_coords();
 
     Coord3D a, b;
 
 
-    for (uint iter=0; iter<pairlist.Size(); iter++)
+    for (uint iter=0; iter<pairlist.size(); iter++)
     {
 
         uint ir = pairlist[iter].atrec;
@@ -335,9 +335,9 @@ dbl BaseAttractForceField::Function(const Vdouble& stateVars )
     assert(m_centeredligand.size() >=1);
     assert(m_movedligand.size() >=1);
     
-    if (stateVars.size() != this->ProblemSize() )
+    if (stateVars.size() != this->Problemsize() )
     {
-      throw std::runtime_error("error: ProblemSize != size of state vars in BaseAttractForceField::Function");
+      throw std::runtime_error("error: Problemsize != size of state vars in BaseAttractForceField::Function");
     }
 
     uint svptr = 0; //state variable 'pointer'
@@ -405,7 +405,7 @@ dbl BaseAttractForceField::Function(const Vdouble& stateVars )
 
 
 
-uint BaseAttractForceField::ProblemSize()
+uint BaseAttractForceField::Problemsize()
 {
     uint size = 0;
     for (uint i = 0; i < m_centeredligand.size(); i++)
@@ -479,13 +479,13 @@ dbl AttractForceField2::nonbon8_forces(AttractRigidbody& rec, AttractRigidbody& 
     std::cout.precision(20);
 
     //synchronise coordinates to later use unsafeget_coords (should be faster)
-    rec.syncCoords();
-    lig.syncCoords();
+    rec.sync_coords();
+    lig.sync_coords();
 
     Coord3D a;
     Coord3D b;
 
-    for (uint ik=0; ik<pairlist.Size(); ik++ )
+    for (uint ik=0; ik<pairlist.size(); ik++ )
     {
         AtomPair atpair = pairlist[ik];
 
@@ -579,7 +579,7 @@ void BaseAttractForceField::Trans(uint molIndex, Vdouble & delta, uint shift,  b
     ftr1=0.0;
     ftr2=0.0;
     ftr3=0.0;
-    for (uint i=0;i<rig.Size(); i++)
+    for (uint i=0;i<rig.size(); i++)
     {
         ftr1=ftr1 + rig.m_forces[i].x;
         ftr2=ftr2 + rig.m_forces[i].y;

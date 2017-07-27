@@ -251,14 +251,14 @@ namespace CxxTest
 
         void redraw()
         {
-            getWindowSize();
+            getWindowsize();
             drawSolidBar();
             drawDividers();
             drawPercentage();
             flush();
         }
 
-        void getWindowSize()
+        void getWindowsize()
         {
             XWindowAttributes attributes;
             XGetWindowAttributes( _display, _window, &attributes );

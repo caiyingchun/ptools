@@ -27,7 +27,7 @@ void Surface::setUp(int nphi, int ncosth)
 
 }
 
-void Surface::surfpointParams(int max, dbl shift)
+void Surface::surfpoint_params(int max, dbl shift)
 {
     m_numneh = max;
     m_sradshift = shift;
@@ -66,7 +66,7 @@ void Surface::readsolvparam(const std::string& file)
 Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
 {
     Rigidbody rigidsurf;
-    int size_rigid = rigid.Size();
+    int size_rigid = rigid.size();
     std::vector<int> neigh;
     radius.clear();
 
@@ -79,7 +79,7 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
     // read radius
     AttractRigidbody rigid_tmp(rigid);
     m_atomtypenumber.resize(size_rigid);
-    for (uint i=0; i< rigid_tmp.Size(); i++)
+    for (uint i=0; i< rigid_tmp.size(); i++)
     { m_atomtypenumber[i] = rigid_tmp.getAtomTypeNumber(i);}
     for (int i=0; i<size_rigid; i++)
     {
@@ -178,8 +178,8 @@ Rigidbody Surface::outergrid(const Rigidbody & grid, const Rigidbody & rigid2, d
     //used to remove grid points that are too close from the receptor
     //ie: there is not enough space to put the ligand at a distance < ligand.radius from the receptor
     
-    int grid_size = grid.Size();
-    int size2 = rigid2.Size();
+    int grid_size = grid.size();
+    int size2 = rigid2.size();
     Rigidbody rigid3;
     double srad = rad*rad;
     
@@ -201,7 +201,7 @@ Rigidbody Surface::outergrid(const Rigidbody & grid, const Rigidbody & rigid2, d
 Rigidbody Surface::remove_closest(const Rigidbody & rigid, dbl srad)
 {
     
-    int const size=rigid.Size();
+    int const size=rigid.size();
     Rigidbody rigid2;
     
     srad=srad*srad;

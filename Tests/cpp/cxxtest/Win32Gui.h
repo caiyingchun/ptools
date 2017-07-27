@@ -161,7 +161,7 @@ namespace CxxTest
 
         void registerWindowClass()
         {
-            _windowClass.cbSize = sizeof(_windowClass);
+            _windowClass.cbsize = sizeof(_windowClass);
             _windowClass.style = CS_HREDRAW | CS_VREDRAW;
             _windowClass.lpfnWndProc = &(Win32Gui::windowProcedure);
             _windowClass.cbClsExtra = 0;

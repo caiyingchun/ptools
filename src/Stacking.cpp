@@ -27,50 +27,50 @@ Stacking::~Stacking()
 Rigidbody Stacking::Axis( Rigidbody& bp1,  Rigidbody& bp2)
 {
     //1 determine if the considered basePair is a G-C or a A-T
-    bool bp1isGC = bp1.SelectAtomType("GG1").Size()>0;
-    bool bp2isGC = bp2.SelectAtomType("GG1").Size()>0;
+    bool bp1isGC = bp1.select_atomtype("GG1").size()>0;
+    bool bp2isGC = bp2.select_atomtype("GG1").size()>0;
 
     //2 build rigidbody for pyrimidine
 
     Rigidbody pyrBp1;
     if (bp1isGC)
     {
-        pyrBp1 = bp1.SelectAtomType("GC1").create_rigid() + bp1.SelectAtomType("GC2").create_rigid();
+        pyrBp1 = bp1.select_atomtype("GC1").create_rigid() + bp1.select_atomtype("GC2").create_rigid();
     }
     else
     {
-        pyrBp1 = bp1.SelectAtomType("GT1").create_rigid() + bp1.SelectAtomType("GT2").create_rigid();
+        pyrBp1 = bp1.select_atomtype("GT1").create_rigid() + bp1.select_atomtype("GT2").create_rigid();
     }
 
     Rigidbody pyrBp2;
     if (bp2isGC)
     {
-        pyrBp2 = bp2.SelectAtomType("GC1").create_rigid() + bp2.SelectAtomType("GC2").create_rigid();
+        pyrBp2 = bp2.select_atomtype("GC1").create_rigid() + bp2.select_atomtype("GC2").create_rigid();
     }
     else
     {
-        pyrBp2 = bp2.SelectAtomType("GT1").create_rigid() + bp2.SelectAtomType("GT2").create_rigid();
+        pyrBp2 = bp2.select_atomtype("GT1").create_rigid() + bp2.select_atomtype("GT2").create_rigid();
     }
 
     //3 build rigidbody for purine
     Rigidbody purBp1;
      if (bp1isGC)
     {
-        purBp1 = bp1.SelectAtomType("GG1").create_rigid() + bp1.SelectAtomType("GG2").create_rigid() + bp1.SelectAtomType("GG3").create_rigid();
+        purBp1 = bp1.select_atomtype("GG1").create_rigid() + bp1.select_atomtype("GG2").create_rigid() + bp1.select_atomtype("GG3").create_rigid();
     }
     else
     {
-        purBp1 = bp1.SelectAtomType("GA1").create_rigid() + bp1.SelectAtomType("GA2").create_rigid() + bp1.SelectAtomType("GA3").create_rigid();
+        purBp1 = bp1.select_atomtype("GA1").create_rigid() + bp1.select_atomtype("GA2").create_rigid() + bp1.select_atomtype("GA3").create_rigid();
     }
 
     Rigidbody purBp2;
     if (bp2isGC)
     {
-        purBp2 = bp2.SelectAtomType("GG1").create_rigid() + bp2.SelectAtomType("GG2").create_rigid() + bp2.SelectAtomType("GG3").create_rigid();
+        purBp2 = bp2.select_atomtype("GG1").create_rigid() + bp2.select_atomtype("GG2").create_rigid() + bp2.select_atomtype("GG3").create_rigid();
     }
     else
     {
-        purBp2 = bp2.SelectAtomType("GA1").create_rigid() + bp2.SelectAtomType("GA2").create_rigid() + bp2.SelectAtomType("GA3").create_rigid();
+        purBp2 = bp2.select_atomtype("GA1").create_rigid() + bp2.select_atomtype("GA2").create_rigid() + bp2.select_atomtype("GA3").create_rigid();
     }
 
     //4 compute center
@@ -101,29 +101,29 @@ Rigidbody Stacking::Axis( Rigidbody& bp1,  Rigidbody& bp2)
 Rigidbody Stacking::Axis( Rigidbody& basePair)
 {
     //1 determine if the considered basePair is a G-C or a A-T
-    bool basePairIsGC = basePair.SelectAtomType("GG1").Size()>0;
+    bool basePairIsGC = basePair.select_atomtype("GG1").size()>0;
 
     //2 build rigidbody for pyrimidine
 
     Rigidbody pyrBp;
     if (basePairIsGC)
     {
-        pyrBp = basePair.SelectAtomType("GC1").create_rigid() + basePair.SelectAtomType("GC2").create_rigid();
+        pyrBp = basePair.select_atomtype("GC1").create_rigid() + basePair.select_atomtype("GC2").create_rigid();
     }
     else
     {
-        pyrBp = basePair.SelectAtomType("GT1").create_rigid() + basePair.SelectAtomType("GT2").create_rigid();
+        pyrBp = basePair.select_atomtype("GT1").create_rigid() + basePair.select_atomtype("GT2").create_rigid();
     }
 
     //3 build rigidbody for purine
     Rigidbody purBp;
      if (basePairIsGC)
     {
-        purBp = basePair.SelectAtomType("GG1").create_rigid() + basePair.SelectAtomType("GG2").create_rigid() + basePair.SelectAtomType("GG3").create_rigid();
+        purBp = basePair.select_atomtype("GG1").create_rigid() + basePair.select_atomtype("GG2").create_rigid() + basePair.select_atomtype("GG3").create_rigid();
     }
     else
     {
-        purBp = basePair.SelectAtomType("GA1").create_rigid() + basePair.SelectAtomType("GA2").create_rigid() + basePair.SelectAtomType("GA3").create_rigid();
+        purBp = basePair.select_atomtype("GA1").create_rigid() + basePair.select_atomtype("GA2").create_rigid() + basePair.select_atomtype("GA3").create_rigid();
     }
 
 

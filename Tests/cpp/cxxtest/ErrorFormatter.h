@@ -252,15 +252,15 @@ namespace CxxTest
         
         void dumpBuffer( const void *buffer, unsigned size )
         {
-            unsigned dumpSize = size;
-            if ( maxDumpSize() && dumpSize > maxDumpSize() )
-                dumpSize = maxDumpSize();
+            unsigned dumpsize = size;
+            if ( maxDumpsize() && dumpsize > maxDumpsize() )
+                dumpsize = maxDumpsize();
 
             const unsigned char *p = (const unsigned char *)buffer;
             (*_o) << "   { ";
-            for ( unsigned i = 0; i < dumpSize; ++ i )
+            for ( unsigned i = 0; i < dumpsize; ++ i )
                 (*_o) << byteToHex( *p++ ) << " ";
-            if ( dumpSize < size )
+            if ( dumpsize < size )
                 (*_o) << "... ";
             (*_o) << "}" << endl;
         }

@@ -34,12 +34,12 @@ class TestBasicMoves(unittest.TestCase):
 
     def testrmsdAtomSelection1(self):
         # tests rmsd with an AtomSelection object
-        atsel = self.rigid1.SelectAllAtoms()
+        atsel = self.rigid1.select_all_atoms()
         self.assertEqual(rmsd(atsel, self.rigid2), 0)
 
     def testrmsdAtomSelection2(self):
         # tests rmsd with an AtomSelection object
-        atsel = self.rigid1.SelectAllAtoms()
+        atsel = self.rigid1.select_all_atoms()
         self.assertEqual(rmsd(self.rigid2, atsel), 0)
 
     def testTranslation1(self):

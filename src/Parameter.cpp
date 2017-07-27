@@ -39,7 +39,7 @@ Parameter::~Parameter()
 Rigidbody Parameter::BuildAxisCentered( Rigidbody& bp)
 {
     //if it's a coarse grain model
-    if (bp.SelectAtomType("GS2").Size()> 0)
+    if (bp.select_atomtype("GS2").size()> 0)
     {
         return BuildAxisCGGeometricCenter(bp);
     }
@@ -52,24 +52,24 @@ Rigidbody Parameter::BuildAxisCentered( Rigidbody& bp)
 ////code "steal" from deformDna.cpp (author: Pierre Poulain), modified to use the geometric center
 Rigidbody Parameter::BuildAxisCGGeometricCenter( Rigidbody& bp)
 {
-    AtomSelection selSugar = bp.SelectAtomType("GS2");
-    assert(selSugar.Size() == 2);
+    AtomSelection selSugar = bp.select_atomtype("GS2");
+    assert(selSugar.size() == 2);
     // build base3D
     Rigidbody base3D;
     // define atoms for base3D construction
     Coord3D center = selSugar.create_rigid().find_center(); // middle of GS2
     Coord3D pointY = selSugar[0].coords; // point toward Y (first GS2)
-    AtomSelection grain1 = bp.SelectAtomType("GG1"); // GG1 or GA1
-    if (grain1.Size() == 0) {
-            grain1 = bp.SelectAtomType("GA1");
+    AtomSelection grain1 = bp.select_atomtype("GG1"); // GG1 or GA1
+    if (grain1.size() == 0) {
+            grain1 = bp.select_atomtype("GA1");
     }
-    assert(grain1.Size() == 1);
+    assert(grain1.size() == 1);
 
-    AtomSelection grain2 = bp.SelectAtomType("GC1"); // GG1 or GA1
-    if (grain2.Size() == 0) {
-            grain2 = bp.SelectAtomType("GT1");
+    AtomSelection grain2 = bp.select_atomtype("GC1"); // GG1 or GA1
+    if (grain2.size() == 0) {
+            grain2 = bp.select_atomtype("GT1");
     }
-    assert(grain2.Size() == 1);
+    assert(grain2.size() == 1);
     Coord3D pointX1 = grain1[0].coords;
     Coord3D pointX2 = grain2[0].coords;
     // Y
@@ -112,18 +112,18 @@ Rigidbody Parameter::BuildAxisCGGeometricCenter( Rigidbody& bp)
 ///Definitions and Nomenclature of Nucleic Acid Structure Parameters, R. E. Dickerson et alJ. Mol. Biol. (1995) 251, 648–664.
 Rigidbody Parameter::BuildAxisAAGeometricCenter( Rigidbody& bp)
 {
-    AtomSelection selSugar = bp.SelectAtomType("C1'");
-    if (selSugar.Size() != 2)selSugar = bp.SelectAtomType("C1*");
+    AtomSelection selSugar = bp.select_atomtype("C1'");
+    if (selSugar.size() != 2)selSugar = bp.select_atomtype("C1*");
     // build base3D
     Rigidbody base3D;
     // define atoms for base3D construction
     Coord3D center = selSugar.create_rigid().find_center(); // middle of GS2
     Coord3D pointY = selSugar[0].coords; // point toward Y (first GS2)
-    AtomSelection grain = bp.SelectAtomType("C5"); // GG1 or GA1
-    if (grain.Size() == 0) {
-            grain = bp.SelectAtomType("GA1");
+    AtomSelection grain = bp.select_atomtype("C5"); // GG1 or GA1
+    if (grain.size() == 0) {
+            grain = bp.select_atomtype("GA1");
     }
-    assert(grain.Size() >= 1); /* /!\ */
+    assert(grain.size() >= 1); /* /!\ */
     // Y
     Coord3D axeY =  (pointY - center).Normalize();
     // Z

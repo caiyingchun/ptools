@@ -23,7 +23,7 @@ public:
     virtual void initMinimization();
     ///analytical derivative
     void Derivatives(const Vdouble&, Vdouble&);
-    uint ProblemSize();
+    uint Problemsize();
     dbl Function(const Vdouble&);
 
     ///add a new ligand to the ligand list...
@@ -38,8 +38,8 @@ public:
     ///non-bonded interactions
     virtual dbl nonbon8(AttractRigidbody& rec, AttractRigidbody& lig, AttractPairList & pairlist, bool print=false)
     {
-        std::vector<Coord3D> forcesrec (rec.Size());
-        std::vector<Coord3D> forceslig (lig.Size());
+        std::vector<Coord3D> forcesrec (rec.size());
+        std::vector<Coord3D> forceslig (lig.size());
 
         dbl ener = nonbon8_forces(rec, lig, pairlist, forcesrec, forceslig, print);
         rec.addForces(forcesrec);
@@ -134,7 +134,7 @@ class TestForceField: public ForceField
 
 //virtual dbl Function() {return 0.0;};
 
-    virtual uint ProblemSize(){
+    virtual uint Problemsize(){
         return 2;
     };
 

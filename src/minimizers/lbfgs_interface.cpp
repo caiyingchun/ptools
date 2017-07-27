@@ -72,7 +72,7 @@ inline std::vector<double> todbl(std::vector<surreal> & vcplx)
 void Lbfgs::minimize(int maxiter)
 {
 
-    int n = objToMinimize.ProblemSize();
+    int n = objToMinimize.Problemsize();
     std::cout  << "number of free variables for the minimizer: " << n << std::endl;
 
 

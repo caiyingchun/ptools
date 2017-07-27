@@ -142,14 +142,14 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
 
                 # performs single minimization on receptor and ligand, given maxiter=niter and restraint constant rstk
                 forcefield = ff_specs['ff_class'](ff_specs['ff_file'], surreal(cutoff))
-                receptor.setTranslation(False)
-                receptor.setRotation(False)
+                receptor.set_translation(False)
+                receptor.set_rotation(False)
 
                 forcefield.addLigand(receptor)
                 forcefield.addLigand(ligand)
                 # rstk = minim['rstk']  # restraint force
                 # if rstk > 0.0:
-                #     forcefield.SetRestraint(rstk)
+                #     forcefield.set_restraint(rstk)
 
                 lbfgs_minimizer = ff_specs['minimizer_class'](forcefield)
 

@@ -191,8 +191,8 @@ dbl McopForceField::Function(const Vdouble & v)
             AttractRigidbody& copy = ref_ensemble[copynb];
 
             AttractPairList cpl ( lig._main, copy, _cutoff );
-            std::vector<Coord3D> copyforce(copy.Size());
-            std::vector<Coord3D> mainforce(lig._main.Size());
+            std::vector<Coord3D> copyforce(copy.size());
+            std::vector<Coord3D> mainforce(lig._main.size());
 
 //             dbl e = _ff.nonbon8( lig._main, _receptor._vregion[loopregion][copy] , cpl );
             dbl e = _ff.nonbon8_forces(lig._main, copy, cpl, mainforce, copyforce);
@@ -205,11 +205,11 @@ dbl McopForceField::Function(const Vdouble & v)
             { mainforce[i] = weight*mainforce[i]; }
 
             //add force to main ligand and receptor copy
-            assert(lig._main.Size() == mainforce.size());
-            for (uint i=0; i<lig._main.Size(); i++)
+            assert(lig._main.size() == mainforce.size());
+            for (uint i=0; i<lig._main.size(); i++)
                lig._main.m_forces[i]+=mainforce[i];
 
-            assert(copy.Size()==copyforce.size());
+            assert(copy.size()==copyforce.size());
             for(uint i=0; i<copyforce.size(); i++)
                copy.m_forces[i]+=copyforce[i];
 
@@ -230,14 +230,14 @@ void McopForceField::Derivatives(const Vdouble& v, Vdouble & g )
 //sum the forces over x, y and z:
 
 Coord3D ligtransForces; //translational forces for the ligand:
-for(uint i=0; i<_moved_ligand._main.Size(); i++)
+for(uint i=0; i<_moved_ligand._main.size(); i++)
  {
      ligtransForces += _moved_ligand._main.m_forces[i];
  }
 
 
 Coord3D receptortransForces;
-for(uint i=0; i<_receptor._main.Size(); i++)
+for(uint i=0; i<_receptor._main.size(); i++)
 {
 receptortransForces+= _receptor._main.m_forces[i];
 }
@@ -251,7 +251,7 @@ for (uint i=0; i <_receptor._vregion.size(); i++)
    for(uint j=0; j<ens.size(); j++)
    {
      AttractRigidbody& copy = ens[j];
-       for (uint atomnb=0; atomnb < copy.Size(); ++atomnb)
+       for (uint atomnb=0; atomnb < copy.size(); ++atomnb)
        {
             receptortransForces += weights[j] * copy.m_forces[atomnb];
        }

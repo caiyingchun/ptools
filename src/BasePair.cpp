@@ -23,7 +23,7 @@ BasePair::BasePair(std::string filename)
 
 BasePair::BasePair(const Rigidbody& rigbody)
 {
-  if (rigbody.Size()==0)
+  if (rigbody.size()==0)
   {
     throw std::runtime_error("cannot initialize a BasePair with an empty Rigidbody");
   }
@@ -38,12 +38,12 @@ string BasePair::print_pdb()const
 
 std::string BasePair::print_pdbofBase(std::string chain) 
 {
-    return rigbody.SelectChainId(chain).create_rigid().print_pdb();
+    return rigbody.select_chainid(chain).create_rigid().print_pdb();
 }
 
 void BasePair::SetChainID(){
-  unsigned int rigSize=rigbody.Size();
-  for(unsigned int i =0; i< rigSize ; i++)
+  unsigned int rigsize=rigbody.size();
+  for(unsigned int i =0; i< rigsize ; i++)
   {
     Atomproperty ap=rigbody.get_atom_property(i);
     if (ap.residType == type)
@@ -54,7 +54,7 @@ void BasePair::SetChainID(){
     {
         ap.chainId = "B";
     }
-    rigbody.SetAtomProperty(i,ap);
+    rigbody.set_atom_property(i,ap);
   }
 }
 
@@ -89,14 +89,14 @@ Rigidbody BasePair::get_rigid()const
 
 Rigidbody BasePair::get_rigidOfBase(std::string chain)
 {
-  return rigbody.SelectChainId(chain).create_rigid();
+  return rigbody.select_chainid(chain).create_rigid();
 }
 
 
 void BasePair::SetResID(int idA,int idB)
 {
-  unsigned int baseSize=rigbody.Size();
-  for(unsigned int i =0; i< baseSize ; i++)
+  unsigned int basesize=rigbody.size();
+  for(unsigned int i =0; i< basesize ; i++)
   {
     Atomproperty ap=rigbody.get_atom_property(i);
     if (ap.chainId == "A")
@@ -107,21 +107,21 @@ void BasePair::SetResID(int idA,int idB)
     {
         ap.residId = idB;
     }     
-    rigbody.SetAtomProperty(i,ap);
+    rigbody.set_atom_property(i,ap);
   }
 }
 
-uint BasePair::SetAtomNumberOfBase(std::string chain,int num)
+uint BasePair::set_atomNumberOfBase(std::string chain,int num)
 {
-  unsigned int baseSize=rigbody.Size();
-  for(unsigned int i =0; i< baseSize ; i++)
+  unsigned int basesize=rigbody.size();
+  for(unsigned int i =0; i< basesize ; i++)
   {
     Atomproperty ap=rigbody.get_atom_property(i);
     if (ap.chainId == chain)
     {
         ap.atomId = num;
         num++;
-        rigbody.SetAtomProperty(i,ap);
+        rigbody.set_atom_property(i,ap);
     }
   }
   return num;
@@ -129,12 +129,12 @@ uint BasePair::SetAtomNumberOfBase(std::string chain,int num)
 
 uint BasePair::GetResIDofBase(std::string chain)
 {
-  Atomproperty ap = rigbody.SelectChainId(chain).create_rigid().get_atom_property(0);
+  Atomproperty ap = rigbody.select_chainid(chain).create_rigid().get_atom_property(0);
   return ap.residId;
 }
 
 
-void  BasePair::SetRigidBody(const Rigidbody& rigbody)
+void  BasePair::set_rigidBody(const Rigidbody& rigbody)
 {
   this->rigbody=rigbody;
 }

@@ -51,7 +51,7 @@ cdef extern from "pairlist.h" namespace "PTools":
        CppAttractPairList()
        CppAttractPairList(CppAttractRigidbody &, CppAttractRigidbody &, double )
        CppAttractPairList(CppAttractRigidbody &, CppAttractRigidbody & )
-       int Size()
+       int size()
        CppAtomPair operator[](int)
 
 
@@ -82,10 +82,10 @@ cdef class AttractPairList:
 
 
     def __len__(self):
-        return self.thisptr.Size()
+        return self.thisptr.size()
      
     def __getitem__(self, unsigned int i):
-        if i>=self.thisptr.Size():
+        if i>=self.thisptr.size():
             raise IndexError
         cdef CppAtomPair * catp = new CppAtomPair(deref(self.thisptr)[i])
         atp = AtomPair()

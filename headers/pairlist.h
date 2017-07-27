@@ -45,7 +45,7 @@ public:
     };
 
     ///return number of pairs of atoms in interaction (distance <= cutoff)
-    uint Size() {
+    uint size() {
         return vectl.size();
     };
 

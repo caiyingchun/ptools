@@ -124,21 +124,21 @@ return result;
 dbl ScorpionForceField::nonbon8_forces(AttractRigidbody& rec, AttractRigidbody& lig, AttractPairList & pairlist, std::vector<Coord3D>& forcerec, std::vector<Coord3D>& forcelig, bool print)
 {
 
-    assert(forcerec.size() == rec.Size());
-    assert(forcelig.size() == lig.Size());
+    assert(forcerec.size() == rec.size());
+    assert(forcelig.size() == lig.size());
 
     dbl sumLJ=0.0 ;
     dbl sumElectrostatic=0.0;
 
 
     //synchronize coordinates for using unsafeget_coords
-    rec.syncCoords();
-    lig.syncCoords();
+    rec.sync_coords();
+    lig.sync_coords();
 
     Coord3D a, b;
 
 
-    for (uint iter=0; iter<pairlist.Size(); iter++)
+    for (uint iter=0; iter<pairlist.size(); iter++)
     {
 
         uint ir = pairlist[iter].atrec;

@@ -114,7 +114,7 @@ public:
 
     void calculate_weights(Mcoprigid& lig, bool print=false);
 
-    uint ProblemSize() {return 6;};
+    uint Problemsize() {return 6;};
     void initMinimization(){};
 
 private:
