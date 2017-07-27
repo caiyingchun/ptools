@@ -39,7 +39,7 @@ public:
           return m_rigid->CopyAtom(m_list[i]);}; 
 
     Atom CopyAtom(uint i) const {return m_rigid->CopyAtom(m_list[i]);}
-    void AddAtomIndex(int i) {m_list.push_back(i);}; ///< adds an Atom index
+    void add_atomIndex(int i) {m_list.push_back(i);}; ///< adds an Atom index
     Rigidbody CreateRigid(); ///< makes a new rigid copy (independant copy) from an AtomsSelection object.
 
     AtomSelection non(const AtomSelection& atsel);

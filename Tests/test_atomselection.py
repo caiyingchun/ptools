@@ -29,8 +29,8 @@ class TestAtomSelection(unittest.TestCase):
         CAatoms = self.rig.SelectAtomType("C*")
         self.assertEqual(len(CAatoms), 3379)
 
-    def testSelectBackbone(self):
-        bbAtoms = self.rig.Backbone()
+    def testSelectbackbone(self):
+        bbAtoms = self.rig.backbone()
         self.assertEqual(len(bbAtoms), 2572)
 
     def testSelectResRange(self):

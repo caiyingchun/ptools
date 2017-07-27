@@ -304,7 +304,7 @@ def scanLineForTest(suite, lineNo, line):
 
 
 def addTest(suite, name, line):
-    '''Add a test function to the current suite'''
+    '''add a test function to the current suite'''
     test = {'name': name,
             'suite': suite,
             'class': 'TestDescription_%s_%s' % (suite['name'], name),
@@ -356,7 +356,7 @@ def cstr(str):
 
 
 def addSuiteCreateDestroy(suite, which, line):
-    '''Add createSuite()/destroySuite() to current suite'''
+    '''add createSuite()/destroySuite() to current suite'''
     if which in suite:
         abort('%s:%s: %sSuite() already declared' % (suite['file'], str(line), which))
     suite[which] = line
@@ -383,7 +383,7 @@ def verifySuite(suite):
 
 
 def rememberSuite(suite):
-    '''Add current suite to list'''
+    '''add current suite to list'''
     global suites
     suites.append(suite)
 
@@ -539,7 +539,7 @@ lastIncluded = ''
 
 
 def writeInclude(output, file):
-    '''Add #include "file" statement'''
+    '''add #include "file" statement'''
     global lastIncluded
     if file == lastIncluded:
         return

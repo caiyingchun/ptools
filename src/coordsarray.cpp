@@ -194,7 +194,7 @@ _modified();
 *   until the coordinates are really needed.
 *   If coordinates are never asked (why?), then no costly calculation is performed !
 */
-void CoordsArray::AttractEulerRotate(dbl phi, dbl ssi, dbl rot)
+void CoordsArray::euler_rotate(dbl phi, dbl ssi, dbl rot)
 {
 
     dbl  cp, cs, ss, sp, cscp, sscp, sssp, crot, srot, cssp ;

@@ -99,11 +99,11 @@ def parse_entry(entry, strip_terminals=False):
 
 def rename_all(substitutions, dry_run=DRY_RUN, strip_terminals=STRIP_TERMINALS):
     """Use unix sed command to rename identifiers in all relevant files."""
-    # find . -name \*.h -exec sed --in-place 's/ABrotate/rotate/g' {} \;
-    # find . -name \*.cpp -exec sed --in-place 's/ABrotate/rotate/g' {} \;
-    # find . -name \*.pyx -exec sed --in-place 's/ABrotate/rotate/g' {} \;
-    # find . -name \*.py -exec sed --in-place 's/ABrotate/rotate/g' {} \;
-    # find . -name \*.rst -exec sed --in-place 's/ABrotate/rotate/g' {} \;
+    # find . -name \*.h -exec sed --in-place 's/rotate/rotate/g' {} \;
+    # find . -name \*.cpp -exec sed --in-place 's/rotate/rotate/g' {} \;
+    # find . -name \*.pyx -exec sed --in-place 's/rotate/rotate/g' {} \;
+    # find . -name \*.py -exec sed --in-place 's/rotate/rotate/g' {} \;
+    # find . -name \*.rst -exec sed --in-place 's/rotate/rotate/g' {} \;
     # make clean
     # make install
     # make test

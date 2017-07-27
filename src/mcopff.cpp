@@ -22,20 +22,20 @@ void Mcoprigid::setMain(AttractRigidbody& main) {
 };
 
 
-void Mcoprigid::AttractEulerRotate(const dbl& phi, const dbl& ssi, const dbl& rot)
+void Mcoprigid::euler_rotate(const dbl& phi, const dbl& ssi, const dbl& rot)
 {
 //Warning: makes euler rotation without centering
 //the Mcoprigid object must be centered
 
 
 //rotates the main body:
-    _main.AttractEulerRotate(phi, ssi, rot);
+    _main.euler_rotate(phi, ssi, rot);
 
 
 //for each multicopy region, rotates the copy:
     for (uint i=0; i < _vregion.size(); i++)
         for (uint j=0; j<_vregion[i].size(); j++)
-            _vregion[i][j].AttractEulerRotate(phi, ssi, rot);
+            _vregion[i][j].euler_rotate(phi, ssi, rot);
 
 }
 
@@ -156,7 +156,7 @@ dbl McopForceField::Function(const Vdouble & v)
     assert(lig._vregion.size()==0);
 
 
-    lig.AttractEulerRotate(v[0],v[1],v[2]);
+    lig.euler_rotate(v[0],v[1],v[2]);
     lig.Translate(Coord3D(v[3],v[4],v[5]));
 
 

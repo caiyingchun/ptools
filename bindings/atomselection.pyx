@@ -12,7 +12,7 @@ cdef extern from "atomselection.h" namespace "PTools":
         void SetRigid(CppRigidbody&)
         CppAtom operator[]
         CppAtom CopyAtom(unsigned int)
-        void AddAtomIndex(unsigned int)
+        void add_atomIndex(unsigned int)
         CppRigidbody CreateRigid()
 
         CppAtomSelection non(CppAtomSelection &)

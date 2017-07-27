@@ -10,12 +10,12 @@ cdef extern from "DNA.h" namespace "PTools":
         CppDNA SubDNA(int, int)
         CppBasePair operator[](int)
         unsigned int Size()
-        void Add(CppBasePair, const CppMovement &)
-        void Add(CppBasePair)
-        void Add(CppDNA, const CppMovement &)
-        void Add(CppDNA)
+        void add(CppBasePair, const CppMovement &)
+        void add(CppBasePair)
+        void add(CppDNA, const CppMovement &)
+        void add(CppDNA)
         void ChangeType(int, string, string)
-        void ApplyLocal(const CppMovement&, int)
+        void apply_local(const CppMovement&, int)
         void ChangeRepresentation(string)
         string PrintPDB()
 
@@ -68,7 +68,7 @@ cdef class DNA:
         ret.thisptr = new CppDNA(cdna)
         return ret
 
-    def Add(self, bp_or_dna, mov=None):
+    def add(self, bp_or_dna, mov=None):
         if isinstance(bp_or_dna, DNA):
             self._add_dna(bp_or_dna, mov)
         else:
@@ -76,23 +76,23 @@ cdef class DNA:
 
     def _add_bp(self, BasePair bp, Movement mov=None):
         if mov == None:
-            self.thisptr.Add(deref(bp.thisptr))
+            self.thisptr.add(deref(bp.thisptr))
         else:
-            self.thisptr.Add(deref(bp.thisptr), deref(mov.thisptr))
+            self.thisptr.add(deref(bp.thisptr), deref(mov.thisptr))
 
     def _add_dna(self, DNA dna, Movement mov=None):
         if mov == None:
-            self.thisptr.Add(deref(dna.thisptr))
+            self.thisptr.add(deref(dna.thisptr))
         else:
-            self.thisptr.Add(deref(dna.thisptr), deref(mov.thisptr))
+            self.thisptr.add(deref(dna.thisptr), deref(mov.thisptr))
     
     def ChangeType(self, int pos, bytes basetype, bytes filename):
         cdef const char * c_basetype = basetype
         cdef const char * c_filename = filename
         self.thisptr.ChangeType(pos, str(c_basetype), str(c_filename))
 
-    def ApplyLocal(self, Movement mov, int posMov):
-        self.thisptr.ApplyLocal(deref(mov.thisptr), posMov)
+    def apply_local(self, Movement mov, int posMov):
+        self.thisptr.apply_local(deref(mov.thisptr), posMov)
 
     def ChangeRepresentation(self, bytes rep):
         self.thisptr.ChangeRepresentation(rep)

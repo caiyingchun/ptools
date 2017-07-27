@@ -27,7 +27,7 @@ public:
     dbl Function(const Vdouble&);
 
     ///add a new ligand to the ligand list...
-    void AddLigand(AttractRigidbody & lig);
+    void addLigand(AttractRigidbody & lig);
 
     ///after a minimization, get minimized ligand 'i'
     AttractRigidbody GetLigand(uint i);

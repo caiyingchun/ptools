@@ -111,7 +111,7 @@ def getpstart(start, hp, dmin, dmax):
     pgroove = pmid + (hp.unitVector * (pitch / 2))
 
     pstart = ptools.Rigidbody()
-    pstart.AddAtom(ptools.Atom(ap, pgroove))
+    pstart.add_atom(ptools.Atom(ap, pgroove))
     return pstart
 
 
@@ -146,7 +146,7 @@ def groove_width_calculation(hp, mono1):
         nbpoint = abs(int(math.degrees(hp.angle)) * 2)
         for j in xrange(nbpoint):
             ldist = []
-            start.ABrotate(O, O + axe, hp.angle / nbpoint)
+            start.rotate(O, O + axe, hp.angle / nbpoint)
             start.Translate(axe * hp.normtranslation / nbpoint)
             for k in xrange(int(round(dmin + (dmax - dmin) / 2)), int(round(dmax))):
                 pstart = getpstart(start, hp, k, k)
@@ -193,13 +193,13 @@ def extend(hp, mono1, nb, Z=False, seq=False):
 
         Zaxis = ptools.Rigidbody()
         O = ptools.Coord3D(0, 0, 0)
-        Zaxis.AddAtom(ptools.Atom(at, O))
+        Zaxis.add_atom(ptools.Atom(at, O))
         axe = ptools.Coord3D(0, 0, 1)
-        Zaxis.AddAtom(ptools.Atom(at, ptools.Coord3D(0, 0, 1)))
+        Zaxis.add_atom(ptools.Atom(at, ptools.Coord3D(0, 0, 1)))
 
         Protaxis = ptools.Rigidbody()
-        Protaxis.AddAtom(ptools.Atom(at, hp.point))
-        Protaxis.AddAtom(ptools.Atom(at, hp.point + hp.unitVector.Normalize()))
+        Protaxis.add_atom(ptools.Atom(at, hp.point))
+        Protaxis.add_atom(ptools.Atom(at, hp.point + hp.unitVector.Normalize()))
         # 2 superpose and get matrix
         m = ptools.superpose(Zaxis, Protaxis).matrix
         # 3 apply matrix to rigidbody
@@ -212,7 +212,7 @@ def extend(hp, mono1, nb, Z=False, seq=False):
         print(final.print_pdb())
     i += 1
     for j in xrange(nb - 1):
-        monoTest.ABrotate(O, O + axe, hp.angle)
+        monoTest.rotate(O, O + axe, hp.angle)
         monoTest.Translate(axe * hp.normtranslation)
         monoTest = changeChain(monoTest, string.ascii_uppercase[i % 26])
         if seq:

@@ -21,15 +21,15 @@ cdef extern from "rigidbody.h" namespace "PTools":
         CppCoord3D GetCoords(unsigned int)
         void unsafeGetCoords(unsigned int, CppCoord3D &)
         void SetCoords(unsigned int, CppCoord3D &)
-        void ABrotate(CppCoord3D &, CppCoord3D &, double)
+        void rotate(CppCoord3D &, CppCoord3D &, double)
         void Translate(CppCoord3D &)
         CppCoord3D FindCenter()
         void syncCoords()
-        void AttractEulerRotate(double, double, double)
+        void euler_rotate(double, double, double)
         void apply_matrix(Array2D[double] &)
         CppAtom CopyAtom(unsigned int)
-        void AddAtom(CppAtomproperty &, CppCoord3D)
-        void AddAtom(CppAtom &)
+        void add_atom(CppAtomproperty &, CppCoord3D)
+        void add_atom(CppAtom &)
         void SetAtom(unsigned int, CppAtom &)
         string PrintPDB()
         CppRigidbody operator+(CppRigidbody &)
@@ -51,7 +51,7 @@ cdef extern from "rigidbody.h" namespace "PTools":
         CppAtomSelection SelectChainId(string)
         CppAtomSelection SelectResRange(int, int)
         CppAtomSelection CA()
-        CppAtomSelection Backbone()
+        CppAtomSelection backbone()
 
 
 cdef extern from "pdbio.h" namespace "PTools":
@@ -150,12 +150,12 @@ cdef class Rigidbody:
         c.z = cpp.z
         return c
 
-    def ABrotate(self, Coord3D A, Coord3D B, double theta):
-        self.thisptr.ABrotate(deref(A.thisptr), deref(B.thisptr), theta)
+    def rotate(self, Coord3D A, Coord3D B, double theta):
+        self.thisptr.rotate(deref(A.thisptr), deref(B.thisptr), theta)
         return None
 
-    def AttractEulerRotate(self, double phi, double ssi, double rot):
-        self.thisptr.AttractEulerRotate(phi, ssi, rot)
+    def euler_rotate(self, double phi, double ssi, double rot):
+        self.thisptr.euler_rotate(phi, ssi, rot)
 
     def syncCoords(self):
         self.thisptr.syncCoords()
@@ -170,8 +170,8 @@ cdef class Rigidbody:
         cy_copy_atom(& cpp_at, cpp_dest)
         return at
 
-    def AddAtom(self, Atom at):
-        self.thisptr.AddAtom(deref(<CppAtom*>at.thisptr))
+    def add_atom(self, Atom at):
+        self.thisptr.add_atom(deref(<CppAtom*>at.thisptr))
 
     def SetAtom(self, unsigned int position, Atom at):
         self.thisptr.SetAtom(position, deref(<CppAtom*>at.thisptr))
@@ -246,10 +246,10 @@ cdef class Rigidbody:
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def Backbone(self):
+    def backbone(self):
         ret = AtomSelection()
         del ret.thisptr
-        cdef CppAtomSelection new_sel = self.thisptr.Backbone()
+        cdef CppAtomSelection new_sel = self.thisptr.backbone()
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 

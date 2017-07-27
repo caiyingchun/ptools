@@ -131,7 +131,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
 
             center = ligand.FindCenter()
             ligand.Translate(ptools.Coord3D() - center)  # set ligand center of mass to 0,0,0
-            ligand.AttractEulerRotate(surreal(rot[0]), surreal(rot[1]), surreal(rot[2]))
+            ligand.euler_rotate(surreal(rot[0]), surreal(rot[1]), surreal(rot[2]))
             ligand.Translate(trans)
 
             for minim in minimlist:
@@ -145,8 +145,8 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
                 receptor.setTranslation(False)
                 receptor.setRotation(False)
 
-                forcefield.AddLigand(receptor)
-                forcefield.AddLigand(ligand)
+                forcefield.addLigand(receptor)
+                forcefield.addLigand(ligand)
                 # rstk = minim['rstk']  # restraint force
                 # if rstk > 0.0:
                 #     forcefield.SetRestraint(rstk)
@@ -161,7 +161,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
 
                 center = output.FindCenter()
                 output.Translate(ptools.Coord3D() - center)
-                output.AttractEulerRotate(surreal(X[0]), surreal(X[1]), surreal(X[2]))
+                output.euler_rotate(surreal(X[0]), surreal(X[1]), surreal(X[2]))
                 output.Translate(ptools.Coord3D(surreal(X[3]), surreal(X[4]), surreal(X[5])))
                 output.Translate(center)
 

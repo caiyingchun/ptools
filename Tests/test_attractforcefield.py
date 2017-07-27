@@ -19,8 +19,8 @@ class TestAttractForceField2(unittest.TestCase):
         a.setRotation(False)
         a.setTranslation(False)
         FF = AttractForceField2(TEST_FF_MBEST1K, 20.0)
-        FF.AddLigand(a)
-        FF.AddLigand(c)
+        FF.addLigand(a)
+        FF.addLigand(c)
         x = []
         for i in range(6):
             x.append(0.0)

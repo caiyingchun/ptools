@@ -138,7 +138,7 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
                     {
                         Atom m_atom2 = rigid.CopyAtom(i);
                         m_atom2.coords = coord1 + coord4;
-                        rigidsurf.AddAtom(m_atom2);
+                        rigidsurf.add_atom(m_atom2);
                     }
                 }
             }
@@ -165,7 +165,7 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
                 {
                     Atom m_atom2 = rigid.CopyAtom(i);
                     m_atom2.coords = coord1 + coord4 ;
-                    rigidsurf.AddAtom(m_atom2);
+                    rigidsurf.add_atom(m_atom2);
                 }
                 costh+=2;
             }
@@ -193,7 +193,7 @@ Rigidbody Surface::outergrid(const Rigidbody & grid, const Rigidbody & rigid2, d
             dbl dist=Norm2(xyz1-xyz2);
             if (dist < srad) { select = false; }
         }
-        if (select) { rigid3.AddAtom(grid.CopyAtom(i)); }
+        if (select) { rigid3.add_atom(grid.CopyAtom(i)); }
     }
     return rigid3;
 }
@@ -220,7 +220,7 @@ Rigidbody Surface::removeclosest(const Rigidbody & rigid, dbl srad)
             }
     }
     for (int i=0; i<size; i++)
-    if (list[i]) { rigid2.AddAtom(rigid.CopyAtom(i)); }
+    if (list[i]) { rigid2.add_atom(rigid.CopyAtom(i)); }
     return rigid2;
 }
 

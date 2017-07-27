@@ -3,12 +3,12 @@ cdef extern from "coordsarray.h" namespace "PTools":
       CppCoordsArray() 
       CppCoordsArray( CppCoordsArray & )
       void unsafeGetCoords(unsigned int , CppCoord3D& )
-      void AddCoord(CppCoord3D& co)
+      void add_coord(CppCoord3D& co)
       unsigned int Size()
       void GetCoords(unsigned int, CppCoord3D&) 
       void SetCoords(unsigned int, CppCoord3D&)
       void Translate(CppCoord3D&)
-      void AttractEulerRotate(double , double, double)
+      void euler_rotate(double , double, double)
 
 
 cdef class CoordsArray:
@@ -40,8 +40,8 @@ cdef class CoordsArray:
     def unsafeGetCoords(self, int i, Coord3D co):
        self.thisptr.unsafeGetCoords(i, deref(co.thisptr))
 
-    def AddCoord(self, Coord3D co):
-        self.thisptr.AddCoord( deref(co.thisptr) )
+    def add_coord(self, Coord3D co):
+        self.thisptr.add_coord( deref(co.thisptr) )
 
     def GetCoords(self, i, Coord3D co):
         self.thisptr.GetCoords(i, deref(co.thisptr))
@@ -52,5 +52,5 @@ cdef class CoordsArray:
     def Translate(self, Coord3D co):
         self.thisptr.Translate(deref(co.thisptr))
 
-    def AttractEulerRotate(self, double phi, double ssi, double rot):
-        self.thisptr.AttractEulerRotate(phi, ssi, rot)
+    def euler_rotate(self, double phi, double ssi, double rot):
+        self.thisptr.euler_rotate(phi, ssi, rot)

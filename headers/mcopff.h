@@ -24,11 +24,11 @@ std::vector<AttractRigidbody> _copies;
 
 public:
 /*
-   void AttractEulerRotate(const dbl& phi, const dbl& ssi, const dbl& rot)
+   void euler_rotate(const dbl& phi, const dbl& ssi, const dbl& rot)
    {
       for (uint i=0; i<_copies.size(); i++)
       {
-          _copies[i].AttractEulerRotate(phi, ssi, rot);
+          _copies[i].euler_rotate(phi, ssi, rot);
       }
 
    };
@@ -67,7 +67,7 @@ public:
     void addEnsemble(const Region& reg){ _vregion.push_back(reg); std::vector<dbl> v; _weights.push_back(v);  };
 
 
-    void AttractEulerRotate(const dbl& phi, const dbl& ssi, const dbl& rot);
+    void euler_rotate(const dbl& phi, const dbl& ssi, const dbl& rot);
     void Translate(const Coord3D& c);
 
 

@@ -29,7 +29,7 @@ DNA::DNA(const string& dataBaseFile, const string& seq, const Movement& mov)
     else
     {
         AssembleSeq (dataBaseFile,seq);
-        ApplyInitialMov(mov);
+        applyInitialMov(mov);
     }
 }
 
@@ -509,7 +509,7 @@ void DNA::ChangeFormat()
 }
 
 
-void DNA::ApplyInitialMov(const Movement& mov)
+void DNA::applyInitialMov(const Movement& mov)
 {
   unsigned int strandSize  = strand.size();
   for (unsigned int i=1; i <strandSize; i++)
@@ -591,7 +591,7 @@ Rigidbody DNA::CreateRigid()
   unsigned int chainBsize  = chainB.Size();
   for ( unsigned int i =0; i < chainBsize ; i++ )
   {
-      chainA.AddAtom(chainB.CopyAtom(i));
+      chainA.add_atom(chainB.CopyAtom(i));
   }
   return chainA;
 }
@@ -617,7 +617,7 @@ Rigidbody DNA::CreateRigidOfStrand(std::string chain)
       for (unsigned int j=0; j <basePairSize ; j++)
       {
           Atom a =basePair.CopyAtom(j);
-          dna.AddAtom(a);
+          dna.add_atom(a);
       }
   }
   return dna;
@@ -673,7 +673,7 @@ Parameter DNA::GetLocalParameter(int pos)
 
 }
 
-void DNA::ApplylocalMov(const Movement& mov,int pos)
+void DNA::applylocalMov(const Movement& mov,int pos)
 {
   Matrix nextlocal = GetLocalMatrix(pos+1);
   strand[pos].apply(mov);
@@ -686,7 +686,7 @@ void DNA::ApplylocalMov(const Movement& mov,int pos)
 }
 
 
-void DNA::ApplyglobalMov(const Movement& mov)
+void DNA::applyglobalMov(const Movement& mov)
 {
   Matrix nextlocal;
   unsigned int strandSize  = strand.size();
@@ -704,31 +704,31 @@ void DNA::ApplyglobalMov(const Movement& mov)
 }
 
 
-void DNA::ApplyLocal(const Movement& mov,int posMov, int posAnchor)
+void DNA::apply_local(const Movement& mov,int posMov, int posAnchor)
 {
   BasePair anchor = strand[posAnchor];
-  ApplylocalMov(mov,posMov);
+  applylocalMov(mov,posMov);
   Relocate(anchor,posAnchor);
 }
 
 
-void DNA::ApplyLocal(const Matrix&  m,int posMov, int posAnchor)
+void DNA::apply_local(const Matrix&  m,int posMov, int posAnchor)
 {
-  ApplyLocal ( Movement(m), posMov, posAnchor);
+  apply_local ( Movement(m), posMov, posAnchor);
 }
 
 
-void DNA::ApplyGlobal(const Movement& mov ,int posAnchor)
+void DNA::applyGlobal(const Movement& mov ,int posAnchor)
 {
   BasePair anchor = strand[posAnchor];
-  ApplyglobalMov(mov);
+  applyglobalMov(mov);
   Relocate(anchor,posAnchor);
 }
 
 
-void DNA::ApplyGlobal(const Matrix& m ,int posAnchor)
+void DNA::applyGlobal(const Matrix& m ,int posAnchor)
 {
-  ApplyLocal ( Movement(m), posAnchor);
+  apply_local ( Movement(m), posAnchor);
 }
 
 
@@ -803,17 +803,17 @@ Matrix DNA::Reconstruct(int pos, const Matrix& local)
 }
 
 
-void DNA::Add(const DNA & d, const Movement & mov)
+void DNA::add(const DNA & d, const Movement & mov)
 {
-    this->Add(d[0], mov);
+    this->add(d[0], mov);
     for(uint i =1; i< d.Size();i++)
     {
-        this->Add(d[i],Movement(d.GetLocalMatrix(i)));
+        this->add(d[i],Movement(d.GetLocalMatrix(i)));
     }
 }
 
 /// add a basepair at the end of the strand of this DNA
-void DNA::Add(BasePair bp, const Movement & mov)
+void DNA::add(BasePair bp, const Movement & mov)
 {
     Matrix oldmouvement = bp.GetMatrix ();
     bp.apply(inverseMatrix44 (oldmouvement));
@@ -834,10 +834,10 @@ DNA DNA::SubDNA(uint start, uint end)const
     }
     DNA newdna = DNA();
 
-    newdna.Add(strand[start],Movement(strand[start].GetMatrix()));
+    newdna.add(strand[start],Movement(strand[start].GetMatrix()));
     for (uint i=start+1; i<end ;i++)
     {
-        newdna.Add(strand[i],Movement(this->GetLocalMatrix(i)));
+        newdna.add(strand[i],Movement(this->GetLocalMatrix(i)));
     }
     return newdna;
 }
@@ -851,9 +851,9 @@ void DNA::Replace(const DNA & d,int start)
     strand.clear();
 
 
-    this->Add(preDNA,initMov);
-    this->Add(d);
-    this->Add(postDNA);
+    this->add(preDNA,initMov);
+    this->add(d);
+    this->add(postDNA);
 
 
 }

@@ -172,7 +172,7 @@ void ReadPDB(istream& file, Rigidbody& protein) {
             Coord3D pos = pdbToCoords(line);
             Atomproperty a;
             pdbToAtomproperty(line, a);
-            protein.AddAtom(a,pos);
+            protein.add_atom(a,pos);
 
         }
     }

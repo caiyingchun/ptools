@@ -38,11 +38,11 @@ class TestRigidbodyBindings(unittest.TestCase):
     def test_Rigidbody_has_FindCenter(self):
         self.assertTrue(hasattr(Rigidbody, 'FindCenter'))
 
-    def test_Rigidbody_has_ABrotate(self):
-        self.assertTrue(hasattr(Rigidbody, 'ABrotate'))
+    def test_Rigidbody_has_rotate(self):
+        self.assertTrue(hasattr(Rigidbody, 'rotate'))
 
-    def test_Rigidbody_has_AttractEulerRotate(self):
-        self.assertTrue(hasattr(Rigidbody, 'AttractEulerRotate'))
+    def test_Rigidbody_has_euler_rotate(self):
+        self.assertTrue(hasattr(Rigidbody, 'euler_rotate'))
 
     def test_Rigidbody_has_syncCoords(self):
         self.assertTrue(hasattr(Rigidbody, 'syncCoords'))
@@ -53,8 +53,8 @@ class TestRigidbodyBindings(unittest.TestCase):
     def test_Rigidbody_has_CopyAtom(self):
         self.assertTrue(hasattr(Rigidbody, 'CopyAtom'))
 
-    def test_Rigidbody_has_AddAtom(self):
-        self.assertTrue(hasattr(Rigidbody, 'AddAtom'))
+    def test_Rigidbody_has_add_atom(self):
+        self.assertTrue(hasattr(Rigidbody, 'add_atom'))
 
     def test_Rigidbody_has_SetAtom(self):
         self.assertTrue(hasattr(Rigidbody, 'SetAtom'))
@@ -89,8 +89,8 @@ class TestRigidbodyBindings(unittest.TestCase):
     def test_Rigidbody_has_CA(self):
         self.assertTrue(hasattr(Rigidbody, 'CA'))
 
-    def test_Rigidbody_has_Backbone(self):
-        self.assertTrue(hasattr(Rigidbody, 'Backbone'))
+    def test_Rigidbody_has_backbone(self):
+        self.assertTrue(hasattr(Rigidbody, 'backbone'))
 
     def test_has_operator_add(self):
         self.assertTrue(hasattr(Rigidbody, '__add__'))
@@ -105,11 +105,11 @@ class TestRigidbody(unittest.TestCase):
         self.r2 = Rigidbody()
         at = Atom()
         at.coords = Coord3D(1, 0, 0)
-        self.r2.AddAtom(at)
+        self.r2.add_atom(at)
         at.coords = Coord3D(0, 1, 0)
-        self.r2.AddAtom(at)
+        self.r2.add_atom(at)
         at.coords = Coord3D(0, 0, 1)
-        self.r2.AddAtom(at)
+        self.r2.add_atom(at)
 
     def testCopy(self):
         s = Rigidbody(self.r)
@@ -187,8 +187,8 @@ class TestRigidbody(unittest.TestCase):
         r2 = Rigidbody(TEST_LIGAND_PDB)
         A = Coord3D(4.23, 5.72, 99.02)
         B = Coord3D(1.23, 6.33, 1.234)
-        self.r.ABrotate(A, B, 2.2345)
-        r2.ABrotate(A, B, 2.2345)
+        self.r.rotate(A, B, 2.2345)
+        r2.rotate(A, B, 2.2345)
         self.r.Translate(Coord3D(34.23, 123.45, 11.972))
         r2.Translate(Coord3D(34.23, 123.45, 11.972))
 
@@ -202,12 +202,12 @@ class TestRigidbody(unittest.TestCase):
             r2.unsafeGetCoords(i, co2)
             assertCoordsAlmostEqual(self, co1, co2)
 
-    def testAddAtoms(self):
+    def testadd_atoms(self):
         r = Rigidbody()
         self.assertEqual(len(r), 0)
         at = Atom()
         at.coords = Coord3D(2, 3, 4)
-        r.AddAtom(at)
+        r.add_atom(at)
         self.assertAlmostEqual(len(r), 1)
 
     def testGetAtomProperty(self):

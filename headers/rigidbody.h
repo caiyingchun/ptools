@@ -52,7 +52,7 @@ private:
     std::vector<Coord3D> mForces; ///< forces for each atom
     std::string _description; ///< some string to describe the molecule
 
-//    bool isBackbone(const std::string &  atomtype); ///<return true if a given atomtype string matches a backbone atom name
+//    bool isbackbone(const std::string &  atomtype); ///<return true if a given atomtype string matches a backbone atom name
 
 protected:
     std::vector<Atomproperty> mAtomProp; ///< array of atom properties
@@ -102,10 +102,10 @@ public:
     void SetAtom(uint pos, const Atom& atom);
 
     /// add an atom to the molecule (deep copy)
-    void AddAtom(const Atomproperty& at, Coord3D co);
+    void add_atom(const Atomproperty& at, Coord3D co);
 
     /// add an atom to the molecule
-    void AddAtom(const Atom& at);
+    void add_atom(const Atom& at);
 
     //returns the coordinates of atom i
     Coord3D GetCoords(uint i) const
@@ -181,12 +181,12 @@ public:
     AtomSelection CA();
 
     /// selection of backbone atoms:
-    AtomSelection Backbone();
+    AtomSelection backbone();
 
     /// operator + : merge two Rigdibody by extending the first coordinates with the second coordinates.
     Rigidbody operator+ (const Rigidbody& rig);
 
-    void ABrotate(const Coord3D& A, const Coord3D& B, dbl theta); ///< rotation around (AB) axis.
+    void rotate(const Coord3D& A, const Coord3D& B, dbl theta); ///< rotation around (AB) axis.
 
     /// in some cases atoms may be ignored
     virtual bool isAtomActive(uint i) const {return true;};
@@ -196,10 +196,10 @@ public:
     /// return the object name/description
     std::string getDescription(){return _description;};
 
-    void AttractEulerRotate(dbl phi, dbl ssi, dbl rot);
+    void euler_rotate(dbl phi, dbl ssi, dbl rot);
 
     //friends
-    friend void ABrotate( Coord3D A, Coord3D B, Rigidbody& target, dbl theta );
+    friend void rotate( Coord3D A, Coord3D B, Rigidbody& target, dbl theta );
     friend void XRotation( const Rigidbody& source, Rigidbody& result, dbl alpha );
     friend void EulerZYZ(const Rigidbody & source, Rigidbody & cible, dbl theta, dbl phi, dbl psi);
 

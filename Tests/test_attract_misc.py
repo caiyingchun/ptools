@@ -58,7 +58,7 @@ class SubsetTests(unittest.TestCase):
 
 
 class MinimizationTests(unittest.TestCase):
-    """CHR April 2017 Add simple geometric minimization tests.
+    """CHR April 2017 add simple geometric minimization tests.
 
     Test 1: ligand L in test1 starts +5A along Y above the optimum,
     which is equidistant from the two CA atoms 1 and 2 forming the receptor.
@@ -94,8 +94,8 @@ class MinimizationTests(unittest.TestCase):
         # Minimum-energy ligand position is  5.0, 0.0, 0.0
         print "Ligand starting position: %s" % atom.ToPdbString()
 
-        self.forcefield.AddLigand(receptor)
-        self.forcefield.AddLigand(ligand)
+        self.forcefield.addLigand(receptor)
+        self.forcefield.addLigand(ligand)
         lbfgs_minimizer = Lbfgs(self.forcefield)
         lbfgs_minimizer.minimize(self.niter)
 
@@ -122,8 +122,8 @@ class MinimizationTests(unittest.TestCase):
         atom = ligand.CopyAtom(0)
         print "Ligand starting position: %s" % atom.ToPdbString()
 
-        self.forcefield.AddLigand(receptor)
-        self.forcefield.AddLigand(ligand)
+        self.forcefield.addLigand(receptor)
+        self.forcefield.addLigand(ligand)
         lbfgs_minimizer = Lbfgs(self.forcefield)
         lbfgs_minimizer.minimize(self.niter)
 

@@ -100,8 +100,8 @@ Coord3D A, B;
         r2 = Rigidbody(TEST_1FIN_R_PDB);
         A = Coord3D(4.23, 5.72, 99.02);
         B = Coord3D(1.23, 6.33, 1.234);
-        r.ABrotate(A,B, 2.2345);
-        r2.ABrotate(A,B, 2.2345);
+        r.rotate(A,B, 2.2345);
+        r2.rotate(A,B, 2.2345);
         r.Translate(Coord3D(34.23, 123.45,11.972));
         r2.Translate(Coord3D(34.23, 123.45,11.972));
 
@@ -179,8 +179,8 @@ public:
         c = CoordsArray();
         coo1 = Coord3D(3.0, 4.0, 5.0);
         coo2 = Coord3D(1.0, 2.0, 7.5);
-        c.AddCoord(coo1);
-        c.AddCoord(coo2);
+        c.add_coord(coo1);
+        c.add_coord(coo2);
         //c = c;
         tr = Coord3D(3.0, 4.5, -3.0);
     }
@@ -214,7 +214,7 @@ public:
         this means: 'change the current coordinates of atom i' and not 'change
         the initial coordinates of atom i' so here we check that this is the case"""*/
         c.Translate(tr); //#do some translation
-        c.AttractEulerRotate(2.0,4.0,5.0); // # do a rotation
+        c.euler_rotate(2.0,4.0,5.0); // # do a rotation
         Coord3D co = Coord3D(3,2,1); // #new coordinates to be added
         c.SetCoords(0,co);
         Coord3D co2=Coord3D();
@@ -280,7 +280,7 @@ Rigidbody prot1;
             a = (random.random()-0.5)*50.0;
             b = (random.random()-0.5)*50.0;
             c = (random.random()-0.5)*50.0;
-            prot2.AttractEulerRotate(a,b,c);
+            prot2.euler_rotate(a,b,c);
 
             Superpose_t sup = superpose(prot1,prot2); //# superpose(reference, mobile)
             Matrix matrix = sup.matrix;
@@ -334,7 +334,7 @@ public:
             double y = (randfloat()-0.5)*50.0;
             double z = (randfloat()-0.5)*50.0;
 
-            r2.ABrotate(rdCoord(-20,20), rdCoord(-10,10), rdrange(-3.1415926,3.1415926) );
+            r2.rotate(rdCoord(-20,20), rdCoord(-10,10), rdrange(-3.1415926,3.1415926) );
 
             r2.Translate(Coord3D(x,y,z));
 
@@ -359,7 +359,7 @@ public:
         double y = (randfloat()-0.5)*50.0;
         double z = (randfloat()-0.5)*50.0;
 
-        r2.ABrotate(rdCoord(-20,20), rdCoord(-10,10), rdrange(-3.1415926,3.1415926) );
+        r2.rotate(rdCoord(-20,20), rdCoord(-10,10), rdrange(-3.1415926,3.1415926) );
 
         r2.Translate(Coord3D(x,y,z));
 
@@ -369,7 +369,7 @@ public:
 //        v.Print();
 
         Rigidbody r3;
-        r3.ABrotate(v.point, v.point+v.unitVector, v.angle);
+        r3.rotate(v.point, v.point+v.unitVector, v.angle);
         r3.Translate(v.normtranslation*v.unitVector);
 
 

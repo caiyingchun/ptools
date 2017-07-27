@@ -59,10 +59,10 @@ Rigidbody::Rigidbody(const Rigidbody& model)
 }
 
 
-void Rigidbody::AddAtom(const Atomproperty& at, Coord3D co)
+void Rigidbody::add_atom(const Atomproperty& at, Coord3D co)
 {
     mAtomProp.push_back(at);
-    AddCoord(co);
+    add_coord(co);
 }
 
 
@@ -90,11 +90,11 @@ Atom Rigidbody::CopyAtom(uint i) const
 
 
 
-void Rigidbody::AddAtom(const Atom& at)
+void Rigidbody::add_atom(const Atom& at)
 {
     Atomproperty atp(at);
     Coord3D co = at.coords;
-    AddAtom(atp,co);
+    add_atom(atp,co);
 }
 
 
@@ -147,9 +147,9 @@ void Rigidbody::Translate(const Coord3D& tr)
     CoordsArray::Translate(tr);
 }
 
-void Rigidbody::AttractEulerRotate(dbl phi, dbl ssi, dbl rot)
+void Rigidbody::euler_rotate(dbl phi, dbl ssi, dbl rot)
 {
-   CoordsArray::AttractEulerRotate(phi, ssi, rot);
+   CoordsArray::euler_rotate(phi, ssi, rot);
 }
 
 
@@ -162,7 +162,7 @@ AtomSelection Rigidbody::SelectAllAtoms() const
     newsel.SetRigid(*this);
     for (uint i=0; i < Size(); i++)
     {
-        newsel.AddAtomIndex(i);
+        newsel.add_atomIndex(i);
     }
 
 
@@ -189,7 +189,7 @@ AtomSelection Rigidbody::SelectAtomType(std::string atomtype)
                std::string & at2 = mAtomProp[i].atomType ; 
 
                if (at2.substr(0, sub.size()) == sub)  //compare sub to the beginning of mAtomProp[i].atomType
-                   newsel.AddAtomIndex(i);
+                   newsel.add_atomIndex(i);
                
            }
       
@@ -200,7 +200,7 @@ AtomSelection Rigidbody::SelectAtomType(std::string atomtype)
     for (uint i=0; i<Size(); i++)
     {
         if ( mAtomProp[i].atomType == atomtype)
-            newsel.AddAtomIndex(i);
+            newsel.add_atomIndex(i);
     }
 
     return newsel;
@@ -215,7 +215,7 @@ AtomSelection Rigidbody::SelectResidType(std::string residtype)
     for (uint i=0; i<Size(); i++)
     {
         if (mAtomProp[i].residType==residtype)
-            newsel.AddAtomIndex(i);
+            newsel.add_atomIndex(i);
     }
     return newsel;
 }
@@ -227,7 +227,7 @@ AtomSelection Rigidbody::SelectChainId(std::string chainId) {
     for (uint i=0; i<Size(); i++)
     {
         if (mAtomProp[i].chainId==chainId)
-            newsel.AddAtomIndex(i);
+            newsel.add_atomIndex(i);
     }
     return newsel;
 }
@@ -240,7 +240,7 @@ AtomSelection Rigidbody::SelectResRange(int start, int stop)
     for (uint i=0; i < Size(); i++)
     {
         Atomproperty& atp ( mAtomProp[i] );
-        if (atp.residId >=start && atp.residId <= stop) newsel.AddAtomIndex(i);
+        if (atp.residId >=start && atp.residId <= stop) newsel.add_atomIndex(i);
     }
     return newsel;
 }
@@ -250,7 +250,7 @@ AtomSelection Rigidbody::CA() {
     return SelectAtomType("CA");
 }
 
-bool isBackbone(const std::string &  atomtype)
+bool isbackbone(const std::string &  atomtype)
 {
 
     const std::string bbtypes[] = {"N", "CA", "C", "O"};
@@ -265,16 +265,16 @@ bool isBackbone(const std::string &  atomtype)
 }
 
 
-AtomSelection Rigidbody::Backbone()
+AtomSelection Rigidbody::backbone()
 {
     AtomSelection newsel;
     newsel.SetRigid(*this);
 
     for (uint i=0; i<this->Size(); i++)
     {
-        if (isBackbone(CopyAtom(i).atomType) )
+        if (isbackbone(CopyAtom(i).atomType) )
         {
-            newsel.AddAtomIndex(i);
+            newsel.add_atomIndex(i);
         }
 
     }
@@ -286,16 +286,16 @@ AtomSelection Rigidbody::Backbone()
 Rigidbody Rigidbody::operator+(const Rigidbody& rig) {
     Rigidbody rigFinal(*this);
     for (uint i=0; i< rig.Size() ; i++) {
-        rigFinal.AddCoord(rig.GetCoords(i));
+        rigFinal.add_coord(rig.GetCoords(i));
         rigFinal.mAtomProp.push_back(rig.mAtomProp[i]);
     }
     return rigFinal;
 }
 
 
-void Rigidbody::ABrotate(const Coord3D& A, const Coord3D& B, dbl theta)
+void Rigidbody::rotate(const Coord3D& A, const Coord3D& B, dbl theta)
 {
-    PTools::ABrotate(A,B, *this, theta);
+    PTools::rotate(A,B, *this, theta);
 }
 
 

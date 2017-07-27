@@ -94,7 +94,7 @@ public:
     /// get the cached coordinates. You must ensure that update() has been called first !
     void inline unsafeGetCoords(const uint i, Coord3D& co) const { co = _movedcoords[i];};
 
-    void AddCoord(const Coord3D& co) {_refcoords.push_back(co); _movedcoords.push_back(co);  _modified();  };
+    void add_coord(const Coord3D& co) {_refcoords.push_back(co); _movedcoords.push_back(co);  _modified();  };
     uint Size() const {return _refcoords.size();};
 
 
@@ -105,7 +105,7 @@ public:
     /// Translate the whole object
     void Translate(const Coord3D& tr);
      /// Euler Rotation
-    void AttractEulerRotate(dbl phi, dbl ssi, dbl rot);
+    void euler_rotate(dbl phi, dbl ssi, dbl rot);
 
     void ResetMatrix();
 

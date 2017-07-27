@@ -120,7 +120,7 @@ PTools revision {}
         # Limit to desired rotation (rotation dictionary is keyed by rotation number)
         rotations = {args.rotnb: rotations[args.rotnb]}
 
-    # CHR Add translation list splitting
+    # CHR add translation list splitting
     if args.ngroups > 1:
         print("Working on translations group {:d} of {:d}".format(args.ngroup, args.ngroups))
         translations = docking.get_group(translations, args.ngroups, args.ngroup)

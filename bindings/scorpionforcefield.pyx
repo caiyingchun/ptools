@@ -5,7 +5,7 @@ from libcpp.string cimport string
 cdef extern from "scorpionforcefield.h" namespace "PTools":
     cdef cppclass CppScorpionForceField "PTools::ScorpionForceField":
        CppScorpionForceField(string&, double)
-       void AddLigand(CppAttractRigidbody&)
+       void addLigand(CppAttractRigidbody&)
        double Function(vector[double]&)
        double getVdw()
        double getCoulomb()
@@ -29,8 +29,8 @@ cdef class ScorpionForceField:
     def __dealloc__(self):
         del self.thisptr
 
-    def AddLigand(self, AttractRigidbody rig):
-        self.thisptr.AddLigand(deref(<CppAttractRigidbody*> rig.thisptr))
+    def addLigand(self, AttractRigidbody rig):
+        self.thisptr.addLigand(deref(<CppAttractRigidbody*> rig.thisptr))
 
     def Function(self, vec):
         cdef vector[double] v

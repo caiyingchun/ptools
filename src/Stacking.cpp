@@ -161,8 +161,8 @@ Rigidbody Stacking::AxisPyrimidine(const Rigidbody& pyr, const Coord3D& centerBa
     
     //4 build the Axis for Pyrimidines
     Rigidbody pyrAxis;
-    pyrAxis.AddAtom(Atomproperty(),centerBase1);
-    pyrAxis.AddAtom(Atomproperty(),centerBase1+topOfAxis);
+    pyrAxis.add_atom(Atomproperty(),centerBase1);
+    pyrAxis.add_atom(Atomproperty(),centerBase1+topOfAxis);
 
 
     return pyrAxis;
@@ -173,8 +173,8 @@ Rigidbody Stacking::AxisPyrimidineCopyPurine( const Coord3D& centerBase1, const 
     Coord3D vectorPlanPur = axisPurine.GetCoords(1)-axisPurine.GetCoords(0);
     
     Rigidbody pyrAxis;
-    pyrAxis.AddAtom(Atomproperty(),centerBase1);
-    pyrAxis.AddAtom(Atomproperty(),centerBase1+vectorPlanPur);
+    pyrAxis.add_atom(Atomproperty(),centerBase1);
+    pyrAxis.add_atom(Atomproperty(),centerBase1+vectorPlanPur);
     return pyrAxis;
 }
 
@@ -199,8 +199,8 @@ Rigidbody Stacking::AxisPurine(const Rigidbody& pur, const Coord3D& center)const
     topOfAxis = topOfAxis.Normalize();
     //3 build the Axis for Purine
     Rigidbody purAxis;
-    purAxis.AddAtom(Atomproperty(),center);
-    purAxis.AddAtom(Atomproperty(),center+topOfAxis);
+    purAxis.add_atom(Atomproperty(),center);
+    purAxis.add_atom(Atomproperty(),center+topOfAxis);
 
     return purAxis;
 }

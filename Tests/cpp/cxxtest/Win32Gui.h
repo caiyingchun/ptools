@@ -189,7 +189,7 @@ namespace CxxTest
 		return;
 		
 	    typedef void (WINAPI *FUNC)( void );
-	    FUNC func = (FUNC)GetProcAddress( dll, "InitCommonControls" );
+	    FUNC func = (FUNC)GetProcaddress( dll, "InitCommonControls" );
 	    if ( !func )
                 return;
 

@@ -47,12 +47,12 @@ namespace PTools
     void ChangeRepresentation(std::string);
 
     ///apply a Matrix/Movement to a specified BasePair. you can specify an anchor
-    void ApplyLocal(const Matrix&,int posMov, int posAnchor = 0);
-    void ApplyLocal(const Movement&,int posMov, int posAnchor = 0);
+    void apply_local(const Matrix&,int posMov, int posAnchor = 0);
+    void apply_local(const Movement&,int posMov, int posAnchor = 0);
 
     ///apply a Matrix/Movement to all the BasePairs and reposition the DNA according to the anchor
-    void ApplyGlobal(const Matrix&,int posAnchor);
-    void ApplyGlobal(const Movement&,int posAnchor);
+    void applyGlobal(const Matrix&,int posAnchor);
+    void applyGlobal(const Movement&,int posAnchor);
     
     ///apply a Matrix/Movement to the DNA as a rigidbody
     void apply(const Matrix&);
@@ -88,9 +88,9 @@ namespace PTools
           return strand[i];};
 
     /// add the basePairs of a DNA to the strand of this DNA. the specified movement do the liason betwen the two strand
-    void Add(const DNA & d, const Movement & mov = BDNA());
+    void add(const DNA & d, const Movement & mov = BDNA());
     /// add a basepair at the end of the strand of this DNA
-    void Add(BasePair bp, const Movement & mov = BDNA());
+    void add(BasePair bp, const Movement & mov = BDNA());
 
     ///return the specified subDNA
     DNA SubDNA(uint start, uint end)const;
@@ -115,15 +115,15 @@ namespace PTools
     ///construct the strand from the sequence, the  chain Ids and a corresponding vector of Rigidbody
     void BuildStrand(std::string,std::string,const std::vector<Rigidbody> &);
     /// apply an initial Movement during the initialisation of the DNA
-    void ApplyInitialMov(const Movement&);
+    void applyInitialMov(const Movement&);
     ///rebuild the DNA from a specified position. useful for taking into account a change in a base.
     Matrix Reconstruct(int pos,const Matrix&);
     ///give the BasePair a correct number according to they rank in the strand
     void ChangeFormat();
     ///apply a Movement to a specified BasePair.
-    void ApplylocalMov(const Movement&,int pos);
+    void applylocalMov(const Movement&,int pos);
     ///apply a Movement to all the BasePairs
-    void ApplyglobalMov(const Movement& );
+    void applyglobalMov(const Movement& );
     ///reposition the DNA according to the anchor
     void Relocate(const BasePair& anchor,int posAnchor);
 

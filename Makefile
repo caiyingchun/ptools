@@ -84,6 +84,11 @@ build: clean
 install:
 	python setup.py install --record $(MANIFEST_OUT)
 
+undo:
+	git checkout -- "*.py" "*.pyx" "*.cpp" "*.h"
+
+rename:
+	python names.py rename NAMES_TXN
 
 uninstall:
 	cat $(MANIFEST_OUT) | xargs rm -f 

@@ -123,9 +123,9 @@ cdef class AttractRigidbody (Rigidbody) :
         cdef CppRigidbody* rig = <CppRigidbody*> self.thisptr
         rig.Translate(deref(co.thisptr))
         
-    def  AttractEulerRotate(self, double phi, double ssi, double rot):
+    def  euler_rotate(self, double phi, double ssi, double rot):
         cdef CppRigidbody* rig = <CppRigidbody*> self.thisptr
-        rig.AttractEulerRotate(phi, ssi, rot)
+        rig.euler_rotate(phi, ssi, rot)
 
 
     #these function should be defined only in Rigdibody object and attractrigdbody should inherit from it:œ

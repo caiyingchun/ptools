@@ -103,7 +103,7 @@ void MakeRotationMatrix( Coord3D A, Coord3D B, dbl theta, dbl out[ 4 ][ 4 ] )
 
 
 
-void ABrotate( Coord3D A, Coord3D B, Rigidbody& target, dbl theta )
+void rotate( Coord3D A, Coord3D B, Rigidbody& target, dbl theta )
 {
 
     dbl matrix[ 4 ][ 4 ];

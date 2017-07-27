@@ -68,15 +68,15 @@ class TestRotations(unittest.TestCase):
         at4 = Atom(Atomproperty(), Coord3D(1, 1, 1))
 
         rig = Rigidbody()
-        rig.AddAtom(at1)
-        rig.AddAtom(at2)
-        rig.AddAtom(at3)
-        rig.AddAtom(at4)
+        rig.add_atom(at1)
+        rig.add_atom(at2)
+        rig.add_atom(at3)
+        rig.add_atom(at4)
 
         self.rig = rig
 
     def testRotZ(self):
-        self.rig.ABrotate(Coord3D(0, 0, 0), Coord3D(0, 0, 1), math.pi / 2)
+        self.rig.rotate(Coord3D(0, 0, 0), Coord3D(0, 0, 1), math.pi / 2)
         # i should now be j
         co1 = self.rig.CopyAtom(0).coords
         self.assertAlmostEqual(co1.x, 0)
@@ -96,7 +96,7 @@ class TestRotations(unittest.TestCase):
         self.assertAlmostEqual(co3.z, 1)
 
     def testRotX(self):
-        self.rig.ABrotate(Coord3D(0, 0, 0), Coord3D(1, 0, 0), math.pi / 2)
+        self.rig.rotate(Coord3D(0, 0, 0), Coord3D(1, 0, 0), math.pi / 2)
 
         # i is still i
         co1 = self.rig.CopyAtom(0).coords
@@ -117,7 +117,7 @@ class TestRotations(unittest.TestCase):
         self.assertAlmostEqual(co3.z, 0)
 
     def testRotY(self):
-        self.rig.ABrotate(Coord3D(0, 0, 0), Coord3D(0, 1, 0), math.pi / 2)
+        self.rig.rotate(Coord3D(0, 0, 0), Coord3D(0, 1, 0), math.pi / 2)
 
         # i becomes -j
         co1 = self.rig.CopyAtom(0).coords
@@ -138,7 +138,7 @@ class TestRotations(unittest.TestCase):
         self.assertAlmostEqual(co3.z, 0)
 
     def testRotZ_trans(self):
-        self.rig.ABrotate(Coord3D(1, 1, 1), Coord3D(1, 1, 3), math.pi / 2)
+        self.rig.rotate(Coord3D(1, 1, 1), Coord3D(1, 1, 3), math.pi / 2)
 
         co1 = self.rig.CopyAtom(0).coords
         self.assertAlmostEqual(co1.x, 2)

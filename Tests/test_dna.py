@@ -23,14 +23,14 @@ class TestDNABindings(unittest.TestCase):
     def test_has_len(self):
         self.assertTrue(hasattr(DNA, '__len__'))
 
-    def test_has_Add(self):
-        self.assertTrue(hasattr(DNA, 'Add'))
+    def test_has_add(self):
+        self.assertTrue(hasattr(DNA, 'add'))
 
     def test_has_ChangeType(self):
         self.assertTrue(hasattr(DNA, 'ChangeType'))
 
-    def test_has_ApplyLocal(self):
-        self.assertTrue(hasattr(DNA, 'ApplyLocal'))
+    def test_has_apply_local(self):
+        self.assertTrue(hasattr(DNA, 'apply_local'))
 
     def test_has_SubDNA(self):
         self.assertTrue(hasattr(DNA, 'SubDNA'))
@@ -56,22 +56,22 @@ class TestDNA(unittest.TestCase):
         self.assertEqual(len(self.dna), 16)
         self.assertEqual(len(self.dna), self.dna.Size())
 
-    def test_Add(self):
+    def test_add(self):
         bp = ptools.BasePair(self.dna[0].GetRigidBody())
-        self.dna.Add(bp)
+        self.dna.add(bp)
         self.assertEqual(self.dna.Size(), 17)
 
         dna = ptools.DNA(self.dna)
-        self.dna.Add(dna)
+        self.dna.add(dna)
         self.assertEqual(self.dna.Size(), 34)
 
     def test_ChangeType(self):
         warnings.warn("only check the call, not the result")
         self.dna.ChangeType(0, "A", PDB_BASE_PAIR)
 
-    def test_ApplyLocal(self):
+    def test_apply_local(self):
         warnings.warn("only check the call, not the result")
-        self.dna.ApplyLocal(ptools.Roll(30), self.dna.Size() / 2)
+        self.dna.apply_local(ptools.Roll(30), self.dna.Size() / 2)
 
     def test_SubDNA(self):
         warnings.warn("only check the call, not the result")

@@ -55,7 +55,7 @@ def minim_traj(request):
     def teardown():
         os.remove(traj)
     traj = 'minimization.trj'  # hard-coded in attract_cmd.py
-    request.addfinalizer(teardown)
+    request.add_finalizer(teardown)
     return traj
 
 
@@ -79,7 +79,7 @@ def docking_trans_rot(request):
     def teardown():
         os.remove('rotation.dat')
         os.remove('translation.dat')
-    request.addfinalizer(teardown)
+    request.add_finalizer(teardown)
     # Copy rotation.dat and translation.dat to current directory
     # (those names are hard-coded in attract).
     shutil.copyfile(TEST_DOCKING_ROTATION, 'rotation.dat')

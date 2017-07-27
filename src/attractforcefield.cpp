@@ -363,7 +363,7 @@ dbl BaseAttractForceField::Function(const Vdouble& stateVars )
         if (m_movedligand[i].hasrotation)
         {
             assert(svptr+2 < stateVars.size());
-            m_movedligand[i].AttractEulerRotate(stateVars[svptr], stateVars[svptr+1], stateVars[svptr+2]);
+            m_movedligand[i].euler_rotate(stateVars[svptr], stateVars[svptr+1], stateVars[svptr+2]);
             svptr+=3;
         }
 
@@ -693,7 +693,7 @@ void BaseAttractForceField::Rota(uint molIndex, dbl phi,dbl ssi, dbl rot, Vdoubl
 
 
 
-void BaseAttractForceField::AddLigand(AttractRigidbody & lig)
+void BaseAttractForceField::addLigand(AttractRigidbody & lig)
 {
 
     setDummyTypeList(lig); // sets the dummy atom type. (virtual function customized for each Attract forcefield)

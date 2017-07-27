@@ -38,17 +38,17 @@ class TestHeligeom(unittest.TestCase):
 
         # add a base Pair
         bp = BasePair(dna[0].GetRigidBody())
-        dna.Add(bp)
+        dna.add(bp)
 
         # add itself
         new = DNA(dna)
-        dna.Add(new, BDNA())
+        dna.add(new, BDNA())
 
         # change the type of a base
         dna.ChangeType(0, "A", TEST_BP_RED)
 
         # turn the center base
-        dna.ApplyLocal(Roll(30), dna.Size() / 2)
+        dna.apply_local(Roll(30), dna.Size() / 2)
 
         # trim the extremities
         dna = dna.SubDNA(2, dna.Size() - 3)

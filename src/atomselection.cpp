@@ -16,7 +16,7 @@ AtomSelection::AtomSelection(const Rigidbody& rigid)
     m_rigid=&rigid;
     for (uint i=0; i < rigid.Size(); i++)
     {
-        this->AddAtomIndex(i);
+        this->add_atomIndex(i);
     }
 }
 
@@ -39,7 +39,7 @@ Rigidbody AtomSelection::CreateRigid()
     for (uint i=0; i<this->Size(); i++)
     {
         Atom at = m_rigid->CopyAtom(m_list[i]);
-        newrigid.AddAtom(at);
+        newrigid.add_atom(at);
     }
 
     return newrigid;

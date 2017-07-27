@@ -96,13 +96,13 @@ Rigidbody Parameter::BuildAxisCGGeometricCenter( Rigidbody& bp)
     Atomproperty atp;
 
     atp.atomType = "OO";
-    base3D.AddAtom(atp,origin );
+    base3D.add_atom(atp,origin );
     atp.atomType = "OX";
-    base3D.AddAtom(atp, origin + axeX);
+    base3D.add_atom(atp, origin + axeX);
     atp.atomType = "OY";
-    base3D.AddAtom(atp, origin + axeY);
+    base3D.add_atom(atp, origin + axeY);
     atp.atomType = "OZ";
-    base3D.AddAtom(atp, origin + axeZ);
+    base3D.add_atom(atp, origin + axeZ);
     return base3D;
 
 }
@@ -149,13 +149,13 @@ Rigidbody Parameter::BuildAxisAAGeometricCenter( Rigidbody& bp)
     Atomproperty atp;
 
     atp.atomType = "OO";
-    base3D.AddAtom(atp,origin );
+    base3D.add_atom(atp,origin );
     atp.atomType  = "OX";
-    base3D.AddAtom(atp, origin + axeX);
+    base3D.add_atom(atp, origin + axeX);
     atp.atomType = "OY";
-    base3D.AddAtom(atp, origin + axeY);
+    base3D.add_atom(atp, origin + axeY);
     atp.atomType = "OZ";
-    base3D.AddAtom(atp, origin + axeZ1);
+    base3D.add_atom(atp, origin + axeZ1);
     return base3D;
 
 }
