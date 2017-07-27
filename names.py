@@ -6,7 +6,7 @@ import re
 
 # Set CONTEXT True to print latest context line for each match found
 CONTEXT = True
-DRY_RUN = True
+DRY_RUN = False
 STRIP_TERMINALS = False
 
 def find_names_in_file(filename, names={}, context=CONTEXT):
@@ -134,7 +134,7 @@ def rename_all(substitutions, dry_run=DRY_RUN, strip_terminals=STRIP_TERMINALS):
             else:
                 args = ('find', '.', '-name', name_arg, '-exec', 'sed', '-i', sed_command, '{}', ';')
             print args
-            subprocess.Popen(args)
+            #subprocess.Popen(args)
         time.sleep(1)
     return
 
