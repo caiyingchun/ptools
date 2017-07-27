@@ -56,4 +56,9 @@ D. Detailed protocol:
 
 6. Verify the order of the substitutions list! Any shorter word should be translated AFTER longer words containing it. Note that the translations are thus processed as a list, not a dictionary.
 
+7. To overwrite just the source file changes with the committed version
+
+	- all changes:		git checkout -- .
+
+	- specific filetypes: git checkout -- "*.py" "*.pyx" "*.cpp" "*.h"
 

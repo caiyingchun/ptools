@@ -80,6 +80,8 @@ def read_substitutions(filename):
     with open(filename) as fin:
         for line in fin.readlines():
             #print filename, line.strip()
+            if line.startswith("#"):
+                pass
             entry = line.strip().split()
             if len(entry) == 2:
                 substitutions.append(entry)
@@ -88,7 +90,7 @@ def read_substitutions(filename):
     return substitutions
 
 
-def  parse_entry(entry, strip_terminals=False):
+def parse_entry(entry, strip_terminals=False):
     """Return target and new value for substitution entry with or without terminal "." and "(" characters."""
     target = entry[0] if not strip_terminals else entry[0][1:-1]
     newvalue = entry[1] if not strip_terminals else entry[1][1:-1]
