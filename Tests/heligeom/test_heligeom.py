@@ -51,7 +51,7 @@ class TestHeligeom(unittest.TestCase):
         dna.apply_local(Roll(30), dna.size() / 2)
 
         # trim the extremities
-        dna = dna.SubDNA(2, dna.size() - 3)
+        dna = dna.subDNA(2, dna.size() - 3)
 
         # change to a All Atom representation
         dna.change_representation(TEST_BP_PDB)

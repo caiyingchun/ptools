@@ -83,7 +83,7 @@ class MinimizationTests(unittest.TestCase):
         self.niter = 100
         self.forcefield = AttractForceField1(TEST_TOYMINIM_FF_PARAM, self.cutoff)
 
-    def test_find_analytical_solution_when_displaced_along_Y(self):
+    def test_find_analytical_solution_when_displaced_along_y(self):
         """Minimization should displace ligand by -5A along Y-axis to minimum-energy position."""
         receptor = AttractRigidbody(TEST_TOYMINIM_RECEPTOR)
         receptor.set_translation(False)
@@ -108,7 +108,7 @@ class MinimizationTests(unittest.TestCase):
         self.assertAlmostEqual(dy, -5.0)
         self.assertAlmostEqual(dz, 0.0)
 
-    def test_find_analytical_solution_when_displaced_along_X_Y_Z(self):
+    def test_find_analytical_solution_when_displaced_along_x_y_z(self):
         """Minimization should displace ligand by -5A along each axis to minimum-energy position."""
         # PGTOL not easily changeable through ptools, needs to be set tighter to get closer to optimum
         tolerance = 5e-5

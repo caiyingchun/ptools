@@ -7,7 +7,7 @@ cdef extern from "DNA.h" namespace "PTools":
         CppDNA(CppDNA&)
         CppDNA(string&, string&, CppMovement&)
         CppDNA(string&, string&)  #with default value for third parameter
-        CppDNA SubDNA(int, int)
+        CppDNA subDNA(int, int)
         CppBasePair operator[](int)
         unsigned int size()
         void add(CppBasePair, const CppMovement &)
@@ -60,11 +60,11 @@ cdef class DNA:
     def size(self):
         return self.thisptr.size()
 
-    def SubDNA(self, int start, int end):
+    def subDNA(self, int start, int end):
         ret = DNA()
         if ret.thisptr:
             del ret.thisptr
-        cdef CppDNA cdna = self.thisptr.SubDNA(start, end)
+        cdef CppDNA cdna = self.thisptr.subDNA(start, end)
         ret.thisptr = new CppDNA(cdna)
         return ret
 

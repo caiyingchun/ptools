@@ -33,7 +33,7 @@ class TestDNABindings(unittest.TestCase):
         self.assertTrue(hasattr(DNA, 'apply_local'))
 
     def test_has_subDNA(self):
-        self.assertTrue(hasattr(DNA, 'SubDNA'))
+        self.assertTrue(hasattr(DNA, 'subDNA'))
 
     def test_has_change_representation(self):
         self.assertTrue(hasattr(DNA, 'change_representation'))
@@ -75,7 +75,7 @@ class TestDNA(unittest.TestCase):
 
     def test_subDNA(self):
         warnings.warn("only check the call, not the result")
-        self.dna.SubDNA(2, self.dna.size() - 3)
+        self.dna.subDNA(2, self.dna.size() - 3)
 
     def test_change_representation(self):
         warnings.warn("only check the call, not the result")

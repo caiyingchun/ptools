@@ -826,11 +826,11 @@ void DNA::add(BasePair bp, const Movement & mov)
     this->ChangeFormat();
 }
 
-DNA DNA::SubDNA(uint start, uint end)const
+DNA DNA::subDNA(uint start, uint end)const
 {
     if (std::max(start, end) > this->size() )
     {
-        throw std::out_of_range("out of range in SubDNA");
+        throw std::out_of_range("out of range in subDNA");
     }
     DNA newdna = DNA();
 
@@ -844,8 +844,8 @@ DNA DNA::SubDNA(uint start, uint end)const
 
 void DNA::Replace(const DNA & d,int start)
 {
-    DNA preDNA = this->SubDNA(0,start);
-    DNA postDNA =this->SubDNA(start+d.size(),this->size());
+    DNA preDNA = this->subDNA(0,start);
+    DNA postDNA =this->subDNA(start+d.size(),this->size());
 
     Movement initMov = Movement(strand[0].get_matrix());
     strand.clear();

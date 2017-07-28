@@ -93,7 +93,7 @@ namespace PTools
     void add(BasePair bp, const Movement & mov = BDNA());
 
     ///return the specified subDNA
-    DNA SubDNA(uint start, uint end)const;
+    DNA subDNA(uint start, uint end)const;
 
     ///replace the basePair of this DNA by the basePair of a given DNA starting from a given position to the end of one of the DNAs
     void Replace(const DNA & d,int start);
