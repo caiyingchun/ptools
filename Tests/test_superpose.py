@@ -36,7 +36,7 @@ class TestSuperposition(unittest.TestCase):
     def setUp(self):
         self.prot1 = ptools.Rigidbody(TEST_LIGAND_PDB)
 
-    def testTransRot(self):
+    def test_trans_rot(self):
         prot2 = ptools.Rigidbody(self.prot1)
 
         for i in xrange(20):

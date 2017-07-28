@@ -20,12 +20,12 @@ class TestCoordsArray(unittest.TestCase):
     def testsize(self):
         self.assertEqual(len(self.c), 2)
 
-    def testGetAtom(self):
+    def test_get_coords(self):
         c1 = Coord3D()
         self.c.get_coords(0, c1)
         assertCoordsAlmostEqual(self, c1, Coord3D(3.0, 4.0, 5.0))
 
-    def testBasicTranslation(self):
+    def test_basic_translation(self):
         self.c.translate(self.tr)
         c1 = Coord3D()
         c2 = Coord3D()
@@ -33,7 +33,7 @@ class TestCoordsArray(unittest.TestCase):
         self.c.get_coords(1, c2)
         assertCoordsAlmostEqual(self, c1, Coord3D(6.0, 8.5, 2.0))
 
-    def testset_coords(self):
+    def test_set_coords(self):
         """brief explanation:
         For lazy evaluation, corrdinates are stored unrotated/untranslated
         along with the rotation/translation 4x4 matrix.

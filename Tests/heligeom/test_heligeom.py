@@ -24,13 +24,13 @@ def surreal(r):
 
 class TestHeligeom(unittest.TestCase):
 
-    def testGenerateBDNA(self):
+    def test_generate_BDNA(self):
         dna = DNA(TEST_BP_PDB, "AAAAAATCGATCTATC", ADNA())  # tout atom
         result = dna.print_pdb()
         expected = open(TEST_BDNA_EXPECTED_PDB).read()
         self.assertEqual(result, expected)
 
-    def testBasicManipulation(self):
+    def test_basic_manipulation(self):
         # translate the DNA in coarse grain representation
         dna = DNA(TEST_BP_RED, TEST_BDNA_EXPECTED_PDB)
         self.assertEqual(dna[0].size(), 11)
@@ -61,13 +61,13 @@ class TestHeligeom(unittest.TestCase):
             expected = f.read()
         self.assertEqual(result, expected)
 
-    def testCGfromPDBFile(self):
+    def test_cg_from_pdb_file(self):
         dna = DNA(TEST_BP_PDB, TEST_BDNA_EXPECTED_PDB)  # gros grain
         result = dna.print_pdb()
         expected = open(TEST_CG_FROM_PDBFILE_EXPECTED_PDB).read()
         self.assertEqual(result, expected)
 
-    def testEnergy(self):
+    def test_energy(self):
         prot = AttractRigidbody(TEST_1A74_PROT_RED)
         dna = AttractRigidbody(TEST_1A74_OPT_RED)
 

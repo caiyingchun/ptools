@@ -23,7 +23,7 @@ public:
                 coo2 = Coord3D(1.0, 2.0, 7.5);
         }
 
-        void testPlusOperator()
+        void test_plus_operator()
         {
                 coo3 = coo1 + coo2 ;
                 TS_ASSERT_EQUALS(coo3.x, 4.0);
@@ -33,14 +33,14 @@ public:
         }
 
 
-        void testMinusOperator(){
+        void test_minus_operator(){
                 coo3 = coo1 - coo2;
                 TS_ASSERT_EQUALS(coo3.x, 2.0);
                 TS_ASSERT_EQUALS(coo3.y, 2.0);
                 TS_ASSERT_EQUALS(coo3.z, -2.5);
         }
 
-        void testPlusEqualOperator()
+        void test_plus_equal_operator()
         {
                 coo3 = Coord3D(coo1);
                 coo3 += coo2;
@@ -62,13 +62,13 @@ Coord3D A, B;
 
 
 
-    void setUp()
+    void seuUp()
     {
         r =  Rigidbody(TEST_1FIN_R_PDB);
     }
 
 
-    void testCopy()
+    void test_copy()
     {
         s = Rigidbody(r);
         TS_ASSERT_EQUALS(s.size(), r.size())
@@ -76,7 +76,7 @@ Coord3D A, B;
     }
 
 
-    void testsize()
+    void test_size()
     {        TS_ASSERT_EQUALS(r.size(), 2365);
     }
 
@@ -92,7 +92,7 @@ Coord3D A, B;
     }
 
 
-    void testUnsafeget_coords()
+    void test_unsafe_get_coords()
     {
 //         """in principle get_coords(i,co) and unsafeget_coords(i,co) should
 //         lead to the exact same coordinates if a sync has been done before
@@ -134,7 +134,7 @@ Rigidbody rigid1, rigid2, rigid3;
         rigid3=Rigidbody(rigid2);
     }
 
-    void testBasicrmsd()
+    void test_basic_rmsd()
     {
         Rigidbody rigtmp(rigid1);
         TS_ASSERT_EQUALS(rmsd(rigid1, rigid1), 0.0);
@@ -142,7 +142,7 @@ Rigidbody rigid1, rigid2, rigid3;
         TS_ASSERT_EQUALS(rmsd(rigtmp, rigid1), 4);
     }
 
-    void testTranslation1()
+    void test_translation1()
     {
         Coord3D CoM1 = rigid1.find_center() ;
         rigid1.translate(Coord3D(3.0, -55.67, 1));
@@ -153,7 +153,7 @@ Rigidbody rigid1, rigid2, rigid3;
         TS_ASSERT(rmsd(rigid1, rigid2) < 1e-6);
     }
 
-    void testTranslation2(){
+    void test_translation2(){
         Coord3D vec1 = Coord3D (-123.54, 45.62, -99.003);
         Coord3D vec2 = Coord3D (36.3125, 2.78, -36.378);
         rigid2.translate(vec1+vec2);
@@ -189,14 +189,14 @@ public:
         TS_ASSERT(c.size() == 2);
     }
      
-    void  testGetAtom()
+    void  test_get_atom()
     {
         Coord3D c1 ;
         c.get_coords(0, c1);
         TS_ASSERT(  Norm2(c1 - Coord3D(3.0, 4.0, 5.0))<1e-6 );
     }
 
-    void  testBasicTranslation()
+    void  test_basic_translation()
     {
         c.translate(tr);
         Coord3D c1;
@@ -263,7 +263,7 @@ Rigidbody prot1;
         random.seed(123);
     }
 
-    void testTransRot()
+    void test_trans_rot()
     {
         double x,y,z,a,b,c;
 
@@ -320,7 +320,7 @@ class TestRot: public CxxTest::TestSuite
 
 
 public:
-    void testTransRot()
+    void test_trans_rot()
     {
 
         srand(time(NULL));
@@ -347,7 +347,7 @@ public:
         }
 
     }
-    void testVissage()
+    void test_vissage()
     {
 
         for(int i=0; i<1000; i++)

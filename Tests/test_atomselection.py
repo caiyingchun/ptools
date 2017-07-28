@@ -13,36 +13,36 @@ class TestAtomSelection(unittest.TestCase):
     def setUp(self):
         self.rig = Rigidbody(TEST_1F88_PDB)
 
-    def testSelectAll(self):
+    def test_select_all(self):
         allAtoms = self.rig.select_all_atoms()
         self.assertEqual(len(allAtoms), 5067)
 
-    def testSelectget_CA(self):
+    def test_select_get_CA(self):
         CAatoms = self.rig.get_CA()
         self.assertEqual(len(CAatoms), 643)
 
-    def testselect_atomtype_simple(self):
+    def test_select_atomtype_simple(self):
         CAatoms = self.rig.select_atomtype("CA")
         self.assertEqual(len(CAatoms), 643)
 
-    def testselect_atomtype_wildcard(self):
+    def test_select_atomtype_wildcard(self):
         CAatoms = self.rig.select_atomtype("C*")
         self.assertEqual(len(CAatoms), 3379)
 
-    def testSelectbackbone(self):
+    def test_select_backbone(self):
         bbAtoms = self.rig.backbone()
         self.assertEqual(len(bbAtoms), 2572)
 
-    def testselect_resid_range(self):
+    def test_select_resid_range(self):
         res_1_35 = self.rig.select_resid_range(1, 35)
         self.assertEqual(len(res_1_35), 566)  # two chains
 
-    def testselect_resid_rangeNegativeResId(self):
+    def test_select_resid_range_negative_resid(self):
         rigid = Rigidbody(TEST_2AAV_PDB)
         selection = rigid.select_resid_range(-4, -1) & rigid.get_CA()
         self.assertEqual(len(selection), 4)
 
-    def testAnd(self):
+    def test_and(self):
         res_1_35 = self.rig.select_resid_range(1, 35)
         CAatoms = self.rig.select_atomtype("CA")
 
@@ -64,12 +64,12 @@ class TestAtomSelection(unittest.TestCase):
         rigid = met1A.create_rigid()
         self.assertEqual(len(rigid), 8)
 
-    def testNotOperator(self):
+    def test_not_operator(self):
         sel_ca = self.rig.get_CA()
         sel_not_ca = ~ sel_ca  # operator NOT
         self.assertEqual(len(sel_ca) + len(sel_not_ca), len(self.rig))
 
-    def testAlternateNotOperator(self):
+    def test_alternate_not_operator(self):
         sel_ca = self.rig.get_CA()
         sel_not_ca = sel_ca.not_()  # operator NOT
         self.assertEqual(len(sel_ca) + len(sel_not_ca), len(self.rig))

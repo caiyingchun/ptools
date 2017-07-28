@@ -111,7 +111,7 @@ class TestRigidbody(unittest.TestCase):
         at.coords = Coord3D(0, 0, 1)
         self.r2.add_atom(at)
 
-    def testCopy(self):
+    def test_copy(self):
         s = Rigidbody(self.r)
         self.assertEqual(len(s), len(self.r))
         self.assertEqual(self.r.find_center(), s.find_center())
@@ -171,16 +171,16 @@ class TestRigidbody(unittest.TestCase):
         assertCoordsAlmostEqual(self, atom2.coords, Coord3D(3, 4, 5))
         assertCoordsAlmostEqual(self, coords2, Coord3D(3, 4, 5))
 
-    def testset_atomWithOutOfBoundsPosition(self):
+    def testset_atom_with_out_of_bounds_position(self):
         maxpos = len(self.r) - 1
         with self.assertRaisesRegexp(IndexError, 'out of bounds'):
             self.r.set_atom_property(maxpos + 1, Atom())
 
-    def testset_atomWithNegativePosition(self):
+    def testset_atom_with_negative_position(self):
         with self.assertRaisesRegexp(OverflowError, "can't convert negative value to unsigned int"):
             self.r.set_atom_property(-1, Atom())
 
-    def testUnsafeget_coords(self):
+    def test_unsafe_get_coords(self):
         """in principle get_coords(i,co) and unsafeget_coords(i,co) should
         lead to the exact same coordinates if a sync has been done before
         calling the 'unsafe' version"""
@@ -223,16 +223,16 @@ class TestRigidbody(unittest.TestCase):
         prop = self.r.get_atom_property(0)
         self.assertEqual(prop.residType, 'AAA')
 
-    def testset_atom_propertyWithOutOfBoundsPosition(self):
+    def test_set_atom_property_with_out_of_bounds_position(self):
         maxpos = len(self.r) - 1
         with self.assertRaisesRegexp(IndexError, 'out of bounds'):
             self.r.set_atom_property(maxpos + 1, Atomproperty())
 
-    def testset_atom_propertyWithNegativePosition(self):
+    def test_set_atom_property_with_negative_position(self):
         with self.assertRaisesRegexp(OverflowError, "can't convert negative value to unsigned int"):
             self.r.set_atom_property(-1, Atomproperty())
 
-    def testNegativeResId(self):
+    def test_negative_residId(self):
         rigid = Rigidbody(TEST_2AAV_PDB)
         at1 = rigid.copy_atom(0)
         self.assertEqual(at1.residId, -4)

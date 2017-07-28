@@ -34,7 +34,7 @@ class TestAttractPairList(unittest.TestCase):
         self.ar = AttractRigidbody(r)
         self.al = AttractRigidbody(l)
 
-    def testAtomPair(self):
+    def test_atompair(self):
         atp = AtomPair()
         atp.atlig = 23
         atp.atrec = 45
