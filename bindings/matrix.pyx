@@ -12,7 +12,7 @@ cdef extern from "basetypes.h":
        string str()
        int get_nrows()
        int get_ncolumns()
-       pair[int,int] getDim()
+       pair[int,int] get_dim()
        void Print()
 
     cdef cppclass cppSuperpose_t "Superpose_t" :
@@ -60,8 +60,8 @@ cdef class Matrix:
     def get_ncolumns(self):
         return self.thisptr.get_ncolumns()
 
-    def getDim(self):
-        return self.thisptr.getDim()
+    def get_dim(self):
+        return self.thisptr.get_dim()
 
     def Print(self):
         self.thisptr.Print()

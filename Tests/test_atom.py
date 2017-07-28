@@ -6,28 +6,28 @@ from ptools import Atom, Atomproperty, Coord3D
 
 class TestAtomBindings(unittest.TestCase):
 
-    def test_Atom_has_atomType(self):
+    def test_atom_has_atomType(self):
         self.assertTrue(hasattr(Atom, 'atomType'))
 
-    def test_Atom_has_residType(self):
+    def test_atom_has_residType(self):
         self.assertTrue(hasattr(Atom, 'residType'))
 
-    def test_Atom_has_residId(self):
+    def test_atom_has_residId(self):
         self.assertTrue(hasattr(Atom, 'residId'))
 
-    def test_Atom_has_atomId(self):
+    def test_atom_has_atomId(self):
         self.assertTrue(hasattr(Atom, 'atomId'))
 
-    def test_Atom_has_atomCharge(self):
+    def test_atom_has_atomCharge(self):
         self.assertTrue(hasattr(Atom, 'atomCharge'))
 
-    def test_Atom_has_atomElement(self):
+    def test_atom_has_atomElement(self):
         self.assertTrue(hasattr(Atom, 'atomElement'))
 
-    def test_Atom_has_coords(self):
+    def test_atom_has_coords(self):
         self.assertTrue(hasattr(Atom, 'coords'))
 
-    def test_Atom_has_set_coords(self):
+    def test_atom_has_set_coords(self):
         self.assertTrue(hasattr(Atom, 'set_coords'))
 
 

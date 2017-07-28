@@ -30,7 +30,7 @@ namespace PTools
 
 void MakeIdentity(Matrix & mat)
 {
-   std::pair<int,int> sz = mat.getDim();
+   std::pair<int,int> sz = mat.get_dim();
    assert(sz.first == sz.second);
    for (int i=0; i<sz.first; i++)
      for (int j=0; j<sz.second; j++)
