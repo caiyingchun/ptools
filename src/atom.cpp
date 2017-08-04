@@ -22,7 +22,7 @@ std::string Atom::ToString() const {
 
 
 //! convert an atom to a string in PDB format
-std::string Atom::ToPdbString() const
+std::string Atom::to_pdb_string() const
 {
     char output[81];
     const char* atomname = this->atomType.c_str();
@@ -44,7 +44,7 @@ std::string Atom::ToPdbString() const
 }
 
 //! translate an atom with a Coord3D vector
-void Atom::Translate(const Coord3D& tr)
+void Atom::translate(const Coord3D& tr)
 {
     coords = coords+tr;
 }

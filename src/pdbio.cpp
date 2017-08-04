@@ -172,7 +172,7 @@ void ReadPDB(istream& file, Rigidbody& protein) {
             Coord3D pos = pdbToCoords(line);
             Atomproperty a;
             pdbToAtomproperty(line, a);
-            protein.AddAtom(a,pos);
+            protein.add_atom(a,pos);
 
         }
     }
@@ -195,17 +195,17 @@ void ReadPDB(const std::string name,Rigidbody& protein ) {
 
 }
 
-void WritePDB(const Rigidbody& rigid, std::string filename)
+void write_pdb(const Rigidbody& rigid, std::string filename)
 {
 
     FILE* file= fopen(filename.c_str(),"w") ;
 
-    for (uint i=0; i<rigid.Size();i++)
+    for (uint i=0; i<rigid.size();i++)
     {
 
         const char * chainID="A" ;
 
-        Atom at = rigid.CopyAtom(i);
+        Atom at = rigid.copy_atom(i);
         const char* atomname=at._pdbAtomType.c_str();
         const char* residName=at.residType.c_str();
         int residnumber = at.residId;

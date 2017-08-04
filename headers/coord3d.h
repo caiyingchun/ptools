@@ -24,7 +24,7 @@ struct Coord3D
     inline bool operator==(const Coord3D& b) {return (b.x==x && b.y==y && b.z==z); };
     Coord3D&  Normalize(); ///< Normalize vector to unity (in place)
 
-    std::string toString(bool newline=true);
+    std::string to_string(bool newline=true);
 
 };
 

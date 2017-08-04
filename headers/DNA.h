@@ -26,41 +26,41 @@ namespace PTools
 
 
     ///return the number of BasePair
-    unsigned int Size() const;
+    unsigned int size() const;
 
     ///return the number of Atom
-    unsigned int AtomSize() const;
+    unsigned int Atomsize() const;
 
     ///return a string containing the atoms data following the PDB format
-    std::string PrintPDB() ;
+    std::string print_pdb() ;
 
     ///return a string containing the atoms data following the PDB format
-    std::string PrintPDBofStrand( std::string chain );
+    std::string print_pdbofStrand( std::string chain );
 
     ///return a string containing all the local parameter formated
-    std::string PrintParam();
+    std::string print_param();
 
     ///write in a file the atoms data following the PDB format
-    void WritePDB(std::string);
+    void write_pdb(std::string);
 
     ///change the database use for the BasePair. the new database must contain the same names for pdb that the old one.
-    void ChangeRepresentation(std::string);
+    void change_representation(std::string);
 
     ///apply a Matrix/Movement to a specified BasePair. you can specify an anchor
-    void ApplyLocal(const Matrix&,int posMov, int posAnchor = 0);
-    void ApplyLocal(const Movement&,int posMov, int posAnchor = 0);
+    void apply_local(const Matrix&,int posMov, int posAnchor = 0);
+    void apply_local(const Movement&,int posMov, int posAnchor = 0);
 
     ///apply a Matrix/Movement to all the BasePairs and reposition the DNA according to the anchor
-    void ApplyGlobal(const Matrix&,int posAnchor);
-    void ApplyGlobal(const Movement&,int posAnchor);
+    void applyGlobal(const Matrix&,int posAnchor);
+    void applyGlobal(const Movement&,int posAnchor);
     
     ///apply a Matrix/Movement to the DNA as a rigidbody
-    void Apply(const Matrix&);
-    void Apply(const Movement&);
+    void apply(const Matrix&);
+    void apply(const Movement&);
     
 
     ///apply a vector to the DNA as a rigidbody
-    void Translate(Coord3D coord);
+    void translate(Coord3D coord);
 
     ///return the local Matrix of the specified BasePair (for the position i the Matrix to go from i-1 to i)
     Matrix GetLocalMatrix(int pos)const;
@@ -68,9 +68,9 @@ namespace PTools
     Parameter GetLocalParameter(int pos);
 
     ///return a Rigidbody of the DNA()
-    Rigidbody CreateRigid();
+    Rigidbody create_rigid();
     ///return a Rigidbody of the strand
-    Rigidbody CreateRigidOfStrand(std::string chain);
+    Rigidbody create_rigidOfStrand(std::string chain);
 
 
     //replace the base pair at the indicated position by the new base pair
@@ -78,28 +78,28 @@ namespace PTools
 
 
     /// return the RMSD between two DNA (not aligning them and assuming they are comparable)
-    double Rmsd(const DNA&)const;
+    double rmsd(const DNA&)const;
 
     ///------edition functions------
 
     /// return the i-th BasePair of the strand
     BasePair operator[] (uint i) const {
-          if (i>=this->Size()) throw std::range_error("DNA: array out of bounds");
+          if (i>=this->size()) throw std::range_error("DNA: array out of bounds");
           return strand[i];};
 
     /// add the basePairs of a DNA to the strand of this DNA. the specified movement do the liason betwen the two strand
-    void Add(const DNA & d, const Movement & mov = BDNA());
+    void add(const DNA & d, const Movement & mov = BDNA());
     /// add a basepair at the end of the strand of this DNA
-    void Add(BasePair bp, const Movement & mov = BDNA());
+    void add(BasePair bp, const Movement & mov = BDNA());
 
     ///return the specified subDNA
-    DNA SubDNA(uint start, uint end)const;
+    DNA subDNA(uint start, uint end)const;
 
     ///replace the basePair of this DNA by the basePair of a given DNA starting from a given position to the end of one of the DNAs
     void Replace(const DNA & d,int start);
 
     ///change the type of the base pair at position pos to the indicated type using the coresponding structure in the designed database of pdb.
-    void ChangeType(int pos, std::string type, std::string filename );
+    void change_type(int pos, std::string type, std::string filename );
 
 
 
@@ -115,15 +115,15 @@ namespace PTools
     ///construct the strand from the sequence, the  chain Ids and a corresponding vector of Rigidbody
     void BuildStrand(std::string,std::string,const std::vector<Rigidbody> &);
     /// apply an initial Movement during the initialisation of the DNA
-    void ApplyInitialMov(const Movement&);
+    void applyInitialMov(const Movement&);
     ///rebuild the DNA from a specified position. useful for taking into account a change in a base.
     Matrix Reconstruct(int pos,const Matrix&);
     ///give the BasePair a correct number according to they rank in the strand
     void ChangeFormat();
     ///apply a Movement to a specified BasePair.
-    void ApplylocalMov(const Movement&,int pos);
+    void applylocalMov(const Movement&,int pos);
     ///apply a Movement to all the BasePairs
-    void ApplyglobalMov(const Movement& );
+    void applyglobalMov(const Movement& );
     ///reposition the DNA according to the anchor
     void Relocate(const BasePair& anchor,int posAnchor);
 

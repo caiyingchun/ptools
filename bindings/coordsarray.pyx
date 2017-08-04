@@ -2,13 +2,13 @@ cdef extern from "coordsarray.h" namespace "PTools":
     cdef cppclass CppCoordsArray "PTools::CoordsArray":
       CppCoordsArray() 
       CppCoordsArray( CppCoordsArray & )
-      void unsafeGetCoords(unsigned int , CppCoord3D& )
-      void AddCoord(CppCoord3D& co)
-      unsigned int Size()
-      void GetCoords(unsigned int, CppCoord3D&) 
-      void SetCoords(unsigned int, CppCoord3D&)
-      void Translate(CppCoord3D&)
-      void AttractEulerRotate(double , double, double)
+      void unsafeget_coords(unsigned int , CppCoord3D& )
+      void add_coord(CppCoord3D& co)
+      unsigned int size()
+      void get_coords(unsigned int, CppCoord3D&) 
+      void set_coords(unsigned int, CppCoord3D&)
+      void translate(CppCoord3D&)
+      void euler_rotate(double , double, double)
 
 
 cdef class CoordsArray:
@@ -23,34 +23,34 @@ cdef class CoordsArray:
           self.thisptr = new CppCoordsArray()
 
     def __len__(self):
-        return self.thisptr.Size()
+        return self.thisptr.size()
 
-    def Size(self):
+    def size(self):
         print "Depreciated, use len(obj) instead"
-        return self.thisptr.Size()
+        return self.thisptr.size()
 
-    #def unsafeGetCoords(self, int i, Coord3D co):
+    #def unsafeget_coords(self, int i, Coord3D co):
     #    cdef Coord3D c
     #    cdef CppCoord3D *coptr
     #    c = <Coord3D> co
     #    coptr = c.thisptr
-    #    self.thisptr.unsafeGetCoords(i, deref(coptr))
+    #    self.thisptr.unsafeget_coords(i, deref(coptr))
     
 
-    def unsafeGetCoords(self, int i, Coord3D co):
-       self.thisptr.unsafeGetCoords(i, deref(co.thisptr))
+    def unsafeget_coords(self, int i, Coord3D co):
+       self.thisptr.unsafeget_coords(i, deref(co.thisptr))
 
-    def AddCoord(self, Coord3D co):
-        self.thisptr.AddCoord( deref(co.thisptr) )
+    def add_coord(self, Coord3D co):
+        self.thisptr.add_coord( deref(co.thisptr) )
 
-    def GetCoords(self, i, Coord3D co):
-        self.thisptr.GetCoords(i, deref(co.thisptr))
+    def get_coords(self, i, Coord3D co):
+        self.thisptr.get_coords(i, deref(co.thisptr))
 
-    def SetCoords(self, i, Coord3D co):
-        self.thisptr.SetCoords(i, deref(co.thisptr))
+    def set_coords(self, i, Coord3D co):
+        self.thisptr.set_coords(i, deref(co.thisptr))
 
-    def Translate(self, Coord3D co):
-        self.thisptr.Translate(deref(co.thisptr))
+    def translate(self, Coord3D co):
+        self.thisptr.translate(deref(co.thisptr))
 
-    def AttractEulerRotate(self, double phi, double ssi, double rot):
-        self.thisptr.AttractEulerRotate(phi, ssi, rot)
+    def euler_rotate(self, double phi, double ssi, double rot):
+        self.thisptr.euler_rotate(phi, ssi, rot)

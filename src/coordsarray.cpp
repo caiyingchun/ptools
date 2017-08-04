@@ -61,7 +61,7 @@ CoordsArray::CoordsArray(const CoordsArray & ca) //copy constructor
 }
 
 
-void CoordsArray::Translate(const Coord3D& tr)
+void CoordsArray::translate(const Coord3D& tr)
 {
     //updates rotation/translation matrix:
     this->mat44[0][3]+=tr.x;
@@ -95,7 +95,7 @@ void CoordsArray::ResetMatrix()
 
 
 
-std::string CoordsArray::PrintMatrix() const
+std::string CoordsArray::print_matrix() const
 {
     std::string out;
     out += "### MAT BEGIN\n";
@@ -117,7 +117,7 @@ std::string CoordsArray::PrintMatrix() const
 }
 
 
-Matrix CoordsArray::GetMatrix() const
+Matrix CoordsArray::get_matrix() const
 {
 Matrix matrix(4,4);
 
@@ -131,14 +131,14 @@ return matrix;
 
 
 
-void CoordsArray::GetCoords(const uint i, Coord3D& co)  const throw(std::out_of_range)
+void CoordsArray::get_coords(const uint i, Coord3D& co)  const throw(std::out_of_range)
 {
 
-    if (i>=Size())
+    if (i>=size())
     {
         std::stringstream ss (std::stringstream::in | std::stringstream::out);
-        ss <<  "CoordsArray::GetCoords : out of range :  ";
-        ss << i << " is out of bounds (object size: " << Size() << ")\n";
+        ss <<  "CoordsArray::get_coords : out of range :  ";
+        ss << i << " is out of bounds (object size: " << size() << ")\n";
         std::string message = ss.str() ;
         std::cerr << message ;
         throw std::out_of_range (message);
@@ -148,7 +148,7 @@ void CoordsArray::GetCoords(const uint i, Coord3D& co)  const throw(std::out_of_
 };
 
 
-void CoordsArray::SetCoords(const uint k, const Coord3D& co)
+void CoordsArray::set_coords(const uint k, const Coord3D& co)
 {
 //sets the coordinate [i] to be 'co' after rotation/translation
 
@@ -190,11 +190,11 @@ _modified();
 *
 *   Note that for this new implementation only the 4x4 rotational/translational
 *   matrix is updated. This may allow a big speedup (to be tested) and a
-*   higher flexibility  (  rig.Translate(a); rig.Translate(minus(a)); may now be delayed
+*   higher flexibility  (  rig.translate(a); rig.translate(minus(a)); may now be delayed
 *   until the coordinates are really needed.
 *   If coordinates are never asked (why?), then no costly calculation is performed !
 */
-void CoordsArray::AttractEulerRotate(dbl phi, dbl ssi, dbl rot)
+void CoordsArray::euler_rotate(dbl phi, dbl ssi, dbl rot)
 {
 
     dbl  cp, cs, ss, sp, cscp, sscp, sssp, crot, srot, cssp ;

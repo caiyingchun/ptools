@@ -68,7 +68,7 @@ public:
 
     void resetForces()
     {
-        m_forces = std::vector<Coord3D> (this->Size() ) ;
+        m_forces = std::vector<Coord3D> (this->size() ) ;
     }
 
     void addForces(const std::vector<Coord3D>& forces)
@@ -78,8 +78,8 @@ public:
     }
 
 
-    void setRotation(bool value) {hasrotation  = value;} ///< allow/disallow rotation
-    void setTranslation(bool value) {hastranslation = value;} ///< allow/disallow translation
+    void set_rotation(bool value) {hasrotation  = value;} ///< allow/disallow rotation
+    void set_translation(bool value) {hastranslation = value;} ///< allow/disallow translation
 
     void setDummyTypes(const std::vector<uint>& dummy); ///< set a list of ignored atom types
 

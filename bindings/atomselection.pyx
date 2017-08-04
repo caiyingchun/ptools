@@ -8,12 +8,12 @@ cdef extern from "atomselection.h" namespace "PTools":
         CppAtomSelection(CppAtomSelection&)
         CppAtomSelection(CppRigidbody)
 
-        unsigned int Size()
-        void SetRigid(CppRigidbody&)
+        unsigned int size()
+        void set_rigid(CppRigidbody&)
         CppAtom operator[]
-        CppAtom CopyAtom(unsigned int)
-        void AddAtomIndex(unsigned int)
-        CppRigidbody CreateRigid()
+        CppAtom copy_atom(unsigned int)
+        void add_atomIndex(unsigned int)
+        CppRigidbody create_rigid()
 
         CppAtomSelection non(CppAtomSelection &)
 
@@ -57,7 +57,7 @@ cdef class AtomSelection:
             del self.thisptr
 
     def __len__(self):
-        return self.thisptr.Size()
+        return self.thisptr.size()
     
     def __and__(AtomSelection self, AtomSelection second):
         ret = AtomSelection()
@@ -85,14 +85,14 @@ cdef class AtomSelection:
         return self.__invert__()
     
     
-    def CreateRigid(self):
+    def create_rigid(self):
         ret = Rigidbody()
         if ret.thisptr:
             del ret.thisptr
-        cdef CppRigidbody rig = self.thisptr.CreateRigid()
+        cdef CppRigidbody rig = self.thisptr.create_rigid()
         ret.thisptr = new CppRigidbody(rig)
         return ret
 
-    def SetRigid(self, Rigidbody r):
+    def set_rigid(self, Rigidbody r):
         self.pyRigid = r # to increase the refcount of r, preventing bad things if r is destroyed
-        self.thisptr.SetRigid(deref(r.thisptr))
+        self.thisptr.set_rigid(deref(r.thisptr))

@@ -78,7 +78,7 @@ private: //private methods
 
         _uptodate = true;
         //modify the function pointer _getcoords to call the "unsafe" method next time (faster)
-        _getcoords = & CoordsArray::unsafeGetCoords;
+        _getcoords = & CoordsArray::unsafeget_coords;
         (*this.* _getcoords)(i, co); //return the correct function
 
     };
@@ -92,27 +92,27 @@ public:
     CoordsArray(const CoordsArray & ca); //copy constructor
 
     /// get the cached coordinates. You must ensure that update() has been called first !
-    void inline unsafeGetCoords(const uint i, Coord3D& co) const { co = _movedcoords[i];};
+    void inline unsafeget_coords(const uint i, Coord3D& co) const { co = _movedcoords[i];};
 
-    void AddCoord(const Coord3D& co) {_refcoords.push_back(co); _movedcoords.push_back(co);  _modified();  };
-    uint Size() const {return _refcoords.size();};
+    void add_coord(const Coord3D& co) {_refcoords.push_back(co); _movedcoords.push_back(co);  _modified();  };
+    uint size() const {return _refcoords.size();};
 
 
-    void GetCoords(const uint i, Coord3D& co)  const throw(std::out_of_range) ;
+    void get_coords(const uint i, Coord3D& co)  const throw(std::out_of_range) ;
 
-    void SetCoords(const uint k, const Coord3D& co);
+    void set_coords(const uint k, const Coord3D& co);
 
-    /// Translate the whole object
-    void Translate(const Coord3D& tr);
+    /// translate the whole object
+    void translate(const Coord3D& tr);
      /// Euler Rotation
-    void AttractEulerRotate(dbl phi, dbl ssi, dbl rot);
+    void euler_rotate(dbl phi, dbl ssi, dbl rot);
 
     void ResetMatrix();
 
-    std::string PrintMatrix() const;
+    std::string print_matrix() const;
 
     ///return the rotation/translation matrix
-    Matrix GetMatrix() const;
+    Matrix get_matrix() const;
 
 
 

@@ -23,8 +23,8 @@ AttractPairList::AttractPairList(const AttractRigidbody & receptor, const Attrac
     mp_receptor = &receptor;
     no_update = true ; //if infinite cutoff
 
-    for (uint i = 0 ; i < mp_ligand->Size(); i++)
-        for (uint j = 0; j < mp_receptor->Size(); j++)
+    for (uint i = 0 ; i < mp_ligand->size(); i++)
+        for (uint j = 0; j < mp_receptor->size(); j++)
         {
             vectl.push_back(i);
             vectr.push_back(j);
@@ -54,7 +54,7 @@ void AttractPairList::update()
     std::vector<uint> activelig;
     std::vector<uint> activerec;
 
-    for (uint i=0; i<mp_ligand->Size(); i++)
+    for (uint i=0; i<mp_ligand->size(); i++)
     {
         if (mp_ligand->isAtomActive(i))
         {
@@ -62,7 +62,7 @@ void AttractPairList::update()
         }
     }
 
-    for (uint i=0; i<mp_receptor->Size(); i++)
+    for (uint i=0; i<mp_receptor->size(); i++)
     {
         if (mp_receptor->isAtomActive(i))
         {
@@ -83,8 +83,8 @@ void AttractPairList::update()
             uint j=activerec[jj];
 
 
-            Coord3D c1 = mp_ligand->GetCoords(i) ;
-            Coord3D c2 = mp_receptor->GetCoords(j);
+            Coord3D c1 = mp_ligand->get_coords(i) ;
+            Coord3D c2 = mp_receptor->get_coords(j);
             if (Norm2(c1-c2) <= squarecutoff)
             {
                 vectl.push_back(i);

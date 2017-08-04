@@ -39,7 +39,7 @@ Parameter::~Parameter()
 Rigidbody Parameter::BuildAxisCentered( Rigidbody& bp)
 {
     //if it's a coarse grain model
-    if (bp.SelectAtomType("GS2").Size()> 0)
+    if (bp.select_atomtype("GS2").size()> 0)
     {
         return BuildAxisCGGeometricCenter(bp);
     }
@@ -52,24 +52,24 @@ Rigidbody Parameter::BuildAxisCentered( Rigidbody& bp)
 ////code "steal" from deformDna.cpp (author: Pierre Poulain), modified to use the geometric center
 Rigidbody Parameter::BuildAxisCGGeometricCenter( Rigidbody& bp)
 {
-    AtomSelection selSugar = bp.SelectAtomType("GS2");
-    assert(selSugar.Size() == 2);
+    AtomSelection selSugar = bp.select_atomtype("GS2");
+    assert(selSugar.size() == 2);
     // build base3D
     Rigidbody base3D;
     // define atoms for base3D construction
-    Coord3D center = selSugar.CreateRigid().FindCenter(); // middle of GS2
+    Coord3D center = selSugar.create_rigid().find_center(); // middle of GS2
     Coord3D pointY = selSugar[0].coords; // point toward Y (first GS2)
-    AtomSelection grain1 = bp.SelectAtomType("GG1"); // GG1 or GA1
-    if (grain1.Size() == 0) {
-            grain1 = bp.SelectAtomType("GA1");
+    AtomSelection grain1 = bp.select_atomtype("GG1"); // GG1 or GA1
+    if (grain1.size() == 0) {
+            grain1 = bp.select_atomtype("GA1");
     }
-    assert(grain1.Size() == 1);
+    assert(grain1.size() == 1);
 
-    AtomSelection grain2 = bp.SelectAtomType("GC1"); // GG1 or GA1
-    if (grain2.Size() == 0) {
-            grain2 = bp.SelectAtomType("GT1");
+    AtomSelection grain2 = bp.select_atomtype("GC1"); // GG1 or GA1
+    if (grain2.size() == 0) {
+            grain2 = bp.select_atomtype("GT1");
     }
-    assert(grain2.Size() == 1);
+    assert(grain2.size() == 1);
     Coord3D pointX1 = grain1[0].coords;
     Coord3D pointX2 = grain2[0].coords;
     // Y
@@ -91,18 +91,18 @@ Rigidbody Parameter::BuildAxisCGGeometricCenter( Rigidbody& bp)
     VectProd(axeY, axeZ, axeX);
     axeX = axeX.Normalize();
     // origin
-    Coord3D origin=bp.FindCenter();
+    Coord3D origin=bp.find_center();
     // save base3D
     Atomproperty atp;
 
     atp.atomType = "OO";
-    base3D.AddAtom(atp,origin );
+    base3D.add_atom(atp,origin );
     atp.atomType = "OX";
-    base3D.AddAtom(atp, origin + axeX);
+    base3D.add_atom(atp, origin + axeX);
     atp.atomType = "OY";
-    base3D.AddAtom(atp, origin + axeY);
+    base3D.add_atom(atp, origin + axeY);
     atp.atomType = "OZ";
-    base3D.AddAtom(atp, origin + axeZ);
+    base3D.add_atom(atp, origin + axeZ);
     return base3D;
 
 }
@@ -112,18 +112,18 @@ Rigidbody Parameter::BuildAxisCGGeometricCenter( Rigidbody& bp)
 ///Definitions and Nomenclature of Nucleic Acid Structure Parameters, R. E. Dickerson et alJ. Mol. Biol. (1995) 251, 648–664.
 Rigidbody Parameter::BuildAxisAAGeometricCenter( Rigidbody& bp)
 {
-    AtomSelection selSugar = bp.SelectAtomType("C1'");
-    if (selSugar.Size() != 2)selSugar = bp.SelectAtomType("C1*");
+    AtomSelection selSugar = bp.select_atomtype("C1'");
+    if (selSugar.size() != 2)selSugar = bp.select_atomtype("C1*");
     // build base3D
     Rigidbody base3D;
     // define atoms for base3D construction
-    Coord3D center = selSugar.CreateRigid().FindCenter(); // middle of GS2
+    Coord3D center = selSugar.create_rigid().find_center(); // middle of GS2
     Coord3D pointY = selSugar[0].coords; // point toward Y (first GS2)
-    AtomSelection grain = bp.SelectAtomType("C5"); // GG1 or GA1
-    if (grain.Size() == 0) {
-            grain = bp.SelectAtomType("GA1");
+    AtomSelection grain = bp.select_atomtype("C5"); // GG1 or GA1
+    if (grain.size() == 0) {
+            grain = bp.select_atomtype("GA1");
     }
-    assert(grain.Size() >= 1); /* /!\ */
+    assert(grain.size() >= 1); /* /!\ */
     // Y
     Coord3D axeY =  (pointY - center).Normalize();
     // Z
@@ -144,18 +144,18 @@ Rigidbody Parameter::BuildAxisAAGeometricCenter( Rigidbody& bp)
     VectProd(axeY, axeZ, axeX);
     axeX = axeX.Normalize();
     // origin
-    Coord3D origin=bp.FindCenter();
+    Coord3D origin=bp.find_center();
     // save base3D
     Atomproperty atp;
 
     atp.atomType = "OO";
-    base3D.AddAtom(atp,origin );
+    base3D.add_atom(atp,origin );
     atp.atomType  = "OX";
-    base3D.AddAtom(atp, origin + axeX);
+    base3D.add_atom(atp, origin + axeX);
     atp.atomType = "OY";
-    base3D.AddAtom(atp, origin + axeY);
+    base3D.add_atom(atp, origin + axeY);
     atp.atomType = "OZ";
-    base3D.AddAtom(atp, origin + axeZ1);
+    base3D.add_atom(atp, origin + axeZ1);
     return base3D;
 
 }
@@ -165,14 +165,14 @@ void Parameter::MeasureParameters(const Rigidbody& oxyz1, const Rigidbody& oxyz2
 
 
     //the vector of the first coordinate
-    Coord3D X = oxyz1.GetCoords(1) - oxyz1.GetCoords(0);
-    Coord3D Y = oxyz1.GetCoords(2) - oxyz1.GetCoords(0);
-    Coord3D Z = oxyz1.GetCoords(3) - oxyz1.GetCoords(0);
+    Coord3D X = oxyz1.get_coords(1) - oxyz1.get_coords(0);
+    Coord3D Y = oxyz1.get_coords(2) - oxyz1.get_coords(0);
+    Coord3D Z = oxyz1.get_coords(3) - oxyz1.get_coords(0);
 
     //the vector of the second coordinate
-    Coord3D I = oxyz2.GetCoords(1) - oxyz2.GetCoords(0);
-    Coord3D J = oxyz2.GetCoords(2) - oxyz2.GetCoords(0);
-    Coord3D K = oxyz2.GetCoords(3) - oxyz2.GetCoords(0);
+    Coord3D I = oxyz2.get_coords(1) - oxyz2.get_coords(0);
+    Coord3D J = oxyz2.get_coords(2) - oxyz2.get_coords(0);
+    Coord3D K = oxyz2.get_coords(3) - oxyz2.get_coords(0);
 
     //the vector of the second axis are projeted in the first axis
     Coord3D e1(ScalProd(I, X), ScalProd(I, Y), ScalProd(I, Z));
@@ -190,7 +190,7 @@ void Parameter::MeasureParameters(const Rigidbody& oxyz1, const Rigidbody& oxyz2
 //    roll   = acos(ScalProd(Y,J));
 //    tilt    = acos(ScalProd(Z,K));
     //the vector between the two origins
-    Coord3D OO = oxyz2.GetCoords(0) - oxyz1.GetCoords(0);
+    Coord3D OO = oxyz2.get_coords(0) - oxyz1.get_coords(0);
     //the projection of the vector between the two origins on each axis.
     shift = ScalProd(OO,I);
     slide = ScalProd(OO,J);

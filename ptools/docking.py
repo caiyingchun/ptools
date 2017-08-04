@@ -15,7 +15,7 @@ def read_translations(filename="translation.dat"):
     """Return dictionary of translations from PDB-format file indexed by translation number (atomid)."""
     rb = ptools.Rigidbody("translation.dat")
     print("Read {:d} translations from translation.dat".format(len(rb)))
-    translations = [(rb.GetAtomProperty(i).atomId, rb.getCoords(i)) for i in xrange(len(rb))]
+    translations = [(rb.get_atom_property(i).atomId, rb.get_coords(i)) for i in xrange(len(rb))]
     return dict(translations)
 
 
@@ -76,7 +76,7 @@ def surreal(i):
 def rmsdca(l1, l2):
     """Return the RMSD between the alpha-carbone atom of two RigidBody
     instances."""
-    return ptools.Rmsd(l1.CA().CreateRigid(), l2.CA().CreateRigid())
+    return ptools.rmsd(l1.get_CA().create_rigid(), l2.get_CA().create_rigid())
 
 
 def get_group(collection, ngroups, ngroup):
@@ -107,9 +107,9 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
 
     # Use appropriate rmsd calculation
     if ref is not None:
-        refca = ref.CA()
+        refca = ref.get_CA()
         if len(refca) == 0:  # No C alpha atom, ligand is probably a dna
-            rmsd_func = ptools.Rmsd
+            rmsd_func = ptools.rmsd
             print("No Calpha atom found for ligand (DNA?). RMSD will be "
                   "calculated on all grains")
         else:
@@ -129,10 +129,10 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
             ligand = ptools.AttractRigidbody(lig)
             receptor = ptools.AttractRigidbody(rec)
 
-            center = ligand.FindCenter()
-            ligand.Translate(ptools.Coord3D() - center)  # set ligand center of mass to 0,0,0
-            ligand.AttractEulerRotate(surreal(rot[0]), surreal(rot[1]), surreal(rot[2]))
-            ligand.Translate(trans)
+            center = ligand.find_center()
+            ligand.translate(ptools.Coord3D() - center)  # set ligand center of mass to 0,0,0
+            ligand.euler_rotate(surreal(rot[0]), surreal(rot[1]), surreal(rot[2]))
+            ligand.translate(trans)
 
             for minim in minimlist:
                 minimcounter += 1
@@ -142,34 +142,34 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
 
                 # performs single minimization on receptor and ligand, given maxiter=niter and restraint constant rstk
                 forcefield = ff_specs['ff_class'](ff_specs['ff_file'], surreal(cutoff))
-                receptor.setTranslation(False)
-                receptor.setRotation(False)
+                receptor.set_translation(False)
+                receptor.set_rotation(False)
 
-                forcefield.AddLigand(receptor)
-                forcefield.AddLigand(ligand)
+                forcefield.addLigand(receptor)
+                forcefield.addLigand(ligand)
                 # rstk = minim['rstk']  # restraint force
                 # if rstk > 0.0:
-                #     forcefield.SetRestraint(rstk)
+                #     forcefield.set_restraint(rstk)
 
                 lbfgs_minimizer = ff_specs['minimizer_class'](forcefield)
 
                 lbfgs_minimizer.minimize(niter)
-                ntraj = lbfgs_minimizer.GetNumberIter()
-                X = lbfgs_minimizer.GetMinimizedVars()  # optimized freedom variables after minimization
+                ntraj = lbfgs_minimizer.get_number_iter()
+                X = lbfgs_minimizer.get_minimized_vars()  # optimized freedom variables after minimization
 
                 output = ptools.AttractRigidbody(ligand)
 
-                center = output.FindCenter()
-                output.Translate(ptools.Coord3D() - center)
-                output.AttractEulerRotate(surreal(X[0]), surreal(X[1]), surreal(X[2]))
-                output.Translate(ptools.Coord3D(surreal(X[3]), surreal(X[4]), surreal(X[5])))
-                output.Translate(center)
+                center = output.find_center()
+                output.translate(ptools.Coord3D() - center)
+                output.euler_rotate(surreal(X[0]), surreal(X[1]), surreal(X[2]))
+                output.translate(ptools.Coord3D(surreal(X[3]), surreal(X[4]), surreal(X[5])))
+                output.translate(center)
 
                 ligand = ptools.AttractRigidbody(output)
 
                 if ftraj is not None:
                     for iteration in range(ntraj):
-                        traj = lbfgs_minimizer.GetMinimizedVarsAtIter(iteration)
+                        traj = lbfgs_minimizer.get_minimized_vars_at_iter(iteration)
                         for t in traj[0:6]:
                             ftraj.write("%f " % t)
                         ftraj.write("\n")
@@ -184,7 +184,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
             # calculates true energy, and rmsd if possible
             # with the new ligand position
             forcefield = ff_specs['ff_class'](ff_specs['ff_file'], surreal(500))
-            print("{:>4s} {:>6s} {:>6s} {:>13s} {:>13s} {:>13s} {:>13s}".format(' ', 'Trans', 'Rot', 'Ener', 'RmsdCA_ref', "VDW", "Coulomb"))
+            print("{:>4s} {:>6s} {:>6s} {:>13s} {:>13s} {:>13s} {:>13s}".format(' ', 'Trans', 'Rot', 'Ener', 'rmsdCA_ref', "VDW", "Coulomb"))
             pl = ptools.AttractPairList(receptor, ligand, surreal(500))
-            print("{:<4s} {:6d} {:6d} {:13.7f} {:>13s} {:13.7f} {:13.7f}".format("==", transnb, rotnb, forcefield.nonbon8(receptor, ligand, pl), str(rms), forcefield.getVdw(), forcefield.getCoulomb()))
-            output.PrintMatrix()
+            print("{:<4s} {:6d} {:6d} {:13.7f} {:>13s} {:13.7f} {:13.7f}".format("==", transnb, rotnb, forcefield.nonbon8(receptor, ligand, pl), str(rms), forcefield.get_vdw(), forcefield.getCoulomb()))
+            output.print_matrix()

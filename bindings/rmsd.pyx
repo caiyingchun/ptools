@@ -1,9 +1,9 @@
 cdef extern from "rmsd.h" namespace "PTools":
-    cdef double CppRmsd "PTools::Rmsd" (CppRigidbody& r1, CppRigidbody& r2) except +ValueError
-    cdef double CppRmsd "PTools::Rmsd" (CppAtomSelection & r1, CppAtomSelection& r2) except +ValueError
+    cdef double Cpprmsd "PTools::rmsd" (CppRigidbody& r1, CppRigidbody& r2) except +ValueError
+    cdef double Cpprmsd "PTools::rmsd" (CppAtomSelection & r1, CppAtomSelection& r2) except +ValueError
 
     
-def Rmsd(r1, r2):
+def rmsd(r1, r2):
     """calculates the RMSD between two objects (either Rigibody or AtomSelection). This function does NOT perform
     superposition before the calculation"""
 
@@ -41,7 +41,7 @@ def Rmsd(r1, r2):
        del_er2 = True
     else: raise RuntimeError("second argument should be an AtomSelection or a Rigidbody")
     
-    rmsd = CppRmsd(deref(er1), deref(er2))
+    rmsd = Cpprmsd(deref(er1), deref(er2))
 
     if del_er1:
        del er1
@@ -52,7 +52,7 @@ def Rmsd(r1, r2):
 
     #cdef CppRigidbody* er1 = r1.thisptr
     #cdef CppRigidbody* er2 = r2.thisptr
-    #return CppRmsd(deref(er1), deref(er2))
+    #return Cpprmsd(deref(er1), deref(er2))
     
 
         

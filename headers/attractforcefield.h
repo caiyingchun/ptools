@@ -23,11 +23,11 @@ public:
     virtual void initMinimization();
     ///analytical derivative
     void Derivatives(const Vdouble&, Vdouble&);
-    uint ProblemSize();
+    uint Problemsize();
     dbl Function(const Vdouble&);
 
     ///add a new ligand to the ligand list...
-    void AddLigand(AttractRigidbody & lig);
+    void addLigand(AttractRigidbody & lig);
 
     ///after a minimization, get minimized ligand 'i'
     AttractRigidbody GetLigand(uint i);
@@ -38,8 +38,8 @@ public:
     ///non-bonded interactions
     virtual dbl nonbon8(AttractRigidbody& rec, AttractRigidbody& lig, AttractPairList & pairlist, bool print=false)
     {
-        std::vector<Coord3D> forcesrec (rec.Size());
-        std::vector<Coord3D> forceslig (lig.Size());
+        std::vector<Coord3D> forcesrec (rec.size());
+        std::vector<Coord3D> forceslig (lig.size());
 
         dbl ener = nonbon8_forces(rec, lig, pairlist, forcesrec, forceslig, print);
         rec.addForces(forcesrec);
@@ -60,7 +60,7 @@ public:
     void Rota(uint molIndex, dbl phi, dbl ssi, dbl rot, Vdouble& delta, uint shift, bool print=false);
 
     ///return van der waals energy
-    dbl getVdw(){return m_vdw;}
+    dbl get_vdw(){return m_vdw;}
 
     ///coulomb (electrostatic) energy
     dbl getCoulomb(){return m_elec;}
@@ -134,7 +134,7 @@ class TestForceField: public ForceField
 
 //virtual dbl Function() {return 0.0;};
 
-    virtual uint ProblemSize(){
+    virtual uint Problemsize(){
         return 2;
     };
 

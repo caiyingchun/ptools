@@ -24,50 +24,50 @@ def surreal(r):
 
 class TestHeligeom(unittest.TestCase):
 
-    def testGenerateBDNA(self):
+    def test_generate_BDNA(self):
         dna = DNA(TEST_BP_PDB, "AAAAAATCGATCTATC", ADNA())  # tout atom
-        result = dna.PrintPDB()
+        result = dna.print_pdb()
         expected = open(TEST_BDNA_EXPECTED_PDB).read()
         self.assertEqual(result, expected)
 
-    def testBasicManipulation(self):
+    def test_basic_manipulation(self):
         # translate the DNA in coarse grain representation
         dna = DNA(TEST_BP_RED, TEST_BDNA_EXPECTED_PDB)
-        self.assertEqual(dna[0].Size(), 11)
-        self.assertEqual(len(dna[0].GetRigidBody()), 11)
+        self.assertEqual(dna[0].size(), 11)
+        self.assertEqual(len(dna[0].get_rigid()), 11)
 
         # add a base Pair
-        bp = BasePair(dna[0].GetRigidBody())
-        dna.Add(bp)
+        bp = BasePair(dna[0].get_rigid())
+        dna.add(bp)
 
         # add itself
         new = DNA(dna)
-        dna.Add(new, BDNA())
+        dna.add(new, BDNA())
 
         # change the type of a base
-        dna.ChangeType(0, "A", TEST_BP_RED)
+        dna.change_type(0, "A", TEST_BP_RED)
 
         # turn the center base
-        dna.ApplyLocal(Roll(30), dna.Size() / 2)
+        dna.apply_local(Roll(30), dna.size() / 2)
 
         # trim the extremities
-        dna = dna.SubDNA(2, dna.Size() - 3)
+        dna = dna.subDNA(2, dna.size() - 3)
 
         # change to a All Atom representation
-        dna.ChangeRepresentation(TEST_BP_PDB)
+        dna.change_representation(TEST_BP_PDB)
 
-        result = dna.PrintPDB()
+        result = dna.print_pdb()
         with open(TEST_BASIC_MANIP_EXPECTED_PDB, 'rt') as f:
             expected = f.read()
         self.assertEqual(result, expected)
 
-    def testCGfromPDBFile(self):
+    def test_cg_from_pdb_file(self):
         dna = DNA(TEST_BP_PDB, TEST_BDNA_EXPECTED_PDB)  # gros grain
-        result = dna.PrintPDB()
+        result = dna.print_pdb()
         expected = open(TEST_CG_FROM_PDBFILE_EXPECTED_PDB).read()
         self.assertEqual(result, expected)
 
-    def testEnergy(self):
+    def test_energy(self):
         prot = AttractRigidbody(TEST_1A74_PROT_RED)
         dna = AttractRigidbody(TEST_1A74_OPT_RED)
 
@@ -77,8 +77,8 @@ class TestHeligeom(unittest.TestCase):
         ener = forcefield.nonbon8(prot, dna, AttractPairList(prot, dna, cutoff))
 
         self.assertAlmostEqual(ener, -51.6955215854)
-        self.assertEqual(prot.Size(), 706)
-        self.assertEqual(dna.Size(), 231)
+        self.assertEqual(prot.size(), 706)
+        self.assertEqual(dna.size(), 231)
 
 
 if __name__ == "__main__":

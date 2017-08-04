@@ -24,20 +24,20 @@ std::vector<AttractRigidbody> _copies;
 
 public:
 /*
-   void AttractEulerRotate(const dbl& phi, const dbl& ssi, const dbl& rot)
+   void euler_rotate(const dbl& phi, const dbl& ssi, const dbl& rot)
    {
       for (uint i=0; i<_copies.size(); i++)
       {
-          _copies[i].AttractEulerRotate(phi, ssi, rot);
+          _copies[i].euler_rotate(phi, ssi, rot);
       }
 
    };
 
-   void Translate(const Coord3D& co)
+   void translate(const Coord3D& co)
    {
        for(uint i =0; i< _copies.size(); ++i)
        {
-          _copies[i].Translate(co);
+          _copies[i].translate(co);
        }
    }*/
 
@@ -67,8 +67,8 @@ public:
     void addEnsemble(const Region& reg){ _vregion.push_back(reg); std::vector<dbl> v; _weights.push_back(v);  };
 
 
-    void AttractEulerRotate(const dbl& phi, const dbl& ssi, const dbl& rot);
-    void Translate(const Coord3D& c);
+    void euler_rotate(const dbl& phi, const dbl& ssi, const dbl& rot);
+    void translate(const Coord3D& c);
 
 
     void PrintWeights();
@@ -114,7 +114,7 @@ public:
 
     void calculate_weights(Mcoprigid& lig, bool print=false);
 
-    uint ProblemSize() {return 6;};
+    uint Problemsize() {return 6;};
     void initMinimization(){};
 
 private:

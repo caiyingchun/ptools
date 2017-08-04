@@ -113,7 +113,7 @@ class DuplicateAtomInBeadError(BeadCreationError):
         return [name for name, count in counter.items() if count > 1]
 
 
-class IgnoredAtomsInReducedResidueError(ResidueReductionError):
+class IgnoredAtomsInreducedResidueError(ResidueReductionError):
     """Exception raised when an atom from all-atom model has not been used
     in the coarse grain model.
 
@@ -134,7 +134,7 @@ class IgnoredAtomsInReducedResidueError(ResidueReductionError):
         self.bead_atom_names = [atom.atomType for bead in residue.beads
                                 for atom in bead.atoms]
 
-        super(IgnoredAtomsInReducedResidueError, self).__init__(residue.resname, residue.resid)
+        super(IgnoredAtomsInreducedResidueError, self).__init__(residue.resname, residue.resid)
 
     @property
     def unused_atoms(self):

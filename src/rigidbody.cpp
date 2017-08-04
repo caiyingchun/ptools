@@ -59,110 +59,110 @@ Rigidbody::Rigidbody(const Rigidbody& model)
 }
 
 
-void Rigidbody::AddAtom(const Atomproperty& at, Coord3D co)
+void Rigidbody::add_atom(const Atomproperty& at, Coord3D co)
 {
     mAtomProp.push_back(at);
-    AddCoord(co);
+    add_coord(co);
 }
 
 
-Atom Rigidbody::CopyAtom(uint i) const
+Atom Rigidbody::copy_atom(uint i) const
 {
-    Atom at(mAtomProp[i],GetCoords(i));
+    Atom at(mAtomProp[i],get_coords(i));
     return at;
 }
 
-    void Rigidbody::SetAtom(uint pos, const Atom& atom)
+    void Rigidbody::set_atom(uint pos, const Atom& atom)
     {
 
-       if (pos<0  || pos >= this->Size())
+       if (pos<0  || pos >= this->size())
        {
-          std::string message = "SetAtom: position ";
+          std::string message = "set_atom: position ";
           message += pos;
           message += " is out of range";
           throw std::out_of_range(message);
        }
        Atomproperty atp(atom);
        Coord3D co(atom.coords);
-       SetAtomProperty(pos, atp);
-       SetCoords(pos,co);
+       set_atom_property(pos, atp);
+       set_coords(pos,co);
     }
 
 
 
-void Rigidbody::AddAtom(const Atom& at)
+void Rigidbody::add_atom(const Atom& at)
 {
     Atomproperty atp(at);
     Coord3D co = at.coords;
-    AddAtom(atp,co);
+    add_atom(atp,co);
 }
 
 
-Coord3D Rigidbody::FindCenter() const
+Coord3D Rigidbody::find_center() const
 {
     Coord3D center(0.0,0.0,0.0);
-    for (uint i=0; i< this->Size() ; i++)
+    for (uint i=0; i< this->size() ; i++)
     {
-        center =  center + GetCoords(i);
+        center =  center + get_coords(i);
     }
-    return ( (1.0/(dbl)this->Size())*center);
+    return ( (1.0/(dbl)this->size())*center);
 }
 
 
 void Rigidbody::CenterToOrigin()
 {
-    Coord3D c = FindCenter();
-    Translate(Coord3D()-c);
+    Coord3D c = find_center();
+    translate(Coord3D()-c);
 }
 
-dbl Rigidbody::RadiusGyration()
+dbl Rigidbody::radius_of_gyration()
 {
-    Coord3D c = this->FindCenter();
+    Coord3D c = this->find_center();
     dbl r=0.0;
-    for (uint i=0; i< this->Size(); i++)
+    for (uint i=0; i< this->size(); i++)
     {
-        r += Norm2( c - this->GetCoords(i) );
+        r += Norm2( c - this->get_coords(i) );
     }
 
-    dbl result = sqrt( r/ (double) this->Size() );
+    dbl result = sqrt( r/ (double) this->size() );
     return result;
 }
 
-dbl Rigidbody::Radius()
+dbl Rigidbody::radius()
 {
-    Coord3D center = this->FindCenter();
-    uint size = this->Size();
+    Coord3D center = this->find_center();
+    uint size = this->size();
     dbl radius = 0.0;
     for (uint i=0; i < size; i++)
     {
-        dbl rad=Norm(center - this->GetCoords(i));
+        dbl rad=Norm(center - this->get_coords(i));
         if (radius < rad) {radius=rad;}
     }
     return radius;
 }
 
 
-void Rigidbody::Translate(const Coord3D& tr)
+void Rigidbody::translate(const Coord3D& tr)
 {
-    CoordsArray::Translate(tr);
+    CoordsArray::translate(tr);
 }
 
-void Rigidbody::AttractEulerRotate(dbl phi, dbl ssi, dbl rot)
+void Rigidbody::euler_rotate(dbl phi, dbl ssi, dbl rot)
 {
-   CoordsArray::AttractEulerRotate(phi, ssi, rot);
+   CoordsArray::euler_rotate(phi, ssi, rot);
 }
 
 
 
 
 
-AtomSelection Rigidbody::SelectAllAtoms() const
+AtomSelection Rigidbody::select_all_atoms() const
 {
     AtomSelection newsel;
-    newsel.SetRigid(*this);
-    for (uint i=0; i < Size(); i++)
+    newsel.set_rigid(*this);
+    for (uint i=0; i < size(); i++)
     {
-        newsel.AddAtomIndex(i);
+        newsel.add_atomIndex(i);
     }
 
 
@@ -171,10 +171,10 @@ AtomSelection Rigidbody::SelectAllAtoms() const
 }
 
 
-AtomSelection Rigidbody::SelectAtomType(std::string atomtype)
+AtomSelection Rigidbody::select_atomtype(std::string atomtype)
 {
     AtomSelection newsel;
-    newsel.SetRigid(*this);
+    newsel.set_rigid(*this);
 
     if (atomtype.size() == 0) return newsel;
 
@@ -189,7 +189,7 @@ AtomSelection Rigidbody::SelectAtomType(std::string atomtype)
                std::string & at2 = mAtomProp[i].atomType ; 
 
                if (at2.substr(0, sub.size()) == sub)  //compare sub to the beginning of mAtomProp[i].atomType
-                   newsel.AddAtomIndex(i);
+                   newsel.add_atomIndex(i);
                
            }
       
@@ -197,60 +197,60 @@ AtomSelection Rigidbody::SelectAtomType(std::string atomtype)
            
   
     else
-    for (uint i=0; i<Size(); i++)
+    for (uint i=0; i<size(); i++)
     {
         if ( mAtomProp[i].atomType == atomtype)
-            newsel.AddAtomIndex(i);
+            newsel.add_atomIndex(i);
     }
 
     return newsel;
 }
 
 
-AtomSelection Rigidbody::SelectResidType(std::string residtype)
+AtomSelection Rigidbody::select_restype(std::string residtype)
 {
     AtomSelection newsel;
-    newsel.SetRigid(*this);
+    newsel.set_rigid(*this);
 
-    for (uint i=0; i<Size(); i++)
+    for (uint i=0; i<size(); i++)
     {
         if (mAtomProp[i].residType==residtype)
-            newsel.AddAtomIndex(i);
+            newsel.add_atomIndex(i);
     }
     return newsel;
 }
 
 
-AtomSelection Rigidbody::SelectChainId(std::string chainId) {
+AtomSelection Rigidbody::select_chainid(std::string chainId) {
     AtomSelection newsel;
-    newsel.SetRigid(*this);
-    for (uint i=0; i<Size(); i++)
+    newsel.set_rigid(*this);
+    for (uint i=0; i<size(); i++)
     {
         if (mAtomProp[i].chainId==chainId)
-            newsel.AddAtomIndex(i);
+            newsel.add_atomIndex(i);
     }
     return newsel;
 }
 
-AtomSelection Rigidbody::SelectResRange(int start, int stop)
+AtomSelection Rigidbody::select_resid_range(int start, int stop)
 {
     AtomSelection newsel;
-    newsel.SetRigid(*this);
+    newsel.set_rigid(*this);
 
-    for (uint i=0; i < Size(); i++)
+    for (uint i=0; i < size(); i++)
     {
         Atomproperty& atp ( mAtomProp[i] );
-        if (atp.residId >=start && atp.residId <= stop) newsel.AddAtomIndex(i);
+        if (atp.residId >=start && atp.residId <= stop) newsel.add_atomIndex(i);
     }
     return newsel;
 }
 
 
-AtomSelection Rigidbody::CA() {
-    return SelectAtomType("CA");
+AtomSelection Rigidbody::get_CA() {
+    return select_atomtype("CA");
 }
 
-bool isBackbone(const std::string &  atomtype)
+bool isbackbone(const std::string &  atomtype)
 {
 
     const std::string bbtypes[] = {"N", "CA", "C", "O"};
@@ -265,16 +265,16 @@ bool isBackbone(const std::string &  atomtype)
 }
 
 
-AtomSelection Rigidbody::Backbone()
+AtomSelection Rigidbody::backbone()
 {
     AtomSelection newsel;
-    newsel.SetRigid(*this);
+    newsel.set_rigid(*this);
 
-    for (uint i=0; i<this->Size(); i++)
+    for (uint i=0; i<this->size(); i++)
     {
-        if (isBackbone(CopyAtom(i).atomType) )
+        if (isbackbone(copy_atom(i).atomType) )
         {
-            newsel.AddAtomIndex(i);
+            newsel.add_atomIndex(i);
         }
 
     }
@@ -285,40 +285,40 @@ AtomSelection Rigidbody::Backbone()
 /// operator +
 Rigidbody Rigidbody::operator+(const Rigidbody& rig) {
     Rigidbody rigFinal(*this);
-    for (uint i=0; i< rig.Size() ; i++) {
-        rigFinal.AddCoord(rig.GetCoords(i));
+    for (uint i=0; i< rig.size() ; i++) {
+        rigFinal.add_coord(rig.get_coords(i));
         rigFinal.mAtomProp.push_back(rig.mAtomProp[i]);
     }
     return rigFinal;
 }
 
 
-void Rigidbody::ABrotate(const Coord3D& A, const Coord3D& B, dbl theta)
+void Rigidbody::rotate(const Coord3D& A, const Coord3D& B, dbl theta)
 {
-    PTools::ABrotate(A,B, *this, theta);
+    PTools::rotate(A,B, *this, theta);
 }
 
 
 
-std::string Rigidbody::PrintPDB() const
+std::string Rigidbody::print_pdb() const
 {
-    uint size=this->Size();
+    uint size=this->size();
 
     std::string output;
     for (uint i=0; i < size-1 ; i++)
     {
-         Atom at(mAtomProp[i], this->GetCoords(i));
-         output = output + at.ToPdbString() + "\n" ;
+         Atom at(mAtomProp[i], this->get_coords(i));
+         output = output + at.to_pdb_string() + "\n" ;
     }
-    Atom at(mAtomProp[size-1], this->GetCoords(size-1));
-    output += at.ToPdbString(); // append the last pdb string, without "\n"
+    Atom at(mAtomProp[size-1], this->get_coords(size-1));
+    output += at.to_pdb_string(); // append the last pdb string, without "\n"
 
 
     return output;
 }
 
 
-void Rigidbody::ApplyMatrix(const Matrix& mat)
+void Rigidbody::apply_matrix(const Matrix& mat)
 {
 
    dbl mat44[4][4];

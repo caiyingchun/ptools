@@ -79,14 +79,14 @@ class Bead(ptools.Atomproperty):
         """Set bead name."""
         self.atomType = value
 
-    def toatom(self):
+    def to_atom(self):
         """Return a ptools.Atom instance with current bead properties and
         coordinates."""
         return ptools.Atom(self, self.coords)
 
     def topdb(self):
         """Return the bead description as a PDB formatted string."""
-        return self.toatom().ToPdbString()
+        return self.to_atom().to_pdb_string()
 
     def is_incomplete(self):
         """Return True if the number of atoms found to build the bead is
@@ -156,7 +156,7 @@ class CoarseResidue:
         return '\n'.join(b.topdb() for b in self.beads)
 
 
-class Reducer(object):
+class reducer(object):
     """Class that handle reduction from an atomistic topology to a coarse
     grain model.
 
@@ -191,7 +191,7 @@ class Reducer(object):
     """
 
     def __init__(self, topology_file, reduction_parameters_file):
-        """Initialize Reduce from topology file and reduction parameter file.
+        """Initialize reduce from topology file and reduction parameter file.
 
         Args:
             topology_file (str): path to all-atom topology file (PDB format).
@@ -324,7 +324,7 @@ class Reducer(object):
     def read_topology(self):
         """Read PDB topology file."""
         rb = ptools.Rigidbody(self.allatom_file)
-        self.atoms = [rb.CopyAtom(i) for i in xrange(len(rb))]
+        self.atoms = [rb.copy_atom(i) for i in xrange(len(rb))]
 
     def read_name_conversion_file(self):
         """Read YAML file containing residue and atom name conversion rules.
@@ -516,7 +516,7 @@ class Reducer(object):
         """
         forcefield = self.forcefield
         header = 'HEADER    {} REDUCED PDB FILE'.format(forcefield)
-        content = '\n'.join(bead.toatom().ToPdbString() for bead in self.beads)
+        content = '\n'.join(bead.to_atom().to_pdb_string() for bead in self.beads)
         f = sys.stdout
         if path:
             f = open(path, 'wt')

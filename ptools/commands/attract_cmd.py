@@ -84,7 +84,7 @@ PTools revision {}
     if args.startconfig:
         print("Minimize from starting configuration")
         # Use transnb, rotnb = 0, 0 to indicate this
-        translations = {0: lig.FindCenter()}
+        translations = {0: lig.find_center()}
         rotations = {0: (0, 0, 0)}
     else:
         ptools.io.check_file_exists('rotation.dat', "rotation file 'rotation.dat' is required.")
@@ -120,7 +120,7 @@ PTools revision {}
         # Limit to desired rotation (rotation dictionary is keyed by rotation number)
         rotations = {args.rotnb: rotations[args.rotnb]}
 
-    # CHR Add translation list splitting
+    # CHR add translation list splitting
     if args.ngroups > 1:
         print("Working on translations group {:d} of {:d}".format(args.ngroup, args.ngroups))
         translations = docking.get_group(translations, args.ngroups, args.ngroup)

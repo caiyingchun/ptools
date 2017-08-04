@@ -36,7 +36,7 @@ public:
     ///update pairlist
     void update();
 
-    ///< Add a pair and checks if correct ligand and receptor are provided
+    ///< add a pair and checks if correct ligand and receptor are provided
     void addPair(const AttractRigidbody& ligand, const AttractRigidbody& receptor, const AtomPair& pair) ;
 
     ///return the current cutoff
@@ -45,7 +45,7 @@ public:
     };
 
     ///return number of pairs of atoms in interaction (distance <= cutoff)
-    uint Size() {
+    uint size() {
         return vectl.size();
     };
 

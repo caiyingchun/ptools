@@ -26,9 +26,9 @@ public:
     };
 
     Rigidbody surfpoint(const Rigidbody & rigid, dbl srad); /// generate a grid of point around the protein
-    void surfpointParams(int max, dbl shift); /// initialize some parameters of the grid generation
+    void surfpoint_params(int max, dbl shift); /// initialize some parameters of the grid generation
     Rigidbody outergrid(const Rigidbody & grid, const Rigidbody & rigid2, dbl rad); /// remove overlap between rigid1 and rigid2
-    Rigidbody removeclosest(const Rigidbody & rigid1, dbl srad); /// fix the density of the grid (remove points that are too close to eachother)
+    Rigidbody remove_closest(const Rigidbody & rigid1, dbl srad); /// fix the density of the grid (remove points that are too close to eachother)
     void readsolvparam(const std::string& file); /// read solvation parameters
     
 private:

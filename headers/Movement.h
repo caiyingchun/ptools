@@ -27,16 +27,16 @@ namespace PTools
     Movement operator+ (const Movement&) const;
 
     /// apply the Matrix to a Rigidbody
-    void Apply(Rigidbody& rigbody)const;
+    void apply(Rigidbody& rigbody)const;
     
     ///return the Matrix
-    const Matrix& GetMatrix() const;
+    const Matrix& get_matrix() const;
     
     ///print the Matrix
     void Print() const;
 
     /// Return a string representing the Movement' matrix.
-    std::string toString() const;
+    std::string to_string() const;
   };
   
   //fonction pour les matrices, a relocaliser dans la partie ptools adapter

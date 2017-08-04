@@ -79,22 +79,22 @@ public:
     std::string ToString() const;
 
     /// convert atom (properties and coordinates) to classical PDB-like string
-    std::string ToPdbString() const ;
+    std::string to_pdb_string() const ;
 
     /// translation of an atom
-    void Translate(const Coord3D& tr);
+    void translate(const Coord3D& tr);
 
 };
 
 
 /// distance between two atoms
-inline dbl Dist(const Atom& at1, const Atom& at2)
+inline dbl dist(const Atom& at1, const Atom& at2)
 {
     return Norm(at1.coords-at2.coords);
 }
 
 /// distance**2 between two atoms
-inline dbl Dist2(const Atom& at1, const Atom& at2)
+inline dbl dist2(const Atom& at1, const Atom& at2)
 {
     return Norm2(at1.coords - at2.coords );
 }

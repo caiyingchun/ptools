@@ -7,17 +7,17 @@ cdef extern from "DNA.h" namespace "PTools":
         CppDNA(CppDNA&)
         CppDNA(string&, string&, CppMovement&)
         CppDNA(string&, string&)  #with default value for third parameter
-        CppDNA SubDNA(int, int)
+        CppDNA subDNA(int, int)
         CppBasePair operator[](int)
-        unsigned int Size()
-        void Add(CppBasePair, const CppMovement &)
-        void Add(CppBasePair)
-        void Add(CppDNA, const CppMovement &)
-        void Add(CppDNA)
-        void ChangeType(int, string, string)
-        void ApplyLocal(const CppMovement&, int)
-        void ChangeRepresentation(string)
-        string PrintPDB()
+        unsigned int size()
+        void add(CppBasePair, const CppMovement &)
+        void add(CppBasePair)
+        void add(CppDNA, const CppMovement &)
+        void add(CppDNA)
+        void change_type(int, string, string)
+        void apply_local(const CppMovement&, int)
+        void change_representation(string)
+        string print_pdb()
 
 
 cdef class DNA:
@@ -45,10 +45,10 @@ cdef class DNA:
             self.thisptr = <CppDNA*> 0
 
     def __len__(self):
-        return self.Size()
+        return self.size()
 
     def __getitem__(self, unsigned int i):
-        if i>=self.thisptr.Size():
+        if i>=self.thisptr.size():
             raise IndexError
         bp = BasePair()
         if bp.thisptr:
@@ -57,18 +57,18 @@ cdef class DNA:
         bp.thisptr = new CppBasePair(deref(self.thisptr)[i])
         return bp
 
-    def Size(self):
-        return self.thisptr.Size()
+    def size(self):
+        return self.thisptr.size()
 
-    def SubDNA(self, int start, int end):
+    def subDNA(self, int start, int end):
         ret = DNA()
         if ret.thisptr:
             del ret.thisptr
-        cdef CppDNA cdna = self.thisptr.SubDNA(start, end)
+        cdef CppDNA cdna = self.thisptr.subDNA(start, end)
         ret.thisptr = new CppDNA(cdna)
         return ret
 
-    def Add(self, bp_or_dna, mov=None):
+    def add(self, bp_or_dna, mov=None):
         if isinstance(bp_or_dna, DNA):
             self._add_dna(bp_or_dna, mov)
         else:
@@ -76,26 +76,26 @@ cdef class DNA:
 
     def _add_bp(self, BasePair bp, Movement mov=None):
         if mov == None:
-            self.thisptr.Add(deref(bp.thisptr))
+            self.thisptr.add(deref(bp.thisptr))
         else:
-            self.thisptr.Add(deref(bp.thisptr), deref(mov.thisptr))
+            self.thisptr.add(deref(bp.thisptr), deref(mov.thisptr))
 
     def _add_dna(self, DNA dna, Movement mov=None):
         if mov == None:
-            self.thisptr.Add(deref(dna.thisptr))
+            self.thisptr.add(deref(dna.thisptr))
         else:
-            self.thisptr.Add(deref(dna.thisptr), deref(mov.thisptr))
+            self.thisptr.add(deref(dna.thisptr), deref(mov.thisptr))
     
-    def ChangeType(self, int pos, bytes basetype, bytes filename):
+    def change_type(self, int pos, bytes basetype, bytes filename):
         cdef const char * c_basetype = basetype
         cdef const char * c_filename = filename
-        self.thisptr.ChangeType(pos, str(c_basetype), str(c_filename))
+        self.thisptr.change_type(pos, str(c_basetype), str(c_filename))
 
-    def ApplyLocal(self, Movement mov, int posMov):
-        self.thisptr.ApplyLocal(deref(mov.thisptr), posMov)
+    def apply_local(self, Movement mov, int posMov):
+        self.thisptr.apply_local(deref(mov.thisptr), posMov)
 
-    def ChangeRepresentation(self, bytes rep):
-        self.thisptr.ChangeRepresentation(rep)
+    def change_representation(self, bytes rep):
+        self.thisptr.change_representation(rep)
 
-    def PrintPDB(self):
-        return self.thisptr.PrintPDB()
+    def print_pdb(self):
+        return self.thisptr.print_pdb()

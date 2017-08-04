@@ -43,10 +43,10 @@ struct Screw
     std::string print()
     {
         std::stringstream result;
-        result << "rotation axis: " << unitVector.toString() ;
+        result << "rotation axis: " << unitVector.to_string() ;
         result << "angle: " << angle << "\n" ;
         result << "translation norm: " <<  Norm(unitVector) << "\n" ;
-        result << "axis point: "  <<  point.toString();
+        result << "axis point: "  <<  point.to_string();
         return result.str();
     }
 };

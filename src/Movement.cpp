@@ -28,16 +28,16 @@ Movement::~Movement()
 }
 
 
-void Movement::Apply(Rigidbody& rigbody)const
+void Movement::apply(Rigidbody& rigbody)const
 {
-  Matrix oldmouvement = rigbody.GetMatrix ();
-  //rigbody.ApplyMatrix(inverseTranformationMatrixPlusPlus(oldmouvement));
-  rigbody.ApplyMatrix(inverseMatrix44 (oldmouvement));
-  rigbody.ApplyMatrix(matrixMultiply(oldmouvement,m));
+  Matrix oldmouvement = rigbody.get_matrix ();
+  //rigbody.apply_matrix(inverseTranformationMatrixPlusPlus(oldmouvement));
+  rigbody.apply_matrix(inverseMatrix44 (oldmouvement));
+  rigbody.apply_matrix(matrixMultiply(oldmouvement,m));
 }
 
 
-const Matrix& Movement::GetMatrix() const
+const Matrix& Movement::get_matrix() const
 {
   return m;
 }
@@ -45,7 +45,7 @@ const Matrix& Movement::GetMatrix() const
 
 Movement Movement::operator+ (const Movement& mov) const
 {
-  Matrix mat = mov.GetMatrix();
+  Matrix mat = mov.get_matrix();
   return Movement(matrixMultiply(m,mat)); 
 }
 
@@ -55,7 +55,7 @@ void Movement::Print() const
   m.Print();
 }
 
-std::string Movement::toString() const
+std::string Movement::to_string() const
 {
     return m.str();
 }
@@ -318,12 +318,12 @@ Tilt::Tilt(double alpha)
 // S.Arnott, R.Chandrasekaran, D.L.Birdsall, A.G.W.Leslie and R.L.Ratliff, Nature 283, 743-746 (1980) 
 ADNA::ADNA():Movement()
 {
-  m=(Twist( 31.1185909091 )+Roll( 2.06055181818 )+Tilt( 2.12008054545 )+Rise( 3.37983727273 )+Slide( -2.41029181818 )+Shift( -0.549621454545 )).GetMatrix();
+  m=(Twist( 31.1185909091 )+Roll( 2.06055181818 )+Tilt( 2.12008054545 )+Rise( 3.37983727273 )+Slide( -2.41029181818 )+Shift( -0.549621454545 )).get_matrix();
 }
 
 BDNA::BDNA():Movement()
 {
-  m=(Twist( 35.9063052632 )+Roll( -2.66592947368 )+Tilt( -1.80234789474 )+Rise( 3.27145684211 )+Slide( -1.34487389474 )+Shift( -0.425181378947 )).GetMatrix();
+  m=(Twist( 35.9063052632 )+Roll( -2.66592947368 )+Tilt( -1.80234789474 )+Rise( 3.27145684211 )+Slide( -1.34487389474 )+Shift( -0.425181378947 )).get_matrix();
 
 }
 

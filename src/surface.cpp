@@ -27,7 +27,7 @@ void Surface::setUp(int nphi, int ncosth)
 
 }
 
-void Surface::surfpointParams(int max, dbl shift)
+void Surface::surfpoint_params(int max, dbl shift)
 {
     m_numneh = max;
     m_sradshift = shift;
@@ -66,7 +66,7 @@ void Surface::readsolvparam(const std::string& file)
 Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
 {
     Rigidbody rigidsurf;
-    int size_rigid = rigid.Size();
+    int size_rigid = rigid.size();
     std::vector<int> neigh;
     radius.clear();
 
@@ -79,11 +79,11 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
     // read radius
     AttractRigidbody rigid_tmp(rigid);
     m_atomtypenumber.resize(size_rigid);
-    for (uint i=0; i< rigid_tmp.Size(); i++)
+    for (uint i=0; i< rigid_tmp.size(); i++)
     { m_atomtypenumber[i] = rigid_tmp.getAtomTypeNumber(i);}
     for (int i=0; i<size_rigid; i++)
     {
-        Atom m_atom = rigid_tmp.CopyAtom(i);
+        Atom m_atom = rigid_tmp.copy_atom(i);
         radius.push_back(radi[m_atomtypenumber[i]]);
     }
 
@@ -91,13 +91,13 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
     for (int i=0; i<size_rigid; i++)
         if ( radius[i] != 0.0 )
         {
-            Coord3D coord1 = rigid.GetCoords(i);
+            Coord3D coord1 = rigid.get_coords(i);
             int numneh = 0;
             neigh.clear();
             for (int j=0; j<size_rigid; j++) // generate neighbor list
                 if (i!=j)
                 {
-                    Coord3D coord2 = rigid.GetCoords(j);
+                    Coord3D coord2 = rigid.get_coords(j);
                     dbl ccdist = Norm2(coord1 - coord2);
                     dbl rr = (radius[i]+radius[j]+2.0*srad) * (radius[i]+radius[j]+2.0*srad);
                     if (ccdist <= rr)
@@ -128,7 +128,7 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
                     bool coverd = false;
                     while ((!coverd) && (l <= numneh))
                     {
-                        Coord3D coord5 = rigid.GetCoords(neigh[l]);
+                        Coord3D coord5 = rigid.get_coords(neigh[l]);
                         dbl ddd = Norm2(coord1 + coord4 - coord5);
                         if (ddd < (radius[neigh[l]] + srad+m_sradshift)*(radius[neigh[l]] + srad+m_sradshift))
                         { coverd = true; }
@@ -136,9 +136,9 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
                     }
                     if (!coverd)
                     {
-                        Atom m_atom2 = rigid.CopyAtom(i);
+                        Atom m_atom2 = rigid.copy_atom(i);
                         m_atom2.coords = coord1 + coord4;
-                        rigidsurf.AddAtom(m_atom2);
+                        rigidsurf.add_atom(m_atom2);
                     }
                 }
             }
@@ -155,7 +155,7 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
                 bool coverd = false;
                 while ((!coverd) && (l <= numneh))
                 {
-                    Coord3D coord5 = rigid.GetCoords(neigh[l]);
+                    Coord3D coord5 = rigid.get_coords(neigh[l]);
                     dbl ddd = Norm2(coord1 + coord4 - coord5);
                     if (ddd < (radius[neigh[l]] + srad+m_sradshift)*(radius[neigh[l]] + srad+m_sradshift))
                     { coverd = true; }
@@ -163,9 +163,9 @@ Rigidbody Surface::surfpoint(const Rigidbody & rigid, dbl srad)
                 }
                 if (!coverd)
                 {
-                    Atom m_atom2 = rigid.CopyAtom(i);
+                    Atom m_atom2 = rigid.copy_atom(i);
                     m_atom2.coords = coord1 + coord4 ;
-                    rigidsurf.AddAtom(m_atom2);
+                    rigidsurf.add_atom(m_atom2);
                 }
                 costh+=2;
             }
@@ -178,30 +178,30 @@ Rigidbody Surface::outergrid(const Rigidbody & grid, const Rigidbody & rigid2, d
     //used to remove grid points that are too close from the receptor
     //ie: there is not enough space to put the ligand at a distance < ligand.radius from the receptor
     
-    int grid_size = grid.Size();
-    int size2 = rigid2.Size();
+    int grid_size = grid.size();
+    int size2 = rigid2.size();
     Rigidbody rigid3;
     double srad = rad*rad;
     
     for (int i=0; i < grid_size; i++)
     {
-        Coord3D xyz1 = grid.GetCoords(i);
+        Coord3D xyz1 = grid.get_coords(i);
         bool select = true;
         for (int j=0; j<size2; j++)
         {
-            Coord3D xyz2 = rigid2.GetCoords(j);
+            Coord3D xyz2 = rigid2.get_coords(j);
             dbl dist=Norm2(xyz1-xyz2);
             if (dist < srad) { select = false; }
         }
-        if (select) { rigid3.AddAtom(grid.CopyAtom(i)); }
+        if (select) { rigid3.add_atom(grid.copy_atom(i)); }
     }
     return rigid3;
 }
 
-Rigidbody Surface::removeclosest(const Rigidbody & rigid, dbl srad)
+Rigidbody Surface::remove_closest(const Rigidbody & rigid, dbl srad)
 {
     
-    int const size=rigid.Size();
+    int const size=rigid.size();
     Rigidbody rigid2;
     
     srad=srad*srad;
@@ -210,17 +210,17 @@ Rigidbody Surface::removeclosest(const Rigidbody & rigid, dbl srad)
 
     for (int i=0; i<size; i++)
     {
-        Coord3D  xyz1 = rigid.GetCoords(i);
+        Coord3D  xyz1 = rigid.get_coords(i);
         for (int j=0; j<size; j++)
             if ((list[i]) && (i!=j))
             {
-                Coord3D  xyz2 = rigid.GetCoords(j);
+                Coord3D  xyz2 = rigid.get_coords(j);
                 dbl dist=Norm2(xyz1 - xyz2);
                 if (dist < srad) { list[j] = false; }
             }
     }
     for (int i=0; i<size; i++)
-    if (list[i]) { rigid2.AddAtom(rigid.CopyAtom(i)); }
+    if (list[i]) { rigid2.add_atom(rigid.copy_atom(i)); }
     return rigid2;
 }
 

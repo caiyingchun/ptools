@@ -25,8 +25,8 @@ class TestMatrixBindings(unittest.TestCase):
     def test_has_get_ncolumns(self):
         self.assertTrue(hasattr(ptools.Matrix, 'get_ncolumns'))
 
-    def test_has_getDim(self):
-        self.assertTrue(hasattr(ptools.Matrix, 'getDim'))
+    def test_has_get_dim(self):
+        self.assertTrue(hasattr(ptools.Matrix, 'get_dim'))
 
     def test_has_Print(self):
         self.assertTrue(hasattr(ptools.Matrix, 'Print'))
@@ -46,8 +46,8 @@ class TestMatrix(unittest.TestCase):
     def test_get_columns(self):
         self.assertEqual(self.mat.get_ncolumns(), self.ncols)
 
-    def test_getDim(self):
-        self.assertEqual(self.mat.getDim(), (self.nrows, self.ncols))
+    def test_get_dim(self):
+        self.assertEqual(self.mat.get_dim(), (self.nrows, self.ncols))
 
     def test_detach(self):
         # Just check that function call doesn't raise any error.

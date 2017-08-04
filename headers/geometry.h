@@ -26,7 +26,7 @@ inline void mat44xVect(const dbl mat[ 4 ][ 4 ], const Coord3D& vect, Coord3D& ou
 
 
 void mat44xrigid(const Rigidbody& source, Rigidbody& result, dbl mat[4][4]);
-void ABrotate(Coord3D A, Coord3D B, Rigidbody& target, dbl theta);
+void rotate(Coord3D A, Coord3D B, Rigidbody& target, dbl theta);
 // void EulerZYZ(const Rigidbody & source, Rigidbody & cible, dbl theta, dbl phi, dbl psi);
 // void AttractEuler(const Rigidbody& source, Rigidbody& dest, dbl phi, dbl ssi, dbl rot);
 

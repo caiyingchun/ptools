@@ -72,7 +72,7 @@ inline std::vector<double> todbl(std::vector<surreal> & vcplx)
 void Lbfgs::minimize(int maxiter)
 {
 
-    int n = objToMinimize.ProblemSize();
+    int n = objToMinimize.Problemsize();
     std::cout  << "number of free variables for the minimizer: " << n << std::endl;
 
 
@@ -195,7 +195,7 @@ void Lbfgs::minimize(int maxiter)
 
 
 
-std::vector<double>Lbfgs::GetMinimizedVarsAtIter(uint iter)
+std::vector<double>Lbfgs::get_minimized_vars_at_iter(uint iter)
 {
 if (iter>=m_vars_over_time.size())
   {

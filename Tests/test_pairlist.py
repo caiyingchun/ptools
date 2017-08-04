@@ -21,20 +21,20 @@ class TestAttractPairList(unittest.TestCase):
         r = Rigidbody()
         at = Atom()
         at.coords = Coord3D(1, 0, 0)
-        r.AddAtom(at)
+        r.add_atom(at)
         at.coords = Coord3D(2, 0, 0)
-        r.AddAtom(at)
+        r.add_atom(at)
 
         l = Rigidbody()
         at.coords = Coord3D(4, 0, 0)
-        l.AddAtom(at)
+        l.add_atom(at)
         at.coords = Coord3D(5, 0, 0)
-        l.AddAtom(at)
+        l.add_atom(at)
 
         self.ar = AttractRigidbody(r)
         self.al = AttractRigidbody(l)
 
-    def testAtomPair(self):
+    def test_atompair(self):
         atp = AtomPair()
         atp.atlig = 23
         atp.atrec = 45

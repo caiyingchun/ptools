@@ -112,7 +112,7 @@ def run(args):
     ptools.io.check_file_exists(convname)
     ptools.io.check_file_exists(atomicname)
 
-    reducer = ptools.reduce.Reducer(atomicname, redname)
+    reducer = ptools.reduce.reducer(atomicname, redname)
     reducer.name_conversion_file = convname
 
     # Convert exception list of names as list of classes.

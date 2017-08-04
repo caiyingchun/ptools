@@ -3,18 +3,18 @@ from libcpp.string cimport string
 
 
 cdef extern from "pdbio.h" namespace "PTools":
-    cdef void CppWritePDB "PTools::WritePDB" (CppRigidbody&, string)
+    cdef void Cppwrite_pdb "PTools::write_pdb" (CppRigidbody&, string)
     cdef void CppReadAtom "PTools::readAtom" (string, CppAtom) except+
 
 
 
 
-def WritePDB(Rigidbody rig, bytes filename):
+def write_pdb(Rigidbody rig, bytes filename):
     """writes a rigidbody object to a PDB file"""
     if rig is None:
        raise RuntimeError("expected Rigidbody, None given")
     cdef string cpp_filename = <string?> filename
-    CppWritePDB(deref(rig.thisptr),  cpp_filename)
+    Cppwrite_pdb(deref(rig.thisptr),  cpp_filename)
 
 
 def strToAtom(bytes line):

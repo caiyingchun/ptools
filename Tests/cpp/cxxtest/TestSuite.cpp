@@ -38,16 +38,16 @@ namespace CxxTest
     //
     // Max dump size
     //
-    static unsigned currentMaxDumpSize = CXXTEST_MAX_DUMP_SIZE;
+    static unsigned currentMaxDumpsize = CXXTEST_MAX_DUMP_SIZE;
 
-    unsigned maxDumpSize()
+    unsigned maxDumpsize()
     {
-        return currentMaxDumpSize;
+        return currentMaxDumpsize;
     }
     
-    void setMaxDumpSize( unsigned value )
+    void setMaxDumpsize( unsigned value )
     {
-        currentMaxDumpSize = value;
+        currentMaxDumpsize = value;
     }
 
     //

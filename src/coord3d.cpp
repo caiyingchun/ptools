@@ -15,7 +15,7 @@ Coord3D& Coord3D::Normalize(){
 
 
 
-std::string Coord3D::toString(bool newline)
+std::string Coord3D::to_string(bool newline)
 {
     std::stringstream result;
     result << x << "  " << y << "  " << z ;

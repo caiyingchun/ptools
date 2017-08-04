@@ -26,3 +26,7 @@
 - modify setup.py to compile lbfgsb.f directly
 - added chrg_scorpion_wrap.cpp to interface with chrg_scorpion.f
 - shortened test for reduce scorpion --cgopt
+
+25-26 July 2017 CHR
+- renamed 69 method names (.py, .pyx, .cpp, .h) to lowercase with underscores, except Print.
+- Complete list in NAMES_TXN

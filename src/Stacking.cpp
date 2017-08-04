@@ -27,57 +27,57 @@ Stacking::~Stacking()
 Rigidbody Stacking::Axis( Rigidbody& bp1,  Rigidbody& bp2)
 {
     //1 determine if the considered basePair is a G-C or a A-T
-    bool bp1isGC = bp1.SelectAtomType("GG1").Size()>0;
-    bool bp2isGC = bp2.SelectAtomType("GG1").Size()>0;
+    bool bp1isGC = bp1.select_atomtype("GG1").size()>0;
+    bool bp2isGC = bp2.select_atomtype("GG1").size()>0;
 
     //2 build rigidbody for pyrimidine
 
     Rigidbody pyrBp1;
     if (bp1isGC)
     {
-        pyrBp1 = bp1.SelectAtomType("GC1").CreateRigid() + bp1.SelectAtomType("GC2").CreateRigid();
+        pyrBp1 = bp1.select_atomtype("GC1").create_rigid() + bp1.select_atomtype("GC2").create_rigid();
     }
     else
     {
-        pyrBp1 = bp1.SelectAtomType("GT1").CreateRigid() + bp1.SelectAtomType("GT2").CreateRigid();
+        pyrBp1 = bp1.select_atomtype("GT1").create_rigid() + bp1.select_atomtype("GT2").create_rigid();
     }
 
     Rigidbody pyrBp2;
     if (bp2isGC)
     {
-        pyrBp2 = bp2.SelectAtomType("GC1").CreateRigid() + bp2.SelectAtomType("GC2").CreateRigid();
+        pyrBp2 = bp2.select_atomtype("GC1").create_rigid() + bp2.select_atomtype("GC2").create_rigid();
     }
     else
     {
-        pyrBp2 = bp2.SelectAtomType("GT1").CreateRigid() + bp2.SelectAtomType("GT2").CreateRigid();
+        pyrBp2 = bp2.select_atomtype("GT1").create_rigid() + bp2.select_atomtype("GT2").create_rigid();
     }
 
     //3 build rigidbody for purine
     Rigidbody purBp1;
      if (bp1isGC)
     {
-        purBp1 = bp1.SelectAtomType("GG1").CreateRigid() + bp1.SelectAtomType("GG2").CreateRigid() + bp1.SelectAtomType("GG3").CreateRigid();
+        purBp1 = bp1.select_atomtype("GG1").create_rigid() + bp1.select_atomtype("GG2").create_rigid() + bp1.select_atomtype("GG3").create_rigid();
     }
     else
     {
-        purBp1 = bp1.SelectAtomType("GA1").CreateRigid() + bp1.SelectAtomType("GA2").CreateRigid() + bp1.SelectAtomType("GA3").CreateRigid();
+        purBp1 = bp1.select_atomtype("GA1").create_rigid() + bp1.select_atomtype("GA2").create_rigid() + bp1.select_atomtype("GA3").create_rigid();
     }
 
     Rigidbody purBp2;
     if (bp2isGC)
     {
-        purBp2 = bp2.SelectAtomType("GG1").CreateRigid() + bp2.SelectAtomType("GG2").CreateRigid() + bp2.SelectAtomType("GG3").CreateRigid();
+        purBp2 = bp2.select_atomtype("GG1").create_rigid() + bp2.select_atomtype("GG2").create_rigid() + bp2.select_atomtype("GG3").create_rigid();
     }
     else
     {
-        purBp2 = bp2.SelectAtomType("GA1").CreateRigid() + bp2.SelectAtomType("GA2").CreateRigid() + bp2.SelectAtomType("GA3").CreateRigid();
+        purBp2 = bp2.select_atomtype("GA1").create_rigid() + bp2.select_atomtype("GA2").create_rigid() + bp2.select_atomtype("GA3").create_rigid();
     }
 
     //4 compute center
-    Coord3D pyrBp1center = pyrBp1.FindCenter() ;
-    Coord3D pyrBp2center = pyrBp2.FindCenter() ;
-    Coord3D purBp1center = purBp1.FindCenter() ;
-    Coord3D purBp2center = purBp2.FindCenter() ;
+    Coord3D pyrBp1center = pyrBp1.find_center() ;
+    Coord3D pyrBp2center = pyrBp2.find_center() ;
+    Coord3D purBp1center = purBp1.find_center() ;
+    Coord3D purBp2center = purBp2.find_center() ;
 
     Rigidbody axis;
     
@@ -101,36 +101,36 @@ Rigidbody Stacking::Axis( Rigidbody& bp1,  Rigidbody& bp2)
 Rigidbody Stacking::Axis( Rigidbody& basePair)
 {
     //1 determine if the considered basePair is a G-C or a A-T
-    bool basePairIsGC = basePair.SelectAtomType("GG1").Size()>0;
+    bool basePairIsGC = basePair.select_atomtype("GG1").size()>0;
 
     //2 build rigidbody for pyrimidine
 
     Rigidbody pyrBp;
     if (basePairIsGC)
     {
-        pyrBp = basePair.SelectAtomType("GC1").CreateRigid() + basePair.SelectAtomType("GC2").CreateRigid();
+        pyrBp = basePair.select_atomtype("GC1").create_rigid() + basePair.select_atomtype("GC2").create_rigid();
     }
     else
     {
-        pyrBp = basePair.SelectAtomType("GT1").CreateRigid() + basePair.SelectAtomType("GT2").CreateRigid();
+        pyrBp = basePair.select_atomtype("GT1").create_rigid() + basePair.select_atomtype("GT2").create_rigid();
     }
 
     //3 build rigidbody for purine
     Rigidbody purBp;
      if (basePairIsGC)
     {
-        purBp = basePair.SelectAtomType("GG1").CreateRigid() + basePair.SelectAtomType("GG2").CreateRigid() + basePair.SelectAtomType("GG3").CreateRigid();
+        purBp = basePair.select_atomtype("GG1").create_rigid() + basePair.select_atomtype("GG2").create_rigid() + basePair.select_atomtype("GG3").create_rigid();
     }
     else
     {
-        purBp = basePair.SelectAtomType("GA1").CreateRigid() + basePair.SelectAtomType("GA2").CreateRigid() + basePair.SelectAtomType("GA3").CreateRigid();
+        purBp = basePair.select_atomtype("GA1").create_rigid() + basePair.select_atomtype("GA2").create_rigid() + basePair.select_atomtype("GA3").create_rigid();
     }
 
 
 
     //4 compute center
-    Coord3D pyrBp1center = pyrBp.FindCenter() ;
-    Coord3D purBp1center = purBp.FindCenter() ;
+    Coord3D pyrBp1center = pyrBp.find_center() ;
+    Coord3D purBp1center = purBp.find_center() ;
 
     Rigidbody axis;
 
@@ -149,7 +149,7 @@ Rigidbody Stacking::AxisPyrimidine(const Rigidbody& pyr, const Coord3D& centerBa
     //1 get the projection of the center of the first base on the line defines
     //by the center of the second base and the vector of the first base.
     Coord3D vectorBp1Bp2 = centerBase1 - centerBase2;
-    Coord3D vectorBp1pyr2 = (pyr.CopyAtom(1).coords - centerBase1).Normalize();
+    Coord3D vectorBp1pyr2 = (pyr.copy_atom(1).coords - centerBase1).Normalize();
 
     double proj=ScalProd(vectorBp1Bp2,vectorBp1pyr2);
 
@@ -161,8 +161,8 @@ Rigidbody Stacking::AxisPyrimidine(const Rigidbody& pyr, const Coord3D& centerBa
     
     //4 build the Axis for Pyrimidines
     Rigidbody pyrAxis;
-    pyrAxis.AddAtom(Atomproperty(),centerBase1);
-    pyrAxis.AddAtom(Atomproperty(),centerBase1+topOfAxis);
+    pyrAxis.add_atom(Atomproperty(),centerBase1);
+    pyrAxis.add_atom(Atomproperty(),centerBase1+topOfAxis);
 
 
     return pyrAxis;
@@ -170,11 +170,11 @@ Rigidbody Stacking::AxisPyrimidine(const Rigidbody& pyr, const Coord3D& centerBa
 
 Rigidbody Stacking::AxisPyrimidineCopyPurine( const Coord3D& centerBase1, const Rigidbody& axisPurine )const
 {
-    Coord3D vectorPlanPur = axisPurine.GetCoords(1)-axisPurine.GetCoords(0);
+    Coord3D vectorPlanPur = axisPurine.get_coords(1)-axisPurine.get_coords(0);
     
     Rigidbody pyrAxis;
-    pyrAxis.AddAtom(Atomproperty(),centerBase1);
-    pyrAxis.AddAtom(Atomproperty(),centerBase1+vectorPlanPur);
+    pyrAxis.add_atom(Atomproperty(),centerBase1);
+    pyrAxis.add_atom(Atomproperty(),centerBase1+vectorPlanPur);
     return pyrAxis;
 }
 
@@ -183,14 +183,14 @@ Rigidbody Stacking::AxisPurine(const Rigidbody& pur, const Coord3D& center)const
     //1 define two vector of the plan (check the chain to assure a clockwise order)
     Coord3D vectorPlan1 ;
     Coord3D vectorPlan2 ;
-    if (pur.GetAtomProperty(0).chainId=="A"){
-        vectorPlan1 = pur.GetCoords(1)-center;
-        vectorPlan2 = pur.GetCoords(0)-center;
+    if (pur.get_atom_property(0).chainId=="A"){
+        vectorPlan1 = pur.get_coords(1)-center;
+        vectorPlan2 = pur.get_coords(0)-center;
     }
     else
     {
-        vectorPlan1 = pur.GetCoords(0)-center;
-        vectorPlan2 = pur.GetCoords(1)-center;
+        vectorPlan1 = pur.get_coords(0)-center;
+        vectorPlan2 = pur.get_coords(1)-center;
     }
 
     //2 find orthogonal vector to defined plan
@@ -199,17 +199,17 @@ Rigidbody Stacking::AxisPurine(const Rigidbody& pur, const Coord3D& center)const
     topOfAxis = topOfAxis.Normalize();
     //3 build the Axis for Purine
     Rigidbody purAxis;
-    purAxis.AddAtom(Atomproperty(),center);
-    purAxis.AddAtom(Atomproperty(),center+topOfAxis);
+    purAxis.add_atom(Atomproperty(),center);
+    purAxis.add_atom(Atomproperty(),center+topOfAxis);
 
     return purAxis;
 }
 
 bool Stacking::IsStacked(const Rigidbody& axe1, const Rigidbody& axe2,double angleThreshold,double overlapThreshold)const
 {
-    Coord3D vector1 =axe1.GetCoords(1)-axe1.GetCoords(0);
-    Coord3D vector2 =axe2.GetCoords(1)-axe2.GetCoords(0);
-    Coord3D vectorD =(axe2.GetCoords(0)-axe1.GetCoords(0)).Normalize();
+    Coord3D vector1 =axe1.get_coords(1)-axe1.get_coords(0);
+    Coord3D vector2 =axe2.get_coords(1)-axe2.get_coords(0);
+    Coord3D vectorD =(axe2.get_coords(0)-axe1.get_coords(0)).Normalize();
 //    cerr <<acos(ScalProd(vector1,vector2)) <<endl;
 //    cerr <<acos(ScalProd(vector1,vectorD)) <<endl;
 

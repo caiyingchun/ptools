@@ -55,7 +55,7 @@ void ForceField::NumDerivatives(const Vdouble& stateVars, Vdouble& delta, bool p
         std::cout << "Warning: using numerical derivatives in production may lead to poor performances\n" ;
         numerical_warning=true;
     }
-    for (uint j=0; j<ProblemSize(); j++)
+    for (uint j=0; j<Problemsize(); j++)
     {
 
         std::vector<dbl> newvars1 = stateVars;
@@ -77,7 +77,7 @@ void ForceField::NumDerivatives(const Vdouble& stateVars, Vdouble& delta, bool p
     if (print)
     {
         std::cout << "Numerical derivatives: \n";
-        for (uint i=0; i<ProblemSize(); i++)
+        for (uint i=0; i<Problemsize(); i++)
         {
             std::cout <<  "Derivatives[" << i<< "]"  <<  real(delta[i]) << std::endl ;
         }

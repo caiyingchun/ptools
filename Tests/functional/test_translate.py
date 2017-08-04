@@ -9,7 +9,7 @@ from .. import (TEST_LIGAND_RED_ATTRACT1,
                 TEST_TRANSLATE_OUTPUT)
 
 
-class TestTranslate(unittest.TestCase):
+class Testtranslate(unittest.TestCase):
     def setUp(self):
         self.output_file = mk_tmp_file()
         self.output_name = self.output_file.name

@@ -17,41 +17,41 @@ cdef extern from "rigidbody.h" namespace "PTools":
         CppRigidbody(string) except+
         CppRigidbody()
         CppRigidbody(CppRigidbody &)
-        unsigned int Size()
-        CppCoord3D GetCoords(unsigned int)
-        void unsafeGetCoords(unsigned int, CppCoord3D &)
-        void SetCoords(unsigned int, CppCoord3D &)
-        void ABrotate(CppCoord3D &, CppCoord3D &, double)
-        void Translate(CppCoord3D &)
-        CppCoord3D FindCenter()
-        void syncCoords()
-        void AttractEulerRotate(double, double, double)
-        void ApplyMatrix(Array2D[double] &)
-        CppAtom CopyAtom(unsigned int)
-        void AddAtom(CppAtomproperty &, CppCoord3D)
-        void AddAtom(CppAtom &)
-        void SetAtom(unsigned int, CppAtom &)
-        string PrintPDB()
+        unsigned int size()
+        CppCoord3D get_coords(unsigned int)
+        void unsafeget_coords(unsigned int, CppCoord3D &)
+        void set_coords(unsigned int, CppCoord3D &)
+        void rotate(CppCoord3D &, CppCoord3D &, double)
+        void translate(CppCoord3D &)
+        CppCoord3D find_center()
+        void sync_coords()
+        void euler_rotate(double, double, double)
+        void apply_matrix(Array2D[double] &)
+        CppAtom copy_atom(unsigned int)
+        void add_atom(CppAtomproperty &, CppCoord3D)
+        void add_atom(CppAtom &)
+        void set_atom(unsigned int, CppAtom &)
+        string print_pdb()
         CppRigidbody operator+(CppRigidbody &)
         void CenterToOrigin()
 
         # Returns radius of gyration.
-        double RadiusGyration()
+        double radius_of_gyration()
 
         # Returns the radius of a Rigidbody (max distance from center).
-        double Radius()
+        double radius()
 
-        CppAtomproperty & GetAtomProperty(unsigned int)
-        void SetAtomProperty(unsigned int, CppAtomproperty &)
+        CppAtomproperty & get_atom_property(unsigned int)
+        void set_atom_property(unsigned int, CppAtomproperty &)
 
         # AtomSelection:
-        CppAtomSelection SelectAllAtoms()
-        CppAtomSelection SelectAtomType(string)
-        CppAtomSelection SelectResidType(string)
-        CppAtomSelection SelectChainId(string)
-        CppAtomSelection SelectResRange(int, int)
-        CppAtomSelection CA()
-        CppAtomSelection Backbone()
+        CppAtomSelection select_all_atoms()
+        CppAtomSelection select_atomtype(string)
+        CppAtomSelection select_restype(string)
+        CppAtomSelection select_chainid(string)
+        CppAtomSelection select_resid_range(int, int)
+        CppAtomSelection get_CA()
+        CppAtomSelection backbone()
 
 
 cdef extern from "pdbio.h" namespace "PTools":
@@ -104,10 +104,10 @@ cdef class Rigidbody:
             self.thisptr = <CppRigidbody*> 0
 
     def __len__(self):
-        return self.thisptr.Size()
+        return self.thisptr.size()
 
     def __str__(self):
-        s = self.thisptr.PrintPDB()
+        s = self.thisptr.print_pdb()
         return s
 
     def __add__(Rigidbody self, Rigidbody other):
@@ -122,9 +122,9 @@ cdef class Rigidbody:
     def size(self):
         return len(self)
 
-    def getCoords(self, unsigned int i):
+    def get_coords(self, unsigned int i):
         cdef Coord3D c = Coord3D()
-        cdef CppCoord3D cpp = self.thisptr.GetCoords(i)
+        cdef CppCoord3D cpp = self.thisptr.get_coords(i)
         c.x = cpp.x
         c.y = cpp.y
         c.z = cpp.z
@@ -133,123 +133,123 @@ cdef class Rigidbody:
     def print_pdb(self):
         return str(self)
 
-    def unsafeGetCoords(self, unsigned int i, Coord3D co):
-        self.thisptr.unsafeGetCoords(i, deref(co.thisptr))
+    def unsafeget_coords(self, unsigned int i, Coord3D co):
+        self.thisptr.unsafeget_coords(i, deref(co.thisptr))
 
-    def setCoords(self, int i, Coord3D co):
-        self.thisptr.SetCoords(i, deref(co.thisptr))
+    def set_coords(self, int i, Coord3D co):
+        self.thisptr.set_coords(i, deref(co.thisptr))
 
-    def Translate(self, Coord3D tr):
-        self.thisptr.Translate(deref(tr.thisptr))
+    def translate(self, Coord3D tr):
+        self.thisptr.translate(deref(tr.thisptr))
 
-    def FindCenter(self):
+    def find_center(self):
         cdef Coord3D c = Coord3D()
-        cdef CppCoord3D cpp = self.thisptr.FindCenter()
+        cdef CppCoord3D cpp = self.thisptr.find_center()
         c.x = cpp.x
         c.y = cpp.y
         c.z = cpp.z
         return c
 
-    def ABrotate(self, Coord3D A, Coord3D B, double theta):
-        self.thisptr.ABrotate(deref(A.thisptr), deref(B.thisptr), theta)
+    def rotate(self, Coord3D A, Coord3D B, double theta):
+        self.thisptr.rotate(deref(A.thisptr), deref(B.thisptr), theta)
         return None
 
-    def AttractEulerRotate(self, double phi, double ssi, double rot):
-        self.thisptr.AttractEulerRotate(phi, ssi, rot)
+    def euler_rotate(self, double phi, double ssi, double rot):
+        self.thisptr.euler_rotate(phi, ssi, rot)
 
-    def syncCoords(self):
-        self.thisptr.syncCoords()
+    def sync_coords(self):
+        self.thisptr.sync_coords()
 
     def apply_matrix(self, Matrix mat):
-        self.thisptr.ApplyMatrix(deref(mat.thisptr))
+        self.thisptr.apply_matrix(deref(mat.thisptr))
 
-    def CopyAtom(self, unsigned int atid):
-        cdef CppAtom cpp_at = self.thisptr.CopyAtom(atid)
+    def copy_atom(self, unsigned int atid):
+        cdef CppAtom cpp_at = self.thisptr.copy_atom(atid)
         cdef Atom at = Atom()
         cdef CppAtom * cpp_dest = <CppAtom*> at.thisptr
         cy_copy_atom(& cpp_at, cpp_dest)
         return at
 
-    def AddAtom(self, Atom at):
-        self.thisptr.AddAtom(deref(<CppAtom*>at.thisptr))
+    def add_atom(self, Atom at):
+        self.thisptr.add_atom(deref(<CppAtom*>at.thisptr))
 
-    def SetAtom(self, unsigned int position, Atom at):
-        self.thisptr.SetAtom(position, deref(<CppAtom*>at.thisptr))
+    def set_atom(self, unsigned int position, Atom at):
+        self.thisptr.set_atom(position, deref(<CppAtom*>at.thisptr))
 
-    def GetAtomProperty(self, unsigned int position):
-        cdef CppAtomproperty cppatprop = self.thisptr.GetAtomProperty(position)
+    def get_atom_property(self, unsigned int position):
+        cdef CppAtomproperty cppatprop = self.thisptr.get_atom_property(position)
         cdef Atomproperty pyAtprop = Atomproperty()
         cdef CppAtomproperty * new_atomprop = new CppAtomproperty(cppatprop)
         del pyAtprop.thisptr
         pyAtprop.thisptr = new_atomprop
         return pyAtprop
 
-    def SetAtomProperty(self, unsigned int position, Atomproperty prop):     
+    def set_atom_property(self, unsigned int position, Atomproperty prop):     
         if position < 0  or position >= len(self):
             raise IndexError('atom index out of bounds')
-        self.thisptr.SetAtomProperty(position, deref(<CppAtomproperty*>prop.thisptr))
+        self.thisptr.set_atom_property(position, deref(<CppAtomproperty*>prop.thisptr))
 
-    def Radius(self):
-        return self.thisptr.Radius()
+    def radius(self):
+        return self.thisptr.radius()
 
-    def RadiusGyration(self):
-        return self.thisptr.RadiusGyration()
+    def radius_of_gyration(self):
+        return self.thisptr.radius_of_gyration()
 
-    def SelectAllAtoms(self):
+    def select_all_atoms(self):
         ret = AtomSelection()
         del ret.thisptr
-        cdef CppAtomSelection new_sel = self.thisptr.SelectAllAtoms()
+        cdef CppAtomSelection new_sel = self.thisptr.select_all_atoms()
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def SelectAtomType(self, bytes b):
+    def select_atomtype(self, bytes b):
         ret = AtomSelection()
         del ret.thisptr
         cdef char * c_typename = b
         cdef string * cpp_atomtype = new string(c_typename)
-        cdef CppAtomSelection new_sel = self.thisptr.SelectAtomType(deref(cpp_atomtype))
+        cdef CppAtomSelection new_sel = self.thisptr.select_atomtype(deref(cpp_atomtype))
         del cpp_atomtype
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def SelectResidType(self, bytes b):
+    def select_restype(self, bytes b):
         ret = AtomSelection()
         del ret.thisptr
         cdef char * c_typename = b
         cdef string * cpp_residtype = new string(c_typename)
-        cdef CppAtomSelection new_sel = self.thisptr.SelectResidType(deref(cpp_residtype))
+        cdef CppAtomSelection new_sel = self.thisptr.select_restype(deref(cpp_residtype))
         del cpp_residtype
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def SelectChainId(self, bytes b):
+    def select_chainid(self, bytes b):
         ret = AtomSelection()
         del ret.thisptr
         cdef char * c_typename = b
         cdef string * cpp_chainid = new string(c_typename)
-        cdef CppAtomSelection new_sel = self.thisptr.SelectChainId(deref(cpp_chainid))
+        cdef CppAtomSelection new_sel = self.thisptr.select_chainid(deref(cpp_chainid))
         del cpp_chainid
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def SelectResRange(self, int i, int j):
+    def select_resid_range(self, int i, int j):
         ret = AtomSelection()
         del ret.thisptr
-        cdef CppAtomSelection new_sel = self.thisptr.SelectResRange(i, j)
+        cdef CppAtomSelection new_sel = self.thisptr.select_resid_range(i, j)
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def CA(self):
+    def get_CA(self):
         ret = AtomSelection()
         del ret.thisptr
-        cdef CppAtomSelection new_sel = self.thisptr.CA()
+        cdef CppAtomSelection new_sel = self.thisptr.get_CA()
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def Backbone(self):
+    def backbone(self):
         ret = AtomSelection()
         del ret.thisptr
-        cdef CppAtomSelection new_sel = self.thisptr.Backbone()
+        cdef CppAtomSelection new_sel = self.thisptr.backbone()
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 

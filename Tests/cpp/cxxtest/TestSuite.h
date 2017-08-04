@@ -33,8 +33,8 @@ namespace CxxTest
     bool abortTestOnFail();
     void setAbortTestOnFail( bool value = CXXTEST_DEFAULT_ABORT );
 
-    unsigned maxDumpSize();
-    void setMaxDumpSize( unsigned value = CXXTEST_MAX_DUMP_SIZE );
+    unsigned maxDumpsize();
+    void setMaxDumpsize( unsigned value = CXXTEST_MAX_DUMP_SIZE );
 
     void doTrace( const char *file, unsigned line, const char *message );
     void doWarn( const char *file, unsigned line, const char *message );

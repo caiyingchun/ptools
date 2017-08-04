@@ -52,7 +52,7 @@ private:
     std::vector<Coord3D> mForces; ///< forces for each atom
     std::string _description; ///< some string to describe the molecule
 
-//    bool isBackbone(const std::string &  atomtype); ///<return true if a given atomtype string matches a backbone atom name
+//    bool isbackbone(const std::string &  atomtype); ///<return true if a given atomtype string matches a backbone atom name
 
 protected:
     std::vector<Atomproperty> mAtomProp; ///< array of atom properties
@@ -69,124 +69,124 @@ public:
     virtual ~Rigidbody(){};
 
 	/// return number of atoms in the rigidbody
-    uint Size() const {return CoordsArray::Size();};
+    uint size() const {return CoordsArray::size();};
 
     
-    void PrintMatrix() const {std::cout << CoordsArray::PrintMatrix() << std::endl; }
+    void print_matrix() const {std::cout << CoordsArray::print_matrix() << std::endl; }
 
     /// make a deep copy of one atom (the atom extracted is then totally independent)
-    virtual Atom CopyAtom(uint i) const ;
+    virtual Atom copy_atom(uint i) const ;
 
 /*    /// const version of GetAtom*/
     /*Atom GetAtom(uint pos) const
     {
         Coord3D co;
-        CoordsArray::GetCoords(pos, co);
+        CoordsArray::get_coords(pos, co);
         Atom at(mAtomProp[pos], co );
         return at;
     }*/
 
     /// return atom properties
-    Atomproperty const & GetAtomProperty(uint pos) const
+    Atomproperty const & get_atom_property(uint pos) const
     {
         return mAtomProp[pos];
     }
 	
 	/// define atom properties
-    void SetAtomProperty(uint pos, const Atomproperty& atprop)
+    void set_atom_property(uint pos, const Atomproperty& atprop)
     {
        mAtomProp[pos] = atprop;
     }
 
 	/// define atom pos
-    void SetAtom(uint pos, const Atom& atom);
+    void set_atom(uint pos, const Atom& atom);
 
     /// add an atom to the molecule (deep copy)
-    void AddAtom(const Atomproperty& at, Coord3D co);
+    void add_atom(const Atomproperty& at, Coord3D co);
 
     /// add an atom to the molecule
-    void AddAtom(const Atom& at);
+    void add_atom(const Atom& at);
 
     //returns the coordinates of atom i
-    Coord3D GetCoords(uint i) const
+    Coord3D get_coords(uint i) const
     {
-        assert(i<Size());
+        assert(i<size());
         Coord3D c;
-        CoordsArray::GetCoords(i,c) ;  //get the coordinates after translation/rotation
+        CoordsArray::get_coords(i,c) ;  //get the coordinates after translation/rotation
 
         return c;  //finally returns the final coordinates
     }
 
 
-    void unsafeGetCoords(uint i, Coord3D& co)
-      { CoordsArray::unsafeGetCoords(i,co); }
+    void unsafeget_coords(uint i, Coord3D& co)
+      { CoordsArray::unsafeget_coords(i,co); }
 
-    void syncCoords()
+    void sync_coords()
     {
-      GetCoords(0);
+      get_coords(0);
     }
 
 	/// define coordinates of atom i
-    void SetCoords(uint i, const Coord3D& co)
+    void set_coords(uint i, const Coord3D& co)
     {
-       assert(i<Size());
-       CoordsArray::SetCoords(i,co);
+       assert(i<size());
+       CoordsArray::set_coords(i,co);
     }
 
     /// return geometric center of all atoms
-    Coord3D FindCenter() const;
+    Coord3D find_center() const;
 
     /// center the rigidbody to the Origin (0,0,0)
     void CenterToOrigin();
 
 
     /// translate the whole object
-    void Translate(const Coord3D& tr);
+    void translate(const Coord3D& tr);
 
     /// apply a 4x4 matrix
-    void ApplyMatrix(const Matrix & mat);
+    void apply_matrix(const Matrix & mat);
 
    /// get the 4x4 matrix
-   Matrix GetMatrix() const
+   Matrix get_matrix() const
    {
-     return CoordsArray::GetMatrix();
+     return CoordsArray::get_matrix();
    }
 
 
     /// returns radius of gyration
-    dbl RadiusGyration();
+    dbl radius_of_gyration();
 
     /// returns the radius of a Rigidbody (max distance from center)
-    dbl Radius();
+    dbl radius();
 
     /// converts rigidbody to classical PDB-like string
-    std::string PrintPDB() const ;
+    std::string print_pdb() const ;
 
     /// selection : complete
-    AtomSelection SelectAllAtoms() const;
+    AtomSelection select_all_atoms() const;
 
     /// selection : by atom type
-    AtomSelection SelectAtomType(std::string atomtype);
+    AtomSelection select_atomtype(std::string atomtype);
 
     /// selection by residue type
-    AtomSelection SelectResidType(std::string residtype);
+    AtomSelection select_restype(std::string residtype);
 
     /// selection by chain ID
-    AtomSelection SelectChainId(std::string chainid);
+    AtomSelection select_chainid(std::string chainid);
 
     /// selection by range of residue ID
-    AtomSelection SelectResRange(int start, int stop);
+    AtomSelection select_resid_range(int start, int stop);
 
     /// selection shortcut for C-alpha
-    AtomSelection CA();
+    AtomSelection get_CA();
 
     /// selection of backbone atoms:
-    AtomSelection Backbone();
+    AtomSelection backbone();
 
     /// operator + : merge two Rigdibody by extending the first coordinates with the second coordinates.
     Rigidbody operator+ (const Rigidbody& rig);
 
-    void ABrotate(const Coord3D& A, const Coord3D& B, dbl theta); ///< rotation around (AB) axis.
+    void rotate(const Coord3D& A, const Coord3D& B, dbl theta); ///< rotation around (AB) axis.
 
     /// in some cases atoms may be ignored
     virtual bool isAtomActive(uint i) const {return true;};
@@ -196,10 +196,10 @@ public:
     /// return the object name/description
     std::string getDescription(){return _description;};
 
-    void AttractEulerRotate(dbl phi, dbl ssi, dbl rot);
+    void euler_rotate(dbl phi, dbl ssi, dbl rot);
 
     //friends
-    friend void ABrotate( Coord3D A, Coord3D B, Rigidbody& target, dbl theta );
+    friend void rotate( Coord3D A, Coord3D B, Rigidbody& target, dbl theta );
     friend void XRotation( const Rigidbody& source, Rigidbody& result, dbl alpha );
     friend void EulerZYZ(const Rigidbody & source, Rigidbody & cible, dbl theta, dbl phi, dbl psi);
 

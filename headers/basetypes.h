@@ -180,7 +180,7 @@ public:
     }
 
     ///get size of the array
-    std::pair<int,int> getDim() const
+    std::pair<int,int> get_dim() const
     {
        std::pair<int,int> out;
        out.first = m_rows;

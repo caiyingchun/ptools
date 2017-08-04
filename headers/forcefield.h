@@ -35,7 +35,7 @@ public:
     virtual void NumDerivatives(const Vdouble& StateVars, Vdouble& delta, bool print=false);
 
     ///size of the problem (number of variables the minimizer must optimize)
-    virtual uint ProblemSize()=0;
+    virtual uint Problemsize()=0;
 
     ///this function is called at the beginning of a minimization, by the minimizer (Lbfgs)
     virtual void initMinimization()=0;

@@ -17,72 +17,72 @@ PDB_DNA = os.path.join(os.path.dirname(__file__), 'heligeom', 'data', 'generate_
 class TestDNABindings(unittest.TestCase):
     """Check that the DNA class provides required methods."""
 
-    def test_has_Size(self):
-        self.assertTrue(hasattr(DNA, 'Size'))
+    def test_has_size(self):
+        self.assertTrue(hasattr(DNA, 'size'))
 
     def test_has_len(self):
         self.assertTrue(hasattr(DNA, '__len__'))
 
-    def test_has_Add(self):
-        self.assertTrue(hasattr(DNA, 'Add'))
+    def test_has_add(self):
+        self.assertTrue(hasattr(DNA, 'add'))
 
-    def test_has_ChangeType(self):
-        self.assertTrue(hasattr(DNA, 'ChangeType'))
+    def test_has_change_type(self):
+        self.assertTrue(hasattr(DNA, 'change_type'))
 
-    def test_has_ApplyLocal(self):
-        self.assertTrue(hasattr(DNA, 'ApplyLocal'))
+    def test_has_apply_local(self):
+        self.assertTrue(hasattr(DNA, 'apply_local'))
 
-    def test_has_SubDNA(self):
-        self.assertTrue(hasattr(DNA, 'SubDNA'))
+    def test_has_subDNA(self):
+        self.assertTrue(hasattr(DNA, 'subDNA'))
 
-    def test_has_ChangeRepresentation(self):
-        self.assertTrue(hasattr(DNA, 'ChangeRepresentation'))
+    def test_has_change_representation(self):
+        self.assertTrue(hasattr(DNA, 'change_representation'))
 
-    def test_has_PrintPDB(self):
-        self.assertTrue(hasattr(DNA, 'PrintPDB'))
+    def test_has_print_pdb(self):
+        self.assertTrue(hasattr(DNA, 'print_pdb'))
 
 
 class TestDNA(unittest.TestCase):
 
     def setUp(self):
         self.dna = DNA(PDB_BASE_PAIR, PDB_DNA)
-        self.assertEqual(self.dna[0].Size(), 11)
-        self.assertEqual(len(self.dna[0].GetRigidBody()), 11)
+        self.assertEqual(self.dna[0].size(), 11)
+        self.assertEqual(len(self.dna[0].get_rigid()), 11)
 
-    def test_Size(self):
-        self.assertEqual(self.dna.Size(), 16)
+    def test_size(self):
+        self.assertEqual(self.dna.size(), 16)
 
     def test_len(self):
         self.assertEqual(len(self.dna), 16)
-        self.assertEqual(len(self.dna), self.dna.Size())
+        self.assertEqual(len(self.dna), self.dna.size())
 
-    def test_Add(self):
-        bp = ptools.BasePair(self.dna[0].GetRigidBody())
-        self.dna.Add(bp)
-        self.assertEqual(self.dna.Size(), 17)
+    def test_add(self):
+        bp = ptools.BasePair(self.dna[0].get_rigid())
+        self.dna.add(bp)
+        self.assertEqual(self.dna.size(), 17)
 
         dna = ptools.DNA(self.dna)
-        self.dna.Add(dna)
-        self.assertEqual(self.dna.Size(), 34)
+        self.dna.add(dna)
+        self.assertEqual(self.dna.size(), 34)
 
-    def test_ChangeType(self):
+    def test_change_type(self):
         warnings.warn("only check the call, not the result")
-        self.dna.ChangeType(0, "A", PDB_BASE_PAIR)
+        self.dna.change_type(0, "A", PDB_BASE_PAIR)
 
-    def test_ApplyLocal(self):
+    def test_apply_local(self):
         warnings.warn("only check the call, not the result")
-        self.dna.ApplyLocal(ptools.Roll(30), self.dna.Size() / 2)
+        self.dna.apply_local(ptools.Roll(30), self.dna.size() / 2)
 
-    def test_SubDNA(self):
+    def test_subDNA(self):
         warnings.warn("only check the call, not the result")
-        self.dna.SubDNA(2, self.dna.Size() - 3)
+        self.dna.subDNA(2, self.dna.size() - 3)
 
-    def test_ChangeRepresentation(self):
+    def test_change_representation(self):
         warnings.warn("only check the call, not the result")
-        self.dna.ChangeRepresentation(PDB_BASE_PAIR2)
+        self.dna.change_representation(PDB_BASE_PAIR2)
 
-    def test_PrintPDB(self):
-        s = self.dna.PrintPDB()
+    def test_print_pdb(self):
+        s = self.dna.print_pdb()
         self.assertNotEqual(s, '')
 
 
