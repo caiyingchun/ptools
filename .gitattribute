@@ -1,0 +1,2 @@
+minimizers/*.f linguist-vendored
+minimizers/lbfgs_wrapper/*.f linguist-vendored
