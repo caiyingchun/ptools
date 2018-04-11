@@ -141,8 +141,8 @@ class TestRigidbody(unittest.TestCase):
         atom = self.r.CopyAtom(3)
         coords = atom.coords
         assertCoordsAlmostEqual(self, coords, Coord3D(-16.159, 189.782, 106.402))
-        self.assertEqual(atom.atomId, 4)
-        self.assertEqual(atom.chainId, '')
+        self.assertEqual(atom.atom_id, 4)
+        self.assertEqual(atom.chain_id, '')
 
     def testGetCoords(self):
         coords = self.r.getCoords(3)
@@ -212,16 +212,16 @@ class TestRigidbody(unittest.TestCase):
 
     def testGetAtomProperty(self):
         atprop = self.r.GetAtomProperty(8)
-        self.assertEqual(atprop.residType, 'GLU')
-        self.assertEqual(atprop.residId, 2)
-        self.assertEqual(atprop.atomId, 9)
+        self.assertEqual(atprop.resid_type, 'GLU')
+        self.assertEqual(atprop.resid_id, 2)
+        self.assertEqual(atprop.atom_id, 9)
 
     def testSetAtomProperty(self):
         prop = Atomproperty()
-        prop.residType = 'AAA'
+        prop.resid_type = 'AAA'
         self.r.SetAtomProperty(0, prop)
         prop = self.r.GetAtomProperty(0)
-        self.assertEqual(prop.residType, 'AAA')
+        self.assertEqual(prop.resid_type, 'AAA')
 
     def testSetAtomPropertyWithOutOfBoundsPosition(self):
         maxpos = len(self.r) - 1
@@ -235,7 +235,7 @@ class TestRigidbody(unittest.TestCase):
     def testNegativeResId(self):
         rigid = Rigidbody(TEST_2AAV_PDB)
         at1 = rigid.CopyAtom(0)
-        self.assertEqual(at1.residId, -4)
+        self.assertEqual(at1.resid_id, -4)
 
 
 if __name__ == '__main__':

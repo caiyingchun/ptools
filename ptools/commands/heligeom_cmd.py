@@ -152,16 +152,16 @@ def groove_width_calculation(hp, mono1):
                 pstart = getpstart(start, hp, k, k)
 
                 # get the min dist on the inferior part
-                mindistinf = ptools.Dist(pstart.CopyAtom(0), inf.CopyAtom(0))
+                mindistinf = ptools.dist(pstart.CopyAtom(0), inf.CopyAtom(0))
                 for k in xrange(1, infSize):
-                    tempdist = ptools.Dist(pstart.CopyAtom(0), inf.CopyAtom(k))
+                    tempdist = ptools.dist(pstart.CopyAtom(0), inf.CopyAtom(k))
                     if tempdist < mindistinf:
                         mindistinf = tempdist
 
                 # the same on the superior part
-                mindistsup = ptools.Dist(pstart.CopyAtom(0), sup.CopyAtom(0))
+                mindistsup = ptools.dist(pstart.CopyAtom(0), sup.CopyAtom(0))
                 for k in xrange(1, supSize):
-                    tempdist = ptools.Dist(pstart.CopyAtom(0), sup.CopyAtom(k))
+                    tempdist = ptools.dist(pstart.CopyAtom(0), sup.CopyAtom(k))
                     if tempdist < mindistsup:
                         mindistsup = tempdist
                 # get the two point on the vector and take the mid size
@@ -175,7 +175,7 @@ def changeChain(rig, letter):
     rsize = rig.size()
     for i in xrange(0, rsize):
         at = rig.GetAtomProperty(i)
-        at.chainId = letter
+        at.chain_id = letter
         rig.SetAtomProperty(i, at)
     return rig
 

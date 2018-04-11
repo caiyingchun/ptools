@@ -26,10 +26,10 @@ class Bead(ptools.Atomproperty):
     def __init__(self, atoms, resname, resid, parameters):
         super(Bead, self).__init__()
         self.atoms = atoms
-        self.residType = resname
-        self.residId = resid
-        self.atomType = parameters.get('name', 'X')
-        self.atomCharge = parameters.get('charge', 0.0)
+        self.resid_type = resname
+        self.resid_id = resid
+        self.atom_type = parameters.get('name', 'X')
+        self.atom_charge = parameters.get('charge', 0.0)
         self.typeid = parameters.get('typeid', 0)
 
         # Set bead attributes with attributes coming from reduction
@@ -40,21 +40,21 @@ class Bead(ptools.Atomproperty):
 
         # List of atom names that should be part of the bead.
         self.atom_reduction_parameters = parameters['atoms']
-        self.extra = '{:5d}{:8.3f} 0 0'.format(self.typeid, self.atomCharge)
+        self.extra = '{:5d}{:8.3f} 0 0'.format(self.typeid, self.atom_charge)
 
-        self.chainId = ''
+        self.chain_id = ''
         if len(self.atoms) > 0:
-            self.chainId = self.atoms[0].chainId
+            self.chain_id = self.atoms[0].chain_id
 
     @property
     def charge(self):
-        return self.atomCharge
+        return self.atom_charge
 
     @charge.setter
     def charge(self, value):
-        """Use this setter to set `atomCharge` and update `extra` on the fly."""
-        self.atomCharge = value
-        self.extra = '{:5d}{:8.3f} 0 0'.format(self.typeid, self.atomCharge)
+        """Use this setter to set `atom_charge` and update `extra` on the fly."""
+        self.atom_charge = value
+        self.extra = '{:5d}{:8.3f} 0 0'.format(self.typeid, self.atom_charge)
 
     @property
     def coords(self):
@@ -72,12 +72,12 @@ class Bead(ptools.Atomproperty):
     @property
     def name(self):
         """Get bead name."""
-        return self.atomType
+        return self.atom_type
 
     @name.setter
     def name(self, value):
         """Set bead name."""
-        self.atomType = value
+        self.atom_type = value
 
     def toatom(self):
         """Return a ptools.Atom instance with current bead properties and
@@ -86,7 +86,7 @@ class Bead(ptools.Atomproperty):
 
     def topdb(self):
         """Return the bead description as a PDB formatted string."""
-        return self.toatom().ToPdbString()
+        return self.toatom().to_pdb_string()
 
     def is_incomplete(self):
         """Return True if the number of atoms found to build the bead is
@@ -120,7 +120,7 @@ class CoarseResidue:
         self.beads = []
 
         for bead_param in parameters:
-            atoms = [a for a in resatoms if a.atomType in bead_param['atoms']]
+            atoms = [a for a in resatoms if a.atom_type in bead_param['atoms']]
             b = Bead(atoms, self.resname, self.resid, bead_param)
             self.beads.append(b)
 
@@ -148,7 +148,7 @@ class CoarseResidue:
         """Set the residue identifier and update residue identifier for each
         bead in the residue."""
         for b in self.beads:
-            b.residId = value
+            b.resid_id = value
         self._resid = value
 
     def topdb(self):
@@ -339,31 +339,31 @@ class Reducer(object):
     def rename_atoms_and_residues(self):
         """Rename atom and residues according to data in rename maps."""
         def should_rename_residue():
-            return atom.residType in self.residue_rename
+            return atom.resid_type in self.residue_rename
 
         def rename_residue():
-            atom.residType = self.residue_rename[atom.residType]
+            atom.resid_type = self.residue_rename[atom.resid_type]
 
         def should_rename_atom_for_every_residue():
             """If '*' is in the atom rename map, all residues are affected."""
-            return '*' in self.atom_rename and atom.atomType in self.atom_rename['*']
+            return '*' in self.atom_rename and atom.atom_type in self.atom_rename['*']
 
         def should_rename_atom():
-            return atom.residType in self.atom_rename and \
-                atom.atomType in self.atom_rename[atom.residType]
+            return atom.resid_type in self.atom_rename and \
+                atom.atom_type in self.atom_rename[atom.resid_type]
 
         def rename_atom(name):
-            atom.atomType = name
+            atom.atom_type = name
 
         for atom in self.atoms:
             if should_rename_residue():
                 rename_residue()
 
             if should_rename_atom_for_every_residue():
-                rename_atom(self.atom_rename['*'][atom.atomType])
+                rename_atom(self.atom_rename['*'][atom.atom_type])
 
             if should_rename_atom():
-                rename_atom(self.atom_rename[atom.residType][atom.atomType])
+                rename_atom(self.atom_rename[atom.resid_type][atom.atom_type])
 
     def reduce(self, ignore_exceptions):
         """Actual reduction method.
@@ -448,12 +448,12 @@ class Reducer(object):
 
         # Update the atom id for each bead.
         for i, bead in enumerate(self.beads):
-            bead.atomId = i + 1
+            bead.atom_id = i + 1
 
     def _reset_chain_id(self):
         """Set the chain identifier of all atoms from input topology to ''."""
         for atom in self.atoms:
-            atom.chainId = ''
+            atom.chain_id = ''
 
     def optimize_charges(self, delgrid):
         """Use cgopt to optimize bead charges.
@@ -482,8 +482,8 @@ class Reducer(object):
             aa_coords_x.append(atom.coords.x)
             aa_coords_y.append(atom.coords.y)
             aa_coords_z.append(atom.coords.z)
-            aa_radii.append(aa_radii_map[atom.residType][atom.atomType])
-            aa_charges.append(aa_charges_map[atom.residType][atom.atomType])
+            aa_radii.append(aa_radii_map[atom.resid_type][atom.atom_type])
+            aa_charges.append(aa_charges_map[atom.resid_type][atom.atom_type])
 
         for bead in self.beads:
             cg_coords_x.append(bead.coords.x)
@@ -516,7 +516,7 @@ class Reducer(object):
         """
         forcefield = self.forcefield
         header = 'HEADER    {} REDUCED PDB FILE'.format(forcefield)
-        content = '\n'.join(bead.toatom().ToPdbString() for bead in self.beads)
+        content = '\n'.join(bead.toatom().to_pdb_string() for bead in self.beads)
         f = sys.stdout
         if path:
             f = open(path, 'wt')

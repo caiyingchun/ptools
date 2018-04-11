@@ -6,7 +6,7 @@ import sys
 from _ptools import (ADNA, Atom, AtomPair, AtomSelection, Atomproperty,
                      AttractForceField1, AttractForceField2, AttractPairList,
                      AttractRigidbody, BDNA, BaseAttractForceField, BasePair,
-                     Coord3D, CoordsArray, DNA, Dist, Dist2, Lbfgs, Matrix,
+                     Coord3D, CoordsArray, DNA, dist, dist2, Lbfgs, Matrix,
                      MatTrans2screw, Movement, Rigidbody, Rise, Rmsd, Roll,
                      ScorpionForceField, Screw, Shift, Slide,
                      Superpose_t, Surface, Tilt, Twist, Version, WritePDB,
@@ -65,7 +65,7 @@ def rigidToSeq(rigid):
     seq = []
     for i in range(len(rca)):
         at = rca.CopyAtom(i)
-        seq.append(one_letter_residue_dict[at.residType])
+        seq.append(one_letter_residue_dict[at.resid_type])
 
     return "".join(seq)
 

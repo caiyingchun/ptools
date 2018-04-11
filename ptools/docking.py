@@ -15,7 +15,7 @@ def read_translations(filename="translation.dat"):
     """Return dictionary of translations from PDB-format file indexed by translation number (atomid)."""
     rb = ptools.Rigidbody("translation.dat")
     print("Read {:d} translations from translation.dat".format(len(rb)))
-    translations = [(rb.GetAtomProperty(i).atomId, rb.getCoords(i)) for i in xrange(len(rb))]
+    translations = [(rb.GetAtomProperty(i).atom_id, rb.getCoords(i)) for i in xrange(len(rb))]
     return dict(translations)
 
 

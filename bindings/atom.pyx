@@ -59,7 +59,7 @@ cdef class Atomproperty:
     def residuetag(self):
         return self.thisptr.residuetag()
     
-    property atomType:
+    property atom_type:
         def __get__(self):
             return <bytes> self.thisptr.atomType.c_str()
         def __set__(self, bytes b):
@@ -67,15 +67,15 @@ cdef class Atomproperty:
             cdef string cppname = string(c)
             self.thisptr.setAtomType(cppname)
 
-    property _pdbAtomType:
+    property _pdb_atom_type:
         def __get__(self):
             return <bytes> self.thisptr._pdbAtomType.c_str()
         def __set__(self, bytes b):
             cdef char* c = b
             cdef string cppname = string(c)
             self.thisptr._pdbAtomType = cppname
-        
-    property residType:
+
+    property resid_type:
         def __get__(self):   
             return <bytes> self.thisptr.residType.c_str()
     
@@ -83,21 +83,21 @@ cdef class Atomproperty:
             cdef char * c_residtype = residtype
             self.thisptr.residType = string(c_residtype)
 
-    property atomCharge:
+    property atom_charge:
         def __get__(self):
             return self.thisptr.atomCharge
     
         def __set__(self, double charge):
             self.thisptr.atomCharge = charge
 
-    property atomElement:
+    property atom_element:
         def __get__(self):
             return self.thisptr.atomElement
     
         def __set__(self, bytes element):
             self.thisptr.atomElement = element
     
-    property chainId:
+    property chain_id:
         def __get__(self):
             return <bytes> self.thisptr.chainId.c_str()
     
@@ -105,7 +105,7 @@ cdef class Atomproperty:
             cdef char * c_chainid = chainid
             self.thisptr.chainId = string(c_chainid)
     
-    property residId:    
+    property resid_id:    
         def __get__(self):
             return self.thisptr.residId
         
@@ -113,7 +113,7 @@ cdef class Atomproperty:
             self.thisptr.residId = resid 
         
     
-    property atomId:
+    property atom_id:
         def __get__(self):
             return self.thisptr.atomId
         def __set__(self, int atomid):
@@ -175,21 +175,21 @@ cdef class Atom(Atomproperty):
     def set_coords(self, co):
         self.coords = co
         
-    def ToString(self):
+    def to_string(self):
         return <bytes> (<CppAtom*>self.thisptr).ToString().c_str()
     def __str__(self):
         return self.ToString()
         
-    def ToPdbString(self):
+    def to_pdb_string(self):
         return <bytes> (<CppAtom*>self.thisptr).ToPdbString().c_str()
     
-    def Translate(self,Coord3D co):
+    def translate(self,Coord3D co):
        (<CppAtom*>self.thisptr).Translate(deref(co.thisptr))
 
     
-def Dist(Atom at1, Atom at2):
+def dist(Atom at1, Atom at2):
     return cppDist(deref(<CppAtom*>at1.thisptr), deref(<CppAtom*>at2.thisptr))
     
-def Dist2(Atom at1, Atom at2):
+def dist2(Atom at1, Atom at2):
     return cppDist2(deref(<CppAtom*>at1.thisptr), deref(<CppAtom*>at2.thisptr))
         
