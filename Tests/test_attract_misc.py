@@ -94,8 +94,8 @@ class MinimizationTests(unittest.TestCase):
         # Minimum-energy ligand position is  5.0, 0.0, 0.0
         print "Ligand starting position: %s" % atom.to_pdb_string()
 
-        self.forcefield.AddLigand(receptor)
-        self.forcefield.AddLigand(ligand)
+        self.forcefield.add_ligand(receptor)
+        self.forcefield.add_ligand(ligand)
         lbfgs_minimizer = Lbfgs(self.forcefield)
         lbfgs_minimizer.minimize(self.niter)
 
@@ -122,8 +122,8 @@ class MinimizationTests(unittest.TestCase):
         atom = ligand.CopyAtom(0)
         print "Ligand starting position: %s" % atom.to_pdb_string()
 
-        self.forcefield.AddLigand(receptor)
-        self.forcefield.AddLigand(ligand)
+        self.forcefield.add_ligand(receptor)
+        self.forcefield.add_ligand(ligand)
         lbfgs_minimizer = Lbfgs(self.forcefield)
         lbfgs_minimizer.minimize(self.niter)
 
