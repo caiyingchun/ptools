@@ -61,7 +61,7 @@ class TestAtomSelection(unittest.TestCase):
 
     def testCreateRigid(self):
         met1A = self.rig.SelectResidType("MET") & self.rig.SelectResRange(1, 5) & self.rig.SelectChainId("A")
-        rigid = met1A.CreateRigid()
+        rigid = met1A.create_rigid()
         self.assertEqual(len(rigid), 8)
 
     def testNotOperator(self):

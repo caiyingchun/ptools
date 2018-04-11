@@ -76,7 +76,7 @@ def surreal(i):
 def rmsdca(l1, l2):
     """Return the RMSD between the alpha-carbone atom of two RigidBody
     instances."""
-    return ptools.Rmsd(l1.CA().CreateRigid(), l2.CA().CreateRigid())
+    return ptools.Rmsd(l1.CA().create_rigid(), l2.CA().create_rigid())
 
 
 def get_group(collection, ngroups, ngroup):

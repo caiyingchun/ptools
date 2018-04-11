@@ -118,10 +118,10 @@ def getpstart(start, hp, dmin, dmax):
 def getpart(groove, n, nbmono):
     inf = ptools.Rigidbody()
     for i in xrange(n - 1, n + 3):
-        inf = inf + groove.SelectChainId(string.ascii_uppercase[i % 26]).CreateRigid()
+        inf = inf + groove.SelectChainId(string.ascii_uppercase[i % 26]).create_rigid()
     sup = ptools.Rigidbody()
     for i in xrange(n - 2 + nbmono, n + 2 + nbmono):
-        sup = sup + groove.SelectChainId(string.ascii_uppercase[i % 26]).CreateRigid()
+        sup = sup + groove.SelectChainId(string.ascii_uppercase[i % 26]).create_rigid()
     return inf, sup
 
 
@@ -133,7 +133,7 @@ def groove_width_calculation(hp, mono1):
     O = hp.point
     axe = hp.unitVector
     groove = extend(hp, mono1, nbmono * 3, False, False)
-    start = groove.SelectChainId(string.ascii_uppercase[n]).CreateRigid()
+    start = groove.SelectChainId(string.ascii_uppercase[n]).create_rigid()
     dmin, dmax = distAxis(mono1, hp)
 
     nb = 0
@@ -182,7 +182,7 @@ def changeChain(rig, letter):
 
 def extend(hp, mono1, nb, Z=False, seq=False):
     final = ptools.Rigidbody()
-    monoTest = mono1.SelectAllAtoms().CreateRigid()
+    monoTest = mono1.SelectAllAtoms().create_rigid()
     i = 0
     O = hp.point
     axe = hp.unitVector
