@@ -6,10 +6,11 @@ __pycache__/
 
 # Generated at compilation/install time
 bindings/_ptools.cpp
-bindings/_cgopt.c
+bindings/_cgopt.cpp
 MANIFEST.out
 headers/gitrev.h
-
+src/cgopt/chrg_scorpion.o
+src/minimizers/lbfgs_wrapper/lbfgsb.o
 
 # Unit test / coverage
 Tests/iterate.dat
@@ -19,6 +20,7 @@ Tests/cpp/runner.cpp
 opt_scorpion.out
 .cache
 .coverage
+.pytest_cache/
 
 # Distribution / packaging
 .Python
