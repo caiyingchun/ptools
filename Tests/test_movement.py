@@ -163,7 +163,7 @@ def identity(n):
 
 def get_movement_matrix(mov):
     """Return a Movement matrix."""
-    return string_to_matrix(mov.toString())
+    return string_to_matrix(str(mov))
 
 
 def string_to_matrix(s):

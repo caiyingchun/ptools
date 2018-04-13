@@ -64,14 +64,11 @@ cdef class Movement:
         if self.thisptr:
             del self.thisptr
     
-    def Apply(self, Rigidbody rigid):
+    def __str__(self):
+        return self.thisptr.toString().c_str()
+
+    def apply(self, Rigidbody rigid):
         self.thisptr.Apply(deref(rigid.thisptr))
-
-    def Print(self):
-        self.thisptr.Print()
-
-    def toString(self):
-        return self.thisptr.toString()
 
 
 cdef class Shift(Movement):
