@@ -33,11 +33,11 @@ class TestHeligeom(unittest.TestCase):
     def testBasicManipulation(self):
         # translate the DNA in coarse grain representation
         dna = DNA(TEST_BP_RED, TEST_BDNA_EXPECTED_PDB)
-        self.assertEqual(dna[0].Size(), 11)
-        self.assertEqual(len(dna[0].GetRigidBody()), 11)
+        self.assertEqual(dna[0].size(), 11)
+        self.assertEqual(len(dna[0].get_rigid_body()), 11)
 
         # add a base Pair
-        bp = BasePair(dna[0].GetRigidBody())
+        bp = BasePair(dna[0].get_rigid_body())
         dna.Add(bp)
 
         # add itself

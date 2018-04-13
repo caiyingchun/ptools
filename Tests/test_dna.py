@@ -46,8 +46,8 @@ class TestDNA(unittest.TestCase):
 
     def setUp(self):
         self.dna = DNA(PDB_BASE_PAIR, PDB_DNA)
-        self.assertEqual(self.dna[0].Size(), 11)
-        self.assertEqual(len(self.dna[0].GetRigidBody()), 11)
+        self.assertEqual(self.dna[0].size(), 11)
+        self.assertEqual(len(self.dna[0].get_rigid_body()), 11)
 
     def test_Size(self):
         self.assertEqual(self.dna.Size(), 16)
@@ -57,7 +57,7 @@ class TestDNA(unittest.TestCase):
         self.assertEqual(len(self.dna), self.dna.Size())
 
     def test_Add(self):
-        bp = ptools.BasePair(self.dna[0].GetRigidBody())
+        bp = ptools.BasePair(self.dna[0].get_rigid_body())
         self.dna.Add(bp)
         self.assertEqual(self.dna.Size(), 17)
 

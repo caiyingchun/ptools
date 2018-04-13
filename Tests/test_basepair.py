@@ -16,14 +16,14 @@ PDB_DNA = os.path.join(os.path.dirname(__file__), 'heligeom', 'data', 'generate_
 class TestBasePairBindings(unittest.TestCase):
     """Check that the BasePair class provides required methods."""
 
-    def test_has_Size(self):
-        self.assertTrue(hasattr(BasePair, 'Size'))
+    def test_has_size(self):
+        self.assertTrue(hasattr(BasePair, 'size'))
 
     def test_has_len(self):
         self.assertTrue(hasattr(BasePair, '__len__'))
 
-    def test_has_GetRigidBody(self):
-        self.assertTrue(hasattr(BasePair, 'GetRigidBody'))
+    def test_has_get_rigid_body(self):
+        self.assertTrue(hasattr(BasePair, 'get_rigid_body'))
 
 
 class TestBasePair(unittest.TestCase):
@@ -33,12 +33,12 @@ class TestBasePair(unittest.TestCase):
         self.bp = dna[0]
         self.assertEqual(type(dna[0]), BasePair)
 
-    def test_Size(self):
-        self.assertEqual(self.bp.Size(), 11)
+    def test_size(self):
+        self.assertEqual(self.bp.size(), 11)
 
     def test_len(self):
         self.assertEqual(len(self.bp), 11)
-        self.assertEqual(len(self.bp), self.bp.Size())
+        self.assertEqual(len(self.bp), self.bp.size())
 
 
 if __name__ == '__main__':

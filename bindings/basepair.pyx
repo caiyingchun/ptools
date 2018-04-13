@@ -30,12 +30,12 @@ cdef class BasePair:
             self.thisptr = <CppBasePair*> 0
 
     def __len__(self):
-        return self.Size()
+        return self.size()
 
-    def Size(self):
+    def size(self):
         return self.thisptr.Size()
 
-    def GetRigidBody(self):
+    def get_rigid_body(self):
         # Get a pointer to the RigidBody.
         cdef CppRigidbody * new_rb = new CppRigidbody(self.thisptr.GetRigidBody())
 
