@@ -40,8 +40,7 @@ cdef extern from "attractforcefield.h" namespace "PTools":
        
 cdef class BaseAttractForceField:
     cdef CppBaseAttractForceField * thisptr
-       
-       
+
     
 
 cdef class AttractForceField2(BaseAttractForceField):

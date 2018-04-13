@@ -94,7 +94,7 @@ def getpstart(start, hp, dmin, dmax):
     # position of the sphere point
     ap = ptools.Atomproperty()
     m1 = start
-    cm = m1.FindCenter()
+    cm = m1.find_center()
     v = cm - hp.point
     s = ptools.dotproduct(v, hp.unitVector)
     p = (hp.point + hp.unitVector * s)

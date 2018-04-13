@@ -86,8 +86,8 @@ class MinimizationTests(unittest.TestCase):
     def test_find_analytical_solution_when_displaced_along_Y(self):
         """Minimization should displace ligand by -5A along Y-axis to minimum-energy position."""
         receptor = AttractRigidbody(TEST_TOYMINIM_RECEPTOR)
-        receptor.setTranslation(False)
-        receptor.setRotation(False)
+        receptor.set_translation(False)
+        receptor.set_rotation(False)
         ligand = AttractRigidbody(TEST_TOYMINIM_LIGAND)
         atom = ligand.CopyAtom(0)
         # Ligand position in file            5.0, 5.0, 0.0
@@ -113,8 +113,8 @@ class MinimizationTests(unittest.TestCase):
         # PGTOL not easily changeable through ptools, needs to be set tighter to get closer to optimum
         tolerance = 5e-5
         receptor = AttractRigidbody(TEST_TOYMINIM_RECEPTOR)
-        receptor.setTranslation(False)
-        receptor.setRotation(False)
+        receptor.set_translation(False)
+        receptor.set_rotation(False)
         ligand = AttractRigidbody(TEST_TOYMINIM_LIGAND)
         # New starting ligand position      10.0, 5.0, 5.0
         # Minimum-energy ligand position is  5.0, 0.0, 0.0

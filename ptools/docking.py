@@ -129,10 +129,10 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
             ligand = ptools.AttractRigidbody(lig)
             receptor = ptools.AttractRigidbody(rec)
 
-            center = ligand.FindCenter()
-            ligand.Translate(ptools.Coord3D() - center)  # set ligand center of mass to 0,0,0
-            ligand.AttractEulerRotate(surreal(rot[0]), surreal(rot[1]), surreal(rot[2]))
-            ligand.Translate(trans)
+            center = ligand.find_center()
+            ligand.translate(ptools.Coord3D() - center)  # set ligand center of mass to 0,0,0
+            ligand.attract_euler_rotate(surreal(rot[0]), surreal(rot[1]), surreal(rot[2]))
+            ligand.translate(trans)
 
             for minim in minimlist:
                 minimcounter += 1
@@ -142,8 +142,8 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
 
                 # performs single minimization on receptor and ligand, given maxiter=niter and restraint constant rstk
                 forcefield = ff_specs['ff_class'](ff_specs['ff_file'], surreal(cutoff))
-                receptor.setTranslation(False)
-                receptor.setRotation(False)
+                receptor.set_translation(False)
+                receptor.set_rotation(False)
 
                 forcefield.add_ligand(receptor)
                 forcefield.add_ligand(ligand)
@@ -159,11 +159,11 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
 
                 output = ptools.AttractRigidbody(ligand)
 
-                center = output.FindCenter()
-                output.Translate(ptools.Coord3D() - center)
-                output.AttractEulerRotate(surreal(X[0]), surreal(X[1]), surreal(X[2]))
-                output.Translate(ptools.Coord3D(surreal(X[3]), surreal(X[4]), surreal(X[5])))
-                output.Translate(center)
+                center = output.find_center()
+                output.translate(ptools.Coord3D() - center)
+                output.attract_euler_rotate(surreal(X[0]), surreal(X[1]), surreal(X[2]))
+                output.translate(ptools.Coord3D(surreal(X[3]), surreal(X[4]), surreal(X[5])))
+                output.translate(center)
 
                 ligand = ptools.AttractRigidbody(output)
 

@@ -77,8 +77,8 @@ class TestHeligeom(unittest.TestCase):
         ener = forcefield.nonbon8(prot, dna, AttractPairList(prot, dna, cutoff))
 
         self.assertAlmostEqual(ener, -51.6955215854)
-        self.assertEqual(prot.Size(), 706)
-        self.assertEqual(dna.Size(), 231)
+        self.assertEqual(prot.size(), 706)
+        self.assertEqual(dna.size(), 231)
 
 
 if __name__ == "__main__":
