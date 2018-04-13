@@ -76,7 +76,7 @@ def surreal(i):
 def rmsdca(l1, l2):
     """Return the RMSD between the alpha-carbone atom of two RigidBody
     instances."""
-    return ptools.Rmsd(l1.alpha().create_rigid(), l2.alpha().create_rigid())
+    return ptools.rmsd(l1.alpha().create_rigid(), l2.alpha().create_rigid())
 
 
 def get_group(collection, ngroups, ngroup):
@@ -109,7 +109,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
     if ref is not None:
         refca = ref.alpha()
         if len(refca) == 0:  # No C alpha atom, ligand is probably a dna
-            rmsd_func = ptools.Rmsd
+            rmsd_func = ptools.rmsd
             print("No Calpha atom found for ligand (DNA?). RMSD will be "
                   "calculated on all grains")
         else:

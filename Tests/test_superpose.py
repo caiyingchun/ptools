@@ -53,7 +53,7 @@ class TestSuperposition(unittest.TestCase):
             sup = ptools.superpose(self.prot1, prot2)  # superpose(reference, mobile)
             matrix = sup.matrix
             prot2.apply_matrix(matrix)
-            self.assertAlmostEqual(ptools.Rmsd(prot2, self.prot1), 0.0)
+            self.assertAlmostEqual(ptools.rmsd(prot2, self.prot1), 0.0)
 
 
 if __name__ == '__main__':
