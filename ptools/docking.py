@@ -154,8 +154,8 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
                 lbfgs_minimizer = ff_specs['minimizer_class'](forcefield)
 
                 lbfgs_minimizer.minimize(niter)
-                ntraj = lbfgs_minimizer.GetNumberIter()
-                X = lbfgs_minimizer.GetMinimizedVars()  # optimized freedom variables after minimization
+                ntraj = lbfgs_minimizer.get_number_of_iterations()
+                X = lbfgs_minimizer.get_minimized_vars()  # optimized freedom variables after minimization
 
                 output = ptools.AttractRigidbody(ligand)
 
@@ -169,7 +169,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
 
                 if ftraj is not None:
                     for iteration in range(ntraj):
-                        traj = lbfgs_minimizer.GetMinimizedVarsAtIter(iteration)
+                        traj = lbfgs_minimizer.get_minimized_vars_at_iter(iteration)
                         for t in traj[0:6]:
                             ftraj.write("%f " % t)
                         ftraj.write("\n")
