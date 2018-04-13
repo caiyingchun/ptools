@@ -25,7 +25,7 @@ cdef class CoordsArray:
     def __len__(self):
         return self.thisptr.Size()
 
-    def Size(self):
+    def size(self):
         print "Depreciated, use len(obj) instead"
         return self.thisptr.Size()
 
@@ -37,20 +37,20 @@ cdef class CoordsArray:
     #    self.thisptr.unsafeGetCoords(i, deref(coptr))
     
 
-    def unsafeGetCoords(self, int i, Coord3D co):
+    def unsafe_get_coords(self, int i, Coord3D co):
        self.thisptr.unsafeGetCoords(i, deref(co.thisptr))
 
-    def AddCoord(self, Coord3D co):
+    def add_coord(self, Coord3D co):
         self.thisptr.AddCoord( deref(co.thisptr) )
 
-    def GetCoords(self, i, Coord3D co):
+    def get_coords(self, i, Coord3D co):
         self.thisptr.GetCoords(i, deref(co.thisptr))
 
-    def SetCoords(self, i, Coord3D co):
+    def set_coords(self, i, Coord3D co):
         self.thisptr.SetCoords(i, deref(co.thisptr))
 
-    def Translate(self, Coord3D co):
+    def translate(self, Coord3D co):
         self.thisptr.Translate(deref(co.thisptr))
 
-    def AttractEulerRotate(self, double phi, double ssi, double rot):
+    def attract_euler_rotate(self, double phi, double ssi, double rot):
         self.thisptr.AttractEulerRotate(phi, ssi, rot)
