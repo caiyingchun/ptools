@@ -101,7 +101,7 @@ def getpstart(start, hp, dmin, dmax):
 
     # normal to the axis that contains the center of mass of the monomer
     v2 = cm - p
-    v2 = v2.Normalize()
+    v2 = v2.normalize()
 
     # midpoint betwen dist min and max to the axis
     pmid = p + v2 * (dmin + (dmax - dmin) / 2)
@@ -199,7 +199,7 @@ def extend(hp, mono1, nb, Z=False, seq=False):
 
         Protaxis = ptools.Rigidbody()
         Protaxis.AddAtom(ptools.Atom(at, hp.point))
-        Protaxis.AddAtom(ptools.Atom(at, hp.point + hp.unitVector.Normalize()))
+        Protaxis.AddAtom(ptools.Atom(at, hp.point + hp.unitVector.normalize()))
         # 2 superpose and get matrix
         m = ptools.superpose(Zaxis, Protaxis).matrix
         # 3 apply matrix to rigidbody
