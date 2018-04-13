@@ -15,7 +15,7 @@ def read_translations(filename="translation.dat"):
     """Return dictionary of translations from PDB-format file indexed by translation number (atomid)."""
     rb = ptools.Rigidbody("translation.dat")
     print("Read {:d} translations from translation.dat".format(len(rb)))
-    translations = [(rb.GetAtomProperty(i).atom_id, rb.getCoords(i)) for i in xrange(len(rb))]
+    translations = [(rb.get_atom_property(i).atom_id, rb.get_coords(i)) for i in xrange(len(rb))]
     return dict(translations)
 
 
@@ -76,7 +76,7 @@ def surreal(i):
 def rmsdca(l1, l2):
     """Return the RMSD between the alpha-carbone atom of two RigidBody
     instances."""
-    return ptools.Rmsd(l1.CA().create_rigid(), l2.CA().create_rigid())
+    return ptools.Rmsd(l1.alpha().create_rigid(), l2.alpha().create_rigid())
 
 
 def get_group(collection, ngroups, ngroup):
@@ -107,7 +107,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
 
     # Use appropriate rmsd calculation
     if ref is not None:
-        refca = ref.CA()
+        refca = ref.alpha()
         if len(refca) == 0:  # No C alpha atom, ligand is probably a dna
             rmsd_func = ptools.Rmsd
             print("No Calpha atom found for ligand (DNA?). RMSD will be "

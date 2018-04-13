@@ -44,11 +44,11 @@ class TestSuperposition(unittest.TestCase):
             x = (random.random() - 0.5) * 50.0
             y = (random.random() - 0.5) * 50.0
             z = (random.random() - 0.5) * 50.0
-            prot2.Translate(ptools.Coord3D(x, y, z))
+            prot2.translate(ptools.Coord3D(x, y, z))
             a = (random.random() - 0.5) * 50.0
             b = (random.random() - 0.5) * 50.0
             c = (random.random() - 0.5) * 50.0
-            prot2.AttractEulerRotate(a, b, c)
+            prot2.attract_euler_rotate(a, b, c)
 
             sup = ptools.superpose(self.prot1, prot2)  # superpose(reference, mobile)
             matrix = sup.matrix

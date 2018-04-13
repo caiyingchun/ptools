@@ -23,74 +23,74 @@ class TestRigidbodyBindings(unittest.TestCase):
     def test_Rigidbody_has_size(self):
         self.assertTrue(hasattr(Rigidbody, 'size'))
 
-    def test_Rigidbody_has_getCoords(self):
-        self.assertTrue(hasattr(Rigidbody, 'getCoords'))
+    def test_Rigidbody_has_get_coords(self):
+        self.assertTrue(hasattr(Rigidbody, 'get_coords'))
 
-    def test_Rigidbody_has_unsafeGetCoords(self):
-        self.assertTrue(hasattr(Rigidbody, 'unsafeGetCoords'))
+    def test_Rigidbody_has_unsafe_get_coords(self):
+        self.assertTrue(hasattr(Rigidbody, 'unsafe_get_coords'))
 
-    def test_Rigidbody_has_setCoords(self):
-        self.assertTrue(hasattr(Rigidbody, 'setCoords'))
+    def test_Rigidbody_has_set_coords(self):
+        self.assertTrue(hasattr(Rigidbody, 'set_coords'))
 
-    def test_Rigidbody_has_Translate(self):
-        self.assertTrue(hasattr(Rigidbody, 'Translate'))
+    def test_Rigidbody_has_translate(self):
+        self.assertTrue(hasattr(Rigidbody, 'translate'))
 
-    def test_Rigidbody_has_FindCenter(self):
-        self.assertTrue(hasattr(Rigidbody, 'FindCenter'))
+    def test_Rigidbody_has_find_center(self):
+        self.assertTrue(hasattr(Rigidbody, 'find_center'))
 
-    def test_Rigidbody_has_ABrotate(self):
-        self.assertTrue(hasattr(Rigidbody, 'ABrotate'))
+    def test_Rigidbody_has_ab_rotate(self):
+        self.assertTrue(hasattr(Rigidbody, 'ab_rotate'))
 
-    def test_Rigidbody_has_AttractEulerRotate(self):
-        self.assertTrue(hasattr(Rigidbody, 'AttractEulerRotate'))
+    def test_Rigidbody_has_attract_euler_rotate(self):
+        self.assertTrue(hasattr(Rigidbody, 'attract_euler_rotate'))
 
-    def test_Rigidbody_has_syncCoords(self):
-        self.assertTrue(hasattr(Rigidbody, 'syncCoords'))
+    def test_Rigidbody_has_sync_coords(self):
+        self.assertTrue(hasattr(Rigidbody, 'sync_coords'))
 
     def test_Rigidbody_has_apply_matrix(self):
         self.assertTrue(hasattr(Rigidbody, 'apply_matrix'))
 
-    def test_Rigidbody_has_CopyAtom(self):
-        self.assertTrue(hasattr(Rigidbody, 'CopyAtom'))
+    def test_Rigidbody_has_copy_atom(self):
+        self.assertTrue(hasattr(Rigidbody, 'copy_atom'))
 
-    def test_Rigidbody_has_AddAtom(self):
-        self.assertTrue(hasattr(Rigidbody, 'AddAtom'))
+    def test_Rigidbody_has_add_atom(self):
+        self.assertTrue(hasattr(Rigidbody, 'add_atom'))
 
-    def test_Rigidbody_has_SetAtom(self):
-        self.assertTrue(hasattr(Rigidbody, 'SetAtom'))
+    def test_Rigidbody_has_set_atom(self):
+        self.assertTrue(hasattr(Rigidbody, 'set_atom'))
 
-    def test_Rigidbody_has_GetAtomProperty(self):
-        self.assertTrue(hasattr(Rigidbody, 'GetAtomProperty'))
+    def test_Rigidbody_has_get_atom_property(self):
+        self.assertTrue(hasattr(Rigidbody, 'get_atom_property'))
 
-    def test_Rigidbody_has_SetAtomProperty(self):
-        self.assertTrue(hasattr(Rigidbody, 'SetAtomProperty'))
+    def test_Rigidbody_has_set_atom_property(self):
+        self.assertTrue(hasattr(Rigidbody, 'set_atom_property'))
 
-    def test_Rigidbody_has_Radius(self):
-        self.assertTrue(hasattr(Rigidbody, 'Radius'))
+    def test_Rigidbody_has_radius(self):
+        self.assertTrue(hasattr(Rigidbody, 'radius'))
 
-    def test_Rigidbody_has_RadiusGyration(self):
-        self.assertTrue(hasattr(Rigidbody, 'RadiusGyration'))
+    def test_Rigidbody_has_radius_of_gyration(self):
+        self.assertTrue(hasattr(Rigidbody, 'radius_of_gyration'))
 
-    def test_Rigidbody_has_SelectAllAtoms(self):
-        self.assertTrue(hasattr(Rigidbody, 'SelectAllAtoms'))
+    def test_Rigidbody_has_select_all_atoms(self):
+        self.assertTrue(hasattr(Rigidbody, 'select_all_atoms'))
 
-    def test_Rigidbody_has_SelectAtomType(self):
-        self.assertTrue(hasattr(Rigidbody, 'SelectAtomType'))
+    def test_Rigidbody_has_select_atom_type(self):
+        self.assertTrue(hasattr(Rigidbody, 'select_atom_type'))
 
-    def test_Rigidbody_has_SelectResidType(self):
-        self.assertTrue(hasattr(Rigidbody, 'SelectResidType'))
+    def test_Rigidbody_has_select_resid_type(self):
+        self.assertTrue(hasattr(Rigidbody, 'select_resid_type'))
 
-    def test_Rigidbody_has_SelectChainId(self):
-        self.assertTrue(hasattr(Rigidbody, 'SelectChainId'))
+    def test_Rigidbody_has_select_chain_id(self):
+        self.assertTrue(hasattr(Rigidbody, 'select_chain_id'))
 
-    def test_Rigidbody_has_SelectResRange(self):
-        self.assertTrue(hasattr(Rigidbody, 'SelectResRange'))
+    def test_Rigidbody_has_select_res_range(self):
+        self.assertTrue(hasattr(Rigidbody, 'select_res_range'))
 
-    def test_Rigidbody_has_CA(self):
-        self.assertTrue(hasattr(Rigidbody, 'CA'))
+    def test_Rigidbody_has_alpha(self):
+        self.assertTrue(hasattr(Rigidbody, 'alpha'))
 
-    def test_Rigidbody_has_Backbone(self):
-        self.assertTrue(hasattr(Rigidbody, 'Backbone'))
+    def test_Rigidbody_has_backbone(self):
+        self.assertTrue(hasattr(Rigidbody, 'backbone'))
 
     def test_has_operator_add(self):
         self.assertTrue(hasattr(Rigidbody, '__add__'))
@@ -105,16 +105,16 @@ class TestRigidbody(unittest.TestCase):
         self.r2 = Rigidbody()
         at = Atom()
         at.coords = Coord3D(1, 0, 0)
-        self.r2.AddAtom(at)
+        self.r2.add_atom(at)
         at.coords = Coord3D(0, 1, 0)
-        self.r2.AddAtom(at)
+        self.r2.add_atom(at)
         at.coords = Coord3D(0, 0, 1)
-        self.r2.AddAtom(at)
+        self.r2.add_atom(at)
 
     def testCopy(self):
         s = Rigidbody(self.r)
         self.assertEqual(len(s), len(self.r))
-        self.assertEqual(self.r.FindCenter(), s.FindCenter())
+        self.assertEqual(self.r.find_center(), s.find_center())
 
     def test_len(self):
         self.assertEqual(len(self.r), 2365)
@@ -133,40 +133,40 @@ class TestRigidbody(unittest.TestCase):
             d = abs(test - ref)
             return d.x < t and d.y < t and d.z < t
         origin = Coord3D(0, 0, 0)
-        self.assertFalse(coordinates_equal(origin, self.r.FindCenter()))  # assertEqual won't work
+        self.assertFalse(coordinates_equal(origin, self.r.find_center()))  # assertEqual won't work
         self.r.center_to_origin()
-        self.assertTrue(coordinates_equal(origin, self.r.FindCenter()))  # assertEqual won't work
+        self.assertTrue(coordinates_equal(origin, self.r.find_center()))  # assertEqual won't work
 
-    def testCopyAtom(self):
-        atom = self.r.CopyAtom(3)
+    def testcopy_atom(self):
+        atom = self.r.copy_atom(3)
         coords = atom.coords
         assertCoordsAlmostEqual(self, coords, Coord3D(-16.159, 189.782, 106.402))
         self.assertEqual(atom.atom_id, 4)
         self.assertEqual(atom.chain_id, '')
 
-    def testGetCoords(self):
-        coords = self.r.getCoords(3)
+    def testget_coords(self):
+        coords = self.r.get_coords(3)
         assertCoordsAlmostEqual(self, coords, Coord3D(-16.159, 189.782, 106.402))
 
-    def testTranslate(self):
+    def testtranslate(self):
         tr = Coord3D(3.2, 2.98, 14.22)
         s = Rigidbody(self.r)
-        s.Translate(tr)
-        coords = s.getCoords(3)
+        s.translate(tr)
+        coords = s.get_coords(3)
         ref = Coord3D(-16.159 + 3.2, 189.782 + 2.98, 106.402 + 14.22)
         assertCoordsAlmostEqual(self, coords, ref)
 
-    def testFindCenter(self):
-        cen = self.r.FindCenter()
+    def testfind_center(self):
+        cen = self.r.find_center()
         ref = Coord3D(-20.171249, 215.498060, 119.427781)
         assertCoordsAlmostEqual(self, cen, ref)
 
     def testSetAtom(self):
-        atom = self.r.CopyAtom(3)
+        atom = self.r.copy_atom(3)
         atom.coords = Coord3D(3, 4, 5)
-        self.r.SetAtom(3, atom)
+        self.r.set_atom(3, atom)
         # test to see if the mofification worked:
-        atom2 = self.r.CopyAtom(3)
+        atom2 = self.r.copy_atom(3)
         coords2 = atom2.coords
         assertCoordsAlmostEqual(self, atom2.coords, Coord3D(3, 4, 5))
         assertCoordsAlmostEqual(self, coords2, Coord3D(3, 4, 5))
@@ -174,67 +174,67 @@ class TestRigidbody(unittest.TestCase):
     def testSetAtomWithOutOfBoundsPosition(self):
         maxpos = len(self.r) - 1
         with self.assertRaisesRegexp(IndexError, 'out of bounds'):
-            self.r.SetAtomProperty(maxpos + 1, Atom())
+            self.r.set_atom_property(maxpos + 1, Atom())
 
     def testSetAtomWithNegativePosition(self):
         with self.assertRaisesRegexp(OverflowError, "can't convert negative value to unsigned int"):
-            self.r.SetAtomProperty(-1, Atom())
+            self.r.set_atom_property(-1, Atom())
 
-    def testUnsafeGetCoords(self):
-        """in principle GetCoords(i,co) and unsafeGetCoords(i,co) should
+    def testUnsafe_get_coords(self):
+        """in principle get_coords(i,co) and unsafe_get_coords(i,co) should
         lead to the exact same coordinates if a sync has been done before
         calling the 'unsafe' version"""
         r2 = Rigidbody(TEST_LIGAND_PDB)
         A = Coord3D(4.23, 5.72, 99.02)
         B = Coord3D(1.23, 6.33, 1.234)
-        self.r.ABrotate(A, B, 2.2345)
-        r2.ABrotate(A, B, 2.2345)
-        self.r.Translate(Coord3D(34.23, 123.45, 11.972))
-        r2.Translate(Coord3D(34.23, 123.45, 11.972))
+        self.r.ab_rotate(A, B, 2.2345)
+        r2.ab_rotate(A, B, 2.2345)
+        self.r.translate(Coord3D(34.23, 123.45, 11.972))
+        r2.translate(Coord3D(34.23, 123.45, 11.972))
 
-        r2.syncCoords()
+        r2.sync_coords()
         # same rotation and translation for r and r2: should have exact
         # same coordinates
         for i in range(len(self.r)):
             co1 = Coord3D()
             co2 = Coord3D()
-            co1 = self.r.getCoords(i)
-            r2.unsafeGetCoords(i, co2)
+            co1 = self.r.get_coords(i)
+            r2.unsafe_get_coords(i, co2)
             assertCoordsAlmostEqual(self, co1, co2)
 
-    def testAddAtoms(self):
+    def testadd_atoms(self):
         r = Rigidbody()
         self.assertEqual(len(r), 0)
         at = Atom()
         at.coords = Coord3D(2, 3, 4)
-        r.AddAtom(at)
+        r.add_atom(at)
         self.assertAlmostEqual(len(r), 1)
 
-    def testGetAtomProperty(self):
-        atprop = self.r.GetAtomProperty(8)
+    def testget_atom_property(self):
+        atprop = self.r.get_atom_property(8)
         self.assertEqual(atprop.resid_type, 'GLU')
         self.assertEqual(atprop.resid_id, 2)
         self.assertEqual(atprop.atom_id, 9)
 
-    def testSetAtomProperty(self):
+    def testset_atom_property(self):
         prop = Atomproperty()
         prop.resid_type = 'AAA'
-        self.r.SetAtomProperty(0, prop)
-        prop = self.r.GetAtomProperty(0)
+        self.r.set_atom_property(0, prop)
+        prop = self.r.get_atom_property(0)
         self.assertEqual(prop.resid_type, 'AAA')
 
-    def testSetAtomPropertyWithOutOfBoundsPosition(self):
+    def testset_atom_propertyWithOutOfBoundsPosition(self):
         maxpos = len(self.r) - 1
         with self.assertRaisesRegexp(IndexError, 'out of bounds'):
-            self.r.SetAtomProperty(maxpos + 1, Atomproperty())
+            self.r.set_atom_property(maxpos + 1, Atomproperty())
 
-    def testSetAtomPropertyWithNegativePosition(self):
+    def testset_atom_propertyWithNegativePosition(self):
         with self.assertRaisesRegexp(OverflowError, "can't convert negative value to unsigned int"):
-            self.r.SetAtomProperty(-1, Atomproperty())
+            self.r.set_atom_property(-1, Atomproperty())
 
     def testNegativeResId(self):
         rigid = Rigidbody(TEST_2AAV_PDB)
-        at1 = rigid.CopyAtom(0)
+        at1 = rigid.copy_atom(0)
         self.assertEqual(at1.resid_id, -4)
 
 

@@ -61,10 +61,10 @@ def rigidToSeq(rigid):
        This function needs CA atoms to be present. A missing CA atom will
        result in a missing letter in the sequence.
     """
-    rca = rigid.CA().create_rigid()  # restrict to the CA atoms.
+    rca = rigid.alpha().create_rigid()  # restrict to the CA atoms.
     seq = []
     for i in range(len(rca)):
-        at = rca.CopyAtom(i)
+        at = rca.copy_atom(i)
         seq.append(one_letter_residue_dict[at.resid_type])
 
     return "".join(seq)
