@@ -263,7 +263,7 @@ def heliConstruct(mono1, hp, N, Z=False, seq=False, writefile=None):
     else:
         if writefile is not None:
             # Write to file with name provided
-            ptools.WritePDB(final, writefile)
+            ptools.write_pdb(final, writefile)
     return final
 
 
