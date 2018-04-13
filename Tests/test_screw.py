@@ -16,7 +16,7 @@ class TestScrewBindings(unittest.TestCase):
         self.assertTrue(hasattr(ptools, 'Screw'))
 
     def test_Screw_has_attributes(self):
-        self.assertTrue(hasattr(ptools.Screw, 'unitVector'))
+        self.assertTrue(hasattr(ptools.Screw, 'unit_vector'))
         self.assertTrue(hasattr(ptools.Screw, 'point'))
         self.assertTrue(hasattr(ptools.Screw, 'normtranslation'))
         self.assertTrue(hasattr(ptools.Screw, 'angle'))
@@ -39,11 +39,11 @@ class TestScrew(unittest.TestCase):
         self.s.normtranslation = value
         self.assertAlmostEqual(self.s.normtranslation, value)
 
-    def test_get_set_unitVector(self):
-        assertCoordsAlmostEqual(self, self.s.unitVector, ptools.Coord3D())
+    def test_get_set_unit_vector(self):
+        assertCoordsAlmostEqual(self, self.s.unit_vector, ptools.Coord3D())
         u = ptools.Coord3D(random_float(), random_float(), random_float())
-        self.s.unitVector = u
-        assertCoordsAlmostEqual(self, self.s.unitVector, u)
+        self.s.unit_vector = u
+        assertCoordsAlmostEqual(self, self.s.unit_vector, u)
 
     def test_get_set_point(self):
         assertCoordsAlmostEqual(self, self.s.point, ptools.Coord3D())

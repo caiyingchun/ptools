@@ -84,7 +84,7 @@ def distAxis(rig, hp):
     """Return the minimal and maximal distances between the axis and the
     rigid body."""
     natoms = len(rig)
-    all_distances = [distance(rig.get_coords(i) - hp.point, hp.unitVector)
+    all_distances = [distance(rig.get_coords(i) - hp.point, hp.unit_vector)
                      for i in xrange(0, natoms)]
     return min(all_distances), max(all_distances)
 
@@ -96,8 +96,8 @@ def getpstart(start, hp, dmin, dmax):
     m1 = start
     cm = m1.find_center()
     v = cm - hp.point
-    s = ptools.dotproduct(v, hp.unitVector)
-    p = (hp.point + hp.unitVector * s)
+    s = ptools.dotproduct(v, hp.unit_vector)
+    p = (hp.point + hp.unit_vector * s)
 
     # normal to the axis that contains the center of mass of the monomer
     v2 = cm - p
@@ -108,7 +108,7 @@ def getpstart(start, hp, dmin, dmax):
 
     # midpoint in the groove, at half the pitch
     pitch = hp.normtranslation * (360. / abs(math.degrees(hp.angle)))
-    pgroove = pmid + (hp.unitVector * (pitch / 2))
+    pgroove = pmid + (hp.unit_vector * (pitch / 2))
 
     pstart = ptools.Rigidbody()
     pstart.add_atom(ptools.Atom(ap, pgroove))
@@ -131,7 +131,7 @@ def groove_width_calculation(hp, mono1):
     n = 1
     end = n + nbmono + 1
     O = hp.point
-    axe = hp.unitVector
+    axe = hp.unit_vector
     groove = extend(hp, mono1, nbmono * 3, False, False)
     start = groove.select_chain_id(string.ascii_uppercase[n]).create_rigid()
     dmin, dmax = distAxis(mono1, hp)
@@ -185,7 +185,7 @@ def extend(hp, mono1, nb, Z=False, seq=False):
     monoTest = mono1.select_all_atoms().create_rigid()
     i = 0
     O = hp.point
-    axe = hp.unitVector
+    axe = hp.unit_vector
     if Z is True:
         # align on Z
         # 1 make Z axis, unit prot axis
@@ -199,7 +199,7 @@ def extend(hp, mono1, nb, Z=False, seq=False):
 
         Protaxis = ptools.Rigidbody()
         Protaxis.add_atom(ptools.Atom(at, hp.point))
-        Protaxis.add_atom(ptools.Atom(at, hp.point + hp.unitVector.normalize()))
+        Protaxis.add_atom(ptools.Atom(at, hp.point + hp.unit_vector.normalize()))
         # 2 superpose and get matrix
         m = ptools.superpose(Zaxis, Protaxis).matrix
         # 3 apply matrix to rigidbody
@@ -228,7 +228,7 @@ def heliAnalyze(mono1, mono2, doprint=True):
     def coord3d_to_str(v):
         return '{:6.2f}{:8.2f}{:8.2f}'.format(v.x, v.y, v.z)
 
-    hp = ptools.MatTrans2screw(ptools.superpose(mono2, mono1).matrix)
+    hp = ptools.mat_trans_to_screw(ptools.superpose(mono2, mono1).matrix)
 
     if doprint:
         dmin, dmax = distAxis(mono1, hp)
@@ -238,7 +238,7 @@ def heliAnalyze(mono1, mono2, doprint=True):
 
         s = HELI_ANALYZE_TEMPLATE % {
             'axis_point': coord3d_to_str(hp.point),
-            'axis_unit_vector': coord3d_to_str(hp.unitVector),
+            'axis_unit_vector': coord3d_to_str(hp.unit_vector),
             'angle': hp.angle,
             'angle_deg': rotation_angle_degrees,
             'normtranslation': hp.normtranslation,

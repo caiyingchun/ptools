@@ -24,7 +24,7 @@ cdef class Screw:
         if self.thisptr:
             del self.thisptr
 
-    property unitVector:
+    property unit_vector:
         def __get__(self):
             cdef CppCoord3D ref = (<CppScrew*>self.thisptr).unitVector
             return Coord3D(ref.x, ref.y, ref.z)
@@ -55,7 +55,7 @@ cdef class Screw:
         def __set__(self, double value):
             self.thisptr.angle = value
 
-    
+
 def superpose(Rigidbody ref, Rigidbody mob, int verbosity=0):
     cdef cppSuperpose_t sup = cppsuperpose(deref(ref.thisptr), deref(mob.thisptr), verbosity)
     
@@ -67,12 +67,12 @@ def superpose(Rigidbody ref, Rigidbody mob, int verbosity=0):
     return pysup
 
 
-def MatTrans2screw(Matrix mat):
+def mat_trans_to_screw(Matrix mat):
     cpp_screw = cppMatTrans2screw(deref(mat.thisptr))
     screw = Screw()
     screw.angle = cpp_screw.angle
     screw.normtranslation = cpp_screw.normtranslation
-    screw.unitVector = cppCoord3D_to_Coord3D(cpp_screw.unitVector)
+    screw.unit_vector = cppCoord3D_to_Coord3D(cpp_screw.unitVector)
     screw.point = cppCoord3D_to_Coord3D(cpp_screw.point)
     return screw
 
