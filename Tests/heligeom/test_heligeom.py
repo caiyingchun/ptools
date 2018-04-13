@@ -26,7 +26,7 @@ class TestHeligeom(unittest.TestCase):
 
     def testGenerateBDNA(self):
         dna = DNA(TEST_BP_PDB, "AAAAAATCGATCTATC", ADNA())  # tout atom
-        result = dna.PrintPDB()
+        result = dna.print_PDB()
         expected = open(TEST_BDNA_EXPECTED_PDB).read()
         self.assertEqual(result, expected)
 
@@ -38,32 +38,32 @@ class TestHeligeom(unittest.TestCase):
 
         # add a base Pair
         bp = BasePair(dna[0].get_rigid_body())
-        dna.Add(bp)
+        dna.add(bp)
 
         # add itself
         new = DNA(dna)
-        dna.Add(new, BDNA())
+        dna.add(new, BDNA())
 
         # change the type of a base
-        dna.ChangeType(0, "A", TEST_BP_RED)
+        dna.change_type(0, "A", TEST_BP_RED)
 
         # turn the center base
-        dna.ApplyLocal(Roll(30), dna.Size() / 2)
+        dna.apply_local(Roll(30), dna.size() / 2)
 
         # trim the extremities
-        dna = dna.SubDNA(2, dna.Size() - 3)
+        dna = dna.sub_DNA(2, dna.size() - 3)
 
         # change to a All Atom representation
-        dna.ChangeRepresentation(TEST_BP_PDB)
+        dna.change_representation(TEST_BP_PDB)
 
-        result = dna.PrintPDB()
+        result = dna.print_PDB()
         with open(TEST_BASIC_MANIP_EXPECTED_PDB, 'rt') as f:
             expected = f.read()
         self.assertEqual(result, expected)
 
     def testCGfromPDBFile(self):
         dna = DNA(TEST_BP_PDB, TEST_BDNA_EXPECTED_PDB)  # gros grain
-        result = dna.PrintPDB()
+        result = dna.print_PDB()
         expected = open(TEST_CG_FROM_PDBFILE_EXPECTED_PDB).read()
         self.assertEqual(result, expected)
 
