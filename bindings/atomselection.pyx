@@ -85,7 +85,7 @@ cdef class AtomSelection:
         return self.__invert__()
     
     
-    def CreateRigid(self):
+    def create_rigid(self):
         ret = Rigidbody()
         if ret.thisptr:
             del ret.thisptr
@@ -93,6 +93,6 @@ cdef class AtomSelection:
         ret.thisptr = new CppRigidbody(rig)
         return ret
 
-    def SetRigid(self, Rigidbody r):
+    def set_rigid(self, Rigidbody r):
         self.pyRigid = r # to increase the refcount of r, preventing bad things if r is destroyed
         self.thisptr.SetRigid(deref(r.thisptr))

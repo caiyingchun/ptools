@@ -23,7 +23,7 @@ cdef extern from "coord3d.h" namespace "PTools":
 
     
         
-cdef makeCoord3D(CppCoord3D c):
+cdef make_coord3D(CppCoord3D c):
     cdef Coord3D result = Coord3D(c.x, c.y, c.z)
     return result
         
@@ -92,19 +92,19 @@ cdef class Coord3D:
          cscal = <double> scal
          
          cdef CppCoord3D r = cscal * deref(pymyself.thisptr)
-         return makeCoord3D(r)
+         return make_coord3D(r)
 
     def __div__(self, scal):
          return Coord3D(self.x / scal, self.y / scal, self.z / scal)
 
     def __neg__(self):
-         return makeCoord3D(CppCoord3D()-deref(self.thisptr))     
+         return make_coord3D(CppCoord3D()-deref(self.thisptr))     
          
     def __str__(self):
         return "%f %f %f"%(self.x, self.y, self.z)
     
-    def Normalize(self):
-        return makeCoord3D(deref(self.thisptr).Normalize())
+    def normalize(self):
+        return make_coord3D(deref(self.thisptr).Normalize())
 
 
 def norm(Coord3D v):

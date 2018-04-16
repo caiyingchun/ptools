@@ -84,7 +84,7 @@ def distAxis(rig, hp):
     """Return the minimal and maximal distances between the axis and the
     rigid body."""
     natoms = len(rig)
-    all_distances = [distance(rig.getCoords(i) - hp.point, hp.unitVector)
+    all_distances = [distance(rig.get_coords(i) - hp.point, hp.unit_vector)
                      for i in xrange(0, natoms)]
     return min(all_distances), max(all_distances)
 
@@ -94,34 +94,34 @@ def getpstart(start, hp, dmin, dmax):
     # position of the sphere point
     ap = ptools.Atomproperty()
     m1 = start
-    cm = m1.FindCenter()
+    cm = m1.find_center()
     v = cm - hp.point
-    s = ptools.dotproduct(v, hp.unitVector)
-    p = (hp.point + hp.unitVector * s)
+    s = ptools.dotproduct(v, hp.unit_vector)
+    p = (hp.point + hp.unit_vector * s)
 
     # normal to the axis that contains the center of mass of the monomer
     v2 = cm - p
-    v2 = v2.Normalize()
+    v2 = v2.normalize()
 
     # midpoint betwen dist min and max to the axis
     pmid = p + v2 * (dmin + (dmax - dmin) / 2)
 
     # midpoint in the groove, at half the pitch
     pitch = hp.normtranslation * (360. / abs(math.degrees(hp.angle)))
-    pgroove = pmid + (hp.unitVector * (pitch / 2))
+    pgroove = pmid + (hp.unit_vector * (pitch / 2))
 
     pstart = ptools.Rigidbody()
-    pstart.AddAtom(ptools.Atom(ap, pgroove))
+    pstart.add_atom(ptools.Atom(ap, pgroove))
     return pstart
 
 
 def getpart(groove, n, nbmono):
     inf = ptools.Rigidbody()
     for i in xrange(n - 1, n + 3):
-        inf = inf + groove.SelectChainId(string.ascii_uppercase[i % 26]).CreateRigid()
+        inf = inf + groove.select_chain_id(string.ascii_uppercase[i % 26]).create_rigid()
     sup = ptools.Rigidbody()
     for i in xrange(n - 2 + nbmono, n + 2 + nbmono):
-        sup = sup + groove.SelectChainId(string.ascii_uppercase[i % 26]).CreateRigid()
+        sup = sup + groove.select_chain_id(string.ascii_uppercase[i % 26]).create_rigid()
     return inf, sup
 
 
@@ -131,9 +131,9 @@ def groove_width_calculation(hp, mono1):
     n = 1
     end = n + nbmono + 1
     O = hp.point
-    axe = hp.unitVector
+    axe = hp.unit_vector
     groove = extend(hp, mono1, nbmono * 3, False, False)
-    start = groove.SelectChainId(string.ascii_uppercase[n]).CreateRigid()
+    start = groove.select_chain_id(string.ascii_uppercase[n]).create_rigid()
     dmin, dmax = distAxis(mono1, hp)
 
     nb = 0
@@ -146,22 +146,22 @@ def groove_width_calculation(hp, mono1):
         nbpoint = abs(int(math.degrees(hp.angle)) * 2)
         for j in xrange(nbpoint):
             ldist = []
-            start.ABrotate(O, O + axe, hp.angle / nbpoint)
-            start.Translate(axe * hp.normtranslation / nbpoint)
+            start.ab_rotate(O, O + axe, hp.angle / nbpoint)
+            start.translate(axe * hp.normtranslation / nbpoint)
             for k in xrange(int(round(dmin + (dmax - dmin) / 2)), int(round(dmax))):
                 pstart = getpstart(start, hp, k, k)
 
                 # get the min dist on the inferior part
-                mindistinf = ptools.Dist(pstart.CopyAtom(0), inf.CopyAtom(0))
+                mindistinf = ptools.dist(pstart.copy_atom(0), inf.copy_atom(0))
                 for k in xrange(1, infSize):
-                    tempdist = ptools.Dist(pstart.CopyAtom(0), inf.CopyAtom(k))
+                    tempdist = ptools.dist(pstart.copy_atom(0), inf.copy_atom(k))
                     if tempdist < mindistinf:
                         mindistinf = tempdist
 
                 # the same on the superior part
-                mindistsup = ptools.Dist(pstart.CopyAtom(0), sup.CopyAtom(0))
+                mindistsup = ptools.dist(pstart.copy_atom(0), sup.copy_atom(0))
                 for k in xrange(1, supSize):
-                    tempdist = ptools.Dist(pstart.CopyAtom(0), sup.CopyAtom(k))
+                    tempdist = ptools.dist(pstart.copy_atom(0), sup.copy_atom(k))
                     if tempdist < mindistsup:
                         mindistsup = tempdist
                 # get the two point on the vector and take the mid size
@@ -174,18 +174,18 @@ def groove_width_calculation(hp, mono1):
 def changeChain(rig, letter):
     rsize = rig.size()
     for i in xrange(0, rsize):
-        at = rig.GetAtomProperty(i)
-        at.chainId = letter
-        rig.SetAtomProperty(i, at)
+        at = rig.get_atom_property(i)
+        at.chain_id = letter
+        rig.set_atom_property(i, at)
     return rig
 
 
 def extend(hp, mono1, nb, Z=False, seq=False):
     final = ptools.Rigidbody()
-    monoTest = mono1.SelectAllAtoms().CreateRigid()
+    monoTest = mono1.select_all_atoms().create_rigid()
     i = 0
     O = hp.point
-    axe = hp.unitVector
+    axe = hp.unit_vector
     if Z is True:
         # align on Z
         # 1 make Z axis, unit prot axis
@@ -193,13 +193,13 @@ def extend(hp, mono1, nb, Z=False, seq=False):
 
         Zaxis = ptools.Rigidbody()
         O = ptools.Coord3D(0, 0, 0)
-        Zaxis.AddAtom(ptools.Atom(at, O))
+        Zaxis.add_atom(ptools.Atom(at, O))
         axe = ptools.Coord3D(0, 0, 1)
-        Zaxis.AddAtom(ptools.Atom(at, ptools.Coord3D(0, 0, 1)))
+        Zaxis.add_atom(ptools.Atom(at, ptools.Coord3D(0, 0, 1)))
 
         Protaxis = ptools.Rigidbody()
-        Protaxis.AddAtom(ptools.Atom(at, hp.point))
-        Protaxis.AddAtom(ptools.Atom(at, hp.point + hp.unitVector.Normalize()))
+        Protaxis.add_atom(ptools.Atom(at, hp.point))
+        Protaxis.add_atom(ptools.Atom(at, hp.point + hp.unit_vector.normalize()))
         # 2 superpose and get matrix
         m = ptools.superpose(Zaxis, Protaxis).matrix
         # 3 apply matrix to rigidbody
@@ -212,8 +212,8 @@ def extend(hp, mono1, nb, Z=False, seq=False):
         print(final.print_pdb())
     i += 1
     for j in xrange(nb - 1):
-        monoTest.ABrotate(O, O + axe, hp.angle)
-        monoTest.Translate(axe * hp.normtranslation)
+        monoTest.ab_rotate(O, O + axe, hp.angle)
+        monoTest.translate(axe * hp.normtranslation)
         monoTest = changeChain(monoTest, string.ascii_uppercase[i % 26])
         if seq:
             print(monoTest.print_pdb())
@@ -228,7 +228,7 @@ def heliAnalyze(mono1, mono2, doprint=True):
     def coord3d_to_str(v):
         return '{:6.2f}{:8.2f}{:8.2f}'.format(v.x, v.y, v.z)
 
-    hp = ptools.MatTrans2screw(ptools.superpose(mono2, mono1).matrix)
+    hp = ptools.mat_trans_to_screw(ptools.superpose(mono2, mono1).matrix)
 
     if doprint:
         dmin, dmax = distAxis(mono1, hp)
@@ -238,7 +238,7 @@ def heliAnalyze(mono1, mono2, doprint=True):
 
         s = HELI_ANALYZE_TEMPLATE % {
             'axis_point': coord3d_to_str(hp.point),
-            'axis_unit_vector': coord3d_to_str(hp.unitVector),
+            'axis_unit_vector': coord3d_to_str(hp.unit_vector),
             'angle': hp.angle,
             'angle_deg': rotation_angle_degrees,
             'normtranslation': hp.normtranslation,
@@ -263,7 +263,7 @@ def heliConstruct(mono1, hp, N, Z=False, seq=False, writefile=None):
     else:
         if writefile is not None:
             # Write to file with name provided
-            ptools.WritePDB(final, writefile)
+            ptools.write_pdb(final, writefile)
     return final
 
 

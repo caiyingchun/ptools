@@ -78,8 +78,8 @@ class BeadCreationError(ResidueReductionError):
     def __init__(self, bead, message=''):
         self.bead = bead
         self.expected_atoms = sorted(self.bead.atom_reduction_parameters.keys())
-        self.found_atoms = sorted(atom.atomType for atom in self.bead.atoms)
-        super(BeadCreationError, self).__init__(bead.residType, bead.residId,
+        self.found_atoms = sorted(atom.atom_type for atom in self.bead.atoms)
+        super(BeadCreationError, self).__init__(bead.resid_type, bead.resid_id,
                                                 bead_name=self.bead.name)
 
 
@@ -128,10 +128,10 @@ class IgnoredAtomsInReducedResidueError(ResidueReductionError):
 
     def __init__(self, residue):
         # Names of atoms sent to coarse grain residue constructor.
-        self.atom_names = [atom.atomType for atom in residue.all_atoms]
+        self.atom_names = [atom.atom_type for atom in residue.all_atoms]
 
         # Names of atoms actually used in the beads.
-        self.bead_atom_names = [atom.atomType for bead in residue.beads
+        self.bead_atom_names = [atom.atom_type for bead in residue.beads
                                 for atom in bead.atoms]
 
         super(IgnoredAtomsInReducedResidueError, self).__init__(residue.resname, residue.resid)

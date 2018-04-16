@@ -93,7 +93,7 @@ cdef class Rigidbody:
             # we consider filename as a file-like object
             # print "reading rigidbody from file-like"
             self.thisptr = new CppRigidbody()
-            loadPDBfromPythonFileLike(filename, self.thisptr)
+            load_pdb_from_python_file_like(filename, self.thisptr)
 
         else:
             raise RuntimeError("invalid argument in Rigidbody()")
@@ -122,7 +122,7 @@ cdef class Rigidbody:
     def size(self):
         return len(self)
 
-    def getCoords(self, unsigned int i):
+    def get_coords(self, unsigned int i):
         cdef Coord3D c = Coord3D()
         cdef CppCoord3D cpp = self.thisptr.GetCoords(i)
         c.x = cpp.x
@@ -133,16 +133,16 @@ cdef class Rigidbody:
     def print_pdb(self):
         return str(self)
 
-    def unsafeGetCoords(self, unsigned int i, Coord3D co):
+    def unsafe_get_coords(self, unsigned int i, Coord3D co):
         self.thisptr.unsafeGetCoords(i, deref(co.thisptr))
 
-    def setCoords(self, int i, Coord3D co):
+    def set_coords(self, int i, Coord3D co):
         self.thisptr.SetCoords(i, deref(co.thisptr))
 
-    def Translate(self, Coord3D tr):
+    def translate(self, Coord3D tr):
         self.thisptr.Translate(deref(tr.thisptr))
 
-    def FindCenter(self):
+    def find_center(self):
         cdef Coord3D c = Coord3D()
         cdef CppCoord3D cpp = self.thisptr.FindCenter()
         c.x = cpp.x
@@ -150,33 +150,33 @@ cdef class Rigidbody:
         c.z = cpp.z
         return c
 
-    def ABrotate(self, Coord3D A, Coord3D B, double theta):
+    def ab_rotate(self, Coord3D A, Coord3D B, double theta):
         self.thisptr.ABrotate(deref(A.thisptr), deref(B.thisptr), theta)
         return None
 
-    def AttractEulerRotate(self, double phi, double ssi, double rot):
+    def attract_euler_rotate(self, double phi, double ssi, double rot):
         self.thisptr.AttractEulerRotate(phi, ssi, rot)
 
-    def syncCoords(self):
+    def sync_coords(self):
         self.thisptr.syncCoords()
 
     def apply_matrix(self, Matrix mat):
         self.thisptr.ApplyMatrix(deref(mat.thisptr))
 
-    def CopyAtom(self, unsigned int atid):
+    def copy_atom(self, unsigned int atid):
         cdef CppAtom cpp_at = self.thisptr.CopyAtom(atid)
         cdef Atom at = Atom()
         cdef CppAtom * cpp_dest = <CppAtom*> at.thisptr
         cy_copy_atom(& cpp_at, cpp_dest)
         return at
 
-    def AddAtom(self, Atom at):
+    def add_atom(self, Atom at):
         self.thisptr.AddAtom(deref(<CppAtom*>at.thisptr))
 
-    def SetAtom(self, unsigned int position, Atom at):
+    def set_atom(self, unsigned int position, Atom at):
         self.thisptr.SetAtom(position, deref(<CppAtom*>at.thisptr))
 
-    def GetAtomProperty(self, unsigned int position):
+    def get_atom_property(self, unsigned int position):
         cdef CppAtomproperty cppatprop = self.thisptr.GetAtomProperty(position)
         cdef Atomproperty pyAtprop = Atomproperty()
         cdef CppAtomproperty * new_atomprop = new CppAtomproperty(cppatprop)
@@ -184,25 +184,25 @@ cdef class Rigidbody:
         pyAtprop.thisptr = new_atomprop
         return pyAtprop
 
-    def SetAtomProperty(self, unsigned int position, Atomproperty prop):     
+    def set_atom_property(self, unsigned int position, Atomproperty prop):     
         if position < 0  or position >= len(self):
             raise IndexError('atom index out of bounds')
         self.thisptr.SetAtomProperty(position, deref(<CppAtomproperty*>prop.thisptr))
 
-    def Radius(self):
+    def radius(self):
         return self.thisptr.Radius()
 
-    def RadiusGyration(self):
+    def radius_of_gyration(self):
         return self.thisptr.RadiusGyration()
 
-    def SelectAllAtoms(self):
+    def select_all_atoms(self):
         ret = AtomSelection()
         del ret.thisptr
         cdef CppAtomSelection new_sel = self.thisptr.SelectAllAtoms()
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def SelectAtomType(self, bytes b):
+    def select_atom_type(self, bytes b):
         ret = AtomSelection()
         del ret.thisptr
         cdef char * c_typename = b
@@ -212,7 +212,7 @@ cdef class Rigidbody:
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def SelectResidType(self, bytes b):
+    def select_resid_type(self, bytes b):
         ret = AtomSelection()
         del ret.thisptr
         cdef char * c_typename = b
@@ -222,7 +222,7 @@ cdef class Rigidbody:
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def SelectChainId(self, bytes b):
+    def select_chain_id(self, bytes b):
         ret = AtomSelection()
         del ret.thisptr
         cdef char * c_typename = b
@@ -232,21 +232,21 @@ cdef class Rigidbody:
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def SelectResRange(self, int i, int j):
+    def select_res_range(self, int i, int j):
         ret = AtomSelection()
         del ret.thisptr
         cdef CppAtomSelection new_sel = self.thisptr.SelectResRange(i, j)
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def CA(self):
+    def alpha(self):
         ret = AtomSelection()
         del ret.thisptr
         cdef CppAtomSelection new_sel = self.thisptr.CA()
         ret.thisptr = new CppAtomSelection(new_sel)
         return ret
 
-    def Backbone(self):
+    def backbone(self):
         ret = AtomSelection()
         del ret.thisptr
         cdef CppAtomSelection new_sel = self.thisptr.Backbone()
@@ -265,7 +265,7 @@ cdef CppRigidbody* _getRigidbody_from_py_name(pyname):
     return newrigid
 
 
-cdef loadPDBfromPythonFileLike(file, CppRigidbody* rigid):
+cdef load_pdb_from_python_file_like(file, CppRigidbody* rigid):
     cdef string cppstring
     lines = file.readlines()
 

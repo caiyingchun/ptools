@@ -29,20 +29,20 @@ cdef class ScorpionForceField:
     def __dealloc__(self):
         del self.thisptr
 
-    def AddLigand(self, AttractRigidbody rig):
+    def add_ligand(self, AttractRigidbody rig):
         self.thisptr.AddLigand(deref(<CppAttractRigidbody*> rig.thisptr))
 
-    def Function(self, vec):
+    def function(self, vec):
         cdef vector[double] v
         for el in vec:
            v.push_back(el)
 
         return self.thisptr.Function(v)
         
-    def getVdw(self):
+    def get_vdw(self):
         return self.thisptr.getVdw()
     
-    def getCoulomb(self):
+    def get_coulomb(self):
         return self.thisptr.getCoulomb()
 
     def nonbon8(self, AttractRigidbody rec, AttractRigidbody lig, AttractPairList pl, verbose=False):

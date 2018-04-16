@@ -45,7 +45,7 @@ cdef class DNA:
             self.thisptr = <CppDNA*> 0
 
     def __len__(self):
-        return self.Size()
+        return self.size()
 
     def __getitem__(self, unsigned int i):
         if i>=self.thisptr.Size():
@@ -57,10 +57,10 @@ cdef class DNA:
         bp.thisptr = new CppBasePair(deref(self.thisptr)[i])
         return bp
 
-    def Size(self):
+    def size(self):
         return self.thisptr.Size()
 
-    def SubDNA(self, int start, int end):
+    def sub_DNA(self, int start, int end):
         ret = DNA()
         if ret.thisptr:
             del ret.thisptr
@@ -68,7 +68,7 @@ cdef class DNA:
         ret.thisptr = new CppDNA(cdna)
         return ret
 
-    def Add(self, bp_or_dna, mov=None):
+    def add(self, bp_or_dna, mov=None):
         if isinstance(bp_or_dna, DNA):
             self._add_dna(bp_or_dna, mov)
         else:
@@ -86,16 +86,16 @@ cdef class DNA:
         else:
             self.thisptr.Add(deref(dna.thisptr), deref(mov.thisptr))
     
-    def ChangeType(self, int pos, bytes basetype, bytes filename):
+    def change_type(self, int pos, bytes basetype, bytes filename):
         cdef const char * c_basetype = basetype
         cdef const char * c_filename = filename
         self.thisptr.ChangeType(pos, str(c_basetype), str(c_filename))
 
-    def ApplyLocal(self, Movement mov, int posMov):
+    def apply_local(self, Movement mov, int posMov):
         self.thisptr.ApplyLocal(deref(mov.thisptr), posMov)
 
-    def ChangeRepresentation(self, bytes rep):
+    def change_representation(self, bytes rep):
         self.thisptr.ChangeRepresentation(rep)
 
-    def PrintPDB(self):
+    def print_PDB(self):
         return self.thisptr.PrintPDB()

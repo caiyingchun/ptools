@@ -80,29 +80,29 @@ cdef class AttractRigidbody (Rigidbody) :
            self.thisptr = <CppRigidbody*> 0
 
     
-    def getAtomTypeNumber(self, atomid):
+    def get_atom_type_number(self, atomid):
          return (<CppAttractRigidbody*>self.thisptr).getAtomTypeNumber(atomid)
 
-    def getCharge(self, atomid):
+    def get_charge(self, atomid):
          return (<CppAttractRigidbody*>self.thisptr).getCharge(atomid)
 
     #void setRotation(bool)
-    def setRotation(self, flag):
+    def set_rotation(self, flag):
         (<CppAttractRigidbody*> self.thisptr).setRotation(flag)
 
     #void setTranslation(bool)
-    def setTranslation(self, flag):
+    def set_translation(self, flag):
         (<CppAttractRigidbody*> self.thisptr).setTranslation(flag)
 
-    def isAtomActive(self, atomid):
+    def is_atom_active(self, atomid):
         return (<CppAttractRigidbody*> self.thisptr).isAtomActive(atomid)
 
     #void resetForces()
-    def resetForces(self):
+    def reset_forces(self):
         (<CppAttractRigidbody*> self.thisptr).resetForces()
 
     
-    def Size(self):
+    def size(self):
         return self.thisptr.Size()
 
     #define also the __len__ method:
@@ -110,7 +110,7 @@ cdef class AttractRigidbody (Rigidbody) :
         return self.thisptr.Size()
 
         
-    def FindCenter(self):
+    def find_center(self):
         cdef CppRigidbody* rig = <CppRigidbody*> self.thisptr
         cdef CppCoord3D* co = new CppCoord3D (rig.FindCenter())
         ret = Coord3D()
@@ -119,25 +119,24 @@ cdef class AttractRigidbody (Rigidbody) :
         
         return ret
         
-    def Translate(self, Coord3D co):
+    def translate(self, Coord3D co):
         cdef CppRigidbody* rig = <CppRigidbody*> self.thisptr
         rig.Translate(deref(co.thisptr))
         
-    def  AttractEulerRotate(self, double phi, double ssi, double rot):
+    def attract_euler_rotate(self, double phi, double ssi, double rot):
         cdef CppRigidbody* rig = <CppRigidbody*> self.thisptr
         rig.AttractEulerRotate(phi, ssi, rot)
 
 
     #these function should be defined only in Rigdibody object and attractrigdbody should inherit from it:œ
 
-    def Radius(self):
-       return self.thisptr.Radius()
+    def radius(self):
+        return self.thisptr.Radius()
 
-    def RadiusGyration(self):
-       return self.thisptr.RadiusGyration()      
+    def radius_of_gyration(self):
+        return self.thisptr.RadiusGyration()      
 
-
-    def PrintMatrix(self):
+    def print_matrix(self):
        (<CppAttractRigidbody*> self.thisptr).PrintMatrix()
 
     def CA(self):

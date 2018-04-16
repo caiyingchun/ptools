@@ -50,7 +50,7 @@ def write_grid_to_pdb(grid, fp):
         fp (file): file pointer to output file
     """
     for i in xrange(len(grid)):
-        coords = grid.getCoords(i)
+        coords = grid.get_coords(i)
         print(PDB_FMT % {'atomid': i + 1,
                          'atomname': 'POSI',
                          'resname': 'PRO',
@@ -72,19 +72,19 @@ def run(args):
     lig = ptools.Rigidbody(args.ligand)
 
     # Distance to receptor.
-    distance_to_receptor = args.distance_to_receptor or lig.Radius()
+    distance_to_receptor = args.distance_to_receptor or lig.radius()
     distance_to_receptor *= args.distance_to_receptor_factor
 
     # Initialize surface.
     surf = ptools.Surface(30, 30, SOLVATION_PARAMETER_FILE)
-    surf.surfpointParams(5000, distance_to_receptor)
+    surf.surfpoint_params(5000, distance_to_receptor)
 
     # Generate grid points.
     grid = surf.surfpoint(rec, 1.4)
 
     # Remove points too clore from the receptor.
     outergrid = surf.outergrid(grid, rec, distance_to_receptor)
-    outergrid = surf.removeclosest(outergrid, args.density)
+    outergrid = surf.remove_closest(outergrid, args.density)
 
     # Generate output PDB.
     if args.output:

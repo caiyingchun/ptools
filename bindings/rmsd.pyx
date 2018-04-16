@@ -3,7 +3,7 @@ cdef extern from "rmsd.h" namespace "PTools":
     cdef double CppRmsd "PTools::Rmsd" (CppAtomSelection & r1, CppAtomSelection& r2) except +ValueError
 
     
-def Rmsd(r1, r2):
+def rmsd(r1, r2):
     """calculates the RMSD between two objects (either Rigibody or AtomSelection). This function does NOT perform
     superposition before the calculation"""
 

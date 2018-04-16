@@ -6,11 +6,11 @@ import sys
 from _ptools import (ADNA, Atom, AtomPair, AtomSelection, Atomproperty,
                      AttractForceField1, AttractForceField2, AttractPairList,
                      AttractRigidbody, BDNA, BaseAttractForceField, BasePair,
-                     Coord3D, CoordsArray, DNA, Dist, Dist2, Lbfgs, Matrix,
-                     MatTrans2screw, Movement, Rigidbody, Rise, Rmsd, Roll,
+                     Coord3D, CoordsArray, DNA, dist, dist2, Lbfgs, Matrix,
+                     mat_trans_to_screw, Movement, Rigidbody, Rise, rmsd, Roll,
                      ScorpionForceField, Screw, Shift, Slide,
-                     Superpose_t, Surface, Tilt, Twist, Version, WritePDB,
-                     crossproduct, dotproduct, norm, norm2, strToAtom,
+                     Superpose_t, Surface, Tilt, Twist, Version, write_pdb,
+                     crossproduct, dotproduct, norm, norm2, str_to_atom,
                      superpose)
 
 
@@ -61,11 +61,11 @@ def rigidToSeq(rigid):
        This function needs CA atoms to be present. A missing CA atom will
        result in a missing letter in the sequence.
     """
-    rca = rigid.CA().CreateRigid()  # restrict to the CA atoms.
+    rca = rigid.alpha().create_rigid()  # restrict to the CA atoms.
     seq = []
     for i in range(len(rca)):
-        at = rca.CopyAtom(i)
-        seq.append(one_letter_residue_dict[at.residType])
+        at = rca.copy_atom(i)
+        seq.append(one_letter_residue_dict[at.resid_type])
 
     return "".join(seq)
 

@@ -60,11 +60,8 @@ cdef class Matrix:
     def get_ncolumns(self):
         return self.thisptr.get_ncolumns()
 
-    def getDim(self):
+    def get_dim(self):
         return self.thisptr.getDim()
-
-    def Print(self):
-        self.thisptr.Print()
 
     cdef assign_cpp_pointer(self, Array2D[double]* array2Dpointer):
         cy_copy_array2d(array2Dpointer, self.thisptr)

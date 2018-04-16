@@ -25,17 +25,21 @@ cdef class Lbfgs:
     def minimize(self, int maxiter):
         self.thisptr.minimize(maxiter)
 
-    def GetMinimizedVars(self):
+    def get_minimized_vars(self):
         cdef vector[double] vars = self.thisptr.GetMinimizedVars()
         out = []
         for i in xrange(vars.size()):
             out.append(vars[i])
         return out
 
-    def GetNumberIter(self):
+    def get_number_iter(self):
+        """Alias to get_number_of_iterations."""
         return self.thisptr.GetNumberIter()
 
-    def GetMinimizedVarsAtIter(self, int iter):
+    def get_number_of_iterations(self):
+        return self.thisptr.GetNumberIter()
+
+    def get_minimized_vars_at_iter(self, int iter):
         cdef vector[double] vars = self.thisptr.GetMinimizedVarsAtIter(iter)
         out = []
         for i in xrange(vars.size()):

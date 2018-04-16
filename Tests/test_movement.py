@@ -41,7 +41,7 @@ class MatrixAssertions:
     # Floatting points numbers are tested to be equal at a precision of 1E-5.
     ALMOST_EQUAL_DECIMAL = 5
 
-    def assertIsSquare(self, source, n=0):
+    def assert_is_square(self, source, n=0):
         """Assert that a matrix is square.
 
         If `n` > 0, check the dimension of the matrix is `n`.
@@ -55,7 +55,7 @@ class MatrixAssertions:
             err = 'matrix is not {1}x{1} (dims are ({2},{2})'.format(n, nrow)
             raise AssertionError(err)
 
-    def assertSameDimensions(self, source, target):
+    def assert_same_dimensions(self, source, target):
         """Assert that two matrices have the same dimensions."""
         nrow = len(source)
         ncol = len(source[0])
@@ -64,9 +64,9 @@ class MatrixAssertions:
             err = err.format(nrow, ncol, len(target), len(target[0]))
             raise AssertionError(err)
 
-    def assertMatrixAlmostEqual(self, source, target):
+    def assert_matrix_almost_equal(self, source, target):
         """Assert that two square matrices elements are almost equal."""
-        self.assertSameDimensions(source, target)
+        self.assert_same_dimensions(source, target)
         nrow, ncol = len(source), len(source[0])
         for i in xrange(nrow):
             for j in xrange(ncol):
@@ -85,22 +85,22 @@ class TestMovement(unittest.TestCase, MatrixAssertions):
 
     def test_Movement(self):
         mov = ptools.Movement()
-        self.assertMatrixAlmostEqual(get_movement_matrix(mov), zeros(4, 4))
+        self.assert_matrix_almost_equal(get_movement_matrix(mov), zeros(4, 4))
 
     def test_Shift(self):
         mov = ptools.Shift(self.alpha)
         self.target[0][3] = self.alpha
-        self.assertMatrixAlmostEqual(get_movement_matrix(mov), self.target)
+        self.assert_matrix_almost_equal(get_movement_matrix(mov), self.target)
 
     def test_Slide(self):
         mov = ptools.Slide(self.alpha)
         self.target[1][3] = self.alpha
-        self.assertMatrixAlmostEqual(get_movement_matrix(mov), self.target)
+        self.assert_matrix_almost_equal(get_movement_matrix(mov), self.target)
 
     def test_Rise(self):
         mov = ptools.Rise(self.alpha)
         self.target[2][3] = self.alpha
-        self.assertMatrixAlmostEqual(get_movement_matrix(mov), self.target)
+        self.assert_matrix_almost_equal(get_movement_matrix(mov), self.target)
 
     def test_Twist(self):
         mov = ptools.Twist(self.alpha)
@@ -108,7 +108,7 @@ class TestMovement(unittest.TestCase, MatrixAssertions):
         self.target[0][1] = -math.sin(self.ralpha)
         self.target[1][0] = math.sin(self.ralpha)
         self.target[1][1] = math.cos(self.ralpha)
-        self.assertMatrixAlmostEqual(get_movement_matrix(mov), self.target)
+        self.assert_matrix_almost_equal(get_movement_matrix(mov), self.target)
 
     def test_Roll(self):
         mov = ptools.Roll(self.alpha)
@@ -116,7 +116,7 @@ class TestMovement(unittest.TestCase, MatrixAssertions):
         self.target[0][2] = math.sin(self.ralpha)
         self.target[2][0] = -math.sin(self.ralpha)
         self.target[2][2] = math.cos(self.ralpha)
-        self.assertMatrixAlmostEqual(get_movement_matrix(mov), self.target)
+        self.assert_matrix_almost_equal(get_movement_matrix(mov), self.target)
 
     def test_Tilt(self):
         mov = ptools.Tilt(self.alpha)
@@ -124,7 +124,7 @@ class TestMovement(unittest.TestCase, MatrixAssertions):
         self.target[1][2] = -math.sin(self.ralpha)
         self.target[2][1] = math.sin(self.ralpha)
         self.target[2][2] = math.cos(self.ralpha)
-        self.assertMatrixAlmostEqual(get_movement_matrix(mov), self.target)
+        self.assert_matrix_almost_equal(get_movement_matrix(mov), self.target)
 
     def test_ADNA(self):
         mov = ptools.ADNA()
@@ -135,7 +135,7 @@ class TestMovement(unittest.TestCase, MatrixAssertions):
             [-0.03595566, 0.03697002, 0.99866932, 3.3059932],
             [0.00000000, 0.00000000, 0.00000000, 1.0000000],
         ]
-        self.assertMatrixAlmostEqual(get_movement_matrix(mov), self.target)
+        self.assert_matrix_almost_equal(get_movement_matrix(mov), self.target)
 
     def test_BDNA(self):
         mov = ptools.BDNA()
@@ -146,7 +146,7 @@ class TestMovement(unittest.TestCase, MatrixAssertions):
             [0.04651246, -0.03141768, 0.998423518, 3.2887760],
             [0.00000000, 0.00000000, 0.000000000, 1.0000000],
         ]
-        self.assertMatrixAlmostEqual(get_movement_matrix(mov), self.target)
+        self.assert_matrix_almost_equal(get_movement_matrix(mov), self.target)
 
 
 def zeros(n, m):
@@ -163,7 +163,7 @@ def identity(n):
 
 def get_movement_matrix(mov):
     """Return a Movement matrix."""
-    return string_to_matrix(mov.toString())
+    return string_to_matrix(str(mov))
 
 
 def string_to_matrix(s):

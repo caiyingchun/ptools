@@ -33,7 +33,7 @@ cdef class Surface:
         ret.thisptr = new CppRigidbody(r)
         return ret
 
-    def surfpointParams(self, int max, double shift):
+    def surfpoint_params(self, int max, double shift):
         self.thisptr.surfpointParams(max, shift)
 
     def outergrid(self, Rigidbody rigid1, Rigidbody rigid2, double srad):
@@ -43,14 +43,14 @@ cdef class Surface:
         ret.thisptr = new CppRigidbody(r)
         return ret
 
-    def removeclosest(self, Rigidbody rigid1, double srad):
+    def remove_closest(self, Rigidbody rigid1, double srad):
         cdef CppRigidbody r = self.thisptr.removeclosest(deref(rigid1.thisptr), srad)
         ret = Rigidbody()
         del ret.thisptr
         ret.thisptr = new CppRigidbody(r)
         return ret
 
-    def readsolvparam(self, bytes file):
+    def read_solv_param(self, bytes file):
        cdef char* c_filename = file
        cdef string * cpp_filename = new string(c_filename)
        self.thisptr.readsolvparam(deref(cpp_filename) )
