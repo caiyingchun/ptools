@@ -16,13 +16,13 @@ class TestBasicMoves(unittest.TestCase):
         self.rigid2 = Rigidbody(self.rigid1)
         self.rigid3 = Rigidbody(self.rigid2)
 
-    def testBasicRmsd(self):
+    def test_basic_rmsd(self):
         rigtmp = Rigidbody(self.rigid1)
         self.assertEqual(rmsd(self.rigid1, self.rigid1), 0.0)
         self.rigid1.translate(Coord3D(4, 0, 0))
         self.assertEqual(rmsd(rigtmp, self.rigid1), 4)
 
-    def testErrorsRmsd(self):
+    def test_errors_rmsd(self):
         rigid1 = Rigidbody()
         rigid2 = Rigidbody()
         # cannot calculate an rmsd on an empty object
@@ -32,17 +32,17 @@ class TestBasicMoves(unittest.TestCase):
         self.assertRaises(RuntimeError, rmsd, self.rigid1, "hello")
         self.assertRaises(RuntimeError, rmsd, "hello", self.rigid1)
 
-    def testRmsdAtomSelection1(self):
+    def test_rmsd_atom_selection1(self):
         # tests rmsd with an AtomSelection object
         atsel = self.rigid1.select_all_atoms()
         self.assertEqual(rmsd(atsel, self.rigid2), 0)
 
-    def testRmsdAtomSelection2(self):
+    def test_rmsd_atom_selection2(self):
         # tests rmsd with an AtomSelection object
         atsel = self.rigid1.select_all_atoms()
         self.assertEqual(rmsd(self.rigid2, atsel), 0)
 
-    def testTranslation1(self):
+    def test_translation1(self):
         CoM1 = self.rigid1.find_center()
         self.rigid1.translate(Coord3D(3.0, -55.67, 1))
         CoM2 = self.rigid1.find_center()
@@ -51,7 +51,7 @@ class TestBasicMoves(unittest.TestCase):
         self.rigid1.translate(Coord3D(-3.0, 55.67, -1.0))   # translate back
         self.assertAlmostEqual(rmsd(self.rigid1, self.rigid2), 0.0)
 
-    def testTranslation2(self):
+    def test_translation2(self):
         vec1 = Coord3D(-123.54, 45.62, -99.003)
         vec2 = Coord3D(36.3125, 2.78, -36.378)
         self.rigid2.translate(vec1 + vec2)
@@ -75,7 +75,7 @@ class TestRotations(unittest.TestCase):
 
         self.rig = rig
 
-    def testRotZ(self):
+    def test_rotation_z(self):
         self.rig.ab_rotate(Coord3D(0, 0, 0), Coord3D(0, 0, 1), math.pi / 2)
         # i should now be j
         co1 = self.rig.copy_atom(0).coords
@@ -95,7 +95,7 @@ class TestRotations(unittest.TestCase):
         self.assertAlmostEqual(co3.y, 0)
         self.assertAlmostEqual(co3.z, 1)
 
-    def testRotX(self):
+    def test_rotation_x(self):
         self.rig.ab_rotate(Coord3D(0, 0, 0), Coord3D(1, 0, 0), math.pi / 2)
 
         # i is still i
@@ -116,7 +116,7 @@ class TestRotations(unittest.TestCase):
         self.assertAlmostEqual(co3.y, -1)
         self.assertAlmostEqual(co3.z, 0)
 
-    def testRotY(self):
+    def test_rotation_y(self):
         self.rig.ab_rotate(Coord3D(0, 0, 0), Coord3D(0, 1, 0), math.pi / 2)
 
         # i becomes -j
@@ -137,7 +137,7 @@ class TestRotations(unittest.TestCase):
         self.assertAlmostEqual(co3.y, 0)
         self.assertAlmostEqual(co3.z, 0)
 
-    def testRotZ_trans(self):
+    def test_rotation_z_transalation(self):
         self.rig.ab_rotate(Coord3D(1, 1, 1), Coord3D(1, 1, 3), math.pi / 2)
 
         co1 = self.rig.copy_atom(0).coords

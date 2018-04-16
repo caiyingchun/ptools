@@ -49,14 +49,14 @@ class TestDNA(unittest.TestCase):
         self.assertEqual(self.dna[0].size(), 11)
         self.assertEqual(len(self.dna[0].get_rigid_body()), 11)
 
-    def test_Size(self):
+    def test_size(self):
         self.assertEqual(self.dna.size(), 16)
 
     def test_len(self):
         self.assertEqual(len(self.dna), 16)
         self.assertEqual(len(self.dna), self.dna.size())
 
-    def test_Add(self):
+    def test_add(self):
         bp = ptools.BasePair(self.dna[0].get_rigid_body())
         self.dna.add(bp)
         self.assertEqual(self.dna.size(), 17)

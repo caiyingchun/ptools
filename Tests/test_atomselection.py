@@ -13,63 +13,63 @@ class TestAtomSelection(unittest.TestCase):
     def setUp(self):
         self.rig = Rigidbody(TEST_1F88_PDB)
 
-    def testSelectAll(self):
+    def test_select_all_atoms(self):
         allAtoms = self.rig.select_all_atoms()
         self.assertEqual(len(allAtoms), 5067)
 
-    def testSelectCA(self):
+    def test_select_alpha(self):
         CAatoms = self.rig.alpha()
         self.assertEqual(len(CAatoms), 643)
 
-    def testSelectAtomType_simple(self):
+    def test_select_atom_type_simple(self):
         CAatoms = self.rig.select_atom_type("CA")
         self.assertEqual(len(CAatoms), 643)
 
-    def testSelectAtomType_wildcard(self):
+    def test_select_atom_type_wildcard(self):
         CAatoms = self.rig.select_atom_type("C*")
         self.assertEqual(len(CAatoms), 3379)
 
-    def testSelectBackbone(self):
+    def test_select_backbone(self):
         bbAtoms = self.rig.backbone()
         self.assertEqual(len(bbAtoms), 2572)
 
-    def testSelectResRange(self):
+    def test_select_res_range(self):
         res_1_35 = self.rig.select_res_range(1, 35)
         self.assertEqual(len(res_1_35), 566)  # two chains
 
-    def testSelectResRangeNegativeResId(self):
+    def test_select_res_range_regative_resid(self):
         rigid = Rigidbody(TEST_2AAV_PDB)
         selection = rigid.select_res_range(-4, -1) & rigid.alpha()
         self.assertEqual(len(selection), 4)
 
-    def testAnd(self):
+    def test_and(self):
         res_1_35 = self.rig.select_res_range(1, 35)
         CAatoms = self.rig.select_atom_type("CA")
 
         ca_1_35 = res_1_35 & CAatoms
         self.assertEqual(len(ca_1_35), 70)  # 2*35: two chains, A and B
 
-    def testselect_resid_type(self):
+    def test_select_resid_type(self):
         met1 = self.rig.select_resid_type("MET") & self.rig.select_res_range(1, 5)
         self.assertEqual(len(met1), 16)
         met1A = self.rig.select_resid_type("MET") & self.rig.select_res_range(1, 5) & self.rig.select_chain_id("A")
         self.assertEqual(len(met1A), 8)
 
-    def testSelectChainId(self):
+    def test_select_chain_id(self):
         chainA = self.rig.select_chain_id("A")
         self.assertEqual(len(chainA), 2638)
 
-    def testCreateRigid(self):
+    def test_create_rigid(self):
         met1A = self.rig.select_resid_type("MET") & self.rig.select_res_range(1, 5) & self.rig.select_chain_id("A")
         rigid = met1A.create_rigid()
         self.assertEqual(len(rigid), 8)
 
-    def testNotOperator(self):
+    def test_not_operator(self):
         sel_ca = self.rig.alpha()
         sel_not_ca = ~ sel_ca  # operator NOT
         self.assertEqual(len(sel_ca) + len(sel_not_ca), len(self.rig))
 
-    def testAlternateNotOperator(self):
+    def test_alternate_not_operator(self):
         sel_ca = self.rig.alpha()
         sel_not_ca = sel_ca.not_()  # operator NOT
         self.assertEqual(len(sel_ca) + len(sel_not_ca), len(self.rig))

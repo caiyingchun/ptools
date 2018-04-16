@@ -60,10 +60,10 @@ class TestAtom(unittest.TestCase):
         self.atom.chain_id = 'XXX'
         self.assertEqual(self.atom.chain_id, 'XXX')
 
-    def test_get_residType(self):
+    def test_get_resid_type(self):
         self.assertEqual(self.atom.resid_type, 'XXX')
 
-    def test_set_residType(self):
+    def test_set_resid_type(self):
         self.atom.resid_type = 'AAA'
         self.assertEqual(self.atom.resid_type, 'AAA')
 
