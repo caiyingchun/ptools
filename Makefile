@@ -88,6 +88,10 @@ install:
 	python setup.py install --record $(MANIFEST_OUT)
 
 
+install-dev:
+	python setup.py develop
+
+
 uninstall:
 	cat $(MANIFEST_OUT) | xargs rm -f 
 

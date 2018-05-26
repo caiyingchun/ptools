@@ -3,9 +3,11 @@ import os
 import unittest
 
 import ptools
-from ptools import (DNA, BasePair, ADNA, BDNA, Roll,
+from ptools import (DNA, BasePair, ADNA, BDNA, Roll, Rigidbody, Coord3D,
                     AttractRigidbody, AttractForceField1, AttractPairList)
+from ptools.heligeom import heli_analyze
 
+HELI_PI = 3.141592653589793
 
 TEST_BP_RED = os.path.join(ptools.DATA_DIR, 'bp.red.pdb')
 TEST_BP_PDB = os.path.join(ptools.DATA_DIR, 'bp.ato.pdb')
@@ -79,6 +81,42 @@ class TestHeligeom(unittest.TestCase):
         self.assertAlmostEqual(ener, -51.6955215854)
         self.assertEqual(prot.size(), 706)
         self.assertEqual(dna.size(), 231)
+
+
+class TestHeligeom2(unittest.TestCase):
+
+    def test_analyze_x_translate(self):
+        mono1 = ptools.Rigidbody(TEST_1A74_PROT_RED)
+        mono2 = ptools.Rigidbody(TEST_1A74_PROT_RED)
+        deltax = 15.0
+        tr = ptools.Coord3D(deltax, 0, 0)
+        mono2.translate(tr)
+        hp = heli_analyze(mono1, mono2, True)
+        print hp
+        self.assertAlmostEqual(hp.angle, 0.0)
+        self.assertAlmostEqual(hp.normtranslation, deltax)
+        self.assertAlmostEqual(hp.unit_vector.x, 1.0)
+        self.assertAlmostEqual(hp.unit_vector.y, 0.0)
+        self.assertAlmostEqual(hp.unit_vector.z, 0.0)
+
+
+    def test_analyze_x_translate_rotate(self):
+        mono1 = ptools.Rigidbody(TEST_1A74_PROT_RED)
+        mono2 = ptools.Rigidbody(TEST_1A74_PROT_RED)
+        delta = 15.0
+        tr = ptools.Coord3D(delta, 0, 0)
+        mono2.translate(tr)
+        point = Coord3D(0,0,0)
+        axis = Coord3D(1,0,0)
+        angle = HELI_PI /4
+        mono2.ab_rotate(point, axis, angle)
+        hp = heli_analyze(mono1, mono2, True)
+        print hp
+        self.assertAlmostEqual(hp.angle, angle)
+        self.assertAlmostEqual(hp.normtranslation, delta)
+        self.assertAlmostEqual(hp.unit_vector.x, 1.0)
+        self.assertAlmostEqual(hp.unit_vector.y, 0.0)
+        self.assertAlmostEqual(hp.unit_vector.z, 0.0)
 
 
 if __name__ == "__main__":
