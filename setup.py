@@ -216,7 +216,7 @@ def find_fortranlib():
     """
 
     # Search libgfortran.
-    fortran_library_name = 'libgfortran.3.dylib' if sys.platform == 'darwin' else 'libgfortran.so.3'
+    fortran_library_name = 'libgfortran.dylib' if sys.platform == 'darwin' else 'libgfortran.so'
     search_paths = os.environ.get('LD_LIBRARY_PATH', '.').split(':') + \
                    os.environ.get('DYLD_LIBRARY_PATH', '.').split(':') +\
                    ['/usr/lib64', '/usr/local/lib64',
