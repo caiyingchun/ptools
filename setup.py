@@ -222,7 +222,8 @@ def find_fortranlib():
                    ['/usr/lib64', '/usr/local/lib64',
                     '/usr/lib', '/usr/local/lib',
                     '/opt/local/lib', '/opt/local/lib/libgcc',
-                    '/usr/lib/x86_64-linux-gnu']
+                    '/usr/lib/x86_64-linux-gnu',
+                    '/usr/lib/gcc/x86_64-linux-gnu/4.8']
     fortlib = find_file(fortran_library_name, search_paths)
     if not fortlib:
         warn("{:s} not found. Specify its location by using the "
