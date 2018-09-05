@@ -1,7 +1,9 @@
 g++
+gfortran
 git
 libboost-dev
 libf2c2-dev
+libyaml-dev
 python-dev
 python-pip
-libyaml-dev
+python-virtualenv

@@ -13,11 +13,11 @@
 #     $ # Work in docker environment (from ptools local repository).
 #     $ docker run --rm -v $(pwd):/src/ptools ptools:dev
 
-FROM debian:latest
+FROM debian:jessie
 
 # Install system dependecies.
 COPY requirements_apt-get.txt /opt/
-RUN apt-get update && cat /opt/requirements_apt-get.txt | xargs apt-get install -y
+RUN apt-get update && cat /opt/requirements_apt-get.txt | xargs apt-get install -y --fix-missing
 
 # Install python dependencies
 COPY requirements_python.txt /opt/
