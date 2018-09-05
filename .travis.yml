@@ -12,6 +12,7 @@ before_install:
   - cat requirements_apt-get.txt | sudo xargs apt-get install -y
 
 install:
+  - find / -name 'libgfortran.so*'
   - pip install -r requirements_python.txt
   - make install
 
