@@ -187,4 +187,4 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
             print("{:>4s} {:>6s} {:>6s} {:>13s} {:>13s} {:>13s} {:>13s}".format(' ', 'Trans', 'Rot', 'Ener', 'RmsdCA_ref', "VDW", "Coulomb"))
             pl = ptools.AttractPairList(receptor, ligand, surreal(500))
             print("{:<4s} {:6d} {:6d} {:13.7f} {:>13s} {:13.7f} {:13.7f}".format("==", transnb, rotnb, forcefield.nonbon8(receptor, ligand, pl), str(rms), forcefield.get_vdw(), forcefield.get_coulomb()))
-            output.PrintMatrix()
+            output.print_matrix()
