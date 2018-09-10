@@ -6,6 +6,7 @@ import StringIO
 import sys
 
 from _ptools import Matrix
+from _ptools import Rigidbody
 
 from .forcefield import PTOOLS_FORCEFIELDS
 
@@ -18,10 +19,10 @@ class AttractOutputRotation(object):
                           r'cutoff= (?P<cutoff>\d+\.\d+) \(A\) ; '
                           r'maxiter= (?P<maxiter>\d+)')
 
-    def __init__(self, i=0, minimlist=[], matrix=[], energie=0.0, rmsd=0.0):
+    def __init__(self, i=0, minimlist=[], matrix=[], energy=0.0, rmsd=0.0):
         self.id = i
         self.minimlist = minimlist
-        self.energie = energie
+        self.energy = energy
         self.rmsd = rmsd
         self.matrix = matrix
 
@@ -115,14 +116,19 @@ class AttractOutputRotation(object):
                 raise AssertionError(err)
 
         # Compare energies.
-        if self.energie != other.energie:
-            err = 'energies differ: {} != {}'.format(self.energie, other.energie)
+        if self.energy != other.energy:
+            err = 'energies differ: {} != {}'.format(self.energy, other.energy)
             raise AssertionError(err)
 
         # Compare RMSDs.
         if self.rmsd != other.rmsd and not isnan(self.rmsd) and isnan(other.rmsd):
             err = 'RMSDs differ: {} != {}'.format(self.rmsd, other.rmsd)
             raise AssertionError(err)
+
+    def get_structure(self, rb):
+        rb = Rigidbody(rb)  # create copy of the rigidbody
+        rb.apply_matrix(self.ptools_matrix)
+        return rb
 
 
 class AttractOutputTranslation(object):
@@ -290,6 +296,31 @@ class AttractOutput(object):
         t = self.get_translation(transid)
         r = t.get_rotation(rotid)
         return r.ptools_matrix
+
+    def iterstructures(self, rb):
+        """Iterate over docking poses.
+
+        Yields:
+            tuple ((int, int), ptools.Rigidbody):
+                translation id, rotation id, rigid body transformed by rotation
+                matrix.
+        """
+        for trans in self.translations:
+            for rot in trans.rotations:
+                rb_out = rot.get_structure(rb)
+                yield ((trans.id, rot.id), rb_out)
+
+    def iterresults(self):
+        """Iterate over docking results.
+
+        Yields:
+            tuple ((int, int), AttractOutputRotation):
+                translation id, rotation id, Attract docking output holder.
+        """
+        for trans in self.translations:
+            for rot in trans.rotations:
+                yield ((trans.id, rot.id), rot)
+
 
 
 def itercontent(fileobj, delim):
