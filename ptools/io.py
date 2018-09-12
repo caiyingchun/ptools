@@ -11,6 +11,10 @@ from _ptools import Rigidbody
 from .forcefield import PTOOLS_FORCEFIELDS
 
 
+
+# =============================================================================
+# AttractOutput (Legacy) 
+
 class AttractOutputRotation(object):
     """Class that help storing a rotation data from Attract output string."""
 
@@ -323,6 +327,211 @@ class AttractOutput(object):
 
 
 
+# =============================================================================
+# DockingOutput
+
+class DockingOutput(object):
+    """Class that help storing a rotation data from Attract output string."""
+
+    # Regular expression that matches a minimization result line.
+    minim_re = re.compile(r'{{ minimization nb (?P<id>\d+) of (?P<total>\d+) ; '
+                          r'cutoff= (?P<cutoff>\d+\.\d+) \(A\) ; '
+                          r'maxiter= (?P<maxiter>\d+)')
+
+    def __init__(self, tid=0, rid=0, minimlist=[], matrix=[], vdw=0.0, coulomb=0.0,
+                 rmsd=0.0):
+        self.tid = tid
+        self.rid = rid
+        self.minimlist = minimlist
+        self.vdw = vdw
+        self.coulomb = coulomb
+        self.rmsd = rmsd
+        self.matrix = matrix
+        self._structure = None
+
+    @property
+    def structure(self):
+        return self._structure
+    
+    @structure.setter
+    def structure(self, rb):
+        self._structure = Rigidbody(rb)
+        self._structure.apply_matrix(self.ptools_matrix)
+
+    @property
+    def translation_id(self):
+        return self.tid
+    
+    @translation_id.setter
+    def translation_id(self, value):
+        self.tid = value
+
+    @property
+    def rotation_id(self):
+        return self.tid
+    
+    @rotation_id.setter
+    def rotation_id(self, value):
+        self.rid = value
+
+    @property
+    def energy(self):
+        return self.vdw + self.coulomb
+
+    @property
+    def ptools_matrix(self):
+        """Return a PTools Matrix instance for the current matrix."""
+        n = len(self.matrix)
+        m = len(self.matrix[0])
+        mat = Matrix(n, m)
+        for i in xrange(n):
+            for j in xrange(m):
+                mat[i, j] = self.matrix[i][j]
+        return mat
+
+    def number_of_minimizations(self):
+        """Return the number of minimizations ran."""
+        return len(self.minimlist)
+
+    def format_matrix(self):
+        """Return a string reprenting the matrix."""
+        s = '\n'.join(' '.join('{: 14.7f}'.format(value) for value in row)
+                      for row in self.matrix)
+        return s
+
+    @classmethod
+    def from_string(cls, content):
+        """Initialization from string."""
+        def parse_minimization_data(match):
+            typemap = {'id': int, 'total': int, 'cutoff': float, 'maxiter': int}
+            minim = match.groupdict()
+            for key, value in minim.iteritems():
+                minim[key] = typemap[key](value)
+            return minim
+
+        def parse_docking_data(line):
+            tokens = line.split()[1:]
+            rmsd = float('nan') if tokens[3] == 'XXXX' else float(tokens[3])
+            d = dict(tid=int(tokens[0]), rid=int(tokens[1]),
+                     vdw=float(tokens[4]), coulomb=float(tokens[5]),
+                     rmsd=rmsd)
+            return d
+
+        def parse_docking_matrix_line(line):
+            return [float(tok) for tok in line.split()[1:]]
+
+        minimlist = []
+        matrix = []
+        lines = content.splitlines()
+        for line in lines:
+            minim_match = cls.minim_re.match(line)
+            if line.startswith('=='):
+                data = parse_docking_data(line)
+            elif line.startswith('MAT'):
+                matrix.append(parse_docking_matrix_line(line))
+            elif minim_match:
+                minimlist.append(parse_minimization_data(minim_match))
+        return cls(minimlist=minimlist, matrix=matrix, **data)
+
+    def assert_equal(self, other):
+        """Compare two DockingOutput instances.
+
+        Raises:
+            AssertionError: if two elements are different.
+        """
+        def isnan(num):
+            return num != num
+
+        # Compare identifiers.
+        if self.tid != other.tid:
+            err = 'translation identifiers differ: {} != {}'.format(self.tid, other.tid)
+            raise AssertionError(err)
+
+        if self.rid != other.rid:
+            err = 'rotation identifiers differ: {} != {}'.format(self.rid, other.rid)
+            raise AssertionError(err)
+
+        # Compare matrices.
+        if self.matrix != other.matrix:
+            err = 'matrices differ:\n{}\n-----\n{}'.format(self.format_matrix(),
+                                                           other.format_matrix())
+            raise AssertionError(err)
+
+        # Compare minimizations.
+        if self.number_of_minimizations() != other.number_of_minimizations():
+            err = 'different number of minimizations: {} != {}'
+            err = err.format(self.number_of_minimizations(),
+                             other.number_of_minimizations())
+            raise AssertionError(err)
+
+        for minim1, minim2 in zip(self.minimlist, other.minimlist):
+            if minim1['cutoff'] != minim2['cutoff']:
+                err = 'minimization {}: cutoffs differ: {} != {}'
+                err = err.format(minim1['id'], minim1['cutoff'], minim2['cutoff'])
+                raise AssertionError(err)
+            if minim1['maxiter'] != minim2['maxiter']:
+                err = 'minimization {}: maxiters differ: {} != {}'
+                err = err.format(minim1['id'], minim1['maxiter'], minim2['maxiter'])
+                raise AssertionError(err)
+
+        # Compare energies.
+        if self.vdw != other.vdw:
+            err = 'vdw energies differ: {} != {}'.format(self.vdw, other.vdw)
+            raise AssertionError(err)
+
+        if self.coulomb != other.coulomb:
+            err = 'electrostatic energies differ: {} != {}'.format(self.coulomb, other.coulomb)
+            raise AssertionError(err)
+
+        # Compare RMSDs.
+        if self.rmsd != other.rmsd and not isnan(self.rmsd) and isnan(other.rmsd):
+            err = 'RMSDs differ: {} != {}'.format(self.rmsd, other.rmsd)
+            raise AssertionError(err)
+
+
+class DockingOutputList(list):
+
+    def __getslice__(self, start=None, end=None, step=None):
+        return type(self)(self[start:end:step])
+
+    @classmethod
+    def from_file(cls, path):
+        """Initialization from file."""
+        with open(path, 'rt') as stream:
+            return cls.from_stream(stream)
+
+    @classmethod
+    def from_string(cls, content):
+        """Initialization from string."""
+        return cls.from_stream(StringIO.StringIO(content))
+
+    @classmethod
+    def from_stream(cls, stream):
+        output = cls()
+        for translation in itercontent(stream, '@@@@@@@ Translation nb '):
+            for rotation in itercontent(translation, '----- Rotation nb'):
+                output.append(DockingOutput.from_string(rotation))
+        return output
+
+    def sort_by_energy(self, reverse=False):
+        """Sort by increasing energy."""
+        self.sort(key=lambda dock: dock.energy, reverse=reverse)
+
+    def filter_high_energies(self, limit=0.0):
+        """Remove docking results with higher energies.
+
+        Default is to remove energies > 0.
+        """
+        return self.__class__(dock for dock in self if dock.energy < 0)
+
+    def update_reference_structure(self, rb):
+        for dock in self:
+            dock.structure = rb
+
+
+# =============================================================================
+# Common functions
+
 def itercontent(fileobj, delim):
     """Iterate over a file content.
 
@@ -335,6 +544,8 @@ def itercontent(fileobj, delim):
     Returns:
         iterator[str]: lines between 2 occurences of `delim`.
     """
+    if isinstance(fileobj, str):
+        fileobj = StringIO.StringIO(fileobj)
     current_token = ''
     istoken = False
     for line in fileobj:
@@ -434,9 +645,11 @@ def check_file_exists(path, msg="file not found: '%(path)s'", exitstatus=128,
         sys.exit(exitstatus)
 
 
-def read_attract_output(path):
+def read_attract_output(path):  # legacy
     """Read an Attract output file, which contains the informations that are
     printed on stdout during a run.
+
+    Deprecated: should use read_docking_output
 
     Args:
         path (str): path to file.
@@ -445,6 +658,19 @@ def read_attract_output(path):
         AttractOutput: instance of class that stores attract output data.
     """
     return AttractOutput.from_file(path)
+
+
+def read_docking_output(path):
+    """Read a docking output file, which contains the informations that are
+    printed on stdout during a run.
+
+    Args:
+        path (str): path to file.
+
+    Returns:
+        DockingOutputList: instance of class that stores docking output data.
+    """
+    return DockingOutputList.from_file(path)
 
 
 def parse_attract_output(content):
