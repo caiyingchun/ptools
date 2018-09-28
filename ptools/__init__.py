@@ -22,6 +22,7 @@ from . import exceptions
 from . import forcefield
 from . import reduce
 from . import docking
+from . import heligeom
 
 
 __version__ = '2.0.0'
