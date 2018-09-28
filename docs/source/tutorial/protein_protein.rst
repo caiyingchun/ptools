@@ -45,7 +45,7 @@ and also directly with PTools.
 .. [#] http://www.ks.uiuc.edu/Research/vmd
 
 
-Coarse grain reduction
+Coarse-grain reduction
 ----------------------
 
 This step translates the all-atom receptor and ligand molecules into
@@ -119,7 +119,7 @@ The following 6 lines are the characteristics of each minimization:
 Trailing lines are ignored.
 
 In the present case, the simulation starts with a very large cutoff value of
-9900 Å\ :sup:`2` (≈ 99 Å) and is gradually dicreased to end with
+9900 Å\ :sup:`2` (≈ 99 Å) and is gradually decreased to end with
 500 Å\ :sup:`2` (≈ 22 Å).
 
 
@@ -127,30 +127,40 @@ Simple optimization
 -------------------
 
 Before running a systematic docking simulation which could take several hours,
-a simple optimization can be performed to check if the force field energy
-of the experimental protein-protein complex is at an energy minimum.
+a simple optimization (energy minimization) may be performed in order to verify
+the functioning of the energy minimization process. PTools will thus
+minimize the interaction energy of the complex starting from the provided
+receptor and ligand positions, and will not perform a systematic search of
+the rotational and translational degrees of freedom (which are discussed in the next
+section).
+
+The simple optimization procedure is also useful in re-docking studies,
+to find if the receptor-ligand interaction energy
+in a protein-protein complex whose structure is known is at or near a minimum.
 
 Single mode optimizations are also useful if the user wishes to make a movie
 of an minimization process (see section **REF::video**).
 
-A single optimization with ATTRACT requires:
+A single optimization with ATTRACT requires
 
 - a coarse-grained receptor (fixed) file (``receptor.red``)
 - a coarse-grained (mobile) file (``ligand.red``)
 - docking parameters file (``attract.inp``)
 
-A single ATTRACT simulation (optimization) may thus be obtained by::
+The single optimization may thus be obtained by::
 
     ptools attract -r receptor.red -l ligand.red --ref=ligand.red -s > single.att
 
-- The force\_field name has to be chosen among attract1, attract2 or scorpion.
-- ``-r`` or ``--receptor`` (mandatory): defines the receptor file.
-- ``-l`` or ``--ligand`` (mandatory): defines the ligand file.
-- ``-s`` (optional): performs one single serie of minimisations with the
-  ligand in its initial position.
-- ``--ref``, (optional) provides a ligand PDB file as a reference (reduced).
-  After the optimization, the RMSD is calculated between this reference
-  structure and the simulated ligand.
+As with the ``reduce`` command, the attract1 forcefield is chosen by default. The
+other options here are:
+
+- ``-r`` or ``--receptor`` defines the receptor file.
+- ``-l`` or ``--ligand`` defines the ligand file.
+- ``-s`` specifies that a single series of minimizations (*simple*) will be performed
+  starting with the ligand in its provided position.
+- ``--ref`` defines a ligand PDB file (in the reduced representation) as a reference.
+  After optimization, the RMSD is calculated between this reference structure and
+  the simulated ligand.
 
 The complete ``reduce`` command usage can be obtained by typing::
 
@@ -162,7 +172,7 @@ The content of the output file ``single.att`` is the following:
     :linenos:
 
 - **lines 22-41**: intermediate minimization results.
-- **lines 42--43:** final result after the 6 minimizations.
+- **lines 42--43:** final results.
   With a single series of minimization, the default translation (``Trans``)
   is 0 and the default rotation (``Rot``) is 0. 
   Energy (``Ener``) is given in RT unit and the C\ :sub:`α`-RMSD 
@@ -170,9 +180,8 @@ The content of the output file ``single.att`` is the following:
 - **lines 44--49:** rotation/translation matrix of the ligand compared to its initial position.
 
 
-Here, the final energy is -58.4 RT unit and the RMSD is 1.2 Å, which is pretty
-close from the initial position (in a *perfect* simulation, RMSD would be
-of course, 0.0 Å).
+In this complex the final energy is -58.4 RT unit and the RMSD is 1.2 Å, which is pretty
+close to the ligand's position in the experimental structure (in a *perfect* simulation, RMSD would be 0.0 Å).
 
 
 .. _my_dummy_label:
