@@ -15,34 +15,29 @@ Before docking, one has to separate both partners.
 This is possible with vizualisation software such as Pymol [#]_ or VMD [#]_, 
 and also directly with PTools.
 
-Within the Python interpreter, first load the PTools library::
+.. code-block:: python
 
-    from ptools import *
+    # Load the PTools library.
+    import ptools
 
+    # Read the PDB file of the complex.
+    pdb = ptools.Rigidbody("1CGI.pdb")
 
-Read the PDB file of the complex::
+    # The chain selection allows the separation between chain E and I.
+    selectE = pdb.select_chain_id("E")
+    selectI = pdb.select_chain_id("I")
 
-    pdb = Rigidbody("1CGI.pdb")
+    # Create both chains as independant Rigidbody objects and save them in PDB files. 
+    # The largest protein is defined as the receptor (chain E) and the smallest 
+    # as the ligand (chain I).
+    protE = selectE.create_rigid()
+    protI = selectI.create_rigid()
+    ptools.write_pdb(protE, "receptor.pdb")
+    ptools.write_pdb(protI, "ligand.pdb")
 
-
-The chain selection allows the separation between chain E and I::
-
-    selectE = pdb.SelectChainId("E")
-    selectI = pdb.SelectChainId("I")
-
-Create both chains as independant Rigidbody objects and save them in PDB files. 
-The largest protein is defined as the receptor (chain E) and the smallest 
-as the ligand (chain I)::
-
-    protE = selectE.CreateRigid()
-    protI = selectI.CreateRigid()
-    WritePDB(protE, "receptor.pdb")
-    WritePDB(protI, "ligand.pdb")
-
-Or more quickly::
-
-    WritePDB(selectE.CreateRigid(), "receptor.pdb")
-    WritePDB(selectI.CreateRigid(), "ligand.pdb")
+    # Or more quickly:
+    # ptools.write_pdb(selectE.create_rigid(), "receptor.pdb")
+    # ptools.write_pdb(selectI.create_rigid(), "ligand.pdb")
 
 
 .. [#] http://www.rcsb.org/pdb/cgi/explore.cgi?pdbId=1CGI
@@ -53,39 +48,29 @@ Or more quickly::
 Coarse grain reduction
 ----------------------
 
-This step translates all-atom molecules into coarse grain (reduced) molecules for further docking. 
+This step translates the all-atom receptor and ligand molecules into
+coarse-grained (reduced) molecules for docking.
 
-For the receptor::
+The following commands should be typed in a terminal.
 
-    reduce.py --ff force_field [--dna] [--cgopt] [--dgrid 1.5] receptor.pdb > receptor.red
+.. code-block:: bash
 
-In the present case, ``receptor.red`` contains 522 beads.
+    ptools reduce --prot receptor.pdb -o receptor.red
+    ptools reduce --prot ligand.pdb -o ligand.red
 
-For the ligand::
+In which ``--prot`` specifies that the molecule is a protein.
 
-    reduce.py --ff force_field [--dna] [--cgopt] [--dgrid 1.5] ligand.pdb > ligand.red
+In this example, ``receptor.red`` contains 522 beads and
+``ligand.red`` contains 126 beads, whereas the original PDBs contained
+1799 and 440 atoms, respectively.
 
+The complete ``reduce`` command usage can be obtained by typing::
 
-In this example, ``ligand.red`` contains 126 beads.
-
-The ``reduce.py`` script requires the following parameters:
-
-- The ``force_field``name can be chosen among ``attract1``, ``attract2`` or ``scorpion``.
-- The ``--dna`` option must be specified only if the receptor is a DNA molelcule.
-  This option only works with the force field attract1.
-- The ``--cgopt`` option is required if the user want to optimize the beads charges
-  in order to best reproduce the electric potential around the protein [#Basdevant2007]_. 
-  This option only works with the force field scorpion.
-- The ``--dgrid`` option specifies the grid spacing (in Å) for the charge optimization.
-  Default is 1.5 Å. 
-  Works only with the ``--cgopt`` option.
-- an input all-atom PDB file, for instance ``receptor.pdb``
-- an output coarse grain file name, for instance ``receptor.red``.
-
+  ptools reduce -h
 
 The reduced files generated are PDB-like structure files that can be read by
-many visualization programs (Rasmol, Pymol, VMD, Chimera...). 
-Always visualize both all-atom and coarse grain structures to check the
+many visualization programs (Pymol, VMD, Chimera, ...). 
+Always visualize both all-atom and coarse grain structures to check that the
 reduction worked properly (see :numref:`fig_1CGI_at_cg_receptor` and 
 :numref:`fig_1CGI_at_cg_ligand` for 1CGI).
 
@@ -93,15 +78,15 @@ reduction worked properly (see :numref:`fig_1CGI_at_cg_receptor` and
 .. figure:: figures/1CGI_receptor.png
    :align: center
 
-   All-atom (green sticks) and reduced (red spheres) representation of 
-   both proteins in the 1CGI complex. Receptor.
+   All-atom (green sticks) and reduced (red spheres) representations of 
+   the receptor protein.
 
 
 .. _fig_1CGI_at_cg_ligand:
 .. figure:: figures/1CGI_ligand.png
    :align: center
 
-   Same as above. Ligand.
+   Same as previous for ligand.
 
 
 .. [#Basdevant2007] Basdevant, N., Borgis, D. & Ha-Duong, T. A coarse-grained protein-protein potential derived from an all-atom force field. *Journal of Physical Chemistry B* **111**, 9390-9399 (2007).
@@ -110,55 +95,53 @@ reduction worked properly (see :numref:`fig_1CGI_at_cg_receptor` and
 ATTRACT parameters
 ------------------
 
+.. important::
+
+  **This section is not yet finished.**
+
+
 The parameters required for running an ATTRACT calculation are found in the
 file ``attract.inp``, which typical content is:
 
-
-.. code-block:: bat
-   :linenos:
-
-        6    0    0
-     -34.32940  38.75490  -3.66956   0.00050
-      100  2  1  1  1  0  0  0  1  9900.00
-      100  2  1  1  1  0  0  0  1  1500.00
-      100  2  1  1  1  0  0  0  1  1000.00
-       50  2  1  1  1  0  0  0  0   500.00
-       50  2  1  1  1  0  0  0  0   500.00
-       50  2  1  1  1  0  0  0  0   500.00
+.. literalinclude:: attract.inp
+    :linenos:
 
 Line 1 indicates the number of minimisations performed by ATTRACT
 for each starting position (six in the present case).
-The last six lines (3 - 8) are the characteristics of each minimisation.
-The first column is the number of steps before the minimisation stops.
-The last column is the square of the cutoff distance for the calculation of
-the interaction energy between both partners.
-In the present case, the simulation starts with a very large cutoff value of
-9900 Å\ :sup:`2` (≈ 99 Å), which is gradually dicreased
-to end with 500 Å\ :sup:`2` (≈ 22 Å).
 
-.. note:: Columns with zeros or ones should not be modified, as
-          well as line 2. They are used for internal development purposes.
+Line 2 is used for internal development purposes and should not be modified.
+
+The following 6 lines are the characteristics of each minimization:
+
+- the first column is the number of steps in the minimization
+- the last column is the square of the cutoff distance for calculating the interaction energy
+
+Trailing lines are ignored.
+
+In the present case, the simulation starts with a very large cutoff value of
+9900 Å\ :sup:`2` (≈ 99 Å) and is gradually dicreased to end with
+500 Å\ :sup:`2` (≈ 22 Å).
 
 
 Simple optimization
 -------------------
 
 Before running a systematic docking simulation which could take several hours,
-a simple optimization can be performed to check if an experimental
-protein-protein complex is associated to an energy minimum of the
-force-field used.
-Single mode optimizations are also useful if the user want to make a movie
+a simple optimization can be performed to check if the force field energy
+of the experimental protein-protein complex is at an energy minimum.
+
+Single mode optimizations are also useful if the user wishes to make a movie
 of an minimization process (see section **REF::video**).
 
 A single optimization with ATTRACT requires:
 
-- the ATTRACT Python script (``attract.py``)
-- a coarse grain receptor (fixed partner) file (``receptor.red``)
-- a coarse grain (mobile partner) file (``ligand.red``)
-- docking parameters (``attract.inp``)
+- a coarse-grained receptor (fixed) file (``receptor.red``)
+- a coarse-grained (mobile) file (``ligand.red``)
+- docking parameters file (``attract.inp``)
 
+A single ATTRACT simulation (optimization) may thus be obtained by::
 
-ATTRACT can be used with different options.
+    ptools attract -r receptor.red -l ligand.red --ref=ligand.red -s > single.att
 
 - The force\_field name has to be chosen among attract1, attract2 or scorpion.
 - ``-r`` or ``--receptor`` (mandatory): defines the receptor file.
@@ -168,96 +151,24 @@ ATTRACT can be used with different options.
 - ``--ref``, (optional) provides a ligand PDB file as a reference (reduced).
   After the optimization, the RMSD is calculated between this reference
   structure and the simulated ligand.
-- ``--t transnb`` (optional): loads only the translation number ``transnb``
-  (and all its associated rotations). This option is very useful for
-  dispatching a simulation over a cluster of computers.
-- ``-h`` or ``--help`` (optional): reminds possible options.
 
+The complete ``reduce`` command usage can be obtained by typing::
 
-A single ATTRACT simulation (optimization) may thus be obtained by::
+    ptools attract -h
 
-    attract.py -r receptor.red -l ligand.red --ref=ligand.red -s > single.att
-
-The first PDB file provided must be the receptor file (and the second the ligand).
 The content of the output file ``single.att`` is the following:
 
-.. code-block:: bat
-   :linenos:
+.. literalinclude:: single.att_ref
+    :linenos:
 
-
-    **********************************************************************
-    **                                                                  **
-    **                ATTRACT  (Python edition)                         **
-    **                based on the PTools library                       **
-    **                                                                  **
-    **********************************************************************
-
-    PTools revision 437
-    from branch bug539468
-    unique id pierre_poulain-20100603130128-awuyfelj7avtls54
-    
-    Start time: 2010-06-03 18:50:57.506277
-    Reading parameters file: attract.inp
-    6 series of minimizations
-    rstk =  0.0005
-    Reading receptor (fixed): receptor.red with 246 particules
-    Reading  ligand (mobile): ligand.red with 162 particules
-    Reading reference file: ligand.red with 162 particules
-    Single mode simulation
-    @@@@@@@ Translation nb 1 @@@@@@@
-    ----- Rotation nb 1 -----
-    {{ minimization nb 1 of 6 ; cutoff= 99.50 (A) ; maxiter= 100
-    number of free variables for the minimizer: 6
-    CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH             |  69 iterations
-    {{ minimization nb 2 of 6 ; cutoff= 38.73 (A) ; maxiter= 100
-    number of free variables for the minimizer: 6
-    CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH             |  9 iterations
-    {{ minimization nb 3 of 6 ; cutoff= 31.62 (A) ; maxiter= 100
-    number of free variables for the minimizer: 6
-    CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH             |  13 iterations
-    {{ minimization nb 4 of 6 ; cutoff= 22.36 (A) ; maxiter= 50
-    number of free variables for the minimizer: 6
-    CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH             |  11 iterations
-    {{ minimization nb 5 of 6 ; cutoff= 22.36 (A) ; maxiter= 50
-    number of free variables for the minimizer: 6
-    CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH             |  3 iterations
-    {{ minimization nb 6 of 6 ; cutoff= 22.36 (A) ; maxiter= 50
-    number of free variables for the minimizer: 6
-    CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH             |  1 iterations
-          Trans    Rot          Ener    RmsdCA_ref
-    ==        1      1   -58.4463779 1.23525236672
-    ### MAT BEGIN
-    MAT        0.9941915     -0.0969983      0.0466331      0.4410928 
-    MAT        0.0984211      0.9947151     -0.0292441     -1.1030090 
-    MAT       -0.0435501      0.0336639      0.9984839      0.5793707 
-    MAT        0.0000000      0.0000000      0.0000000      1.0000000 
-    ### MAT END
-
-    Saved all minimization variables (translations/rotations) in minimization.trj
-    End time: 2010-06-03 18:50:58.031199
-    Elapsed time: 0:00:00.524922
-
-- **lines 1--6:** header
-- **lines 7--9:** PTools library revision, branch and unique id
-- **line 11:** starting date and time of the simulation
-- **lines 21--23:** minimization 1. Minimization index, cutoff 
-  in Å and maximum number of iterations (line 21). 
-  Number of variables (line 22). End of minimization (line~23), either 
-  convergence is achieved (the number of performed iterations is specified), 
-  either maximum number of steps is reached.
-- **lines 24--26:** minimization 2.
-- **lines 27--29:** minimization 3.
-- **lines 30--32:** minimization 4.
-- **lines 33--35:** minimization 5.
-- **lines 36--38:** minimization 6.
-- **lines 39--40:** final result after the 6 minimizations.
+- **lines 22-41**: intermediate minimization results.
+- **lines 42--43:** final result after the 6 minimizations.
   With a single series of minimization, the default translation (``Trans``)
-  is 1 and the default rotation (``Rot``) is 1. 
+  is 0 and the default rotation (``Rot``) is 0. 
   Energy (``Ener``) is given in RT unit and the C\ :sub:`α`-RMSD 
   (``RmsdCA_ref``) in Å if the ``--ref`` option is specified.
-- **lines 41--46:** rotation/translation matrix of the ligand compared to its initial position.
-- **line 49:** end date and time of the simulation.
-- **line 50:** elapsed time for the simulation
+- **lines 44--49:** rotation/translation matrix of the ligand compared to its initial position.
+
 
 Here, the final energy is -58.4 RT unit and the RMSD is 1.2 Å, which is pretty
 close from the initial position (in a *perfect* simulation, RMSD would be

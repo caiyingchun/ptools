@@ -61,7 +61,7 @@ def parse_args(args):
     """
     # Attract1-specific options.
     if (args.molProt or args.molDNA) and args.forcefield != 'attract1':
-        ptools.io.critical("option --prot and --dna are valid only with"
+        ptools.io.critical("option --prot and --dna are valid only with "
                            "--ff=attract1",
                            exitstatus=2)
 

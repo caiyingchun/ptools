@@ -34,10 +34,10 @@ def create_subparser(parent):
                              "to run (requires --ngroups)")
     parser.add_argument('-s', '--start-config-only', dest='startconfig', action='store_true',
                         help="minimize starting configuration only")
-    parser.add_argument('-t', '--translation', type=int, dest='transnb',
+    parser.add_argument('--translation', type=int, dest='transnb',
                         default=None,
                         help="minimize for the provided translation number")
-    parser.add_argument('-o', '--rotation', type=int, dest='rotnb',
+    parser.add_argument('--rotation', type=int, dest='rotnb',
                         default=None,
                         help="minimize for the given rotation number")
 
