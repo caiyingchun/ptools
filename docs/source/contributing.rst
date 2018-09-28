@@ -66,9 +66,7 @@ Ready to contribute? Here's how to set up `ptools` for local development.
 
 4. When you're done making changes, check that your changes pass the tests::
 
-    $ python setup.py install
-    $ cd Tests
-    $ python unittest1.py
+    $ make test
 
 5. Commit your changes and push your branch to GitHub::
 
@@ -84,11 +82,11 @@ run unit tests::
 
     $ git clone git@github.com:ptools/ptools.git
     $ cd ptools
-    $ docker build -t ptools:dev ./dev
+    $ make docker-build
     $ # Make a branch then some changes
     $ # [...]
     $ # Run the unit tests
-    $ docker run --rm -v $(pwd):/src/ptools ptools:dev
+    $ make docker-test
 
 
 Pull Request Guidelines
