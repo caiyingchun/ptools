@@ -17,7 +17,6 @@ from distutils.extension import Extension
 from distutils.errors import DistutilsOptionError
 
 
-
 try:
     from Cython.Distutils import build_ext as _build_ext
 except ImportError:
@@ -223,7 +222,8 @@ def find_fortranlib():
                     '/usr/lib', '/usr/local/lib',
                     '/opt/local/lib', '/opt/local/lib/libgcc',
                     '/usr/lib/x86_64-linux-gnu',
-                    '/usr/lib/gcc/x86_64-linux-gnu/4.8']
+                    '/usr/lib/gcc/x86_64-linux-gnu/4.8',
+                    '/usr/lib/gcc/x86_64-linux-gnu/4.9']
     fortlib = find_file(fortran_library_name, search_paths)
     if not fortlib:
         warn("{:s} not found. Specify its location by using the "
