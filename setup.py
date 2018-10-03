@@ -17,6 +17,7 @@ from distutils.extension import Extension
 from distutils.errors import DistutilsOptionError
 
 
+
 try:
     from Cython.Distutils import build_ext as _build_ext
 except ImportError:
@@ -135,12 +136,13 @@ def get_environ(s):
     return os.environ[s] if s in os.environ else ''
 
 
-def find_file(filename, paths):
+def find_file(filename, paths, recursive=False):
     """Try to locate a file in a given set of directories.
 
     Args:
         filename(str): file to look for.
         paths(list[str]): directories to scan.
+        recursive(bool): walks the tree.
 
     Return:
         str: the absolute path to the file in which directory is the first
@@ -151,6 +153,12 @@ def find_file(filename, paths):
         abspath = os.path.abspath(os.path.join(dirname, filename))
         if os.path.exists(abspath):
             return abspath
+        if recursive:
+            for root, dirs, files in os.walk(dirname):
+                for fname in files:
+                    if fname == filename:
+                        abspath = os.path.abspath(os.path.join(root, filename))
+                        return abspath
     return ''
 
 
@@ -183,6 +191,7 @@ def find_executable(filename):
             an empty string.
     """
     return find_file(filename, os.environ['PATH'].split(':'))
+
 
 def find_boost():
     """Try to locate the boost include directory (look for
@@ -218,13 +227,12 @@ def find_fortranlib():
     fortran_library_name = 'libgfortran.dylib' if sys.platform == 'darwin' else 'libgfortran.so'
     search_paths = os.environ.get('LD_LIBRARY_PATH', '.').split(':') + \
                    os.environ.get('DYLD_LIBRARY_PATH', '.').split(':') +\
-                   ['/usr/lib64', '/usr/local/lib64',
-                    '/usr/lib', '/usr/local/lib',
-                    '/opt/local/lib', '/opt/local/lib/libgcc',
+                   ['/usr/lib', '/usr/lib64',
+                    '/usr/local/lib', '/usr/local/lib64',
+                    '/opt/local/lib',
                     '/usr/lib/x86_64-linux-gnu',
-                    '/usr/lib/gcc/x86_64-linux-gnu/4.8',
-                    '/usr/lib/gcc/x86_64-linux-gnu/4.9']
-    fortlib = find_file(fortran_library_name, search_paths)
+                    '/usr/lib/gcc/x86_64-linux-gnu']
+    fortlib = find_file(fortran_library_name, search_paths, recursive=True)
     if not fortlib:
         warn("{:s} not found. Specify its location by using the "
              "LD_LIBRARY_PATH environment variable.".format(fortran_library_name))
