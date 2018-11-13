@@ -7,14 +7,24 @@ from __future__ import print_function
 import base64
 import bz2
 import math
+import sys
 
 import ptools
+
+
+def log_progress(i, N, **kwargs):
+    log("-- PROGRESS: {}/{} ({:.2f}%)", i, N, i / float(N) * 100)
+
+
+def log(msg, *args, file=sys.stderr, **kwargs):
+    print(msg.format(*args), file=file, **kwargs)
+    file.flush()
 
 
 def read_translations(filename="translation.dat"):
     """Return dictionary of translations from PDB-format file indexed by translation number (atomid)."""
     rb = ptools.Rigidbody("translation.dat")
-    print("Read {:d} translations from translation.dat".format(len(rb)))
+    log("Read {} translations from translation.dat", len(rb))
     translations = [(rb.get_atom_property(i).atom_id, rb.get_coords(i)) for i in xrange(len(rb))]
     return dict(translations)
 
@@ -33,19 +43,19 @@ def read_rotations(filename="rotation.dat"):
     line = rotdat.readline().split()
     ntheta = int(line[0])
     nchi = int(line[1])
-    print("ntheta, nchi: {:d} {:d}".format(ntheta, nchi))
+    log("ntheta, nchi: {} {}", ntheta, nchi)
     for i in range(ntheta):
         line = rotdat.readline().split()
         theta.append(float(line[0]))
         nphi.append(int(line[1]))
         nrot_per_trans += nphi[i] * nchi
         theta[i] = twopi * theta[i] / 360.0
-        print(theta[i], nphi[i])
+        log("{} {}", theta[i], nphi[i])
     rotdat.close()
     rotations = []
 
-    print("Read {:d} rotation lines from rotation.dat".format(ntheta))
-    print("{:d} rotations per translation".format(nrot_per_trans))
+    log("Read {} rotation lines from rotation.dat", ntheta)
+    log("{} rotations per translation", nrot_per_trans)
 
     rotnb = 0
     for kkk in range(ntheta):
@@ -110,21 +120,26 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
         refca = ref.alpha()
         if len(refca) == 0:  # No C alpha atom, ligand is probably a dna
             rmsd_func = ptools.rmsd
-            print("No Calpha atom found for ligand (DNA?). RMSD will be "
-                  "calculated on all grains")
+            log("No Calpha atom found for ligand (DNA?). RMSD will be "
+                "calculated on all grains")
         else:
             rmsd_func = rmsdca
+
+    N = len(translations) * len(rotations)
+    progress = 1
 
     nbminim = len(minimlist)
     for transnb in sorted(translations.keys()):
         trans = translations[transnb]
-        print("@@@@@@@ Translation nb {:d} @@@@@@@".format(transnb))
+        log("@@@@@@@ Translation nb {:d} @@@@@@@", transnb)
         rotnb = 0
         for rotnb in sorted(rotations.keys()):
             rot = rotations[rotnb]
-            print("----- Rotation nb {:d} -----".format(rotnb))
-            print("Translation by:", trans)
-            print("Rotation angles:", rot)
+            show_progress(progress, N, file=sys.stdout)
+            log("----- Rotation nb {:d} -----", rotnb)
+            log("Translation by: {}", trans)
+            log("Rotation angles: {}", rot)
+            progress += 1
             minimcounter = 0
             ligand = ptools.AttractRigidbody(lig)
             receptor = ptools.AttractRigidbody(rec)
@@ -138,7 +153,7 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
                 minimcounter += 1
                 cutoff = math.sqrt(minim['squarecutoff'])
                 niter = minim['maxiter']
-                print("{{ " + "minimization nb {:d} of {:d} ; cutoff= {:.2f} (A) ; maxiter= {:d}".format(minimcounter, nbminim, cutoff, niter))
+                log("{{ " + "minimization nb {:d} of {:d} ; cutoff= {:.2f} (A) ; maxiter= {:d}", minimcounter, nbminim, cutoff, niter)
 
                 # performs single minimization on receptor and ligand, given maxiter=niter and restraint constant rstk
                 forcefield = ff_specs['ff_class'](ff_specs['ff_file'], surreal(cutoff))
@@ -184,7 +199,10 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
             # calculates true energy, and rmsd if possible
             # with the new ligand position
             forcefield = ff_specs['ff_class'](ff_specs['ff_file'], surreal(500))
-            print("{:>4s} {:>6s} {:>6s} {:>13s} {:>13s} {:>13s} {:>13s}".format(' ', 'Trans', 'Rot', 'Ener', 'RmsdCA_ref', "VDW", "Coulomb"))
+            log("{:>4s} {:>6s} {:>6s} {:>13s} {:>13s} {:>13s} {:>13s}",
+                ' ', 'Trans', 'Rot', 'Ener', 'RmsdCA_ref', "VDW", "Coulomb")
             pl = ptools.AttractPairList(receptor, ligand, surreal(500))
-            print("{:<4s} {:6d} {:6d} {:13.7f} {:>13s} {:13.7f} {:13.7f}".format("==", transnb, rotnb, forcefield.nonbon8(receptor, ligand, pl), str(rms), forcefield.get_vdw(), forcefield.get_coulomb()))
+            log("{:<4s} {:6d} {:6d} {:13.7f} {:>13s} {:13.7f} {:13.7f}",
+                "==", transnb, rotnb, forcefield.nonbon8(receptor, ligand, pl),
+                str(rms), forcefield.get_vdw(), forcefield.get_coulomb())
             output.print_matrix()
