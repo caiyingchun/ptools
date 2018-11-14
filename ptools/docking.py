@@ -13,11 +13,12 @@ import ptools
 
 
 def log_progress(i, N, **kwargs):
-    log("-- PROGRESS: {}/{} ({:.2f}%)", i, N, i / float(N) * 100)
+    log("-- PROGRESS: {}/{} ({:.2f}%)", i, N, i / float(N) * 100, **kwargs)
 
 
-def log(msg, *args, file=sys.stderr, **kwargs):
-    print(msg.format(*args), file=file, **kwargs)
+def log(msg, *args, **kwargs):
+    kwargs.setdefault('file', sys.stderr)
+    print(msg.format(*args), **kwargs)
     file.flush()
 
 
