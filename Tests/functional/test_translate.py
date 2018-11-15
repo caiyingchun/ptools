@@ -17,7 +17,7 @@ class TestTranslate(unittest.TestCase):
     def tearDown(self):
         self.output_file.close()
 
-    def test_reduce_attract1(self):
+    def test_translate_attract1(self):
         args = ['translate', TEST_LIGAND_RED_ATTRACT1, TEST_LIGAND_RED_ATTRACT1,
                 '-o', self.output_name]
         cmd_args = ptools_cli.parse_command_line(args)
