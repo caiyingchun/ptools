@@ -48,6 +48,25 @@ cdef class Matrix:
         n, m = key
         self.thisptr.setItem(n, m, value)
 
+    def __add__(self, other):
+        assert self.get_nrows() == other.get_nrows()
+        assert self.get_ncolumns() == other.get_ncolumns()
+        m = Matrix(self.get_nrows(), self.get_ncolumns())
+        for i in xrange(self.get_nrows()):
+            for j in xrange(self.get_ncolumns()):
+                m[i, j] = self[i, j] + other[i, j]
+        return m
+
+    def __sub__(self, other):
+        assert self.get_nrows() == other.get_nrows()
+        assert self.get_ncolumns() == other.get_ncolumns()
+        m = Matrix(self.get_nrows(), self.get_ncolumns())
+        for i in xrange(self.get_nrows()):
+            for j in xrange(self.get_ncolumns()):
+                m[i, j] = self[i, j] - other[i, j]
+        return m
+
+
     def str(self):
         return self.__str__()
 

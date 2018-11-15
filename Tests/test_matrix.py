@@ -32,10 +32,15 @@ class TestMatrixBindings(unittest.TestCase):
 class TestMatrix(unittest.TestCase):
 
     def setUp(self):
-        # Initialize a 4 x 4 matrix.
+        # Initialize a 2 x 4 matrix.
         self.nrows = 2
         self.ncols = 4
         self.mat = ptools.Matrix(self.nrows, self.ncols)
+        self.other = ptools.Matrix(self.nrows, self.ncols)
+        for i in xrange(self.nrows):
+            for j in xrange(self.ncols):
+                self.mat[i, j] = 0.
+                self.other[i, j] = 1.
 
     def test_get_nrows(self):
         self.assertEqual(self.mat.get_nrows(), self.nrows)
@@ -60,3 +65,17 @@ class TestMatrix(unittest.TestCase):
         for i in xrange(self.nrows):
             for j in xrange(self.ncols):
                 self.assertEqual(self.mat[i, j], i)
+
+    def test_substraction(self):
+        d = self.mat - self.other
+        for i in xrange(self.nrows):
+            for j in xrange(self.ncols):
+                self.assertTrue((d[i, j] - (self.mat[i, j] - self.other[i, j])) < 1e-6)
+
+    def test_substraction(self):
+        d = self.mat - self.other
+        for i in xrange(self.nrows):
+            for j in xrange(self.ncols):
+                self.assertTrue((d[i, j] - (self.mat[i, j] + self.other[i, j])) < 1e-6)
+
+
