@@ -90,28 +90,46 @@ def rmsdca(l1, l2):
     return ptools.rmsd(l1.alpha().create_rigid(), l2.alpha().create_rigid())
 
 
-def get_group(collection, ngroups, ngroup):
-    """Divide collection into ngroups; return the ngroup-th group. Groups can be run in parallel."""
-    # CHR added March-April 2017
+def get_group_splitting(collection, ngroups_desired):
+    """Return tuple (ngroups, n) defining an "optimal" splitting of collection into groups.
+    
+    ngroups : number of groups, which may be < ngroups_desired if ngroups_desired is < len(collection)
+    n : number of elements in each group; last group may have fewer (remainder).
+    """
+    ndata = len(collection)
+    if  ndata < ngroups_desired:
+        ngroups = ndata
+        n = 1
+    elif  ndata % ngroups_desired > 0:
+        ngroups = ngroups_desired
+        n = ndata / ngroups_desired + 1
+    else:
+        ngroups = ngroups_desired
+        n = ndata / ngroups_desired
+    return (ngroups, n)
+
+
+def get_groups(collection, ngroups_desired):
+    """Split collection into desired number of groups."""
+    ndata = len(collection)
+    ngroups, n = get_group_splitting(collection, ngroups_desired)
     if isinstance(collection, dict):
         clist = [(t, collection[t]) for t in sorted(collection.keys())]
     else:
         clist = [t for t in collection]
-    ndata = len(clist)
-    n = ndata / ngroups  # integer floor
-    istart = (ngroup - 1) * n
-    istop = istart + n
-    # print("ndata {:s} ngroups {:s}  ngroup {:s}  n {:s} istart {:s} istop {:s}".format(ndata, ngroups, ngroup, n, istart, istop))
-    if ngroup == ngroups:
-        # Any extras are added to the last group -- let the user beware!
-        group = clist[istart:]
-    else:
-        group = clist[istart:istop]
+    # Thanks to https://stackoverflow.com/a/2231685
+    glist = [ clist[i:i + n] for i in xrange(0, ndata, n) ]
     if type(collection) is dict:
-        return dict(group)
+        return [ dict(g) for g in glist ]
     else:
-        return group
+        return glist
 
+
+def get_group(collection, ngroups_desired, ngroup):
+    """Split collection into desired number of ngroups; return the ngroup-th one."""
+    groups = get_groups(collection, ngroups_desired)
+    return groups[ngroup]
+    
 
 def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options, ref=None, ftraj=None):
     """Run the attract docking procedure."""
