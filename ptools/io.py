@@ -530,7 +530,7 @@ class DockingOutputList(list):
             dock.structure = rb
 
     def clusterize(self, cluster_memory=50, rmsd_cutoff=1.0, energy_cutoff=1000.0,
-                   nclusters=200):
+                   nclusters=200, output_directory='output'):
         cluster_memory += 1
         thecluster = []
         structures = sorted(self, key=lambda x: x.energy)
@@ -559,7 +559,7 @@ class DockingOutputList(list):
                 thecluster.append(c)
 
         for i, c in enumerate(thecluster):
-            fname = "output/cluster-{:03d}.pdb".format(i)
+            fname = os.path.join(output_directory, "cluster-{:03d}.pdb".format(i))
             with open(fname, 'wt') as f:
                 print("REMARK   0 ENERGY", c.energy, file=f)
                 print("REMARK   0 COUNT", c.count, file=f)
