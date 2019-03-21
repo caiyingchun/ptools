@@ -1,61 +1,61 @@
 import unittest
 
 from ptools import AttractRigidbody, AttractForceField1, Lbfgs, Coord3D
-from ptools.docking import get_group
+from ptools.docking import get_group_splitting, get_groups,  get_group
 
 from . import TEST_TOYMINIM_LIGAND, TEST_TOYMINIM_RECEPTOR, TEST_TOYMINIM_FF_PARAM
 
 
 class SubsetTests(unittest.TestCase):
 
+    def test_grouping_too_many_requested_groups(self):
+        data = xrange(7)
+        ngroups_desired = 8
+        ngroups, n = get_group_splitting(data, ngroups_desired)
+        self.assertEqual(n, 1)
+        self.assertEqual(ngroups, 7)
+
+    def test_grouping_ndata_divides_evenly(self):
+        data = xrange(144)
+        ngroups_desired = 12
+        ngroups, n = get_group_splitting(data, ngroups_desired)
+        self.assertEqual(n, 12)
+        self.assertEqual(ngroups, 12)
+
+    def test_grouping_ndata_divides_with_remainder(self):
+        data = xrange(255)
+        ngroups_desired = 16
+        ngroups, n = get_group_splitting(data, ngroups_desired)
+        self.assertEqual(n, 16)
+        self.assertEqual(ngroups, 16)
+
     def test_concatenated_group_lists_should_match_original_data(self):
-        """Concatenated group lists should match original data list."""
         ndata = 10
         data = xrange(ndata)
-        ngroups = 5
-        gdata = []
-        for ng in xrange(ngroups):
-            gdata += get_group(data, ngroups, 1 + ng)
-        self.assertEqual(len(gdata), len(data))
-        for d, e in zip(data, gdata):
-            self.assertEqual(d, e)
+		# [item for sublist in l for item in sublist]
+		# Flattening thanks to https://stackoverflow.com/a/952952
+        groupdata = [ item for sublist in get_groups(data, 4) for item in sublist ]
+        self.assertEqual(set(groupdata), set(data))
 
-    def test_for_exact_division_last_group_should_have_expected_length(self):
-        """When division is exact last group should have length n"""
-        ndata = 10
-        data = xrange(ndata)
-        ngroups = 5
-        n = ndata / ngroups
-        ngroup = ngroups
-        group = get_group(data, ngroups, ngroup)
-        self.assertEqual(len(group), n + ndata % ngroups)
+    def test_concatenated_dictionary_groups_match_original_data(self):
+        # data here resembles a use case using a dictionary of translations, e.g.
+        #data = dict([ (i, 'abcdefghijklmnopqrstuvwxyz'[i]) for i in xrange(15) ])
+        data = dict([ (i, object()) for i in xrange(15) ])
+        ndata = len(data)
+        for e in data.iteritems():
+            print e
+        groupdata = dict([ item for sublist in get_groups(data, 4) for item in sublist.iteritems() ])
+        self.assertEqual(set(groupdata), set(data))
 
-    def test_for_nonexact_division_last_group_should_have_expected_length(self):
-        """When division is not exact last group should have n + ndata % ngroups"""
+    def test_groups_should_match_expectations(self):
         ndata = 11
         data = xrange(ndata)
-        ngroups = 5
-        n = ndata / ngroups
-        ngroup = ngroups
-        group = get_group(data, ngroups, ngroup)
-        self.assertEqual(len(group), n + ndata % ngroups)
-
-    def test_for_different_nonexact_division_last_group_should_have_expected_length(self):
-        """When division is not exact the last group should have length ndata % ngroups"""
-        ndata = 49
-        data = xrange(ndata)
-        print list(data)
-        ngroups = 9
-        n = ndata / ngroups
-        ngroup = ngroups
-        group = get_group(data, ngroups, 1)
-        print 1, group
-        group = get_group(data, ngroups, ngroup - 1)
-        print ngroup - 1, group
-        group = get_group(data, ngroups, ngroup)
-        print ngroup, group
-        self.assertEqual(len(group), n + ndata % ngroups)
-
+        groups = get_groups(data, 4)
+        self.assertEqual(len(groups), 4)
+        for g in groups[:-1]:
+            self.assertEqual(len(g), 3)
+        self.assertEqual(len(groups[-1]), 2)
+        
 
 class MinimizationTests(unittest.TestCase):
     """CHR April 2017 Add simple geometric minimization tests.
