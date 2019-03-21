@@ -5,6 +5,7 @@ import re
 import StringIO
 import sys
 
+import _ptools
 from _ptools import Matrix
 from _ptools import Rigidbody
 
@@ -527,6 +528,47 @@ class DockingOutputList(list):
     def update_reference_structure(self, rb):
         for dock in self:
             dock.structure = rb
+
+    def clusterize(self, cluster_memory=50, rmsd_cutoff=1.0, energy_cutoff=1000.0,
+                   nclusters=200):
+        cluster_memory += 1
+        thecluster = []
+        structures = sorted(self, key=lambda x: x.energy)
+
+        for s in structures:
+            if s.energy > 0:
+                break
+
+            new_cluster = True
+            for c in reversed(thecluster[-cluster_memory:]):
+                s1, s2 = s.structure, c.structure.structure
+                if abs(c.energy - s.energy) < energy_cutoff and _ptools.rmsd(s1, s2) < rmsd_cutoff:
+                    new_cluster = False
+                    c.count += 1
+                    print("-- Number of structures in clusters:", c.count)
+                    break
+
+            if new_cluster:
+                if len(thecluster) == nclusters + cluster_memory:
+                    break
+
+                c = Foo()
+                c.structure = s
+                c.energy = s.energy
+                c.count = 1
+                thecluster.append(c)
+
+        for i, c in enumerate(thecluster):
+            fname = "output/cluster-{:03d}.pdb".format(i)
+            with open(fname, 'wt') as f:
+                print("REMARK   0 ENERGY", c.energy, file=f)
+                print("REMARK   0 COUNT", c.count, file=f)
+                print(c.structure.structure, file=f)
+
+
+class Foo:
+    pass
+
 
 
 # =============================================================================
