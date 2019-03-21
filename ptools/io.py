@@ -558,6 +558,15 @@ class DockingOutputList(list):
                 c.count = 1
                 thecluster.append(c)
 
+        me = "{}.{}".format(self.__class__.__name__,
+                            sys._getframe(  ).f_code.co_name)
+        if not os.path.exists(output_directory):    
+            msg = "creating output_directory '{}'".format(output_directory)
+            print("{}: {}".format(me, msg), file=sys.stderr)
+
+        msg = "writing clusters to output directory '{}'".format(output_directory)
+        print("{}: {}".format(me, msg), file=sys.stderr)
+
         for i, c in enumerate(thecluster):
             fname = os.path.join(output_directory, "cluster-{:03d}.pdb".format(i))
             with open(fname, 'wt') as f:
