@@ -17,9 +17,9 @@ def log_progress(i, N, **kwargs):
 
 
 def log(msg, *args, **kwargs):
-    kwargs.setdefault('file', sys.stderr)
+    kwargs.setdefault('file', sys.stdout)
     print(msg.format(*args), **kwargs)
-    file.flush()
+    kwargs['file'].flush()
 
 
 def read_translations(filename="translation.dat"):
@@ -136,7 +136,6 @@ def run_attract(lig, rec, translations, rotations, minimlist, ff_specs, options,
         rotnb = 0
         for rotnb in sorted(rotations.keys()):
             rot = rotations[rotnb]
-            show_progress(progress, N, file=sys.stdout)
             log("----- Rotation nb {:d} -----", rotnb)
             log("Translation by: {}", trans)
             log("Rotation angles: {}", rot)
