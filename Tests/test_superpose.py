@@ -22,7 +22,7 @@ class TestSuperposeBindings(unittest.TestCase):
 
 class Test_mat_trans_to_screw(unittest.TestCase):
     def test_mat_trans_to_screw(self):
-        m = ptools.Matrix(3, 3)  # Initialize 3 x 3 matrix
+        m = ptools.Matrix(4, 4)
         s = ptools.mat_trans_to_screw(m)
         self.assertTrue(isinstance(s, ptools.Screw))
 
