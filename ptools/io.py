@@ -563,7 +563,6 @@ class DockingOutputList(list):
         if not os.path.exists(output_directory):    
             msg = "creating output_directory '{}'".format(output_directory)
             print("{}: {}".format(me, msg), file=sys.stderr)
-            os.mkdir(output_directory)
 
         msg = "writing clusters to output directory '{}'".format(output_directory)
         print("{}: {}".format(me, msg), file=sys.stderr)
