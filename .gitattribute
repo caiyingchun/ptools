@@ -1,2 +1,4 @@
-minimizers/*.f linguist-vendored
-minimizers/lbfgs_wrapper/*.f linguist-vendored
+*.py linguist-detectable=true
+*.cpp linguist-detectable=true
+*.f linguist-detectable=false
+*.red linguist-detectable=false
